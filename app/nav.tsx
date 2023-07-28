@@ -48,7 +48,7 @@ function Nav() {
         <div className='w-full h-16 flex justify-between items-center'>
           <div>
             <Link className='cursor-pointer text-2xl font-semibold' href={'/'}>
-              집사 블로그
+              꼬비 집사 블로그
             </Link>
           </div>
           <div>

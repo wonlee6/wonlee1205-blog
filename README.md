@@ -1,1 +1,5 @@
-Next 13 환경으로 버전 업
+# 프론트엔드 공부 블로그
+
+### React - 18, Next 13, typescript
+
+### TailWindCss, Next UI - Beta, PrimeReact

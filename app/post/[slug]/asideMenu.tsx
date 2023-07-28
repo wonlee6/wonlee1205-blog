@@ -1,125 +1,72 @@
 'use client'
 
-import React from 'react'
+import React, {useMemo} from 'react'
+import {useRouter} from 'next/navigation'
 import {PanelMenu} from 'primereact/panelmenu'
-import {MenuItem} from 'primereact/menuitem'
+import type {MenuItem} from 'primereact/menuitem'
+import {PostData} from './page'
 
-export default function AsideMenu() {
-  const items: MenuItem[] = [
-    {
-      label: 'File',
-      icon: 'pi pi-fw pi-file',
-      items: [
-        {
-          label: 'New',
-          icon: 'pi pi-fw pi-plus',
-          items: [
-            {
-              label: 'Bookmark',
-              icon: 'pi pi-fw pi-bookmark'
-            },
-            {
-              label: 'Video',
-              icon: 'pi pi-fw pi-video'
+interface Props {
+  allPostsData: PostData[]
+}
+
+export default function AsideMenu({allPostsData}: Props) {
+  const router = useRouter()
+
+  const filteredAllPostsData: MenuItem[] = useMemo(() => {
+    return allPostsData
+      .reduce((acc: any, cur: PostData) => {
+        if (acc.find((i: any) => i.label === cur.tag)) {
+          return acc.map((v: any) => {
+            if (v.label === cur.tag) {
+              return {
+                ...v,
+                items: [
+                  ...v.items,
+                  {
+                    id: cur.id,
+                    label: cur.title,
+                    command(event: any) {
+                      router.push(`/post/${event.item.id}`)
+                    }
+                  }
+                ]
+              }
             }
-          ]
-        },
-        {
-          label: 'Delete',
-          icon: 'pi pi-fw pi-trash'
-        },
-        {
-          label: 'Export',
-          icon: 'pi pi-fw pi-external-link'
+            return v
+          })
         }
-      ]
-    },
-    {
-      label: 'Edit',
-      icon: 'pi pi-fw pi-pencil',
-      items: [
-        {
-          label: 'Left',
-          icon: 'pi pi-fw pi-align-left'
-        },
-        {
-          label: 'Right',
-          icon: 'pi pi-fw pi-align-right'
-        },
-        {
-          label: 'Center',
-          icon: 'pi pi-fw pi-align-center'
-        },
-        {
-          label: 'Justify',
-          icon: 'pi pi-fw pi-align-justify'
-        }
-      ]
-    },
-    {
-      label: 'Users',
-      icon: 'pi pi-fw pi-user',
-      items: [
-        {
-          label: 'New',
-          icon: 'pi pi-fw pi-user-plus'
-        },
-        {
-          label: 'Delete',
-          icon: 'pi pi-fw pi-user-minus'
-        },
-        {
-          label: 'Search',
-          icon: 'pi pi-fw pi-users',
+        const createMenuData: MenuItem = {
+          label: cur.tag,
+          expanded: true,
           items: [
             {
-              label: 'Filter',
-              icon: 'pi pi-fw pi-filter',
-              items: [
-                {
-                  label: 'Print',
-                  icon: 'pi pi-fw pi-print'
-                }
-              ]
-            },
-            {
-              icon: 'pi pi-fw pi-bars',
-              label: 'List'
+              id: cur.id,
+              label: cur.title,
+              command(event) {
+                router.push(`/post/${event.item.id}`)
+              }
             }
           ]
         }
-      ]
-    },
-    {
-      label: 'Events',
-      icon: 'pi pi-fw pi-calendar',
-      items: [
-        {
-          label: 'Edit',
-          icon: 'pi pi-fw pi-pencil',
-          items: [
-            {
-              label: 'Save',
-              icon: 'pi pi-fw pi-calendar-plus'
-            },
-            {
-              label: 'Delete',
-              icon: 'pi pi-fw pi-calendar-minus'
-            }
-          ]
-        },
-        {
-          label: 'Archive',
-          icon: 'pi pi-fw pi-calendar-times',
-          items: [
-            {
-              label: 'Remove',
-              icon: 'pi pi-fw pi-calendar-minus'
-            }
-          ]
+        return [...acc, createMenuData]
+      }, [])
+      .sort((a: any, b: any) => {
+        if (a.label > b.label) {
+          return -1
+        } else if (a.label < b.label) {
+          return 1
+        } else {
+          return 0
         }
-      ]
-    }
-  ]
-  return <PanelMenu model={items} className='w-full md:w-25rem' />
+      })
+  }, [allPostsData, router])
+
+  return (
+    <PanelMenu
+      model={filteredAllPostsData}
+      multiple
+      className='w-full md:w-25rem'
+    />
+  )
 }

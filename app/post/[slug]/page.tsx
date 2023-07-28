@@ -4,7 +4,7 @@ import {getAllPostIds, getPostData, getSortedPostsData} from '@/lib/posts'
 import MarkdownViwer from './markdownViwer'
 import Utterance from './utterance'
 
-type PostData = {
+export type PostData = {
   date: string
   id: string
   tag: string

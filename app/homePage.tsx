@@ -57,13 +57,7 @@ export default function HomePage({allPostsData}: Props) {
                       </div>
                     </div>
                     <div className='text-base leading-6 text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-700 font-semibold'>
-                      <Link
-                        href={{
-                          pathname: `/post/${item.id}`,
-                          query: {tag: item.tag}
-                        }}>
-                        Read More -{'>'}
-                      </Link>
+                      <Link href={`/post/${item.id}`}>Read More -{'>'}</Link>
                     </div>
                   </div>
                 </div>

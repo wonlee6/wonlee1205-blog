@@ -60,4 +60,4 @@ description: 'React 렌더링 과정에 대해 알아보자'
 - Mount되어 화면이 그려진 직후, useEffect에 등록해둔 함수가 `비동기`로 실행된다.
 - effect에 return부분이 있다면, 구현부보다 먼저 실행된다.
 
-![life cycle](https://wavez.github.io/react-hooks-lifecycle)
+![life cycle](https://raw.githubusercontent.com/Wavez/react-hooks-lifecycle/master/screenshot.jpg)
