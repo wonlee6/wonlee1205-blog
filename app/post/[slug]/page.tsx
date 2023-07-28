@@ -1,8 +1,8 @@
 import React, {useMemo} from 'react'
 import Link from 'next/link'
 import {getAllPostIds, getPostData, getSortedPostsData} from '@/lib/posts'
-import MarkdownViwer from './markdownViwer'
 import Utterance from './utterance'
+import MarkdownViwer from './markdownViwer'
 
 export type PostData = {
   date: string
