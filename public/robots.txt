@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://wonlee1205-blog.vercel.app/
+
+# Sitemaps
+Sitemap: https://wonlee1205-blog.vercel.app/sitemap.xml
