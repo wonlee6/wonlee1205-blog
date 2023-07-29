@@ -51,10 +51,13 @@ function Nav() {
               꼬비 집사 블로그
             </Link>
           </div>
-          <div>
-            <ul className='cursor-pointer text-xl font-semibold'>
-              <li>
+          <div className='flex justify-center'>
+            <ul className='flex text-xl font-semibold'>
+              <li className='mr-10 cursor-pointer'>
                 <Link href={'/'}>Posting</Link>
+              </li>
+              <li className='cursor-pointer'>
+                <Link href={'/chart'}>Charts</Link>
               </li>
             </ul>
           </div>

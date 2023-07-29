@@ -6,6 +6,7 @@ import Nav from './nav'
 import Footer from './footer'
 import 'primereact/resources/themes/saga-blue/theme.css'
 import 'primereact/resources/primereact.min.css'
+import {Analytics} from '@vercel/analytics/react'
 
 const inter = Inter({subsets: ['latin']})
 
@@ -23,6 +24,7 @@ export default function RootLayout({children}: {children: ReactNode}) {
           <Nav />
           {children}
           <Footer />
+          <Analytics />
         </main>
       </body>
     </html>
