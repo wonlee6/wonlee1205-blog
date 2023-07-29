@@ -4,4 +4,4 @@
 
 ### TailWindCss, Next UI - Beta, PrimeReact - 9.6
 
-## [Blog](https://vercel.com/wonlee6/wonlee1205-blog)
+## [Blog](https://wonlee1205-blog.vercel.app/)
