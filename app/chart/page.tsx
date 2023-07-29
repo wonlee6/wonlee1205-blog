@@ -10,19 +10,25 @@ import {ChartHelper} from '@/helper/ChartHelper'
 import PreviewChart from './previewChart'
 
 export default function Page() {
+  const [activeTabView, setActiveTabView] = useState(0)
+
   const [selectedChartType, setSelectedChartType] = useState<ChartType>(
     ChartType.Line
   )
 
-  const handleMenuClick = useCallback((selectedMenu: ChartType) => {
-    setSelectedChartType(selectedMenu)
-  }, [])
+  const handleMenuClick = useCallback(
+    (selectedMenu: ChartType) => {
+      setSelectedChartType(selectedMenu)
+      if (activeTabView === 1) {
+        setActiveTabView(0)
+      }
+    },
+    [activeTabView]
+  )
 
   const filteredChartImages = useMemo(() => {
     return ChartHelper.getChartList(selectedChartType)
   }, [selectedChartType])
-
-  const [activeTabView, setActiveTabView] = useState(0)
 
   const [chartOption, setChartOption] = useState<EChartsOption | null>(null)
   const [theme, setTheme] = useState<'dark' | 'light' | undefined>(undefined)
