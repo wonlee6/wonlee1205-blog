@@ -7,6 +7,7 @@ import Footer from './footer'
 import 'primereact/resources/themes/saga-blue/theme.css'
 import 'primereact/resources/primereact.min.css'
 import {Analytics} from '@vercel/analytics/react'
+import Script from 'next/script'
 
 const inter = Inter({subsets: ['latin']})
 

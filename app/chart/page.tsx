@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
 import Image from 'next/image'
 import {TabPanel, TabView} from 'primereact/tabview'
 import {EChartsOption} from 'echarts'
@@ -8,108 +8,168 @@ import NextUIButton from './nextUIButton'
 import {ChartType} from '@/model/Chart.model'
 import {ChartHelper} from '@/helper/ChartHelper'
 import PreviewChart from './previewChart'
+import ArrowDown from '@/public/arrow-down.svg'
+import {useIntersectionObserver} from '@/hooks/useIntersectionObserver'
+import MonacoEditor from './monacoEditor'
 
 export default function Page() {
+  const editorRef = useRef<HTMLDivElement | null>(null)
+  const entry = useIntersectionObserver(editorRef, {threshold: 0.5})
+  const isVisble = entry?.isIntersecting
+
   const [activeTabView, setActiveTabView] = useState(0)
 
-  const [selectedChartType, setSelectedChartType] = useState<ChartType>(
-    ChartType.Line
-  )
-
-  const handleMenuClick = useCallback(
-    (selectedMenu: ChartType) => {
-      setSelectedChartType(selectedMenu)
-      if (activeTabView === 1) {
-        setActiveTabView(0)
-      }
-    },
-    [activeTabView]
-  )
-
-  const filteredChartImages = useMemo(() => {
-    return ChartHelper.getChartList(selectedChartType)
-  }, [selectedChartType])
+  const [selectedMenu, setSelectedMenu] = useState<ChartType>(ChartType.Line)
 
   const [chartOption, setChartOption] = useState<EChartsOption | null>(null)
   const [theme, setTheme] = useState<'dark' | 'light' | undefined>(undefined)
 
+  const [editorContent, setEditorContent] = useState('')
+  const [fetchJsonData, setFetchJsonData] = useState(null)
+
+  const handleMenuClick = useCallback(
+    (menu: ChartType) => {
+      setSelectedMenu(menu)
+      if (activeTabView === 1) {
+        setActiveTabView(0)
+      }
+      setChartOption(null)
+      setTheme(undefined)
+      setEditorContent('')
+    },
+    [activeTabView]
+  )
+
   const handleChartClick = useCallback(
-    (chartIndex: number) => {
-      const findChartDataList = ChartHelper.getChartListData(selectedChartType)
+    (chartIndex: number, url: string) => {
+      const findChartDataList = ChartHelper.getChartListData(selectedMenu)
       const findChartItem = findChartDataList.find(
         (_, index) => index === chartIndex
       )
       setActiveTabView(1)
       setChartOption(findChartItem ? findChartItem : null)
+
+      const regUrl = url.split('images/')[1].replace(/\.(.*)/, '')
+      fetch(`/data/${regUrl}.js`)
+        .then((res) => res.text())
+        .then((data) => setEditorContent(data))
+
+      if (regUrl === 'confidence-band') {
+        fetch(`/data/${regUrl}.json`)
+          .then((res) => res.json())
+          .then((data) => setFetchJsonData(data))
+      }
     },
-    [selectedChartType]
+    [selectedMenu]
   )
 
-  const handleThemeClick = (selectedTheme: 'dark' | 'light' | 'default') => {
-    setTheme(selectedTheme === 'default' ? undefined : selectedTheme)
-  }
+  const handleThemeClick = useCallback(
+    (selectedTheme: 'dark' | 'light' | 'default') => {
+      setTheme(selectedTheme === 'default' ? undefined : selectedTheme)
+    },
+    []
+  )
+
+  const filteredChartImages = useMemo(() => {
+    return ChartHelper.getChartList(selectedMenu)
+  }, [selectedMenu])
 
   return (
-    <div className='flex'>
-      <div className='w-1/5'>
-        {ChartHelper.getChartMenuList().map((item) => (
-          <NextUIButton
-            key={item.name}
-            color={selectedChartType === item.name ? 'primary' : 'secondary'}
-            onClick={() => handleMenuClick(item.name)}
-            className='w-full mb-4'
-            ghost>
-            {item.name}
-          </NextUIButton>
-        ))}
-      </div>
-      <div className='w-4/5'>
-        <TabView
-          activeIndex={activeTabView}
-          onTabChange={(e) => setActiveTabView(e.index)}>
-          <TabPanel header='Chart List'>
-            <div className='grid sm:grid-cols-1 lg:grid-cols-2 grid-cols-3 gap-2'>
-              {filteredChartImages.map((i, index) => (
-                <ChartListItem
-                  key={i.title}
-                  index={index}
-                  title={i.title}
-                  url={i.url}
-                  onChartClick={handleChartClick}
-                />
-              ))}
+    <div className='flex flex-col'>
+      <div className='flex'>
+        <div className='w-1/5'>
+          {ChartHelper.getChartMenuList().map((item) => (
+            <NextUIButton
+              key={item.name}
+              color={selectedMenu === item.name ? 'primary' : 'secondary'}
+              onClick={() => handleMenuClick(item.name)}
+              className='w-full mb-4'
+              ghost>
+              {item.name}
+            </NextUIButton>
+          ))}
+        </div>
+        <div className='w-4/5'>
+          <TabView
+            className='pl-3'
+            panelContainerClassName='dark:bg-black'
+            activeIndex={activeTabView}
+            onTabChange={(e) => setActiveTabView(e.index)}>
+            <TabPanel header='Chart List'>
+              <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2'>
+                {filteredChartImages.map((i, index) => (
+                  <ChartListItem
+                    key={i.title}
+                    index={index}
+                    title={i.title}
+                    url={i.url}
+                    onChartClick={handleChartClick}
+                  />
+                ))}
+              </div>
+            </TabPanel>
+            <TabPanel header='Preview' contentClassName='h-full flex flex-col'>
+              {chartOption ? (
+                <>
+                  <div className='mb-3 flex justify-center'>
+                    <NextUIButton
+                      className='mr-2'
+                      color='gradient'
+                      onClick={() => handleThemeClick('default')}
+                      ghost
+                      bordered>
+                      Default
+                    </NextUIButton>
+                    <NextUIButton
+                      color='gradient'
+                      className='mr-2'
+                      bordered
+                      ghost
+                      onClick={() => handleThemeClick('light')}>
+                      Light
+                    </NextUIButton>
+                    <NextUIButton
+                      color='gradient'
+                      bordered
+                      ghost
+                      onClick={() => handleThemeClick('dark')}>
+                      Dark
+                    </NextUIButton>
+                  </div>
+                  <PreviewChart option={chartOption} theme={theme} />
+                </>
+              ) : null}
+            </TabPanel>
+          </TabView>
+          {activeTabView === 1 && (
+            <div
+              className='animate-bounce flex justify-center pr-40'
+              style={{
+                visibility: isVisble ? 'hidden' : 'visible'
+              }}>
+              <Image src={ArrowDown} alt='arrow-down' width={60} height={60} />
             </div>
-          </TabPanel>
-          <TabPanel header='Preview' contentClassName='h-full flex flex-col'>
-            <div className='mb-3 flex justify-center'>
-              <NextUIButton
-                className='mr-2'
-                color='gradient'
-                onClick={() => handleThemeClick('default')}
-                ghost
-                bordered>
-                Default
-              </NextUIButton>
-              <NextUIButton
-                color='gradient'
-                className='mr-2'
-                bordered
-                ghost
-                onClick={() => handleThemeClick('light')}>
-                Light
-              </NextUIButton>
-              <NextUIButton
-                color='gradient'
-                bordered
-                ghost
-                onClick={() => handleThemeClick('dark')}>
-                Dark
-              </NextUIButton>
-            </div>
-            <PreviewChart option={chartOption} theme={theme} />
-          </TabPanel>
-        </TabView>
+          )}
+        </div>
       </div>
+      {activeTabView === 1 ? (
+        <div
+          ref={editorRef}
+          className='flex'
+          style={{
+            visibility: isVisble ? 'visible' : 'hidden',
+            height: '700px'
+          }}>
+          <div className='w-1/2 h-full border'>
+            {editorContent ? (
+              <MonacoEditor value={editorContent} fetchData={fetchJsonData} />
+            ) : null}
+          </div>
+          <div className='w-1/2 h-full'>
+            <div id='chart' className='w-full h-full'></div>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }
@@ -117,7 +177,7 @@ export default function Page() {
 interface ChartListItemModel {
   url: string
   title: string
-  onChartClick: (title: number) => void
+  onChartClick: (title: number, url: string) => void
   index: number
 }
 
@@ -138,10 +198,10 @@ const ChartListItem = ({
           height={800}
           // unoptimized
           // objectFit='cover'
-          onClick={() => onChartClick(index)}
+          onClick={() => onChartClick(index, url)}
         />
       </div>
-      <p className='p-1 text-center'>{title}</p>
+      <p className='p-1 text-center dark:text-teal-500'>{title}</p>
     </div>
   )
 }
