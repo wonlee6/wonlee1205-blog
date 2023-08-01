@@ -1,13 +1,17 @@
 'use client'
 
-import React, {memo} from 'react'
+import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import {vscDarkPlus} from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
-function MarkdownView({contentHtml}: {contentHtml: string}): JSX.Element {
+export default function MarkdownView({
+  contentHtml
+}: {
+  contentHtml: string
+}): JSX.Element {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
@@ -79,5 +83,3 @@ function MarkdownView({contentHtml}: {contentHtml: string}): JSX.Element {
     </ReactMarkdown>
   )
 }
-
-export default memo(MarkdownView)

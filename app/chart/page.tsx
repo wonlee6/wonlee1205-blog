@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useCallback, useMemo, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import Image from 'next/image'
 import {TabPanel, TabView} from 'primereact/tabview'
 import {EChartsOption} from 'echarts'
@@ -30,38 +30,39 @@ export default function Page() {
   const handleMenuClick = useCallback(
     (menu: ChartType) => {
       setSelectedMenu(menu)
-      if (activeTabView === 1) {
+      if (activeTabView === 2) {
         setActiveTabView(0)
       }
       setChartOption(null)
       setTheme(undefined)
       setEditorContent('')
+      setFetchJsonData(null)
     },
     [activeTabView]
   )
 
-  const handleChartClick = useCallback(
-    (chartIndex: number, url: string) => {
-      const findChartDataList = ChartHelper.getChartListData(selectedMenu)
-      const findChartItem = findChartDataList.find(
-        (_, index) => index === chartIndex
-      )
-      setActiveTabView(1)
-      setChartOption(findChartItem ? findChartItem : null)
+  const handleChartClick = (chartIndex: number, url: string) => {
+    const findChartDataList = ChartHelper.getChartListData(selectedMenu)
+    const findChartItem = findChartDataList.find(
+      (_, index) => index === chartIndex
+    )
+    setActiveTabView(2)
+    setChartOption(findChartItem ? findChartItem : null)
 
-      const regUrl = url.split('images/')[1].replace(/\.(.*)/, '')
-      fetch(`/data/${regUrl}.js`)
-        .then((res) => res.text())
-        .then((data) => setEditorContent(data))
+    const regUrl = url.split('images/')[1].replace(/\.(.*)/, '')
 
-      if (regUrl === 'confidence-band') {
-        fetch(`/data/${regUrl}.json`)
-          .then((res) => res.json())
-          .then((data) => setFetchJsonData(data))
-      }
-    },
-    [selectedMenu]
-  )
+    if (regUrl === 'confidence-band' || regUrl === 'line-race') {
+      fetch(`/data/${regUrl}.json`)
+        .then((res) => res.json())
+        .then((data) => setFetchJsonData(data))
+    } else {
+      setFetchJsonData(null)
+    }
+
+    fetch(`/data/${regUrl}.js`)
+      .then((res) => res.text())
+      .then((data) => setEditorContent(data))
+  }
 
   const handleThemeClick = useCallback(
     (selectedTheme: 'dark' | 'light' | 'default') => {
@@ -76,8 +77,8 @@ export default function Page() {
 
   return (
     <div className='flex flex-col'>
-      <div className='flex'>
-        <div className='w-1/5'>
+      <div className='flex w-full max-w-7xl mx-auto'>
+        <div className='w-1/5 max-lg:hidden'>
           {ChartHelper.getChartMenuList().map((item) => (
             <NextUIButton
               key={item.name}
@@ -89,12 +90,32 @@ export default function Page() {
             </NextUIButton>
           ))}
         </div>
-        <div className='w-4/5'>
+        <div className='w-4/5 mx-auto'>
           <TabView
             className='pl-3'
             panelContainerClassName='dark:bg-black'
             activeIndex={activeTabView}
             onTabChange={(e) => setActiveTabView(e.index)}>
+            <TabPanel header='Chart Menu' headerClassName='hidden max-lg:block'>
+              <div className='flex flex-col items-center'>
+                {ChartHelper.getChartMenuList().map((item) => (
+                  <div key={item.name} className='w-1/2 flex justify-center'>
+                    <NextUIButton
+                      color={
+                        selectedMenu === item.name ? 'primary' : 'secondary'
+                      }
+                      onClick={() => {
+                        setActiveTabView(1)
+                        setSelectedMenu(item.name)
+                      }}
+                      className='w-full mb-4'
+                      ghost>
+                      {item.name}
+                    </NextUIButton>
+                  </div>
+                ))}
+              </div>
+            </TabPanel>
             <TabPanel header='Chart List'>
               <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2'>
                 {filteredChartImages.map((i, index) => (
@@ -141,32 +162,34 @@ export default function Page() {
               ) : null}
             </TabPanel>
           </TabView>
-          {activeTabView === 1 && (
-            <div
-              className='animate-bounce flex justify-center pr-40'
-              style={{
-                visibility: isVisble ? 'hidden' : 'visible'
-              }}>
-              <Image src={ArrowDown} alt='arrow-down' width={60} height={60} />
-            </div>
-          )}
         </div>
       </div>
-      {activeTabView === 1 ? (
+      <div
+        className='animate-bounce flex justify-center mt-4 h-full'
+        style={{
+          visibility: activeTabView === 2 && !isVisble ? 'visible' : 'hidden'
+        }}>
+        <Image src={ArrowDown} alt='arrow-down' width={60} height={60} />
+      </div>
+      {activeTabView === 2 ? (
         <div
           ref={editorRef}
-          className='flex'
+          className='flex flex-col w-full mx-auto bg-zinc-300 p-4'
           style={{
             visibility: isVisble ? 'visible' : 'hidden',
-            height: '700px'
+            height: '50rem'
           }}>
-          <div className='w-1/2 h-full border'>
-            {editorContent ? (
-              <MonacoEditor value={editorContent} fetchData={fetchJsonData} />
-            ) : null}
-          </div>
-          <div className='w-1/2 h-full'>
-            <div id='chart' className='w-full h-full'></div>
+          <div className='flex max-lg:flex-col h-full'>
+            <div className='xl:w-1/2 lg:w-1/3 w-full h-full border mr-2'>
+              {editorContent ? (
+                <MonacoEditor value={editorContent} fetchData={fetchJsonData} />
+              ) : null}
+            </div>
+            <div className='xl:w-1/2 lg:w-2/3 w-full h-full ml-2 max-lg:mt-8'>
+              <div
+                id='chart'
+                className='w-full h-full bg-white rounded-lg p-4 relative'></div>
+            </div>
           </div>
         </div>
       ) : null}

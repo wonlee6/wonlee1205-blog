@@ -14,13 +14,16 @@ export default function MonacoEditor({value, fetchData}: Props) {
 
   const [editorContent, setEditorContent] = useState('')
 
+  const [test, setTest] = useState(false)
+
   const handleMount = () => {
-    let code = ``
-    if (fetchData) {
-      code = `
+    let code = `
 const chartDom = document.getElementById('chart');
 let myChart = echarts.init(chartDom, null, {renderer: 'svg'});
 let option;
+`
+    if (fetchData) {
+      code += `
 
 ${value}
 
@@ -29,12 +32,9 @@ run(${JSON.stringify(fetchData)})
 option && myChart.setOption(option, true, true);
     `
     } else {
-      code = `
-const chartDom = document.getElementById('chart');
-let myChart = echarts.init(chartDom, null, {renderer: 'svg'});
-let option;
+      code += `
 
-${value ?? ''}
+${value}
 
 option && myChart.setOption(option, true, true);
                 `
@@ -47,6 +47,8 @@ option && myChart.setOption(option, true, true);
     `)
 
     executeCode()
+    setEditorContent(value)
+    setTest(true)
   }
 
   const handleChange = debounce((value: string | undefined, ev: any) => {
@@ -110,7 +112,7 @@ option && myChart.setOption(option, true, true);
     )
     typescriptDefaults.addExtraLib(
       `
-    import * as echarts from './echarts';
+    import * as echarts from 'echarts';
     // Export for UMD module.
     export as namespace echarts
     export = echarts;`,
@@ -156,22 +158,18 @@ option && myChart.setOption(option, true, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monaco])
 
-  useEffect(() => {
-    setEditorContent(value)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return (
     <Editor
       width={'100%'}
       height={'100%'}
-      language='javascript'
+      language='typescript'
+      defaultLanguage='javascript'
       value={editorContent}
       options={{
         minimap: {
           enabled: false
         },
-        fontSize: 14,
+        fontSize: 13,
         scrollbar: {
           horizontal: 'auto',
           vertical: 'auto'

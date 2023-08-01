@@ -8,8 +8,7 @@ export const lineImageList = [
     title: 'Temperature Change in the Coming Week',
     url: `/images/line-marker.webp`
   },
-  {title: 'Area Pieces', url: `/images/area-pieces.webp`},
-  {title: 'Confidence Band', url: `/images/confidence-band.webp`}
+  {title: 'Area Pieces', url: `/images/area-pieces.webp`}
 ]
 
 export const barImageList = [
@@ -30,4 +29,11 @@ export const pieImageList = [
   },
   {title: 'Half Doughnut Chart', url: `/images/pie-half-donut.webp`},
   {title: 'Nightingale Chart', url: `/images/pie-roseType-simple.webp`}
+]
+
+export const complexImageList = [
+  {title: 'Confidence Band', url: `/images/confidence-band.webp`},
+  {title: 'Large scale area chart', url: `/images/area-simple.webp`},
+  {title: 'Line Race', url: `/images/line-race.webp`},
+  {title: 'Temperature Gauge Chart', url: `/images/gauge-temperature.webp`}
 ]
