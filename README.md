@@ -1,7 +1,9 @@
 # 프론트엔드 공부 블로그
 
-### React - 18, Next 13, typescript - 5.1.6
-
-### TailWindCss, Next UI - Beta, PrimeReact - 9.6
-
 ## [Blog](https://wonlee1205-blog.vercel.app/)
+
+### React - 18.2, Next 13.4 (app router), typescript - 5.1.6
+
+### TailWindCss - 3.3.3, Next UI - Beta, PrimeReact - 9.6
+
+### implemenet echarts with monaco-editor
