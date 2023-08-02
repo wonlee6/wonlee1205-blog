@@ -44,7 +44,7 @@ function Nav() {
     <nav
       className={`w-full shadow-md bg-opacity-20 backdrop-blur-sm bg-white dark:bg-black dark:text-neutral-50 dark:border-b dark:border-b-orange-200 z-10
        ${isScrollDown ? styles.downdown : ''}`}>
-      <div className='w-3/4 xl:w-8/12 my-0 mx-auto flex justify-center'>
+      <div className='max-lg:w-full max-w-7xl mx-auto max-lg:px-4 flex justify-center'>
         <div className='w-full h-16 flex justify-between items-center'>
           <div>
             <Link className='cursor-pointer text-2xl font-semibold' href={'/'}>

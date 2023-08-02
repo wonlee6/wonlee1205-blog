@@ -12,7 +12,7 @@ export default async function PostLayout({
   const allPostsData = (await getSortedPostsData()) as PostData[]
 
   return (
-    <section className='w-3/4 xl:w-8/12 mx-auto pt-20 flex'>
+    <section className='max-lg:w-full max-lg:px-4 mx-auto pt-20 flex'>
       <div className='w-1/4'>
         <AsideMenu allPostsData={allPostsData} />
       </div>

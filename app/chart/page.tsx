@@ -17,7 +17,7 @@ export default function Page() {
   const entry = useIntersectionObserver(editorRef, {threshold: 0.5})
   const isVisble = entry?.isIntersecting
 
-  const [activeTabView, setActiveTabView] = useState(0)
+  const [activeTabView, setActiveTabView] = useState(1)
 
   const [selectedMenu, setSelectedMenu] = useState<ChartType>(ChartType.Line)
 
@@ -31,7 +31,7 @@ export default function Page() {
     (menu: ChartType) => {
       setSelectedMenu(menu)
       if (activeTabView === 2) {
-        setActiveTabView(0)
+        setActiveTabView(1)
       }
       setChartOption(null)
       setTheme(undefined)
@@ -90,14 +90,14 @@ export default function Page() {
             </NextUIButton>
           ))}
         </div>
-        <div className='w-4/5 mx-auto'>
+        <div className='max-lg:w-full w-4/5 mx-auto'>
           <TabView
             className='pl-3'
             panelContainerClassName='dark:bg-black'
             activeIndex={activeTabView}
             onTabChange={(e) => setActiveTabView(e.index)}>
-            <TabPanel header='Chart Menu' headerClassName='hidden max-lg:block'>
-              <div className='flex flex-col items-center'>
+            <TabPanel header='Chart Menu' className='hidden max-lg:flex'>
+              <div className='w-full flex flex-col items-center'>
                 {ChartHelper.getChartMenuList().map((item) => (
                   <div key={item.name} className='w-1/2 flex justify-center'>
                     <NextUIButton
@@ -132,64 +132,72 @@ export default function Page() {
             <TabPanel header='Preview' contentClassName='h-full flex flex-col'>
               {chartOption ? (
                 <>
-                  <div className='mb-3 flex justify-center'>
+                  <div className='mb-3 flex justify-center w-full'>
                     <NextUIButton
                       className='mr-2'
                       color='gradient'
                       onClick={() => handleThemeClick('default')}
                       ghost
-                      bordered>
+                      bordered
+                      style={{minWidth: '5rem', width: '10rem'}}>
                       Default
                     </NextUIButton>
                     <NextUIButton
                       color='gradient'
-                      className='mr-2'
+                      className='mr-2 max-sm:w-12'
                       bordered
                       ghost
-                      onClick={() => handleThemeClick('light')}>
+                      onClick={() => handleThemeClick('light')}
+                      style={{minWidth: '5rem', width: '10rem'}}>
                       Light
                     </NextUIButton>
                     <NextUIButton
+                      className='max-sm:w-8'
                       color='gradient'
                       bordered
                       ghost
-                      onClick={() => handleThemeClick('dark')}>
+                      onClick={() => handleThemeClick('dark')}
+                      style={{minWidth: '5rem', width: '10rem'}}>
                       Dark
                     </NextUIButton>
                   </div>
                   <PreviewChart option={chartOption} theme={theme} />
                 </>
-              ) : null}
+              ) : (
+                <p className='text-center'>
+                  선택된 차트가 없거나 지원하지 않는 타입이에용.
+                </p>
+              )}
             </TabPanel>
           </TabView>
         </div>
       </div>
       <div
-        className='animate-bounce flex justify-center mt-4 h-full'
+        className='animate-bounce justify-center mt-4 mb-2 h-full hidden max-lg:flex'
         style={{
-          visibility: activeTabView === 2 && !isVisble ? 'visible' : 'hidden'
+          visibility:
+            activeTabView === 2 && editorContent && !isVisble
+              ? 'visible'
+              : 'hidden'
         }}>
         <Image src={ArrowDown} alt='arrow-down' width={60} height={60} />
       </div>
-      {activeTabView === 2 ? (
+      {activeTabView === 2 && editorContent ? (
         <div
           ref={editorRef}
-          className='flex flex-col w-full mx-auto bg-zinc-300 p-4'
+          className='flex max-lg:flex-col w-full mx-auto bg-zinc-300 p-4'
           style={{
-            visibility: isVisble ? 'visible' : 'hidden',
-            height: '50rem'
+            height: '55rem'
           }}>
-          <div className='flex max-lg:flex-col h-full'>
-            <div className='xl:w-1/2 lg:w-1/3 w-full h-full border mr-2'>
-              {editorContent ? (
-                <MonacoEditor value={editorContent} fetchData={fetchJsonData} />
-              ) : null}
-            </div>
-            <div className='xl:w-1/2 lg:w-2/3 w-full h-full ml-2 max-lg:mt-8'>
-              <div
-                id='chart'
-                className='w-full h-full bg-white rounded-lg p-4 relative'></div>
-            </div>
+          <div className='xl:w-1/2 lg:w-1/3 w-full h-full max-lg:h-1/2 border mr-2'>
+            {editorContent ? (
+              <MonacoEditor value={editorContent} fetchData={fetchJsonData} />
+            ) : null}
+          </div>
+          <div className='xl:w-1/2 lg:w-2/3 w-full h-full max-lg:h-1/2 max-lg:ml-0 ml-2 max-lg:mt-8'>
+            <div
+              id='chart'
+              className='w-full h-full bg-white rounded-lg p-4 relative'></div>
           </div>
         </div>
       ) : null}
@@ -224,7 +232,7 @@ const ChartListItem = ({
           onClick={() => onChartClick(index, url)}
         />
       </div>
-      <p className='p-1 text-center dark:text-teal-500'>{title}</p>
+      <p className='mt-2 p-1 text-center dark:text-teal-500'>{title}</p>
     </div>
   )
 }

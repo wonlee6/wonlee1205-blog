@@ -14,8 +14,6 @@ export default function MonacoEditor({value, fetchData}: Props) {
 
   const [editorContent, setEditorContent] = useState('')
 
-  const [test, setTest] = useState(false)
-
   const handleMount = () => {
     let code = `
 const chartDom = document.getElementById('chart');
@@ -30,6 +28,10 @@ ${value}
 run(${JSON.stringify(fetchData)})
 
 option && myChart.setOption(option, true, true);
+
+window.addEventListener('resize', function() {
+  myChart.resize();
+})
     `
     } else {
       code += `
@@ -37,6 +39,9 @@ option && myChart.setOption(option, true, true);
 ${value}
 
 option && myChart.setOption(option, true, true);
+window.addEventListener('resize', function() {
+  myChart.resize();
+})
                 `
     }
 
@@ -48,7 +53,6 @@ option && myChart.setOption(option, true, true);
 
     executeCode()
     setEditorContent(value)
-    setTest(true)
   }
 
   const handleChange = debounce((value: string | undefined, ev: any) => {
