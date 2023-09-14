@@ -16,27 +16,56 @@ export default function MonacoEditor({value, fetchData}: Props) {
   const [editorContent, setEditorContent] = useState(value)
 
   const handleMount = () => {
-    setEditorContent(value.trim().replace(/export\s+\{\s*\}\s*;?$/g, ''))
-  }
-
-  const handleChange = debounce((value: string | undefined, ev: any) => {
-    if (typeof value === 'undefined') return
-
-    setEditorContent(value)
+    const regValue = value.trim().replace(/export\s+\{\s*\}\s*;?$/g, '')
+    setEditorContent(regValue)
 
     let code = `
 const chartDom = document.getElementById('chart');
 let myChart = echarts.init(chartDom, null, {renderer: 'svg'});
+
+window.addEventListener('resize', function() {
+  myChart.resize();
+})
+
 let option;
 
-${value}
+${regValue}
     `
     if (fetchData) {
-      code = `
+      code += `
 run(${JSON.stringify(fetchData)})
     `
     }
-    code = `
+    code += `
+option && myChart.setOption(option, true, true);
+        `
+
+    try {
+      const result = transpile(code)
+      Function(result)()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleChange = debounce((val: string | undefined, ev: any) => {
+    if (typeof val === 'undefined') return
+
+    setEditorContent(val)
+
+    let code = `
+const chartDom = document.getElementById('chart');
+let myChart = echarts.getInstanceByDom(chartDom);
+let option;
+
+${val}
+    `
+    if (fetchData) {
+      code += `
+run(${JSON.stringify(fetchData)})
+    `
+    }
+    code += `
 option && myChart.setOption(option, true, true);
         `
 
