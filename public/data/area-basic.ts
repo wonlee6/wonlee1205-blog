@@ -14,4 +14,6 @@ option = {
       areaStyle: {}
     }
   ]
-};
+}
+
+export {}

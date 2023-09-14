@@ -10,9 +10,11 @@ option = {
       ['Walnut Brownie', 72.4, 53.9, 39.1]
     ]
   },
-  xAxis: { type: 'category' },
+  xAxis: {type: 'category'},
   yAxis: {},
   // Declare several bar series, each will be mapped
   // to a column of dataset.source by default.
-  series: [{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }]
-};
+  series: [{type: 'bar'}, {type: 'bar'}, {type: 'bar'}]
+}
+
+export {}

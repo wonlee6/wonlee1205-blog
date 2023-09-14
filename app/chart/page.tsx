@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
 import Image from 'next/image'
 import {TabPanel, TabView} from 'primereact/tabview'
 import {EChartsOption} from 'echarts'
@@ -41,7 +41,7 @@ export default function Page() {
     [activeTabView]
   )
 
-  const handleChartClick = (chartIndex: number, url: string) => {
+  const handleChartClick = async (chartIndex: number, url: string) => {
     const findChartDataList = ChartHelper.getChartListData(selectedMenu)
     const findChartItem = findChartDataList.find(
       (_, index) => index === chartIndex
@@ -52,16 +52,16 @@ export default function Page() {
     const regUrl = url.split('images/')[1].replace(/\.(.*)/, '')
 
     if (regUrl === 'confidence-band' || regUrl === 'line-race') {
-      fetch(`/data/${regUrl}.json`)
-        .then((res) => res.json())
-        .then((data) => setFetchJsonData(data))
+      const responseJsonData = await fetch(`/data/${regUrl}.json`)
+      const jsonData = await responseJsonData.json()
+      setFetchJsonData(jsonData)
     } else {
       setFetchJsonData(null)
     }
 
-    fetch(`/data/${regUrl}.js`)
-      .then((res) => res.text())
-      .then((data) => setEditorContent(data))
+    const responseChartData = await fetch(`/data/${regUrl}.ts`)
+    const chartData = await responseChartData.text()
+    setEditorContent(chartData)
   }
 
   const handleThemeClick = useCallback(

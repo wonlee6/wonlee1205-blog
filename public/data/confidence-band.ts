@@ -1,8 +1,20 @@
-function run(data) {
-  let base = -data.reduce(function (min, val) {
-    return Math.floor(Math.min(min, val.l));
-  }, Infinity);
-  myChart.setOption(
+interface DataItem {
+  l: number
+  u: number
+  date: string
+  value: number
+}
+
+myChart.showLoading()
+
+function run(data: DataItem[]) {
+  myChart.hideLoading()
+
+  const base = -data.reduce(function (min, val) {
+    return Math.floor(Math.min(min, val.l))
+  }, Infinity)
+
+  myChart.setOption<echarts.EChartsOption>(
     (option = {
       title: {
         text: 'Confidence Band',
@@ -21,16 +33,17 @@ function run(data) {
             shadowBlur: 0,
             shadowOffsetX: 0,
             shadowOffsetY: 0,
+
             color: '#222'
           }
         },
-        formatter: function (params) {
+        formatter: function (params: any) {
           return (
             params[2].name +
             '<br />' +
             ((params[2].value - base) * 100).toFixed(1) +
             '%'
-          );
+          )
         }
       },
       grid: {
@@ -42,28 +55,28 @@ function run(data) {
       xAxis: {
         type: 'category',
         data: data.map(function (item) {
-          return item.date;
+          return item.date
         }),
         axisLabel: {
-          formatter: function (value, idx) {
-            let date = new Date(value);
+          formatter: function (value: any, idx: number) {
+            var date = new Date(value)
             return idx === 0
               ? value
-              : [date.getMonth() + 1, date.getDate()].join('-');
+              : [date.getMonth() + 1, date.getDate()].join('-')
           }
         },
         boundaryGap: false
       },
       yAxis: {
         axisLabel: {
-          formatter: function (val) {
-            return (val - base) * 100 + '%';
+          formatter: function (val: number) {
+            return (val - base) * 100 + '%'
           }
         },
         axisPointer: {
           label: {
-            formatter: function (params) {
-              return ((params.value - base) * 100).toFixed(1) + '%';
+            formatter: function (params: any) {
+              return ((params.value - base) * 100).toFixed(1) + '%'
             }
           }
         },
@@ -74,7 +87,7 @@ function run(data) {
           name: 'L',
           type: 'line',
           data: data.map(function (item) {
-            return item.l + base;
+            return item.l + base
           }),
           lineStyle: {
             opacity: 0
@@ -86,7 +99,7 @@ function run(data) {
           name: 'U',
           type: 'line',
           data: data.map(function (item) {
-            return item.u - item.l;
+            return item.u - item.l
           }),
           lineStyle: {
             opacity: 0
@@ -100,7 +113,7 @@ function run(data) {
         {
           type: 'line',
           data: data.map(function (item) {
-            return item.value + base;
+            return item.value + base
           }),
           itemStyle: {
             color: '#333'
@@ -109,5 +122,7 @@ function run(data) {
         }
       ]
     })
-  );
+  )
 }
+
+export {}

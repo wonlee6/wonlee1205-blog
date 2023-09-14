@@ -36,8 +36,8 @@ option = {
       },
       markLine: {
         symbol: ['none', 'none'],
-        label: { show: false },
-        data: [{ xAxis: 1 }, { xAxis: 3 }, { xAxis: 5 }, { xAxis: 7 }]
+        label: {show: false},
+        data: [{xAxis: 1}, {xAxis: 3}, {xAxis: 5}, {xAxis: 7}]
       },
       areaStyle: {},
       data: [
@@ -53,4 +53,6 @@ option = {
       ]
     }
   ]
-};
+}
+
+export {}

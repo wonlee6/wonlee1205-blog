@@ -15,6 +15,7 @@ option = {
         show: true,
         width: 30
       },
+
       pointer: {
         show: false
       },
@@ -67,6 +68,7 @@ option = {
         }
       ]
     },
+
     {
       type: 'gauge',
       center: ['50%', '60%'],
@@ -81,6 +83,7 @@ option = {
         show: true,
         width: 8
       },
+
       pointer: {
         show: false
       },
@@ -106,10 +109,11 @@ option = {
       ]
     }
   ]
-};
+}
+
 setInterval(function () {
-  const random = +(Math.random() * 60).toFixed(2);
-  myChart.setOption({
+  const random = +(Math.random() * 60).toFixed(2)
+  myChart.setOption<echarts.EChartsOption>({
     series: [
       {
         data: [
@@ -126,5 +130,7 @@ setInterval(function () {
         ]
       }
     ]
-  });
-}, 2000);
+  })
+}, 2000)
+
+export {}

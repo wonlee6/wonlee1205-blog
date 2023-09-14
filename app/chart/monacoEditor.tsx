@@ -1,6 +1,7 @@
 'use client'
 
 import React, {useEffect, useState} from 'react'
+import {transpile} from 'typescript'
 import Editor, {useMonaco} from '@monaco-editor/react'
 import {debounce} from 'lodash'
 
@@ -12,47 +13,10 @@ type Props = {
 export default function MonacoEditor({value, fetchData}: Props) {
   const monaco = useMonaco()
 
-  const [editorContent, setEditorContent] = useState('')
+  const [editorContent, setEditorContent] = useState(value)
 
   const handleMount = () => {
-    let code = `
-const chartDom = document.getElementById('chart');
-let myChart = echarts.init(chartDom, null, {renderer: 'svg'});
-let option;
-`
-    if (fetchData) {
-      code += `
-
-${value}
-
-run(${JSON.stringify(fetchData)})
-
-option && myChart.setOption(option, true, true);
-
-window.addEventListener('resize', function() {
-  myChart.resize();
-})
-    `
-    } else {
-      code += `
-
-${value}
-
-option && myChart.setOption(option, true, true);
-window.addEventListener('resize', function() {
-  myChart.resize();
-})
-                `
-    }
-
-    const executeCode = new Function(`
-    return (function() {
-        ${code}
-    })();
-    `)
-
-    executeCode()
-    setEditorContent(value)
+    setEditorContent(value.trim().replace(/export\s+\{\s*\}\s*;?$/g, ''))
   }
 
   const handleChange = debounce((value: string | undefined, ev: any) => {
@@ -60,36 +24,28 @@ window.addEventListener('resize', function() {
 
     setEditorContent(value)
 
-    let code = ''
+    let code = `
+const chartDom = document.getElementById('chart');
+let myChart = echarts.init(chartDom, null, {renderer: 'svg'});
+let option;
+
+${value}
+    `
     if (fetchData) {
       code = `
-const chartDom = document.getElementById('chart');
-let myChart = echarts.getInstanceByDom(chartDom);
-let option;
-
-    ${value}
-
 run(${JSON.stringify(fetchData)})
-option && myChart.setOption(option, true, true);
     `
-    } else {
-      code = `
-const chartDom = document.getElementById('chart');
-let myChart = echarts.getInstanceByDom(chartDom);
-let option;
-
-        ${value}
-
+    }
+    code = `
 option && myChart.setOption(option, true, true);
         `
-    }
 
-    const executeCode = new Function(`
-      return (function() {
-        ${code}
-      })();
-    `)
-    executeCode()
+    try {
+      const result = transpile(code)
+      Function(result)()
+    } catch (error) {
+      console.error(error)
+    }
   }, 300)
 
   const loadTypes = async () => {
@@ -167,7 +123,6 @@ option && myChart.setOption(option, true, true);
       width={'100%'}
       height={'100%'}
       language='typescript'
-      defaultLanguage='javascript'
       value={editorContent}
       options={{
         minimap: {

@@ -8,11 +8,13 @@ function run(_rawData) {
     'Poland',
     'Russia',
     'United Kingdom'
-  ];
-  const datasetWithFilters = [];
-  const seriesList = [];
+  ]
+
+  const datasetWithFilters: echarts.DatasetComponentOption[] = []
+  const seriesList: echarts.SeriesOption[] = []
+
   echarts.util.each(countries, function (country) {
-    var datasetId = 'dataset_' + country;
+    let datasetId = 'dataset_' + country
     datasetWithFilters.push({
       id: datasetId,
       fromDatasetId: 'dataset_raw',
@@ -20,12 +22,12 @@ function run(_rawData) {
         type: 'filter',
         config: {
           and: [
-            { dimension: 'Year', gte: 1950 },
-            { dimension: 'Country', '=': country }
+            {dimension: 'Year', gte: 1950},
+            {dimension: 'Country', '=': country}
           ]
         }
       }
-    });
+    })
     seriesList.push({
       type: 'line',
       datasetId: datasetId,
@@ -33,8 +35,8 @@ function run(_rawData) {
       name: country,
       endLabel: {
         show: true,
-        formatter: function (params) {
-          return params.value[3] + ': ' + params.value[0];
+        formatter: function (params: any) {
+          return params.value[3] + ': ' + params.value[0]
         }
       },
       labelLayout: {
@@ -50,8 +52,9 @@ function run(_rawData) {
         itemName: 'Year',
         tooltip: ['Income']
       }
-    });
-  });
+    })
+  })
+
   option = {
     animationDuration: 10000,
     dataset: [
@@ -79,6 +82,8 @@ function run(_rawData) {
       right: 140
     },
     series: seriesList
-  };
-  myChart.setOption(option);
+  }
+  myChart.setOption(option)
 }
+
+export {}

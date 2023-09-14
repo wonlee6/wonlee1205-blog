@@ -13,9 +13,9 @@ option = {
       [32.7, 20112, 'Walnut Brownie']
     ]
   },
-  grid: { containLabel: true },
-  xAxis: { name: 'amount' },
-  yAxis: { type: 'category' },
+  grid: {containLabel: true},
+  xAxis: {name: 'amount'},
+  yAxis: {type: 'category'},
   visualMap: {
     orient: 'horizontal',
     left: 'center',
@@ -39,4 +39,6 @@ option = {
       }
     }
   ]
-};
+}
+
+export {}
