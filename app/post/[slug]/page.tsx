@@ -33,7 +33,7 @@ export default async function Page({
           <MarkdownViwer contentHtml={postData.contentHtml} />
         </div>
       )}
-      <Utterance />
+      {/* <Utterance /> */}
       <PostingGuide allPostsData={allPostsData} postData={postData} />
     </article>
   )
