@@ -8,9 +8,10 @@ import {debounce} from 'lodash'
 type Props = {
   value: string
   fetchData: any
+  fetchType: string
 }
 
-export default function MonacoEditor({value, fetchData}: Props) {
+export default function MonacoEditor({value, fetchData, fetchType}: Props) {
   const monaco = useMonaco()
 
   const [editorContent, setEditorContent] = useState(value)
@@ -78,10 +79,7 @@ option && myChart.setOption(option, true, true);
   }, 300)
 
   const loadTypes = async () => {
-    const response = await fetch(
-      'https://cdn.jsdelivr.net/npm/echarts@5.4.3/types/dist/echarts.d.ts'
-    )
-    const code = await response.text()
+    const code = fetchType
     const tsLang = monaco.languages.typescript
     const typescriptDefaults = tsLang.typescriptDefaults
     // validation settings

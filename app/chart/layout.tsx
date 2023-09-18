@@ -2,7 +2,7 @@ import {Metadata} from 'next'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  title: 'echarts를 이용해서 차트 만들기',
+  title: 'echart를 이용해서 차트 만들기',
   description: 'Monaco Editor, Echarts 라이브러리 사용'
 }
 

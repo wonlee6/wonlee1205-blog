@@ -1,8 +1,8 @@
 'use client'
 
+import {useMemo, useState} from 'react'
 import {PostData} from '@/lib/posts'
 import Link from 'next/link'
-import {useMemo, useState} from 'react'
 import {Pagination} from '@nextui-org/react'
 
 type Props = {
@@ -17,7 +17,7 @@ export default function HomePage({allPostsData}: Props) {
     setCurrentPage(page)
     window.scrollTo({
       top: 0,
-      behavior: 'auto'
+      behavior: 'smooth'
     })
   }
 
@@ -26,7 +26,7 @@ export default function HomePage({allPostsData}: Props) {
   }, [allPostsData, currentPage])
 
   return (
-    <main className='h-full max-lg:w-full max-lg:px-4 max-w-7xl my-0 mx-auto'>
+    <main className='h-full w-full max-lg:w-full max-lg:px-4 max-w-7xl my-0 mx-auto'>
       <div className='mt-28 w-full h-full mb-auto divide-y divide-gray-200 dark:divide-gray-700'>
         <div className='space-y-2 pt-6 pb-8 md:space-y-5'>
           <h1 className='text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14'>
@@ -67,10 +67,10 @@ export default function HomePage({allPostsData}: Props) {
         </ul>
         <div className='pt-12 flex justify-center'>
           <Pagination
-            rounded
             total={postsLength}
             initialPage={currentPage}
             onChange={handlePagination}
+            showControls
           />
         </div>
       </div>

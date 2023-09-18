@@ -4,6 +4,6 @@
 
 ### React - 18.2, Next 13.4 (app router), typescript - 5.1.6
 
-### TailWindCss - 3.3.3, Next UI - Beta, PrimeReact - 9.6
+### TailWindCss - 3.3.3, Next UI - 2.1.1, PrimeReact - 9.6
 
 ### implemenet echarts with monaco-editor

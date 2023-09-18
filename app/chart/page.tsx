@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useCallback, useMemo, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import Image from 'next/image'
 import {TabPanel, TabView} from 'primereact/tabview'
 import {EChartsOption} from 'echarts'
@@ -75,6 +75,18 @@ export default function Page() {
     return ChartHelper.getChartList(selectedMenu)
   }, [selectedMenu])
 
+  const echartTypeRef = useRef('')
+  useEffect(() => {
+    const fetchEChartsType = async () => {
+      const response = await fetch(
+        'https://cdn.jsdelivr.net/npm/echarts@5.4.3/types/dist/echarts.d.ts'
+      )
+      echartTypeRef.current = await response.text()
+    }
+
+    fetchEChartsType()
+  }, [])
+
   return (
     <div className='flex flex-col'>
       <div className='flex w-full max-w-7xl mx-auto'>
@@ -84,8 +96,7 @@ export default function Page() {
               key={item.name}
               color={selectedMenu === item.name ? 'primary' : 'secondary'}
               onClick={() => handleMenuClick(item.name)}
-              className='w-full mb-4'
-              ghost>
+              className='w-full mb-4'>
               {item.name}
             </NextUIButton>
           ))}
@@ -108,8 +119,7 @@ export default function Page() {
                         setActiveTabView(1)
                         setSelectedMenu(item.name)
                       }}
-                      className='w-full mb-4'
-                      ghost>
+                      className='w-full mb-4'>
                       {item.name}
                     </NextUIButton>
                   </div>
@@ -135,27 +145,21 @@ export default function Page() {
                   <div className='mb-3 flex justify-center w-full'>
                     <NextUIButton
                       className='mr-2'
-                      color='gradient'
+                      color='primary'
                       onClick={() => handleThemeClick('default')}
-                      ghost
-                      bordered
                       style={{minWidth: '5rem', width: '10rem'}}>
                       Default
                     </NextUIButton>
                     <NextUIButton
-                      color='gradient'
+                      color='primary'
                       className='mr-2 max-sm:w-12'
-                      bordered
-                      ghost
                       onClick={() => handleThemeClick('light')}
                       style={{minWidth: '5rem', width: '10rem'}}>
                       Light
                     </NextUIButton>
                     <NextUIButton
                       className='max-sm:w-8'
-                      color='gradient'
-                      bordered
-                      ghost
+                      color='primary'
                       onClick={() => handleThemeClick('dark')}
                       style={{minWidth: '5rem', width: '10rem'}}>
                       Dark
@@ -191,7 +195,11 @@ export default function Page() {
           }}>
           <div className='xl:w-1/2 lg:w-1/3 w-full h-full max-lg:h-1/2 border mr-2'>
             {editorContent ? (
-              <MonacoEditor value={editorContent} fetchData={fetchJsonData} />
+              <MonacoEditor
+                value={editorContent}
+                fetchData={fetchJsonData}
+                fetchType={echartTypeRef.current}
+              />
             ) : null}
           </div>
           <div className='xl:w-1/2 lg:w-2/3 w-full h-full max-lg:h-1/2 max-lg:ml-0 ml-2 max-lg:mt-8'>
