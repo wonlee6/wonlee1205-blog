@@ -22,7 +22,18 @@ export async function generateMetadata({
   const postData = (await getPostData(params.slug)) as PostData
   return {
     title: postData.title,
-    description: postData.description
+    description: postData.description,
+    authors: {name: 'Sangwon', url: 'https://wonlee1205-blog.vercel.app/'},
+    creator: 'Sangwon',
+    keywords: postData.tag,
+    openGraph: {
+      type: 'article',
+      countryName: 'South Korea',
+      locale: 'ko',
+      description: postData.description,
+      title: postData.title
+    },
+    metadataBase: new URL('https://wonlee1205-blog.vercel.app/')
   }
 }
 
@@ -42,7 +53,7 @@ export default async function Page({
   return (
     <article className='w-full'>
       {postData.contentHtml && (
-        <div className='w-full prose 2xl:prose-lg prose-neutral prose-headings:underline dark:prose-invert dark:prose-blockquote:text-black'>
+        <div className='w-full mb-4 prose 2xl:prose-lg prose-neutral prose-headings:underline dark:prose-invert dark:prose-blockquote:text-black'>
           <MarkdownViwer contentHtml={postData.contentHtml} />
         </div>
       )}
