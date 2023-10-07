@@ -3,6 +3,7 @@ import Link from 'next/link'
 import {getAllPostIds, getPostData, getSortedPostsData} from '@/lib/posts'
 import Utterance from './utterance'
 import MarkdownViwer from './markdownViwer'
+import {Metadata} from 'next'
 
 export type PostData = {
   date: string
@@ -11,6 +12,18 @@ export type PostData = {
   title: string
   contentHtml: string
   description: string
+}
+
+export async function generateMetadata({
+  params
+}: {
+  params: {slug: string}
+}): Promise<Metadata> {
+  const postData = (await getPostData(params.slug)) as PostData
+  return {
+    title: postData.title,
+    description: postData.description
+  }
 }
 
 export async function generateStaticParams() {
@@ -27,7 +40,7 @@ export default async function Page({
   const allPostsData = (await getSortedPostsData()) as PostData[]
 
   return (
-    <article>
+    <article className='w-full'>
       {postData.contentHtml && (
         <div className='w-full prose 2xl:prose-lg prose-neutral prose-headings:underline dark:prose-invert dark:prose-blockquote:text-black'>
           <MarkdownViwer contentHtml={postData.contentHtml} />
@@ -72,13 +85,13 @@ const PostingGuide = ({allPostsData, postData}: PostingGuideModel) => {
   return (
     <div className='flex justify-between'>
       <Link
-        className='text-teal-500 font-semibold hover:text-teal-600'
+        className='text-teal-500 hover:text-teal-600 font-semibold'
         href={prevPost ? `/posts/${prevPost.id}` : `/`}>
         {prevPost ? `<- Prev: ${prevPost?.title ?? ''}` : '<- Go to Home'}
       </Link>
       {nextPost && (
         <Link
-          className='text-teal-500 font-semibold hover:text-teal-600'
+          className='font-semibold text-teal-500 hover:text-teal-600'
           href={`/posts/${nextPost.id}`}>
           {`Next: ${nextPost.title ?? ''} ->`}
         </Link>

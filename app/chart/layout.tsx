@@ -2,7 +2,7 @@ import {Metadata} from 'next'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  title: 'echart를 이용해서 차트 만들기',
+  title: 'Echarts 이용해서 React Chart Component 만들기',
   description: 'Monaco Editor, Echarts 라이브러리 사용'
 }
 
@@ -12,7 +12,7 @@ export default function ChartsLayout({
   children: React.ReactNode
 }) {
   return (
-    <section className='pt-20'>
+    <section className='pt-4'>
       {children}
       <Script
         src='https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js'

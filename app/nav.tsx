@@ -1,11 +1,14 @@
 'use client'
 
-import React, {memo, useEffect, useLayoutEffect, useState} from 'react'
-import moon from '@/public/images/moon.svg'
-import sun from '@/public/images/sun.svg'
+import React, {memo, useEffect, useLayoutEffect, useRef, useState} from 'react'
+import {usePathname} from 'next/navigation'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import {usePathname} from 'next/navigation'
+import moon from '@/public/images/moon.svg'
+import sun from '@/public/images/sun.svg'
+import email from '@/public/images/email.svg'
+import {send} from '@emailjs/browser'
+import {Toast} from 'primereact/toast'
 
 import {
   Navbar,
@@ -16,16 +19,21 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   Link,
-  Button
+  Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+  Textarea
 } from '@nextui-org/react'
 
 function Nav() {
   const pathName = usePathname()
-  const isHome = pathName === '/' ? true : false
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark')
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark')
 
   const handleClick = () => {
     const theme = localStorage.getItem('theme')
@@ -35,6 +43,52 @@ function Nav() {
     } else {
       setTheme('dark')
       localStorage.setItem('theme', 'dark')
+    }
+  }
+
+  const [openModal, setOpenModal] = useState(false)
+  const [form, setForm] = useState<{
+    name: string
+    email: string
+    content: string
+  }>({
+    name: '',
+    email: '',
+    content: ''
+  })
+  const toastRef = useRef<Toast>(null)
+
+  const handleSendEmail = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+
+    try {
+      const result = await send(
+        process.env.NEXT_PUBLIC_SERVICE_ID as string,
+        process.env.NEXT_PUBLIC_TEMPLATE_ID as string,
+        {
+          name: form.name,
+          email: form.email,
+          content: form.content
+        },
+        process.env.NEXT_PUBLIC_PUBLIC_KEY as string
+      )
+      if (result.status === 200) {
+        toastRef.current?.show({
+          severity: 'success',
+          summary: 'Success',
+          detail: '이메일 전송 성공',
+          life: 3000
+        })
+        setOpenModal(false)
+      }
+    } catch (error) {
+      console.error(error)
+      toastRef.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: '이메일 전송 실패',
+        life: 3000
+      })
     }
   }
 
@@ -54,87 +108,178 @@ function Nav() {
     }
   }, [theme])
 
-  return (
-    <Navbar
-      shouldHideOnScroll
-      onMenuOpenChange={setIsMenuOpen}
-      className='shadow-md bg-opacity-20 backdrop-blur-sm bg-white dark:bg-black dark:text-neutral-50 dark:border-b dark:border-b-orange-200'>
-      <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-          className='sm:hidden'
-        />
-        <NavbarBrand>
-          <p className='font-bold text-inherit text-2xl'>꼬비 집사 블로그</p>
-        </NavbarBrand>
-      </NavbarContent>
+  const isInvalidEmail = React.useMemo(() => {
+    if (form.email === '') return false
 
-      <NavbarContent className='hidden sm:flex gap-4' justify='center'>
-        <NavbarItem isActive={isHome}>
-          <Link
-            href={'/'}
-            as={NextLink}
-            color={isHome ? 'primary' : 'foreground'}
-            underline={isHome ? 'always' : 'none'}
-            size='lg'>
-            Home
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive={!isHome}>
-          <Link
-            href={'/chart'}
-            as={NextLink}
-            underline={!isHome ? 'always' : 'none'}
-            color={!isHome ? 'primary' : 'foreground'}
-            size='lg'>
-            Chart
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarContent justify='end'>
-        <NavbarItem>
-          <Button onClick={handleClick} variant='light'>
-            {theme === 'light' ? (
+    return validateEmail(form.email) ? false : true
+  }, [form.email])
+
+  return (
+    <>
+      <Navbar
+        shouldHideOnScroll
+        onMenuOpenChange={setIsMenuOpen}
+        className='shadow-md bg-opacity-20 backdrop-blur-sm bg-white dark:bg-black dark:text-neutral-50 dark:border-b dark:border-b-orange-200'>
+        <NavbarContent>
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            className='sm:hidden'
+          />
+          <NavbarBrand>
+            <p className='font-bold text-inherit text-2xl'>꼬비 집사 블로그</p>
+          </NavbarBrand>
+        </NavbarContent>
+
+        <NavbarContent className='hidden sm:flex gap-10' justify='center'>
+          <NavbarItem isActive={pathName === '/'}>
+            <Link
+              href={'/'}
+              as={NextLink}
+              color={pathName === '/' ? 'primary' : 'foreground'}
+              underline={pathName === '/' ? 'always' : 'none'}
+              size='lg'>
+              Home
+            </Link>
+          </NavbarItem>
+          <NavbarItem isActive={pathName === '/chart'}>
+            <Link
+              href={'/chart'}
+              as={NextLink}
+              underline={pathName === '/chart' ? 'always' : 'none'}
+              color={pathName === '/chart' ? 'primary' : 'foreground'}
+              size='lg'>
+              Chart
+            </Link>
+          </NavbarItem>
+          <NavbarItem isActive={pathName === '/gallery'}>
+            <Link
+              href={'/gallery'}
+              as={NextLink}
+              underline={pathName === '/gallery' ? 'always' : 'none'}
+              color={pathName === '/gallery' ? 'primary' : 'foreground'}
+              size='lg'>
+              Gallery
+            </Link>
+          </NavbarItem>
+        </NavbarContent>
+        <NavbarContent justify='end'>
+          <NavbarItem>
+            <Button onClick={handleClick} variant='light'>
+              {theme === 'light' ? (
+                <Image
+                  className={`cursor-pointer hover:opacity-70`}
+                  width={30}
+                  height={40}
+                  src={moon}
+                  alt={moon}
+                  loading='lazy'
+                />
+              ) : (
+                <Image
+                  className={`cursor-pointer hover:opacity-90`}
+                  width={30}
+                  height={40}
+                  src={sun}
+                  alt={sun}
+                  loading='lazy'
+                />
+              )}
+            </Button>
+          </NavbarItem>
+          <NavbarItem>
+            <Button
+              onClick={() => setOpenModal(true)}
+              variant='light'
+              className='p-0'>
               <Image
                 className={`cursor-pointer hover:opacity-70`}
-                width={30}
-                height={40}
-                src={moon}
-                alt={moon}
-                loading='lazy'
+                src={email}
+                alt='email'
+                width={35}
               />
-            ) : (
-              <Image
-                className={`cursor-pointer hover:opacity-90`}
-                width={30}
-                height={40}
-                src={sun}
-                alt={sun}
-                loading='lazy'
-              />
-            )}
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarMenu>
-        <NavbarMenuItem>
-          <Link color='danger' className='w-full' href='/' size='lg'>
-            Home
-          </Link>
-        </NavbarMenuItem>
-        <NavbarMenuItem>
-          <Link
-            color='foreground'
-            className='w-full'
-            href='/chart'
-            size='lg'
-            as={NextLink}>
-            Chart
-          </Link>
-        </NavbarMenuItem>
-      </NavbarMenu>
-    </Navbar>
+            </Button>
+          </NavbarItem>
+        </NavbarContent>
+        <NavbarMenu>
+          <NavbarMenuItem>
+            <Link color='danger' className='w-full' href='/' size='lg'>
+              Home
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Link
+              color='foreground'
+              className='w-full'
+              href='/chart'
+              size='lg'
+              as={NextLink}>
+              Chart
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Link
+              color='foreground'
+              className='w-full'
+              href='/gallery'
+              size='lg'
+              as={NextLink}>
+              Gallery
+            </Link>
+          </NavbarMenuItem>
+        </NavbarMenu>
+      </Navbar>
+      <Modal isOpen={openModal}>
+        <ModalContent>
+          <ModalHeader className='flex flex-col gap-1'>Contact</ModalHeader>
+          <ModalBody>
+            <Input
+              value={form.name}
+              label='Name'
+              variant='bordered'
+              color='primary'
+              onValueChange={(value: string) => setForm({...form, name: value})}
+            />
+            <Input
+              value={form.email}
+              type='email'
+              label='Email'
+              variant='bordered'
+              isInvalid={isInvalidEmail}
+              color={isInvalidEmail ? 'danger' : 'primary'}
+              errorMessage={isInvalidEmail && 'Please enter a valid email'}
+              onValueChange={(value: string) =>
+                setForm({...form, email: value})
+              }
+            />
+            <Textarea
+              value={form.content}
+              label='content'
+              variant='bordered'
+              onValueChange={(value: string) =>
+                setForm({...form, content: value})
+              }
+              maxRows={5}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color='danger'
+              variant='flat'
+              onPress={() => setOpenModal(false)}>
+              Close
+            </Button>
+            <Button color='primary' onClick={handleSendEmail}>
+              Send
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Toast ref={toastRef} />
+    </>
   )
 }
 
 export default memo(Nav)
+
+const validateEmail = (value: string) =>
+  value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)

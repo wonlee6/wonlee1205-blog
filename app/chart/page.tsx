@@ -8,7 +8,7 @@ import NextUIButton from './nextUIButton'
 import {ChartType} from '@/model/Chart.model'
 import {ChartHelper} from '@/helper/ChartHelper'
 import PreviewChart from './previewChart'
-import ArrowDown from '@/public/arrow-down.svg'
+import ArrowDown from '@/public/images/arrow-down.svg'
 import {useIntersectionObserver} from '@/hooks/useIntersectionObserver'
 import MonacoEditor from './monacoEditor'
 
@@ -90,7 +90,7 @@ export default function Page() {
   return (
     <div className='flex flex-col'>
       <div className='flex w-full max-w-7xl mx-auto'>
-        <div className='w-1/5 max-lg:hidden'>
+        <div className='w-1/5 max-lg:hidden pt-4'>
           {ChartHelper.getChartMenuList().map((item) => (
             <NextUIButton
               key={item.name}
@@ -101,7 +101,7 @@ export default function Page() {
             </NextUIButton>
           ))}
         </div>
-        <div className='max-lg:w-full w-4/5 mx-auto'>
+        <div className='pl-4 max-lg:w-full w-4/5 mx-auto'>
           <TabView
             className='pl-3'
             panelContainerClassName='dark:bg-black'

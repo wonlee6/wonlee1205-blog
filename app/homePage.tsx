@@ -26,8 +26,8 @@ export default function HomePage({allPostsData}: Props) {
   }, [allPostsData, currentPage])
 
   return (
-    <main className='h-full w-full max-lg:w-full max-lg:px-4 max-w-7xl my-0 mx-auto'>
-      <div className='mt-28 w-full h-full mb-auto divide-y divide-gray-200 dark:divide-gray-700'>
+    <main className='pt-10 h-full w-full pl-4 max-lg:w-full max-lg:px-4 max-w-7xl my-0 mx-auto'>
+      <div className='w-full h-full mb-auto divide-y divide-gray-200 dark:divide-gray-700'>
         <div className='space-y-2 pt-6 pb-8 md:space-y-5'>
           <h1 className='text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14'>
             Latest
@@ -56,7 +56,7 @@ export default function HomePage({allPostsData}: Props) {
                         {item.description ?? ''}
                       </div>
                     </div>
-                    <div className='text-base leading-6 text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-700 font-semibold'>
+                    <div className='text-base leading-6 text-teal-500 hover:text-teal-600 font-semibold'>
                       <Link href={`/post/${item.id}`}>Read More -{'>'}</Link>
                     </div>
                   </div>
