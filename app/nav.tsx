@@ -228,7 +228,7 @@ function Nav() {
           </NavbarMenuItem>
         </NavbarMenu>
       </Navbar>
-      <Modal isOpen={openModal}>
+      <Modal isOpen={openModal} onOpenChange={() => setOpenModal(false)}>
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>Contact</ModalHeader>
           <ModalBody>
