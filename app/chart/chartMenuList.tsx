@@ -1,14 +1,14 @@
 'use client'
 
-import {ChartHelper} from '@/helper/ChartHelper'
 import React from 'react'
-import NextUIButton from './nextUIButton'
+import {ChartHelper} from '@/helper/ChartHelper'
+import {Button} from '@nextui-org/react'
 
 export default function ChartMenuList() {
   return (
     <div>
       {ChartHelper.getChartMenuList().map((item) => (
-        <NextUIButton key={item.name} title={item.name} />
+        <Button key={item.name} title={item.name} />
       ))}
     </div>
   )
