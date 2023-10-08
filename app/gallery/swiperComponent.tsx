@@ -44,7 +44,7 @@ export default function SwiperComponent({imageList}: Props) {
     >
       {imageList.map((item) => (
         <SwiperSlide key={item.idx}>
-          <Image src={item.img} alt='photo' />
+          <Image src={item.img} alt='photo' width={500} height={700} />
         </SwiperSlide>
       ))}
     </Swiper>
