@@ -2,7 +2,7 @@
 title: 'Monaco Editor'
 date: '2023-04-26'
 tag: 'React'
-description: 'Code Editor - Monaco Editor 사용법과 Prettier를 통해 코드 정렬까지 해보는 시간'
+description: 'React에서 Monaco Editor(Code Editor) 사용 방법과 Prettier를 통해 코드 정렬까지 해보는 시간'
 ---
 
 ## 1. 설치

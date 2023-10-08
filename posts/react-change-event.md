@@ -2,7 +2,7 @@
 title: 'Change Event'
 date: '2021-11-14'
 tag: 'React'
-description: 'React의 Change Event에 대한 정리'
+description: 'React - Change Event에 대한 정리'
 ---
 
 ### 보통 onchage 함수를 통해 이벤트를 다루기도 하지만, HtmlElement에서 직접적으로 접근 가능하다.

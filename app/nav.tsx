@@ -162,7 +162,7 @@ function Nav() {
               underline={pathName === '/gallery' ? 'always' : 'none'}
               color={pathName === '/gallery' ? 'primary' : 'foreground'}
               size='lg'>
-              Gallery
+              꼬비 사진첩
             </Link>
           </NavbarItem>
         </NavbarContent>

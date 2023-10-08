@@ -2,7 +2,7 @@
 title: '자주 사용하는 함수들'
 date: '2021-10-26'
 tag: 'React'
-description: '알고 있으면 도움되는 함수들'
+description: 'React에서 자주 사용하는 함수를 알아보자'
 ---
 
 1. url에 query 붙일 때
@@ -114,7 +114,7 @@ export const second2MS = (e: number): string => {
 7. 중복 제거
 
 ```ts
-export const deduplicateArray = <A>(array: Array<A>): Array<A> => {
+export const deduplicateArray = <A,>(array: Array<A>): Array<A> => {
   return array.reduce((acc: Array<A>, current: A) => {
     return acc.includes(current) ? acc : acc.concat(current)
   }, [])
@@ -124,7 +124,7 @@ export const deduplicateArray = <A>(array: Array<A>): Array<A> => {
 8. 체크박스
 
 ```ts
-export const checkboxHandler = <T>(
+export const checkboxHandler = <T,>(
   action: React.Dispatch<React.SetStateAction<Array<T>>>,
   array: Array<T>,
   value: T

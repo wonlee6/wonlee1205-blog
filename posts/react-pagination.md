@@ -2,7 +2,7 @@
 title: 'Pagination'
 date: '2021-10-26'
 tag: 'React'
-description: 'Pagination 처리는 어떻게 하면 좋을까?'
+description: 'React에서 Pagination Component 다루는 방법'
 ---
 
 전체 데이터만 가지고 온다면
