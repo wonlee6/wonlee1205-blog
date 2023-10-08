@@ -10,11 +10,11 @@ export default async function PostLayout({
   const allPostsData = (await getSortedPostsData()) as PostData[]
 
   return (
-    <section className='max-lg:w-full max-lg:px-4 mx-auto pt-10 flex pl-4'>
-      <div className='w-1/4'>
+    <section className='max-lg:w-full max-w-7xl max-xl:pl-4 mx-auto flex justify-center py-10'>
+      <div className='hidden md:block w-1/4'>
         <AsideMenu allPostsData={allPostsData} />
       </div>
-      <div className='w-3/4 pl-4'>{children}</div>
+      <div className='w-full pl-4 md:w-3/4'>{children}</div>
     </section>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import React, {memo, useEffect, useLayoutEffect, useRef, useState} from 'react'
-import {usePathname} from 'next/navigation'
+import {usePathname, useRouter} from 'next/navigation'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import moon from '@/public/images/moon.svg'
@@ -31,6 +31,8 @@ import {
 
 function Nav() {
   const pathName = usePathname()
+  const router = useRouter()
+
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -115,10 +117,12 @@ function Nav() {
   }, [form.email])
 
   return (
-    <>
+    <header>
       <Navbar
         shouldHideOnScroll
+        isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
+        maxWidth='xl'
         className='shadow-md bg-opacity-20 backdrop-blur-sm bg-white dark:bg-black dark:text-neutral-50 dark:border-b dark:border-b-orange-200'>
         <NavbarContent>
           <NavbarMenuToggle
@@ -138,7 +142,7 @@ function Nav() {
               color={pathName === '/' ? 'primary' : 'foreground'}
               underline={pathName === '/' ? 'always' : 'none'}
               size='lg'>
-              Home
+              Post
             </Link>
           </NavbarItem>
           <NavbarItem isActive={pathName === '/chart'}>
@@ -200,31 +204,45 @@ function Nav() {
             </Button>
           </NavbarItem>
         </NavbarContent>
-        <NavbarMenu>
+        <NavbarMenu className='gap-y-4'>
           <NavbarMenuItem>
-            <Link color='danger' className='w-full' href='/' size='lg'>
-              Home
-            </Link>
+            <Button
+              onClick={() => {
+                setIsMenuOpen(false)
+                router.push('/')
+              }}
+              color='primary'
+              className='w-full'
+              size='lg'
+              variant='ghost'>
+              Post
+            </Button>
           </NavbarMenuItem>
           <NavbarMenuItem>
-            <Link
-              color='foreground'
+            <Button
+              onClick={() => {
+                setIsMenuOpen(false)
+                router.push('/chart')
+              }}
+              color='primary'
               className='w-full'
-              href='/chart'
               size='lg'
-              as={NextLink}>
+              variant='ghost'>
               Chart
-            </Link>
+            </Button>
           </NavbarMenuItem>
           <NavbarMenuItem>
-            <Link
-              color='foreground'
+            <Button
+              onClick={() => {
+                setIsMenuOpen(false)
+                router.push('/gallery')
+              }}
+              color='primary'
               className='w-full'
-              href='/gallery'
               size='lg'
-              as={NextLink}>
+              variant='ghost'>
               Gallery
-            </Link>
+            </Button>
           </NavbarMenuItem>
         </NavbarMenu>
       </Navbar>
@@ -275,7 +293,7 @@ function Nav() {
         </ModalContent>
       </Modal>
       <Toast ref={toastRef} />
-    </>
+    </header>
   )
 }
 

@@ -8,7 +8,6 @@ import 'primereact/resources/themes/saga-blue/theme.css'
 import 'primereact/resources/primereact.min.css'
 
 import Nav from './nav'
-import Footer from './footer'
 
 const inter = Inter({subsets: ['latin']})
 
@@ -20,7 +19,6 @@ export default function RootLayout({children}: {children: ReactNode}) {
           <main className={`h-full bg-white dark:bg-black dark:text-white`}>
             <Nav />
             {children}
-            <Footer />
             <Analytics />
           </main>
         </Providers>

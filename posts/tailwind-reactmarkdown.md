@@ -1,8 +1,8 @@
 ---
-title: 'ReactMarkDown'
+title: 'Tailwindcss - MarkDown'
 date: '2023-04-25'
 tag: 'tailwind'
-description: 'ReactMarkDown 라이브러리에 Tailwindcss를 적용해보자'
+description: 'ReactMarkDown 라이브러리에 Tailwindcss - typography를 적용해보자'
 ---
 
 ## 1. 설치

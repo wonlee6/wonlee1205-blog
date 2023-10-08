@@ -51,7 +51,7 @@ export default async function Page({
   const allPostsData = (await getSortedPostsData()) as PostData[]
 
   return (
-    <article className='w-full'>
+    <>
       {postData.contentHtml && (
         <div className='w-full mb-4 prose 2xl:prose-lg prose-neutral prose-headings:underline dark:prose-invert dark:prose-blockquote:text-black'>
           <MarkdownViwer contentHtml={postData.contentHtml} />
@@ -59,7 +59,7 @@ export default async function Page({
       )}
       {/* <Utterance /> */}
       <PostingGuide allPostsData={allPostsData} postData={postData} />
-    </article>
+    </>
   )
 }
 
@@ -94,7 +94,7 @@ const PostingGuide = ({allPostsData, postData}: PostingGuideModel) => {
   }, [allPostsData, postData])
 
   return (
-    <div className='flex justify-between'>
+    <div className='flex justify-between max-w-[40rem]'>
       <Link
         className='text-teal-500 hover:text-teal-600 font-semibold'
         href={prevPost ? `/posts/${prevPost.id}` : `/`}>
