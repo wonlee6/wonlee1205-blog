@@ -2,7 +2,7 @@
 
 ## [Blog](https://wonlee1205-blog.vercel.app/)
 
-### React - 18.2, Next 13.4 (app router), typescript - 5.1.6
+### React - 18.2, Next 13.5 (app router), typescript - 5.2.2
 
 ### TailWindCss - 3.3.3, Next UI - 2.1.1, PrimeReact - 9.6
 
