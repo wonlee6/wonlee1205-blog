@@ -6,4 +6,4 @@
 
 ### TailWindCss - 3.3.3, Next UI - 2.1.1, PrimeReact - 9.6
 
-### implemenet echarts with monaco-editor
+### implemenet chart component with echarts and monaco-editor
