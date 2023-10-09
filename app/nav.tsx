@@ -117,7 +117,7 @@ function Nav() {
   }, [form.email])
 
   return (
-    <header>
+    <>
       <Navbar
         shouldHideOnScroll
         isMenuOpen={isMenuOpen}
@@ -293,7 +293,7 @@ function Nav() {
         </ModalContent>
       </Modal>
       <Toast ref={toastRef} />
-    </header>
+    </>
   )
 }
 
