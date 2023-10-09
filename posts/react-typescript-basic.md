@@ -1,8 +1,8 @@
 ---
-title: 'React - TypeScript'
+title: 'React - TypeScript Base'
 date: '2021-11-14'
 tag: 'React'
-description: 'React에 Typescript를 적용하면 어떤식으로 사용하면 좋을까?'
+description: 'React에 Typescript를 적용하면 어떤식으로 사용하면 좋을까? React typescript base'
 ---
 
 ## TypeScript 기본
