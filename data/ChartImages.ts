@@ -8,7 +8,8 @@ export const lineImageList = [
     title: 'Temperature Change in the Coming Week',
     url: `/images/line-marker.webp`
   },
-  {title: 'Area Pieces', url: `/images/area-pieces.webp`}
+  {title: 'Area Pieces', url: `/images/area-pieces.webp`},
+  {title: 'Bump Chart', url: `/images/bump-chart.webp`}
 ]
 
 export const barImageList = [

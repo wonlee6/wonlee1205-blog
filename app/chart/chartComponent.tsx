@@ -190,7 +190,7 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
           ref={editorRef}
           className='flex max-lg:flex-col w-full mx-auto bg-zinc-300 p-4'
           style={{
-            height: '55rem'
+            height: '50rem'
           }}>
           <div className='xl:w-1/2 lg:w-1/3 w-full h-full max-lg:h-1/2 border mr-2'>
             {editorContent ? (
