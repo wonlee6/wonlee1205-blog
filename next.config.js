@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   reactStrictMode: true,
   webpack: (config, options) => {
@@ -6,6 +7,9 @@ const nextConfig = {
    
     return config
   },
+  // generateBuildId: async () => {
+  //   return nextBuildId
+  // },
   images: {
     domains: ['ddragon.leagueoflegends.com']
     // remotePatterns: [
