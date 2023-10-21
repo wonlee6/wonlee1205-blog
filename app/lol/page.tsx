@@ -16,11 +16,13 @@ export default async function LoLPage() {
   }
 
   const fetchChampLotations = await fetch(
-    `${process.env.NEXT_PUBLIC_RIOT_GAMES_BASE_URL}/lol/platform/v3/champion-rotations`,
+    `${
+      process.env.NEXT_PUBLIC_RIOT_GAMES_BASE_URL as string
+    }/lol/platform/v3/champion-rotations`,
     {
       method: 'GET',
       headers: {
-        'X-Riot-Token': process.env.NEXT_PUBLIC_RIOT_GAMES_KEY!
+        'X-Riot-Token': process.env.NEXT_PUBLIC_RIOT_GAMES_KEY as string
       }
     }
   )
