@@ -165,6 +165,16 @@ function Nav() {
               꼬비 사진첩
             </Link>
           </NavbarItem>
+          <NavbarItem isActive={pathName === '/lol'}>
+            <Link
+              href={'/lol'}
+              as={NextLink}
+              underline={pathName === '/lol' ? 'always' : 'none'}
+              color={pathName === '/lol' ? 'primary' : 'foreground'}
+              size='lg'>
+              lol
+            </Link>
+          </NavbarItem>
         </NavbarContent>
         <NavbarContent justify='end'>
           <NavbarItem>
@@ -175,7 +185,7 @@ function Nav() {
                   width={30}
                   height={40}
                   src={moon}
-                  alt={moon}
+                  alt={'moon'}
                   loading='lazy'
                 />
               ) : (
@@ -184,7 +194,7 @@ function Nav() {
                   width={30}
                   height={40}
                   src={sun}
-                  alt={sun}
+                  alt={'sun'}
                   loading='lazy'
                 />
               )}

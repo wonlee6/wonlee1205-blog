@@ -54,7 +54,7 @@ export default function Gallery() {
   })
 
   return (
-    <div className='p-4'>
+    <div className='p-4 h-full'>
       <SwiperComponent imageList={imageList} />
     </div>
   )

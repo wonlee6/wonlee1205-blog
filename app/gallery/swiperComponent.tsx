@@ -10,11 +10,6 @@ import {
   Autoplay,
   EffectCoverflow
 } from 'swiper/modules'
-// Import Swiper styles
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import 'swiper/css/scrollbar'
 
 interface Props {
   imageList: {idx: number; img: StaticImageData}[]
@@ -23,7 +18,7 @@ interface Props {
 export default function SwiperComponent({imageList}: Props) {
   return (
     <Swiper
-      className='h-full'
+      className='h-full gallery-swiper'
       effect={'coverflow'}
       modules={[Navigation, Scrollbar, A11y, Autoplay, EffectCoverflow]}
       grabCursor={true}

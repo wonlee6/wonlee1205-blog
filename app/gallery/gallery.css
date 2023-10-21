@@ -1,21 +1,23 @@
-.swiper-button-prev {
-  color: whitesmoke !important;
-}
-.swiper-button-next {
-  color: whitesmoke !important;
-}
+.gallery-swiper {
+  .swiper-button-prev {
+    color: whitesmoke !important;
+  }
+  .swiper-button-next {
+    color: whitesmoke !important;
+  }
 
-.swiper-slide-prev {
-  opacity: 0.5;
-}
-.swiper-slide-prev:hover {
-  opacity: 1;
-  transition: all 0.4s ease-out !important;
-}
-.swiper-slide-next {
-  opacity: 0.5;
-}
-.swiper-slide-next:hover {
-  opacity: 1;
-  transition: all 0.4s ease-out !important;
+  .swiper-slide-prev {
+    opacity: 0.5;
+  }
+  .swiper-slide-prev:hover {
+    opacity: 1;
+    transition: all 0.4s ease-out !important;
+  }
+  .swiper-slide-next {
+    opacity: 0.5;
+  }
+  .swiper-slide-next:hover {
+    opacity: 1;
+    transition: all 0.4s ease-out !important;
+  }
 }
