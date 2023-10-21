@@ -22,8 +22,8 @@ export const metadata: Metadata = {
 export default async function Home() {
   const allPostsData = await getSortedPostsData()
   return (
-    <div className='h-full flex flex-col'>
+    <section className='h-full flex flex-col'>
       <HomePage allPostsData={allPostsData} />
-    </div>
+    </section>
   )
 }
