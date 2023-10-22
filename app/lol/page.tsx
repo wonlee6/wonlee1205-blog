@@ -1,12 +1,10 @@
 import {ChampInfo, ChampLotation} from '@/model/LOL.model'
 import LoLSearch from './search'
 import ChampRotation from './champRotation'
-import {API_KEY, BASE_URL} from '@/lib/api-constant'
 
 const fetchChampLotation = async () => {
   if (
     typeof process.env.NEXT_PUBLIC_RIOT_GAMES_BASE_URL === 'undefined' ||
-    typeof API_KEY === 'undefined' ||
     typeof process.env.NEXT_PUBLIC_RIOT_GAMES_KEY === 'undefined'
   )
     return
