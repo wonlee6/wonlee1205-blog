@@ -34,13 +34,10 @@ const fetchChampionList = async () => {
 }
 
 export default async function LoLPage() {
-  const getChampionData = fetchChampionList()
-  const getChampLotationData = fetchChampLotation()
-
   let filteredChampLotationInfo: ChampInfo[] = []
   const [champInfo, champLotation] = await Promise.all([
-    getChampionData,
-    getChampLotationData
+    fetchChampionList(),
+    fetchChampLotation()
   ])
 
   const champInfoList: ChampInfo[] = []
@@ -50,7 +47,7 @@ export default async function LoLPage() {
 
   filteredChampLotationInfo = champInfoList.filter((item) => {
     let flag = false
-    champLotation?.freeChampionIds.forEach((ele) => {
+    champLotation?.freeChampionIds.map((ele) => {
       if (item.key === String(ele)) {
         flag = true
       }
