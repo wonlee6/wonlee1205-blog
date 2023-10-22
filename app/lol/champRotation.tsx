@@ -45,7 +45,7 @@ function ChampRotation({filteredLotationList}: Props) {
   }, [filteredLotationList])
 
   return (
-    <div className='h-full w-full p-4 pt-16'>
+    <div className='w-full p-4 pt-16'>
       <Swiper
         className='h-full'
         modules={[Navigation, Scrollbar, A11y, Autoplay, EffectCoverflow]}
@@ -65,21 +65,21 @@ function ChampRotation({filteredLotationList}: Props) {
         // onSlideChange={() => console.log('slide change')}
       >
         {imgList.map((item) => (
-          <SwiperSlide key={item.key} className='max-h-[600px]'>
+          <SwiperSlide key={item.key} className='h-full'>
             <Tooltip showArrow content='이번주 로테이션 챔피언'>
               <Card
                 isPressable
                 className='max-w-[400px] h-full bg-default-100/25 hover:bg-default-100 dark:bg-default-100/25 dark:hover:bg-default-200'>
                 <CardHeader className='h-1/6'>
                   <div className='flex flex-col w-full'>
-                    <h4 className='text-xl dark:text'>{item.name}</h4>
+                    <h4 className='text-xl'>{item.name}</h4>
                     <span className='text-small text-default-400'>
                       {item.title}
                     </span>
                   </div>
                 </CardHeader>
                 <Divider />
-                <CardBody className='h-fit'>
+                <CardBody className=''>
                   <Image
                     src={item.img}
                     alt={item.name}

@@ -172,7 +172,7 @@ function Nav() {
               underline={pathName === '/lol' ? 'always' : 'none'}
               color={pathName === '/lol' ? 'primary' : 'foreground'}
               size='lg'>
-              lol
+              LoL
             </Link>
           </NavbarItem>
         </NavbarContent>

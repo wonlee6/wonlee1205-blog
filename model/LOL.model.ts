@@ -19,3 +19,37 @@ export type ChampInfo = {
   partype: string
   stats: any
 }
+
+export type Summoner = {
+  id: string
+  accountId: string
+  puuid: string
+  name: string
+  profileIconId: number
+  revisionDate: number
+  summonerLevel: number
+}
+
+export type SummonerLeague = {
+  leagueId: string
+  queueType: string
+  tier: string
+  rank: string
+  summonerId: string
+  summonerName: string
+  leaguePoints: number
+  wins: number
+  losses: number
+  veteran: boolean
+  inactive: boolean
+  freshBlood: boolean
+  hotStreak: boolean
+}
+
+export type League = {
+  tier: string
+  leagueId: string
+  queue: string
+  name: string
+  entries: any[]
+}

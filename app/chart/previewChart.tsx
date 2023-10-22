@@ -8,6 +8,7 @@ import type {EChartsOption} from 'echarts'
 type Props = {
   option: EChartsOption | null
   theme?: 'dark' | 'light' | undefined
+  height?: string
 }
 
 export default function PreviewChart(props: Props) {
@@ -20,7 +21,7 @@ export default function PreviewChart(props: Props) {
       opts={{
         renderer: 'svg'
       }}
-      style={{height: '41rem', width: '100%'}}
+      style={{height: props.height ?? '41rem', width: '100%'}}
       echarts={echarts}
     />
   )
