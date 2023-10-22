@@ -48,17 +48,15 @@ export default async function LoLPage() {
     champInfoList.push(champInfo.data[key])
   }
 
-  if (champLotation) {
-    filteredChampLotationInfo = champInfoList.filter((item) => {
-      let flag = false
-      champLotation.freeChampionIds.forEach((ele) => {
-        if (item.key === String(ele)) {
-          flag = true
-        }
-      })
-      return flag
+  filteredChampLotationInfo = champInfoList.filter((item) => {
+    let flag = false
+    champLotation?.freeChampionIds.forEach((ele) => {
+      if (item.key === String(ele)) {
+        flag = true
+      }
     })
-  }
+    return flag
+  })
 
   return (
     <>
