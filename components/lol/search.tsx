@@ -1,8 +1,8 @@
 'use client'
 
+import {useState} from 'react'
 import {Input} from '@nextui-org/react'
 import {useRouter} from 'next/navigation'
-import {useState, memo} from 'react'
 
 const LoLSearch = () => {
   const router = useRouter()
@@ -25,4 +25,4 @@ const LoLSearch = () => {
   )
 }
 
-export default memo(LoLSearch)
+export default LoLSearch

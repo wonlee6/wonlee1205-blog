@@ -1,6 +1,6 @@
 'use client'
 
-import React, {memo, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import {Swiper, SwiperSlide} from 'swiper/react'
 import {
   Navigation,
@@ -100,4 +100,4 @@ function ChampRotation({filteredLotationList}: Props) {
     </div>
   )
 }
-export default memo(ChampRotation)
+export default ChampRotation
