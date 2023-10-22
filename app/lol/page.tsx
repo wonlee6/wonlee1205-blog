@@ -1,6 +1,6 @@
+import ChampRotation from '@/components/lol/champRotation'
+import LoLSearch from '@/components/lol/search'
 import {ChampInfo, ChampLotation} from '@/model/LOL.model'
-import LoLSearch from '../../components/lol/search'
-import ChampRotation from '../../components/lol/champRotation'
 
 const fetchChampLotation = async () => {
   if (
@@ -45,13 +45,14 @@ export default async function LoLPage() {
   }
 
   let filteredChampLotationInfo: ChampInfo[] = []
+
   if (
     champLotation?.freeChampionIds &&
     champLotation.freeChampionIds.length > 0
   ) {
     filteredChampLotationInfo = champInfoList.filter((item) => {
       let flag = false
-      champLotation.freeChampionIds.map((ele) => {
+      champLotation.freeChampionIds.forEach((ele) => {
         if (item.key === String(ele)) {
           flag = true
         }
