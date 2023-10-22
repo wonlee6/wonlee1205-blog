@@ -44,17 +44,21 @@ export default async function LoLPage() {
     champInfoList.push(champInfo.data[key])
   }
 
-  const filteredChampLotationInfo: ChampInfo[] = champInfoList.filter(
-    (item) => {
+  let filteredChampLotationInfo: ChampInfo[] = []
+  if (
+    champLotation?.freeChampionIds &&
+    champLotation.freeChampionIds.length > 0
+  ) {
+    filteredChampLotationInfo = champInfoList.filter((item) => {
       let flag = false
-      champLotation?.freeChampionIds.map((ele) => {
+      champLotation.freeChampionIds.map((ele) => {
         if (item.key === String(ele)) {
           flag = true
         }
       })
       return flag
-    }
-  )
+    })
+  }
 
   return (
     <>
