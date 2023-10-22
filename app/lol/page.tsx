@@ -1,6 +1,6 @@
 import {ChampInfo, ChampLotation} from '@/model/LOL.model'
-import LoLSearch from './search'
-import ChampRotation from './champRotation'
+import LoLSearch from '../../components/lol/search'
+import ChampRotation from '../../components/lol/champRotation'
 
 const fetchChampLotation = async () => {
   if (
@@ -34,7 +34,6 @@ const fetchChampionList = async () => {
 }
 
 export default async function LoLPage() {
-  let filteredChampLotationInfo: ChampInfo[] = []
   const [champInfo, champLotation] = await Promise.all([
     fetchChampionList(),
     fetchChampLotation()
@@ -45,15 +44,17 @@ export default async function LoLPage() {
     champInfoList.push(champInfo.data[key])
   }
 
-  filteredChampLotationInfo = champInfoList.filter((item) => {
-    let flag = false
-    champLotation?.freeChampionIds.map((ele) => {
-      if (item.key === String(ele)) {
-        flag = true
-      }
-    })
-    return flag
-  })
+  const filteredChampLotationInfo: ChampInfo[] = champInfoList.filter(
+    (item) => {
+      let flag = false
+      champLotation?.freeChampionIds.map((ele) => {
+        if (item.key === String(ele)) {
+          flag = true
+        }
+      })
+      return flag
+    }
+  )
 
   return (
     <>

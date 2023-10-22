@@ -1,6 +1,6 @@
 import {Summoner, SummonerLeague} from '@/model/LOL.model'
-import SummonerInfo from './summonerInfo'
-import Search from '../search'
+import SummonerInfo from '../../../components/lol/summonerInfo'
+import Search from '../../../components/lol/search'
 import {
   API_KEY,
   BASE_URL,
