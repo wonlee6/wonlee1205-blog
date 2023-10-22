@@ -4,15 +4,20 @@ import ChampRotation from './champRotation'
 import {API_KEY, BASE_URL} from '@/lib/api-constant'
 
 const fetchChampLotation = async () => {
-  if (typeof BASE_URL === 'undefined' || typeof API_KEY === 'undefined') return
+  if (
+    typeof process.env.NEXT_PUBLIC_RIOT_GAMES_BASE_URL === 'undefined' ||
+    typeof API_KEY === 'undefined' ||
+    typeof process.env.NEXT_PUBLIC_RIOT_GAMES_KEY === 'undefined'
+  )
+    return
 
   try {
     const response = await fetch(
-      `${BASE_URL}/lol/platform/v3/champion-rotations`,
+      `${process.env.NEXT_PUBLIC_RIOT_GAMES_BASE_URL}/lol/platform/v3/champion-rotations`,
       {
         method: 'GET',
         headers: {
-          'X-Riot-Token': API_KEY
+          'X-Riot-Token': process.env.NEXT_PUBLIC_RIOT_GAMES_KEY
         }
       }
     )
