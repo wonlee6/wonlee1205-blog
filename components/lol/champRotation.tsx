@@ -20,6 +20,7 @@ import {
   Tooltip
 } from '@nextui-org/react'
 import {ChampInfo} from '@/model/LOL.model'
+import {CHAMP_SPLASH_IMG} from '@/lib/api-constant'
 
 interface Props {
   filteredLotationList: ChampInfo[]
@@ -35,7 +36,7 @@ function ChampRotation({filteredLotationList}: Props) {
   }[] = useMemo(() => {
     return filteredLotationList.map((item) => {
       return {
-        img: `${process.env.NEXT_PUBLIC_RIOT_GAMES_CHAMPION_SPLASH_IMG}${item.id}_0.jpg`,
+        img: `${CHAMP_SPLASH_IMG}${item.id}_0.jpg`,
         name: item.name,
         key: item.key,
         title: item.title,

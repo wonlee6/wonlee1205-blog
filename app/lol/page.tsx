@@ -1,34 +1,25 @@
 import ChampRotation from '@/components/lol/champRotation'
 import LoLSearch from '@/components/lol/search'
+import {API_KEY, CHAMP_LIST, ROTATION} from '@/lib/api-constant'
 import {ChampInfo, ChampLotation} from '@/model/LOL.model'
 
 const fetchChampLotation = async () => {
-  if (
-    typeof process.env.NEXT_PUBLIC_RIOT_GAMES_BASE_URL === 'undefined' ||
-    typeof process.env.NEXT_PUBLIC_RIOT_GAMES_KEY === 'undefined'
-  )
-    return
+  if (typeof API_KEY === 'undefined') return
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_RIOT_GAMES_BASE_URL}/lol/platform/v3/champion-rotations`,
-    {
-      method: 'GET',
-      headers: {
-        'X-Riot-Token': process.env.NEXT_PUBLIC_RIOT_GAMES_KEY
-      }
+  const response = await fetch(ROTATION, {
+    method: 'GET',
+    headers: {
+      'X-Riot-Token': API_KEY
     }
-  )
+  })
   const data: ChampLotation = await response.json()
   return data
 }
 
 const fetchChampionList = async () => {
-  const response = await fetch(
-    'https://ddragon.leagueoflegends.com/cdn/13.20.1/data/ko_KR/champion.json',
-    {
-      method: 'GET'
-    }
-  )
+  const response = await fetch(CHAMP_LIST, {
+    method: 'GET'
+  })
   const data = await response.json()
   return data
 }

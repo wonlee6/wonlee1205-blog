@@ -5,7 +5,7 @@ import {Spinner} from '@nextui-org/react'
 
 export default function LolLoading() {
   return (
-    <div className='w-full h-1/2 flex justify-center items-center'>
+    <div className='w-screen h-screen z-50 flex justify-center items-center backdrop-blur-lg'>
       <Spinner size='lg' color='secondary' labelColor='secondary' />
     </div>
   )

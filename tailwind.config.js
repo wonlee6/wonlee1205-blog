@@ -15,8 +15,9 @@ module.exports = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'lol-bg': "url('../public/images/lol-bg.jpeg')"
-      },
+          'lol-bg': "url('../public/images/lol/lol-bg.jpeg')",
+          'lol-bg2': "url('../public/images/lol/lol-bg2.jpg')"
+        },
     },
   },
   plugins: [
