@@ -53,3 +53,16 @@ export type League = {
   name: string
   entries: any[]
 }
+
+export type ChampMastories = {
+  puuid: string
+  championId: number
+  championLevel: number
+  championPoints: number
+  lastPlayTime: number
+  championPointsSinceLastLevel: number
+  championPointsUntilNextLevel: number
+  chestGranted: boolean
+  tokensEarned: number
+  summonerId: string
+}

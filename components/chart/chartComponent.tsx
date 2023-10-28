@@ -5,8 +5,7 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
 import {Button} from '@nextui-org/react'
-import {EChartsOption} from 'echarts'
-import {TabPanel, TabView} from 'primereact/tabview'
+import type {EChartsOption} from 'echarts'
 
 import ArrowDown from '@/public/images/arrow-down.svg'
 
@@ -14,9 +13,18 @@ import {ChartType} from '@/model/Chart.model'
 import {ChartHelper} from '@/helper/ChartHelper'
 import useIntersectionObserver from '@/hooks/useIntersectionObserver'
 
-const MonacoEditor = dynamic(() => import('./monacoEditor'))
-const PreviewChart = dynamic(() => import('./previewChart'))
-const ChartListItem = dynamic(() => import('./chartListItem'))
+const MonacoEditor = dynamic(() => import('./monacoEditor'), {ssr: false})
+const PreviewChart = dynamic(() => import('./previewChart'), {ssr: false})
+const ChartListItem = dynamic(() => import('./chartListItem'), {ssr: false})
+
+const TabView = dynamic(
+  () => import('primereact/tabview').then((mod) => mod.TabView),
+  {ssr: false}
+)
+const TabPanel = dynamic(
+  () => import('primereact/tabview').then((mod) => mod.TabPanel),
+  {ssr: false}
+)
 
 export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
   const editorRef = useRef<HTMLDivElement | null>(null)

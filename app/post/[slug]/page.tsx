@@ -1,8 +1,8 @@
 import {Metadata} from 'next'
 import {getAllPostIds, getPostData, getSortedPostsData} from '@/lib/posts'
 // import Utterance from './utterance'
-import MarkdownViwer from './markdownViwer'
-import PostingGuide from './postingGuide'
+import MarkdownViwer from '../../../components/post/markdownViwer'
+import PostingGuide from '../../../components/post/postingGuide'
 
 export type PostData = {
   date: string
@@ -41,7 +41,7 @@ export async function generateStaticParams() {
   return paths.map((post) => ({slug: post.params.id}))
 }
 
-export default async function Page({
+export default async function PostPage({
   params
 }: {
   params: {slug: string}

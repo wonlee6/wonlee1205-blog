@@ -2,6 +2,9 @@
 
 const nextConfig = {
   reactStrictMode: true,
+  // experimental: {
+  //   webpackBuildWorker: true
+  // },
   webpack: (config, options) => {
     config.module.noParse = [require.resolve('typescript/lib/typescript.js')]
    

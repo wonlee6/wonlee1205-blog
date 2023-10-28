@@ -2,7 +2,7 @@
 
 import {useMemo} from 'react'
 import Link from 'next/link'
-import {PostData} from './page'
+import {PostData} from '../../app/post/[slug]/page'
 
 type PostingGuideModel = {
   allPostsData: PostData[]

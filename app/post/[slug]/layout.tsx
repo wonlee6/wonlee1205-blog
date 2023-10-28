@@ -1,5 +1,5 @@
 import {getSortedPostsData} from '@/lib/posts'
-import AsideMenu from './asideMenu'
+import AsideMenu from '../../../components/post/asideMenu'
 import {PostData} from './page'
 
 export default async function PostLayout({

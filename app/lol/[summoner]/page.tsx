@@ -1,25 +1,33 @@
-import {Summoner, SummonerLeague} from '@/model/LOL.model'
+import {League, Summoner, SummonerLeague} from '@/model/LOL.model'
 import SummonerInfo from '../../../components/lol/summonerInfo'
 import Search from '../../../components/lol/search'
 import {
   API_KEY,
+  CHAMP_MASTORY_LIST,
   LEAGUE,
   SUMMONER_LEAGUE,
   SUMMONER_NAME
 } from '@/lib/api-constant'
+import {redirect} from 'next/navigation'
 
-const fetchSummonerName = async (name: string) => {
+const fetchSummonerName = async (
+  name: string
+): Promise<Summoner | undefined> => {
   if (typeof API_KEY === 'undefined' || typeof name !== 'string') return
 
-  const url = SUMMONER_NAME + name
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'X-Riot-Token': API_KEY
-    }
-  })
-  const data = await response.json()
-  return data
+  try {
+    const url = SUMMONER_NAME + name
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'X-Riot-Token': API_KEY
+      }
+    })
+    const data = await response.json()
+    return data
+  } catch (e) {
+    return undefined
+  }
 }
 
 const fetchSummonerLeagu = async (summonerId: string) => {
@@ -51,14 +59,35 @@ const fetchLeague = async (leagueId: string) => {
   return data
 }
 
+const fetchChampMastory = async (summonerId: string) => {
+  if (!summonerId || !API_KEY) return
+
+  const url = CHAMP_MASTORY_LIST + summonerId
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'X-Riot-Token': API_KEY
+    }
+  })
+  const data = await response.json()
+  return data
+}
+
 export default async function SummonerPage({
   params
 }: {
   params: {summoner: string}
 }) {
-  const summoner: Summoner = await fetchSummonerName(params.summoner)
+  const summoner = await fetchSummonerName(params.summoner)
+  if (typeof summoner === 'undefined') {
+    alert('소환사 이름을 찾을 수 없습니다.')
+    redirect('/lol')
+  }
   const summonerLeague: SummonerLeague[] = await fetchSummonerLeagu(summoner.id)
-  const leagueData = await fetchLeague(summonerLeague[0].leagueId)
+  const leagueData: League = await fetchLeague(summonerLeague[0].leagueId)
+  // const ChampMastoriesData: ChampMastories[] = await fetchChampMastory(
+  //   summoner.id
+  // )
   return (
     <>
       <Search />
@@ -67,6 +96,7 @@ export default async function SummonerPage({
         summonerLeague={summonerLeague[0]}
         leagueData={leagueData}
       />
+      {/* <ChampMastory ChampMastoriesData={ChampMastoriesData} /> */}
     </>
   )
 }

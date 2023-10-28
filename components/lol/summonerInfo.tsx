@@ -2,9 +2,10 @@
 
 import {useMemo} from 'react'
 import {StaticImageData} from 'next/image'
+import dynamic from 'next/dynamic'
+
 import type {EChartsOption} from 'echarts'
 import {Card, CardFooter, Image} from '@nextui-org/react'
-import PreviewChart from '@/app/chart/previewChart'
 import {PROFILE_ICON} from '@/lib/api-constant'
 import {League, Summoner, SummonerLeague} from '@/model/LOL.model'
 
@@ -18,6 +19,11 @@ import diamond from '/public/images/ranked-emblem/emblem-diamond.png'
 import master from '/public/images/ranked-emblem/emblem-master.png'
 import grandmaster from '/public/images/ranked-emblem/emblem-grandmaster.png'
 import challenger from '/public/images/ranked-emblem/emblem-challenger.png'
+import {LoLHelper} from '@/helper/LoLHelper'
+
+const PreviewChart = dynamic(() => import('@/components/chart/previewChart'), {
+  ssr: false
+})
 
 interface Props {
   summoner: Summoner
@@ -129,8 +135,11 @@ export default function SummonerInfo({
                   (summonerLeague.wins /
                     (summonerLeague.wins + summonerLeague.losses)) *
                   100
-                ).toFixed(0)}
+                ).toFixed(1)}
                 %
+              </span>
+              <span className='text-small text-default-400'>
+                ({summonerLeague.wins}승 {summonerLeague.losses}패)
               </span>
             </p>
           </div>
@@ -139,8 +148,8 @@ export default function SummonerInfo({
               {summonerLeague.queueType}
             </p>
             <p className='text-teal-400 hover:text-teal-600'>
-              {summonerLeague.tier} {summonerLeague.rank}-
-              {summonerLeague.leaguePoints}
+              {LoLHelper.convertTier(summonerLeague.tier)} {summonerLeague.rank}
+              -{summonerLeague.leaguePoints}
             </p>
             <p className='text-teal-400 hover:text-teal-600'>
               {leagueData.name}

@@ -1,4 +1,4 @@
-import ChartComponent from './chartComponent'
+import ChartComponent from '../../components/chart/chartComponent'
 
 export default async function ChartPage() {
   let result = ''

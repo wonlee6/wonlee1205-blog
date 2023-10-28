@@ -4,7 +4,7 @@ import React, {useMemo} from 'react'
 import {useRouter} from 'next/navigation'
 import {PanelMenu} from 'primereact/panelmenu'
 import type {MenuItem} from 'primereact/menuitem'
-import {PostData} from './page'
+import {PostData} from '../../app/post/[slug]/page'
 
 interface Props {
   allPostsData: PostData[]
