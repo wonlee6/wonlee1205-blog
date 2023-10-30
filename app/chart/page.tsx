@@ -1,14 +1,18 @@
 import ChartComponent from '../../components/chart/chartComponent'
 
-export default async function ChartPage() {
-  let result = ''
+const fetchChartType = async () => {
   try {
     const response = await fetch(
       'https://cdn.jsdelivr.net/npm/echarts@5.4.3/types/dist/echarts.d.ts'
     )
-    result = await response.text()
-  } catch (error) {
-    console.log(error)
+    return await response.text()
+  } catch (e) {
+    console.error(e)
+    return ''
   }
-  return <ChartComponent echartsTypes={result} />
+}
+
+export default async function ChartPage() {
+  const chartType = await fetchChartType()
+  return <ChartComponent echartsTypes={chartType} />
 }

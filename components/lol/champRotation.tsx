@@ -1,7 +1,7 @@
 'use client'
 
 import {useMemo} from 'react'
-import dynamic from 'next/dynamic'
+import {Swiper, SwiperSlide} from 'swiper/react'
 
 import {
   Card,
@@ -14,17 +14,7 @@ import {
 } from '@nextui-org/react'
 import {ChampInfo} from '@/model/LOL.model'
 import {CHAMP_SPLASH_IMG} from '@/lib/api-constant'
-import {Navigation, Scrollbar, A11y, Autoplay} from 'swiper/modules'
-
-const Swiper = dynamic(() => import('swiper/react').then((mod) => mod.Swiper), {
-  ssr: false
-})
-const SwiperSlide = dynamic(
-  () => import('swiper/react').then((mod) => mod.SwiperSlide),
-  {
-    ssr: false
-  }
-)
+import {Navigation, Autoplay} from 'swiper/modules'
 
 interface Props {
   filteredLotationList: ChampInfo[]
@@ -53,13 +43,12 @@ function ChampRotation({filteredLotationList}: Props) {
     <div className='w-full p-4 pt-16'>
       <Swiper
         className='h-full'
-        modules={[Navigation, Scrollbar, A11y, Autoplay]}
+        modules={[Navigation, Autoplay]}
         grabCursor={true}
         centeredSlides={true}
         navigation
         loop
         spaceBetween={50}
-        scrollbar={{draggable: true}}
         slidesPerView={4}
         autoplay={{
           delay: 3000,

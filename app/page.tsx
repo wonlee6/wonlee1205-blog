@@ -4,9 +4,16 @@ import {getSortedPostsData} from '@/lib/posts'
 
 export const metadata: Metadata = {
   title: '꼬비 집사의 프론트 엔드 관련 기술 블로그',
-  description: '꼬비 집사의 프론트 엔드 관련 기술 블로그',
+  description: '프론트 엔드 기술 블로그',
   authors: {name: 'Sangwon', url: 'https://wonlee1205-blog.vercel.app/'},
-  keywords: 'react, nextjs, javascript, frontend, 프론트 엔드',
+  keywords: [
+    'react',
+    'nextjs',
+    'javascript',
+    'typescript',
+    'frontend',
+    '프론트 엔드'
+  ],
   creator: 'Sangwon',
   openGraph: {
     type: 'website',

@@ -5,6 +5,8 @@ export const ROTATION = BASE_URL + '/lol/platform/v3/champion-rotations'
 export const SUMMONER_NAME = BASE_URL + '/lol/summoner/v4/summoners/by-name/'
 export const SUMMONER_LEAGUE = BASE_URL + '/lol/league/v4/entries/by-summoner/'
 export const LEAGUE = BASE_URL + '/lol/league/v4/leagues/'
+export const MATCH = BASE_URL + '/lol/match/v5/matches/by-puuid/{puuid}/ids'
+
 export const CHAMP_MASTORY_LIST =
   BASE_URL + '/lol/champion-mastery/v4/champion-masteries/by-summoner/'
 
