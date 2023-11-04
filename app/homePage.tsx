@@ -1,15 +1,19 @@
 'use client'
 
-import {useMemo, useState} from 'react'
-import {PostData} from '@/lib/posts'
+import {useEffect, useMemo, useState} from 'react'
 import Link from 'next/link'
 import {Pagination} from '@nextui-org/react'
+import {useSetRecoilState} from 'recoil'
+import postsDataAtom from '@/recoil/postsData'
+import {PostData} from '@/lib/posts'
 
 type Props = {
   allPostsData: PostData[]
 }
 
 export default function HomePage({allPostsData}: Props) {
+  const setPostsData = useSetRecoilState(postsDataAtom)
+
   const postsLength = Math.ceil(allPostsData.length / 10)
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -24,6 +28,13 @@ export default function HomePage({allPostsData}: Props) {
   const filteredPostsData = useMemo(() => {
     return [...allPostsData].slice(currentPage * 10 - 10, currentPage * 10)
   }, [allPostsData, currentPage])
+
+  useEffect(() => {
+    if (allPostsData.length > 0) {
+      setPostsData(allPostsData)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allPostsData])
 
   return (
     <div className='py-10 h-full w-full pl-4 max-lg:w-full max-lg:px-4 max-w-7xl my-0 mx-auto'>

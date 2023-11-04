@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from 'react'
 import {transpile} from 'typescript'
 import Editor, {useMonaco} from '@monaco-editor/react'
-import {debounce} from 'lodash'
+import {useDebounce} from '@/hooks/useDebounce'
 
 type Props = {
   value: string
@@ -49,7 +49,7 @@ option && myChart.setOption(option, true, true);
     }
   }
 
-  const handleChange = debounce((val: string | undefined, ev: any) => {
+  const handleChange = useDebounce((val: string | undefined, ev: any) => {
     if (typeof val === 'undefined') return
 
     setEditorContent(val)

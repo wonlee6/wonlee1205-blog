@@ -2,14 +2,17 @@
 
 import {useMemo} from 'react'
 import Link from 'next/link'
-import {PostData} from '../../app/post/[slug]/page'
+import {PostData} from '@/app/post/[slug]/page'
+import {useRecoilValue} from 'recoil'
+import postsDataAtom from '@/recoil/postsData'
 
 type PostingGuideModel = {
-  allPostsData: PostData[]
   postData: PostData
 }
 
-const PostingGuide = ({allPostsData, postData}: PostingGuideModel) => {
+export default function PostingGuide({postData}: PostingGuideModel) {
+  const allPostsData = useRecoilValue(postsDataAtom)
+
   const nextPost = useMemo(() => {
     const findPostIndex = allPostsData.findIndex((v) => v.id === postData?.id)
 
@@ -51,5 +54,3 @@ const PostingGuide = ({allPostsData, postData}: PostingGuideModel) => {
     </div>
   )
 }
-
-export default PostingGuide

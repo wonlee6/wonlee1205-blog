@@ -1,6 +1,5 @@
 import {ReactNode} from 'react'
 import {Analytics} from '@vercel/analytics/react'
-import {Providers} from './providers'
 import {Inter} from 'next/font/google'
 
 import './globals.css'
@@ -12,6 +11,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
+import {Providers} from './provider'
 
 const inter = Inter({subsets: ['latin']})
 

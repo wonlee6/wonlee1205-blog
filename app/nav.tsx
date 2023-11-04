@@ -29,6 +29,9 @@ import {
   Textarea
 } from '@nextui-org/react'
 
+// forwardRef render functions accept exactly two parameters: props and ref. Did you forget to use the ref parameter?
+// Toast error
+
 function Nav() {
   const pathName = usePathname()
   const router = useRouter()
@@ -58,7 +61,7 @@ function Nav() {
     email: '',
     content: ''
   })
-  const toastRef = useRef<Toast>(null)
+  const toastRef = useRef<Toast | null>(null)
 
   const handleSendEmail = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -302,7 +305,7 @@ function Nav() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Toast ref={toastRef} />
+      <Toast ref={toastRef} position='top-right' />
     </>
   )
 }

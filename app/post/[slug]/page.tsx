@@ -1,5 +1,5 @@
 import {Metadata} from 'next'
-import {getAllPostIds, getPostData, getSortedPostsData} from '@/lib/posts'
+import {getAllPostIds, getPostData} from '@/lib/posts'
 // import Utterance from './utterance'
 import MarkdownViwer from '../../../components/post/markdownViwer'
 import PostingGuide from '../../../components/post/postingGuide'
@@ -47,7 +47,6 @@ export default async function PostPage({
   params: {slug: string}
 }): Promise<JSX.Element> {
   const postData = (await getPostData(params.slug)) as PostData
-  const allPostsData = (await getSortedPostsData()) as PostData[]
 
   return (
     <>
@@ -57,7 +56,7 @@ export default async function PostPage({
         </div>
       )}
       {/* <Utterance /> */}
-      <PostingGuide allPostsData={allPostsData} postData={postData} />
+      <PostingGuide postData={postData} />
     </>
   )
 }

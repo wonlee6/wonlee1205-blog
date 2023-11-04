@@ -3,8 +3,8 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
-
 import {Button} from '@nextui-org/react'
+import {TabView, TabPanel} from 'primereact/tabview'
 import type {EChartsOption} from 'echarts'
 
 import ArrowDown from '@/public/images/arrow-down.svg'
@@ -16,15 +16,6 @@ import useIntersectionObserver from '@/hooks/useIntersectionObserver'
 const MonacoEditor = dynamic(() => import('./monacoEditor'), {ssr: false})
 const PreviewChart = dynamic(() => import('./previewChart'), {ssr: false})
 const ChartListItem = dynamic(() => import('./chartListItem'), {ssr: false})
-
-const TabView = dynamic(
-  () => import('primereact/tabview').then((mod) => mod.TabView),
-  {ssr: false}
-)
-const TabPanel = dynamic(
-  () => import('primereact/tabview').then((mod) => mod.TabPanel),
-  {ssr: false}
-)
 
 export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
   const editorRef = useRef<HTMLDivElement | null>(null)
@@ -133,7 +124,11 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
                 ))}
               </div>
             </TabPanel>
-            <TabPanel header='Chart List'>
+            <TabPanel
+              header='Chart List'
+              style={{
+                color: activeTabView === 1 ? '#2196F3' : 'black'
+              }}>
               <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2'>
                 {filteredChartImages.map((i, index) => (
                   <ChartListItem
@@ -146,7 +141,10 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
                 ))}
               </div>
             </TabPanel>
-            <TabPanel header='Preview' contentClassName='h-full flex flex-col'>
+            <TabPanel
+              header='Preview'
+              contentClassName='h-full flex flex-col'
+              style={{color: activeTabView === 2 ? '#2196F3' : 'black'}}>
               {chartOption ? (
                 <>
                   <div className='mb-3 flex justify-center w-full'>
@@ -175,7 +173,7 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
                   <PreviewChart option={chartOption} theme={theme} />
                 </>
               ) : (
-                <p className='text-center'>
+                <p className='text-center text-stone-900'>
                   선택된 차트가 없거나 지원하지 않는 타입이에용.
                 </p>
               )}

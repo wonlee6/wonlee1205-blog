@@ -1,17 +1,17 @@
 'use client'
 
 import React, {useMemo} from 'react'
+import {useRecoilValue} from 'recoil'
 import {useRouter} from 'next/navigation'
 import {PanelMenu} from 'primereact/panelmenu'
 import type {MenuItem} from 'primereact/menuitem'
-import {PostData} from '../../app/post/[slug]/page'
+import postsDataAtom from '@/recoil/postsData'
+import {PostData} from '@/lib/posts'
 
-interface Props {
-  allPostsData: PostData[]
-}
-
-export default function AsideMenu({allPostsData}: Props) {
+export default function AsideMenu() {
   const router = useRouter()
+
+  const allPostsData = useRecoilValue(postsDataAtom)
 
   const filteredAllPostsData: MenuItem[] = useMemo(() => {
     return allPostsData

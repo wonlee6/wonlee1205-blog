@@ -81,7 +81,7 @@
       "version": "detect"
     },
     "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx", ".js"]
+      "@typescript-eslint/parser": [".ts", ".tsx"]
     },
     // "import/resolver": {
     //   "typescript": "./tsconfig.json"
