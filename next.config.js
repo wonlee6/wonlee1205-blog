@@ -2,12 +2,23 @@
 
 const nextConfig = {
   reactStrictMode: true,
-  // experimental: {
-  //   webpackBuildWorker: true
-  // },
+  experimental: {
+    optimizePackageImports: ['@nextui-org', 'primereact'],
+    turbo: {
+      rules: {
+        '*.md': [
+          {
+            loader: '@mdx-js/loader',
+            options: {
+              format: 'md',
+            },
+          },
+        ]
+      }
+    }
+  },
   webpack: (config, options) => {
     config.module.noParse = [require.resolve('typescript/lib/typescript.js')]
-   
     return config
   },
   // generateBuildId: async () => {
@@ -29,7 +40,7 @@ const nextConfig = {
     //     pathname: '/lol/**',
     //   }
     // ],
-  },
+  }
 }
 
 module.exports = nextConfig

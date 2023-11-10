@@ -29,7 +29,9 @@ export default function ChartListItem({
           priority={true}
         />
       </div>
-      <p className='mt-2 p-1 text-center dark:text-teal-500'>{title}</p>
+      <p className='mt-2 p-1 text-center font-semibold text-teal-500 hover:text-teal-600 cursor-default'>
+        {title}
+      </p>
     </div>
   )
 }

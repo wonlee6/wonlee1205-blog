@@ -29,9 +29,6 @@ import {
   Textarea
 } from '@nextui-org/react'
 
-// forwardRef render functions accept exactly two parameters: props and ref. Did you forget to use the ref parameter?
-// Toast error
-
 function Nav() {
   const pathName = usePathname()
   const router = useRouter()
