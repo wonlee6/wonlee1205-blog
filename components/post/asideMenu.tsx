@@ -1,17 +1,13 @@
 'use client'
 
 import React, {useMemo} from 'react'
-import {useRecoilValue} from 'recoil'
-import {useRouter} from 'next/navigation'
 import {PanelMenu} from 'primereact/panelmenu'
 import type {MenuItem} from 'primereact/menuitem'
-import postsDataAtom from '@/recoil/postsData'
+import {useRouter} from 'next/navigation'
 import {PostData} from '@/lib/posts'
 
-export default function AsideMenu() {
+export default function AsideMenu({allPostsData}: {allPostsData: PostData[]}) {
   const router = useRouter()
-
-  const allPostsData = useRecoilValue(postsDataAtom)
 
   const filteredAllPostsData: MenuItem[] = useMemo(() => {
     return allPostsData
@@ -26,6 +22,7 @@ export default function AsideMenu() {
                   {
                     id: cur.id,
                     label: cur.title,
+                    // url: `/post/${cur.id}`
                     command(event: any) {
                       router.push(`/post/${event.item.id}`)
                     }
@@ -43,6 +40,7 @@ export default function AsideMenu() {
             {
               id: cur.id,
               label: cur.title,
+              // url: `/post/${cur.id}`
               command(event) {
                 router.push(`/post/${event.item.id}`)
               }

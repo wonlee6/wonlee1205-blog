@@ -2,12 +2,12 @@
 
 import {useMemo} from 'react'
 import Link from 'next/link'
-import {PostData} from '@/app/post/[slug]/page'
+import {Post} from '@/app/post/[slug]/page'
 import {useRecoilValue} from 'recoil'
 import postsDataAtom from '@/recoil/postsData'
 
 type PostingGuideModel = {
-  postData: PostData
+  postData: Post
 }
 
 export default function PostingGuide({postData}: PostingGuideModel) {

@@ -1,10 +1,11 @@
 import {Metadata} from 'next'
-import {getAllPostIds, getPostData} from '@/lib/posts'
+import {getAllPostIds, getPostData, getSortedPostsData} from '@/lib/posts'
 // import Utterance from './utterance'
 import MarkdownViwer from '../../../components/post/markdownViwer'
 import PostingGuide from '../../../components/post/postingGuide'
+import AsideMenu from '@/components/post/asideMenu'
 
-export type PostData = {
+export type Post = {
   date: string
   id: string
   tag: string
@@ -18,7 +19,7 @@ export async function generateMetadata({
 }: {
   params: {slug: string}
 }): Promise<Metadata> {
-  const postData = (await getPostData(params.slug)) as PostData
+  const postData = (await getPostData(params.slug)) as Post
   return {
     title: postData.title,
     description: postData.description,
@@ -46,17 +47,23 @@ export default async function PostPage({
 }: {
   params: {slug: string}
 }): Promise<JSX.Element> {
-  const postData = (await getPostData(params.slug)) as PostData
+  const postData = (await getPostData(params.slug)) as Post
+  const allPostsData = await getSortedPostsData()
 
   return (
     <>
-      {postData.contentHtml && (
-        <div className='w-full mb-4 prose 2xl:prose-lg prose-neutral prose-headings:underline dark:prose-invert dark:prose-blockquote:text-black'>
-          <MarkdownViwer contentHtml={postData.contentHtml} />
-        </div>
-      )}
-      {/* <Utterance /> */}
-      <PostingGuide postData={postData} />
+      <div className='hidden md:block w-1/4'>
+        <AsideMenu allPostsData={allPostsData} />
+      </div>
+      <div className='w-full pl-4 md:w-3/4'>
+        {postData.contentHtml && (
+          <div className='w-full mb-4 prose 2xl:prose-lg prose-neutral prose-headings:underline dark:prose-invert dark:prose-blockquote:text-black'>
+            <MarkdownViwer contentHtml={postData.contentHtml} />
+          </div>
+        )}
+        {/* <Utterance /> */}
+        <PostingGuide postData={postData} />
+      </div>
     </>
   )
 }

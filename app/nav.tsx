@@ -165,7 +165,7 @@ function Nav() {
               꼬비 사진첩
             </Link>
           </NavbarItem>
-          <NavbarItem isActive={pathName === '/lol'}>
+          {/* <NavbarItem isActive={pathName === '/lol'}>
             <Link
               href={'/lol'}
               as={NextLink}
@@ -174,7 +174,7 @@ function Nav() {
               size='lg'>
               LoL
             </Link>
-          </NavbarItem>
+          </NavbarItem> */}
         </NavbarContent>
         <NavbarContent justify='end'>
           <NavbarItem>
