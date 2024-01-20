@@ -58,8 +58,9 @@ export default function AsideMenu({allPostsData}: {allPostsData: PostData[]}) {
           return 0
         }
       })
-  }, [allPostsData, router])
+  }, [allPostsData])
 
+  console.log(filteredAllPostsData)
   return (
     <PanelMenu
       model={filteredAllPostsData}

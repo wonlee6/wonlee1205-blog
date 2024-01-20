@@ -25,8 +25,8 @@ const nextConfig = {
   // generateBuildId: async () => {
   //   return nextBuildId
   // },
-  images: {
-    domains: ['ddragon.leagueoflegends.com']
+  // images: {
+  //   domains: ['ddragon.leagueoflegends.com']
     // remotePatterns: [
     //   {
     //     protocol: 'http',
@@ -41,7 +41,7 @@ const nextConfig = {
     //     pathname: '/lol/**',
     //   }
     // ],
-  },
+  // },
   logging: {
     fetches: {
       fullUrl: true

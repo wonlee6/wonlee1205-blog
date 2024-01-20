@@ -1,6 +1,6 @@
 'use client'
 
-import React, {memo, useEffect, useLayoutEffect, useRef, useState} from 'react'
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react'
 import {usePathname, useRouter} from 'next/navigation'
 import Image from 'next/image'
 import NextLink from 'next/link'
@@ -29,7 +29,7 @@ import {
   Textarea
 } from '@nextui-org/react'
 
-function Nav() {
+export default function Nav() {
   const pathName = usePathname()
   const router = useRouter()
 
@@ -139,9 +139,18 @@ function Nav() {
             <Link
               href={'/'}
               as={NextLink}
-              color={pathName === '/' ? 'primary' : 'foreground'}
-              underline={pathName === '/' ? 'always' : 'none'}
-              size='lg'>
+              color={
+                pathName.includes('post') || pathName === '/'
+                  ? 'primary'
+                  : 'foreground'
+              }
+              underline={
+                pathName.includes('post') || pathName === '/'
+                  ? 'always'
+                  : 'none'
+              }
+              size='lg'
+              isBlock>
               Post
             </Link>
           </NavbarItem>
@@ -151,7 +160,8 @@ function Nav() {
               as={NextLink}
               underline={pathName === '/chart' ? 'always' : 'none'}
               color={pathName === '/chart' ? 'primary' : 'foreground'}
-              size='lg'>
+              size='lg'
+              isBlock>
               Chart
             </Link>
           </NavbarItem>
@@ -161,7 +171,8 @@ function Nav() {
               as={NextLink}
               underline={pathName === '/gallery' ? 'always' : 'none'}
               color={pathName === '/gallery' ? 'primary' : 'foreground'}
-              size='lg'>
+              size='lg'
+              isBlock>
               꼬비 사진첩
             </Link>
           </NavbarItem>
@@ -306,8 +317,6 @@ function Nav() {
     </>
   )
 }
-
-export default memo(Nav)
 
 const validateEmail = (value: string) =>
   value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)

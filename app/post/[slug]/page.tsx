@@ -3,7 +3,6 @@ import {getAllPostIds, getPostData, getSortedPostsData} from '@/lib/posts'
 // import Utterance from './utterance'
 import MarkdownViwer from '../../../components/post/markdownViwer'
 import PostingGuide from '../../../components/post/postingGuide'
-import AsideMenu from '@/components/post/asideMenu'
 
 export type Post = {
   date: string
@@ -52,17 +51,14 @@ export default async function PostPage({
 
   return (
     <>
-      <div className='hidden md:block w-1/4'>
-        <AsideMenu allPostsData={allPostsData} />
-      </div>
-      <div className='w-full pl-4 md:w-3/4'>
+      <div className='pl-4 mx-auto'>
         {postData.contentHtml && (
           <div className='w-full mb-4 prose 2xl:prose-lg prose-neutral prose-headings:underline dark:prose-invert dark:prose-blockquote:text-black'>
             <MarkdownViwer contentHtml={postData.contentHtml} />
           </div>
         )}
         {/* <Utterance /> */}
-        <PostingGuide postData={postData} />
+        <PostingGuide allPostsData={allPostsData} postData={postData} />
       </div>
     </>
   )

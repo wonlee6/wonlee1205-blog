@@ -5961,7 +5961,7 @@ prettier@^3.0.0:
 
 primereact@^10.3.3:
   version "10.3.3"
-  resolved "https://registry.npmjs.org/primereact/-/primereact-10.3.3.tgz"
+  resolved "https://registry.yarnpkg.com/primereact/-/primereact-10.3.3.tgz#4abb8578beceefa01b5e7e5068239a5f84fc6d22"
   integrity sha512-XFubWRMaCea7ERVx3xQpPM9tz8wEJSz07IOAXKrac7Q0KsrA7+dM1716KGSxuh3zMKzOdCmtxeom+4X+8TBfdg==
   dependencies:
     "@types/react-transition-group" "^4.4.1"

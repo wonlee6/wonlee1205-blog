@@ -3,16 +3,17 @@
 import {useMemo} from 'react'
 import Link from 'next/link'
 import {Post} from '@/app/post/[slug]/page'
-import {useRecoilValue} from 'recoil'
-import postsDataAtom from '@/recoil/postsData'
+import {PostData} from '@/lib/posts'
 
 type PostingGuideModel = {
   postData: Post
+  allPostsData: PostData[]
 }
 
-export default function PostingGuide({postData}: PostingGuideModel) {
-  const allPostsData = useRecoilValue(postsDataAtom)
-
+export default function PostingGuide({
+  postData,
+  allPostsData
+}: PostingGuideModel) {
   const nextPost = useMemo(() => {
     const findPostIndex = allPostsData.findIndex((v) => v.id === postData?.id)
 
@@ -41,13 +42,13 @@ export default function PostingGuide({postData}: PostingGuideModel) {
     <div className='flex justify-between max-w-[40rem]'>
       <Link
         className='text-teal-500 hover:text-teal-600 font-semibold'
-        href={prevPost ? `/posts/${prevPost.id}` : `/`}>
+        href={prevPost ? `/post/${prevPost.id}` : `/`}>
         {prevPost ? `<- Prev: ${prevPost?.title ?? ''}` : '<- Go to Home'}
       </Link>
       {nextPost && (
         <Link
           className='font-semibold text-teal-500 hover:text-teal-600'
-          href={`/posts/${nextPost.id}`}>
+          href={`/post/${nextPost.id}`}>
           {`Next: ${nextPost.title ?? ''} ->`}
         </Link>
       )}
