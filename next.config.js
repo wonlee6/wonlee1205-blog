@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 const nextConfig = {
   reactStrictMode: true,
@@ -18,10 +21,10 @@ const nextConfig = {
       }
     }
   },
-  webpack: (config, options) => {
-    config.module.noParse = [require.resolve('typescript/lib/typescript.js')]
-    return config
-  },
+  // webpack: (config, options) => {
+  //   config.module.noParse = [require.resolve('typescript/lib/typescript.js')]
+  //   return config
+  // },
   // generateBuildId: async () => {
   //   return nextBuildId
   // },
@@ -49,4 +52,4 @@ const nextConfig = {
   }
 }
 
-module.exports = nextConfig
+module.exports = withBundleAnalyzer(nextConfig)

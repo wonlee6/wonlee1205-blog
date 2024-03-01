@@ -60,7 +60,6 @@ export default function AsideMenu({allPostsData}: {allPostsData: PostData[]}) {
       })
   }, [allPostsData])
 
-  console.log(filteredAllPostsData)
   return (
     <PanelMenu
       model={filteredAllPostsData}

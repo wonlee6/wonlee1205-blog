@@ -1,9 +1,7 @@
 'use client'
 
-import React, {useEffect, useState} from 'react'
-import {transpile} from 'typescript'
+import React, {useEffect, useRef, useState} from 'react'
 import Editor, {useMonaco} from '@monaco-editor/react'
-import {useDebounce} from '@/hooks/useDebounce'
 
 type Props = {
   value: string
@@ -13,70 +11,76 @@ type Props = {
 
 export default function MonacoEditor({value, fetchData, fetchType}: Props) {
   const monaco = useMonaco()
+  const editorContent = useRef(
+    value.trim().replace(/export\s+\{\s*\}\s*;?$/g, '')
+  )
 
-  const [editorContent, setEditorContent] = useState(value)
+  const [isLoadType, setIsLoadType] = useState(false)
 
-  const handleMount = () => {
-    const regValue = value.trim().replace(/export\s+\{\s*\}\s*;?$/g, '')
-    setEditorContent(regValue)
-
-    let code = `
-const chartDom = document.getElementById('chart');
-let myChart = echarts.init(chartDom, null, {renderer: 'svg'});
-
-window.addEventListener('resize', function() {
-  myChart.resize();
-})
-
-let option;
-
-${regValue}
-    `
-    if (fetchData) {
-      code += `
-run(${JSON.stringify(fetchData)})
-    `
-    }
-    code += `
-option && myChart.setOption(option, true, true);
-        `
-
+  const handleMount = async () => {
     try {
-      const result = transpile(code)
-      Function(result)()
+      const getCode = await handleTranspileCode()
+      let code = `
+      const chartDom = document.getElementById('chart');
+      let myChart = echarts.init(chartDom, null, {renderer: 'svg'});
+      window.addEventListener('resize', function() {
+        myChart.resize();
+      })
+      let option;
+      ${getCode}
+          `
+      if (fetchData) {
+        code += `
+      run(${JSON.stringify(fetchData)})
+          `
+      }
+      code += `
+      option && myChart.setOption(option, true, true);
+              `
+      Function(code)()
     } catch (error) {
-      console.error(error)
+      console.error('Mount error', error)
     }
   }
 
-  const handleChange = useDebounce((val: string | undefined, ev: any) => {
+  const handleTranspileCode = async () => {
+    try {
+      const worker = await monaco.languages.typescript.getTypeScriptWorker()
+      const uri = monaco.Uri.parse('complexchart')
+      const client = await worker(uri)
+      const output = await client.getEmitOutput(uri.toString())
+      return output.outputFiles[0].text
+    } catch (e) {
+      console.error('transpile error', e)
+    }
+  }
+
+  const handleChange = async (val: string | undefined, ev: any) => {
     if (typeof val === 'undefined') return
 
-    setEditorContent(val)
-
-    let code = `
-const chartDom = document.getElementById('chart');
-let myChart = echarts.getInstanceByDom(chartDom);
-let option;
-
-${val}
-    `
-    if (fetchData) {
-      code += `
-run(${JSON.stringify(fetchData)})
-    `
-    }
-    code += `
-option && myChart.setOption(option, true, true);
-        `
+    editorContent.current = val
 
     try {
-      const result = transpile(code)
-      Function(result)()
+      const getCode = await handleTranspileCode()
+      let code = `
+      const chartDom = document.getElementById('chart');
+      let myChart = echarts.getInstanceByDom(chartDom);
+      let option;
+      ${getCode}
+          `
+      if (fetchData) {
+        code += `
+      run(${JSON.stringify(fetchData)})
+          `
+      }
+      code += `
+      option && myChart.setOption(option, true, true);
+              `
+      Function(code)()
     } catch (error) {
-      console.error(error)
+      console.error('change event error', error)
     }
-  }, 300)
+  }
 
   const loadTypes = async () => {
     const code = fetchType
@@ -135,7 +139,7 @@ option && myChart.setOption(option, true, true);
     }
     `
     )
-    return
+    setIsLoadType(true)
   }
 
   useEffect(() => {
@@ -145,17 +149,24 @@ option && myChart.setOption(option, true, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monaco])
 
+  useEffect(() => {
+    if (isLoadType) {
+      handleMount()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoadType])
+
   return (
     <Editor
       width={'100%'}
       height={'100%'}
       language='typescript'
-      value={editorContent}
+      value={editorContent.current}
       options={{
         minimap: {
           enabled: false
         },
-        fontSize: 13,
+        fontSize: 14,
         scrollbar: {
           horizontal: 'auto',
           vertical: 'auto'
@@ -166,11 +177,12 @@ option && myChart.setOption(option, true, true);
         lineNumbers: 'on',
         automaticLayout: true,
         autoIndent: 'brackets',
-        wordWrap: 'off',
-        fixedOverflowWidgets: true
+        wordWrap: 'off'
+        // fixedOverflowWidgets: true
       }}
-      onMount={handleMount}
+      // onMount={handleMount}
       onChange={handleChange}
+      path='complexchart'
     />
   )
 }

@@ -3,7 +3,7 @@ import ChartComponent from '../../components/chart/chartComponent'
 const fetchChartType = async () => {
   try {
     const response = await fetch(
-      'https://cdn.jsdelivr.net/npm/echarts@5.4.3/types/dist/echarts.d.ts'
+      'https://cdn.jsdelivr.net/npm/echarts@5.5.0/types/dist/echarts.d.ts'
     )
     return await response.text()
   } catch (e) {

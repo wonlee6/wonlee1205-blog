@@ -104,7 +104,11 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
             className='pl-3'
             panelContainerClassName='dark:bg-black'
             activeIndex={activeTabView}
-            onTabChange={(e) => setActiveTabView(e.index)}>
+            onTabChange={(e) => {
+              setEditorContent('')
+              setFetchJsonData(null)
+              setActiveTabView(e.index)
+            }}>
             <TabPanel header='Chart Menu' className='hidden max-lg:flex'>
               <div className='w-full flex flex-col items-center'>
                 {ChartHelper.getChartMenuList().map((item) => (
@@ -174,7 +178,7 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
                 </>
               ) : (
                 <p className='text-center text-stone-900'>
-                  선택된 차트가 없거나 지원하지 않는 타입이에용.
+                  스크롤을 아래로 내려주세요.
                 </p>
               )}
             </TabPanel>
