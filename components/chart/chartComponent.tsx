@@ -60,7 +60,6 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
     setChartOption(findChartItem ? findChartItem : null)
 
     const regUrl = url.split('images/')[1].replace(/\.(.*)/, '')
-
     if (regUrl === 'confidence-band' || regUrl === 'line-race') {
       const responseJsonData = await fetch(`/data/${regUrl}.json`)
       const jsonData = await responseJsonData.json()
