@@ -1,7 +1,6 @@
-import {ReactNode} from 'react'
 import {Analytics} from '@vercel/analytics/react'
 import {Inter} from 'next/font/google'
-
+import {SpeedInsights} from '@vercel/speed-insights/next'
 import {Providers} from './provider'
 
 import '../styles/globals.css'
@@ -30,6 +29,7 @@ export default function RootLayout({
           </div>
         </Providers>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
