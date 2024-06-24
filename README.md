@@ -2,8 +2,8 @@
 
 ## [Blog](https://wonlee1205-blog.vercel.app/)
 
-### React - 18.2, Next 14 (app router), typescript - 5.2.2
+### React - 18.3.1, Next 14.2.4 (app router), typescript - 5.5.2
 
-### TailWindCss - 3.4.1, Next UI - 2.1.1, PrimeReact - 10.5.1
+### TailWindCss - 3.4.4, Next UI - 2.4.2
 
 ### implemenet chart component with echarts and monaco-editor
