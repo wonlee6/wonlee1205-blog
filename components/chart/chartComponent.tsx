@@ -4,14 +4,14 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import {Button} from '@nextui-org/react'
-import {TabView, TabPanel} from 'primereact/tabview'
 import type {EChartsOption} from 'echarts'
-
+import {Tabs, Tab} from '@nextui-org/tabs'
 import ArrowDown from '@/public/images/arrow-down.svg'
 
 import {ChartType} from '@/model/Chart.model'
 import {ChartHelper} from '@/helper/ChartHelper'
 import useIntersectionObserver from '@/hooks/useIntersectionObserver'
+import ChartTypeList from './chart-type-list'
 
 const MonacoEditor = dynamic(() => import('./monacoEditor'), {ssr: false})
 const PreviewChart = dynamic(() => import('./previewChart'), {ssr: false})
@@ -27,7 +27,7 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
   })
   const isVisble = entry?.isIntersecting
 
-  const [activeTabView, setActiveTabView] = useState(1)
+  const [activeTabView, setActiveTabView] = useState<string | number>('list')
 
   const [selectedMenu, setSelectedMenu] = useState<ChartType>(ChartType.Line)
 
@@ -40,8 +40,8 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
   const handleMenuClick = useCallback(
     (menu: ChartType) => {
       setSelectedMenu(menu)
-      if (activeTabView === 2) {
-        setActiveTabView(1)
+      if (activeTabView === 'preview') {
+        setActiveTabView('list')
       }
       setChartOption(null)
       setTheme(undefined)
@@ -53,10 +53,8 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
 
   const handleChartClick = async (chartIndex: number, url: string) => {
     const findChartDataList = ChartHelper.getChartListData(selectedMenu)
-    const findChartItem = findChartDataList.find(
-      (_, index) => index === chartIndex
-    )
-    setActiveTabView(2)
+    const findChartItem = findChartDataList.find((_, index) => index === chartIndex)
+    setActiveTabView('preview')
     setChartOption(findChartItem ? findChartItem : null)
 
     const regUrl = url.split('images/')[1].replace(/\.(.*)/, '')
@@ -73,66 +71,49 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
     setEditorContent(chartData)
   }
 
-  const handleThemeClick = useCallback(
-    (selectedTheme: 'dark' | 'light' | 'default') => {
-      setTheme(selectedTheme === 'default' ? undefined : selectedTheme)
-    },
-    []
-  )
+  const handleThemeClick = useCallback((selectedTheme: 'dark' | 'light' | 'default') => {
+    setTheme(selectedTheme === 'default' ? undefined : selectedTheme)
+  }, [])
 
   const filteredChartImages = useMemo(() => {
     return ChartHelper.getChartList(selectedMenu)
   }, [selectedMenu])
 
   return (
-    <div className='flex flex-col'>
-      <div className='flex w-full max-w-7xl mx-auto'>
-        <div className='w-1/5 max-lg:hidden pt-4'>
-          {ChartHelper.getChartMenuList().map((item) => (
-            <Button
-              key={item.name}
-              color={selectedMenu === item.name ? 'primary' : 'secondary'}
-              onClick={() => handleMenuClick(item.name)}
-              className='w-full mb-4'>
-              {item.name}
-            </Button>
-          ))}
-        </div>
-        <div className='pl-4 max-lg:w-full w-4/5 mx-auto'>
-          <TabView
+    <div className='mx-auto mb-4 flex max-w-7xl flex-col'>
+      <div className='flex w-full'>
+        <ChartTypeList selectedMenu={selectedMenu} onMenuClick={handleMenuClick} />
+        <div className='mx-auto w-5/6 pl-4 max-lg:w-full'>
+          <Tabs
             className='pl-3'
-            panelContainerClassName='dark:bg-black'
-            activeIndex={activeTabView}
-            onTabChange={(e) => {
+            selectedKey={activeTabView}
+            onSelectionChange={(e) => {
               setEditorContent('')
               setFetchJsonData(null)
-              setActiveTabView(e.index)
-            }}>
-            <TabPanel header='Chart Menu' className='hidden max-lg:flex'>
-              <div className='w-full flex flex-col items-center'>
+              setActiveTabView(e)
+            }}
+            size='lg'
+            radius='sm'
+            variant='solid'>
+            <Tab key={'menu'} title='Chart Menu' className='hidden max-lg:flex'>
+              <div className='flex w-full flex-col items-center'>
                 {ChartHelper.getChartMenuList().map((item) => (
-                  <div key={item.name} className='w-1/2 flex justify-center'>
+                  <div key={item.name} className='flex w-1/2 justify-center'>
                     <Button
-                      color={
-                        selectedMenu === item.name ? 'primary' : 'secondary'
-                      }
+                      color={selectedMenu === item.name ? 'primary' : 'secondary'}
                       onClick={() => {
                         setActiveTabView(1)
                         setSelectedMenu(item.name)
                       }}
-                      className='w-full mb-4'>
+                      className='mb-4 w-full'>
                       {item.name}
                     </Button>
                   </div>
                 ))}
               </div>
-            </TabPanel>
-            <TabPanel
-              header='Chart List'
-              style={{
-                color: activeTabView === 1 ? '#2196F3' : 'black'
-              }}>
-              <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2'>
+            </Tab>
+            <Tab key={'list'} title='Chart List'>
+              <div className='grid grid-cols-1 gap-2 lg:grid-cols-2 xl:grid-cols-3'>
                 {filteredChartImages.map((i, index) => (
                   <ChartListItem
                     key={i.title}
@@ -143,23 +124,25 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
                   />
                 ))}
               </div>
-            </TabPanel>
-            <TabPanel
-              header='Preview'
-              contentClassName='h-full flex flex-col'
-              style={{color: activeTabView === 2 ? '#2196F3' : 'black'}}>
+            </Tab>
+            <Tab
+              key={'preview'}
+              title='Preview'
+              style={{color: activeTabView === 'preview' ? '#2196F3' : 'black'}}>
               {chartOption ? (
                 <>
-                  <div className='mb-3 flex justify-center w-full'>
+                  <div className='mb-3 flex w-full justify-center'>
                     <Button
                       className='mr-2'
                       color='primary'
+                      variant='ghost'
                       onClick={() => handleThemeClick('default')}
                       style={{minWidth: '5rem', width: '10rem'}}>
                       Default
                     </Button>
                     <Button
                       color='primary'
+                      variant='ghost'
                       className='mr-2 max-sm:w-12'
                       onClick={() => handleThemeClick('light')}
                       style={{minWidth: '5rem', width: '10rem'}}>
@@ -168,6 +151,7 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
                     <Button
                       className='max-sm:w-8'
                       color='primary'
+                      variant='ghost'
                       onClick={() => handleThemeClick('dark')}
                       style={{minWidth: '5rem', width: '10rem'}}>
                       Dark
@@ -176,32 +160,30 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
                   <PreviewChart option={chartOption} theme={theme} />
                 </>
               ) : (
-                <p className='text-center text-stone-900'>
-                  스크롤을 아래로 내려주세요.
+                <p className='text-center text-default-600'>
+                  {!editorContent && !chartOption ? '선택된 아이템이 없습니다.' : ''}
                 </p>
               )}
-            </TabPanel>
-          </TabView>
+            </Tab>
+          </Tabs>
         </div>
       </div>
       <div
-        className='animate-bounce justify-center mt-4 mb-2 h-full hidden max-lg:flex'
+        className='mb-2 mt-4 hidden h-full animate-bounce justify-center max-lg:flex'
         style={{
           visibility:
-            activeTabView === 2 && editorContent && !isVisble
-              ? 'visible'
-              : 'hidden'
+            activeTabView === 'preview' && editorContent && !isVisble ? 'visible' : 'hidden'
         }}>
         <Image src={ArrowDown} alt='arrow-down' width={60} height={60} />
       </div>
-      {activeTabView === 2 && editorContent ? (
+      {activeTabView === 'preview' && editorContent ? (
         <div
           ref={editorRef}
-          className='flex max-lg:flex-col w-full mx-auto bg-zinc-300 p-4'
+          className='mx-auto flex w-full bg-zinc-300 p-4 max-lg:flex-col'
           style={{
             height: '50rem'
           }}>
-          <div className='xl:w-1/2 lg:w-1/3 w-full h-full max-lg:h-1/2 border mr-2'>
+          <div className='mr-2 h-full w-full border max-lg:h-1/2 lg:w-1/3 xl:w-1/2'>
             {editorContent ? (
               <MonacoEditor
                 value={editorContent}
@@ -210,10 +192,8 @@ export default function ChartComponent({echartsTypes}: {echartsTypes: string}) {
               />
             ) : null}
           </div>
-          <div className='xl:w-1/2 lg:w-2/3 w-full h-full max-lg:h-1/2 max-lg:ml-0 ml-2 max-lg:mt-8'>
-            <div
-              id='chart'
-              className='w-full h-full bg-white rounded-lg p-4 relative'></div>
+          <div className='ml-2 h-full w-full max-lg:ml-0 max-lg:mt-8 max-lg:h-1/2 lg:w-2/3 xl:w-1/2'>
+            <div id='chart' className='relative h-full w-full rounded-lg bg-white p-4'></div>
           </div>
         </div>
       ) : null}

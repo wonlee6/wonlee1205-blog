@@ -5,71 +5,53 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
 import {vscDarkPlus} from 'react-syntax-highlighter/dist/cjs/styles/prism'
+import {cn} from '@/lib/utils'
 
-export default function MarkdownView({
-  contentHtml
-}: {
-  contentHtml: string
-}): JSX.Element {
+export default function MarkdownView({contentHtml}: {contentHtml: string}): JSX.Element {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       rehypePlugins={[rehypeRaw]}
       components={{
-        code({inline, className, children, ...props}) {
+        code(props) {
+          const {children, className, node, ref, style, ...rest} = props
           const match = /language-(\w+)/.exec(className || '')
-          return inline ? (
-            // 강조
-            <code
-              style={{
-                background: 'var(--highlight-color)',
-                padding: '2px'
-              }}
-              {...props}>
-              {children}
-            </code>
-          ) : match ? (
-            // 코드
-            // 언어가 선택됨
+          return match ? (
             <SyntaxHighlighter
-              // eslint-disable-next-line react/no-children-prop
-              children={String(children).replace(/\n$/, '')}
-              style={vscDarkPlus as any}
-              language={match[1]}
+              {...rest}
               PreTag='div'
-              {...props}
+              children={String(children).replace(/\n$/, '')}
+              language={match[1]}
+              style={vscDarkPlus as any}
             />
           ) : (
-            // 언어가 선택되지 않음
-            <SyntaxHighlighter
-              // eslint-disable-next-line react/no-children-prop
-              children={String(children).replace(/\n$/, '')}
-              style={vscDarkPlus as any}
-              language='textile'
-              PreTag='div'
-              {...props}
-            />
+            <code {...rest} className={cn(className, 'font-light text-default-500')}>
+              {children}
+            </code>
           )
         },
         // 인용문 (>)
-        blockquote({children, ...props}) {
+        blockquote({children, className, ...props}) {
           return (
             <blockquote
-              style={{
-                background: '#f0f0f0',
-                padding: '1px 15px',
-                borderRadius: '10px'
-              }}
-              {...props}>
+              {...props}
+              className={cn(className, 'rounded-lg bg-default-100 p-1 text-default-600')}>
               {children}
             </blockquote>
           )
         },
         em({children, ...props}) {
           return (
-            <span style={{fontStyle: 'italic'}} {...props}>
+            <span style={{fontStyle: 'italic', color: 'red', border: '1px solid red'}} {...props}>
               {children}
             </span>
+          )
+        },
+        pre({children, className, ...rest}) {
+          return (
+            <pre {...rest} className={cn(className, 'm-0')}>
+              {children}
+            </pre>
           )
         }
       }}>

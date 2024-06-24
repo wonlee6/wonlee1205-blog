@@ -4,9 +4,10 @@
     "singleQuote": true,
     "bracketSameLine": true,
     "trailingComma": "none",
-    "printWidth": 80,
+    "printWidth": 100,
     "semi": false,
     "jsxSingleQuote": true,
+    "plugins": ["prettier-plugin-tailwindcss"],
     "overrides": [
       {
         "files": "*.css",

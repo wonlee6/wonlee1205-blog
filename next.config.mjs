@@ -1,8 +1,12 @@
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
+import createMDX from '@next/mdx'
+
 /** @type {import('next').NextConfig} */
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
+// const withBundleAnalyzer = require('@next/bundle-analyzer')({
+//   enabled: process.env.ANALYZE === 'true',
+// })
 
 const nextConfig = {
   reactStrictMode: true,
@@ -49,7 +53,16 @@ const nextConfig = {
     fetches: {
       fullUrl: true
     }
-  }
+  },
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx']
 }
 
-module.exports = withBundleAnalyzer(nextConfig)
+// const withMDX = createMDX({
+//   // Add markdown plugins here, as desired
+//   options: {
+//     remarkPlugins: [remarkGfm],
+//     rehypePlugins: [rehypeRaw],
+//   }
+// })
+
+export default nextConfig;

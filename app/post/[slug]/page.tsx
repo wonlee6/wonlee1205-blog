@@ -13,11 +13,7 @@ export type Post = {
   description: string
 }
 
-export async function generateMetadata({
-  params
-}: {
-  params: {slug: string}
-}): Promise<Metadata> {
+export async function generateMetadata({params}: {params: {slug: string}}): Promise<Metadata> {
   const postData = (await getPostData(params.slug)) as Post
   return {
     title: postData.title,
@@ -41,19 +37,15 @@ export async function generateStaticParams() {
   return paths.map((post) => ({slug: post.params.id}))
 }
 
-export default async function PostPage({
-  params
-}: {
-  params: {slug: string}
-}): Promise<JSX.Element> {
+export default async function PostPage({params}: {params: {slug: string}}): Promise<JSX.Element> {
   const postData = (await getPostData(params.slug)) as Post
   const allPostsData = await getSortedPostsData()
 
   return (
     <>
-      <div className='pl-4 mx-auto'>
+      <div className='mx-auto pl-4'>
         {postData.contentHtml && (
-          <div className='w-full mb-4 prose 2xl:prose-lg prose-neutral prose-headings:underline dark:prose-invert dark:prose-blockquote:text-black'>
+          <div className='prose prose-neutral mb-4 w-full dark:prose-invert 2xl:prose-base prose-headings:underline dark:prose-blockquote:text-black'>
             <MarkdownViwer contentHtml={postData.contentHtml} />
           </div>
         )}

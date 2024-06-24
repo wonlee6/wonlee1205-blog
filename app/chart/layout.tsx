@@ -12,12 +12,9 @@ export default function ChartsLayout({
   children: React.ReactNode
 }) {
   return (
-    <section className='pt-4'>
+    <section className='mt-4'>
       {children}
-      <Script
-        src='https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js'
-        async
-      />
+      <Script src='https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js' async />
     </section>
   )
 }

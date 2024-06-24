@@ -26,10 +26,10 @@ export default function HomePage({allPostsData}: Props) {
   }, [allPostsData, currentPage])
 
   return (
-    <div className='py-10 h-full w-full pl-4 max-lg:w-full max-lg:px-4 max-w-7xl my-0 mx-auto'>
-      <div className='w-full h-full mb-auto divide-y divide-gray-200 dark:divide-gray-700'>
-        <div className='space-y-2 pt-6 pb-8 md:space-y-5'>
-          <h1 className='text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14'>
+    <div className='mx-auto my-0 h-full w-full max-w-7xl py-10 pl-4 max-lg:w-full max-lg:px-4'>
+      <div className='mb-auto h-full w-full divide-y divide-gray-200 dark:divide-gray-700'>
+        <div className='space-y-2 pb-8 pt-6 md:space-y-5'>
+          <h1 className='md:leading-14 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl dark:text-gray-100'>
             Latest
           </h1>
         </div>
@@ -56,7 +56,7 @@ export default function HomePage({allPostsData}: Props) {
                         {item.description ?? ''}
                       </div>
                     </div>
-                    <div className='text-base leading-6 text-teal-500 hover:text-teal-600 font-semibold'>
+                    <div className='text-base font-semibold leading-6 text-teal-500 hover:text-teal-600'>
                       <Link href={`/post/${item.id}`}>Read More -{'>'}</Link>
                     </div>
                   </div>
@@ -65,7 +65,7 @@ export default function HomePage({allPostsData}: Props) {
             </li>
           ))}
         </ul>
-        <div className='pt-12 flex justify-center'>
+        <div className='flex justify-center pt-12'>
           <Pagination
             total={postsLength}
             initialPage={currentPage}
