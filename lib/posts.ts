@@ -6,6 +6,7 @@ const postsDirectory = path.join(process.cwd(), 'posts')
 
 export type Tag =
   | 'React'
+  | 'React-Native'
   | 'Recoil'
   | 'Next'
   | 'Javascript'

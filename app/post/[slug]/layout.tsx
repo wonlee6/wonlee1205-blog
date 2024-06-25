@@ -4,17 +4,8 @@ export default function PostLayout({
   children: React.ReactNode
 }) {
   return (
-    <section className='max-lg:w-full max-w-7xl max-xl:pl-4 mx-auto flex justify-center py-10'>
+    <section className='mx-auto flex max-w-7xl justify-center py-10 max-xl:pl-4 max-lg:w-full'>
       {children}
     </section>
   )
-}
-
-{
-  /* <section className='max-lg:w-full max-w-7xl max-xl:pl-4 mx-auto flex justify-center py-10'>
-      <div className='hidden md:block w-1/4'>
-        <AsideMenu allPostsData={allPostsData} />
-      </div>
-      <div className='w-full pl-4 md:w-3/4'>{children}</div>
-    </section> */
 }
