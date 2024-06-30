@@ -1,9 +1,23 @@
-import React from 'react'
-import ChartTypeList from './chart-type-list'
+'use client'
 
-function Charts({children}: {children: React.ReactNode}) {
-  return <div className='mx-auto flex max-w-7xl flex-col'>{children}</div>
+import React, {useCallback, useState} from 'react'
+
+import {ChartType} from '@/model/Chart.model'
+import Charts from './charts'
+
+export default function ChartClient() {
+  const [selectedMenu, setSelectedMenu] = useState<ChartType>(ChartType.Line)
+
+  const handleMenuClick = useCallback((menu: ChartType) => {
+    setSelectedMenu(menu)
+  }, [])
+
+  return (
+    <>
+      <Charts>
+        <Charts.MenuList selectedMenu={selectedMenu} onMenuClick={handleMenuClick} />
+        <Charts.List selectedMenu={selectedMenu} />
+      </Charts>
+    </>
+  )
 }
-
-Charts.TypeList = ChartTypeList
-export default Charts

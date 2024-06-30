@@ -10,10 +10,7 @@ type PostingGuideModel = {
   allPostsData: PostData[]
 }
 
-export default function PostingGuide({
-  postData,
-  allPostsData
-}: PostingGuideModel) {
+export default function PostingGuide({postData, allPostsData}: PostingGuideModel) {
   const nextPost = useMemo(() => {
     const findPostIndex = allPostsData.findIndex((v) => v.id === postData?.id)
 
@@ -39,9 +36,9 @@ export default function PostingGuide({
   }, [allPostsData, postData])
 
   return (
-    <div className='flex justify-between max-w-[40rem]'>
+    <div className='flex max-w-[40rem] justify-between'>
       <Link
-        className='text-teal-500 hover:text-teal-600 font-semibold'
+        className='font-semibold text-teal-500 hover:text-teal-600'
         href={prevPost ? `/post/${prevPost.id}` : `/`}>
         {prevPost ? `<- Prev: ${prevPost?.title ?? ''}` : '<- Go to Home'}
       </Link>

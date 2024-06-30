@@ -11,9 +11,7 @@ type Props = {
 
 export default function MonacoEditor({value, fetchData, fetchType}: Props) {
   const monaco = useMonaco()
-  const editorContent = useRef(
-    value.trim().replace(/export\s+\{\s*\}\s*;?$/g, '')
-  )
+  const editorContent = useRef(value.trim().replace(/export\s+\{\s*\}\s*;?$/g, ''))
 
   const [isLoadType, setIsLoadType] = useState(false)
 
@@ -97,10 +95,7 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
       allowNonTsExtensions: true,
       noResolve: false
     })
-    typescriptDefaults.addExtraLib(
-      code,
-      'file:///node_modules/@types/echarts/echarts.d.ts'
-    )
+    typescriptDefaults.addExtraLib(code, 'file:///node_modules/@types/echarts/echarts.d.ts')
     typescriptDefaults.addExtraLib(
       `
     import * as echarts from 'echarts';

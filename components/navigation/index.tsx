@@ -67,7 +67,7 @@ export default function HeaderNaviBar() {
         shouldHideOnScroll
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
-        className='dark:border-b-default-400 shadow-md backdrop-blur-sm dark:border-b dark:text-neutral-50'>
+        className='shadow-md backdrop-blur-sm dark:border-b dark:border-b-default-400 dark:text-neutral-50'>
         <NavbarContent>
           <NavbarMenuToggle
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}

@@ -26,10 +26,10 @@ export default function HomePage({allPostsData}: Props) {
   }, [allPostsData, currentPage])
 
   return (
-    <div className='mx-auto my-0 h-full w-full max-w-7xl py-10 pl-4 max-lg:w-full max-lg:px-4'>
-      <div className='mb-auto h-full w-full divide-y divide-gray-200 dark:divide-gray-700'>
+    <div className='mx-auto my-0 size-full max-w-7xl py-10 pl-4 max-lg:w-full max-lg:px-4'>
+      <div className='mb-auto size-full divide-y divide-gray-200 dark:divide-gray-700'>
         <div className='space-y-2 pb-8 pt-6 md:space-y-5'>
-          <h1 className='md:leading-14 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl dark:text-gray-100'>
+          <h1 className='text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-4'>
             Latest
           </h1>
         </div>
