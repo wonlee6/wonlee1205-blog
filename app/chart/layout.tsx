@@ -10,5 +10,5 @@ export default function ChartsLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <section className='flex flex-auto'>{children}</section>
+  return <section className='flex flex-1'>{children}</section>
 }

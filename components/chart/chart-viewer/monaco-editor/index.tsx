@@ -2,6 +2,7 @@
 
 import React, {useEffect, useRef, useState} from 'react'
 import Editor, {useMonaco} from '@monaco-editor/react'
+import {Runner} from 'react-runner'
 
 type Props = {
   value: string
@@ -15,31 +16,7 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
 
   const [isLoadType, setIsLoadType] = useState(false)
 
-  const handleMount = async () => {
-    try {
-      const getCode = await handleTranspileCode()
-      let code = `
-      const chartDom = document.getElementById('chart');
-      let myChart = echarts.init(chartDom, null, {renderer: 'svg'});
-      window.addEventListener('resize', function() {
-        myChart.resize();
-      })
-      let option;
-      ${getCode}
-          `
-      if (fetchData) {
-        code += `
-      run(${JSON.stringify(fetchData)})
-          `
-      }
-      code += `
-      option && myChart.setOption(option, true, true);
-              `
-      Function(code)()
-    } catch (error) {
-      console.error('Mount error', error)
-    }
-  }
+  const [transpiledCode, setTranspiledCode] = useState<string | null>(null)
 
   const handleTranspileCode = async () => {
     try {
@@ -55,10 +32,38 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
     }
   }
 
+  const handleMount = async () => {
+    try {
+      const getCode = await handleTranspileCode()
+      let code = `
+      const chartDom = document.getElementById('chart');
+      let myChart = echarts.init(chartDom, null, {renderer: 'svg'});
+      window.addEventListener('resize', function() {
+        myChart.resize();
+      }, { passive: true });
+      
+      let option;
+      ${getCode}
+          `
+      if (fetchData) {
+        code += `
+      run(${JSON.stringify(fetchData)})
+          `
+      }
+      code += `
+      option && myChart.setOption(option, true, true);
+              `
+      // Function(code)()
+      setTranspiledCode(code)
+    } catch (error) {
+      console.error('Mount error', error)
+    }
+  }
+
   const handleChange = async (val: string | undefined) => {
     if (typeof val === 'undefined') return
 
-    editorContent.current = val
+    // editorContent.current = val
 
     try {
       const getCode = await handleTranspileCode()
@@ -76,7 +81,8 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
       code += `
       option && myChart.setOption(option, true, true);
               `
-      Function(code)()
+      // Function(code)()
+      setTranspiledCode(code)
     } catch (error) {
       console.error('change event error', error)
     }
@@ -128,7 +134,6 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
         };
 
         const ecStat: any;
-        const d3: any;
         const myChart: echarts.ECharts;
         let option: echarts.EChartsOption;
 
@@ -154,32 +159,35 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
   }, [isLoadType])
 
   return (
-    <Editor
-      width={'100%'}
-      height={'100%'}
-      language='typescript'
-      value={editorContent.current}
-      options={{
-        minimap: {
-          enabled: false
-        },
-        fontSize: 14,
-        scrollbar: {
-          horizontal: 'auto',
-          vertical: 'auto'
-        },
-        readOnly: false,
-        formatOnPaste: true,
-        formatOnType: true,
-        lineNumbers: 'on',
-        automaticLayout: true,
-        autoIndent: 'brackets',
-        wordWrap: 'off'
-        // fixedOverflowWidgets: true
-      }}
-      // onMount={handleMount}
-      onChange={handleChange}
-      path='complexchart'
-    />
+    <>
+      <Editor
+        width={'100%'}
+        height={'100%'}
+        language='typescript'
+        value={editorContent.current}
+        options={{
+          minimap: {
+            enabled: false
+          },
+          fontSize: 14,
+          scrollbar: {
+            horizontal: 'auto',
+            vertical: 'auto'
+          },
+          readOnly: false,
+          formatOnPaste: true,
+          formatOnType: true,
+          lineNumbers: 'on',
+          automaticLayout: true,
+          autoIndent: 'brackets',
+          wordWrap: 'off'
+          // fixedOverflowWidgets: true
+        }}
+        // onMount={handleMount}
+        onChange={handleChange}
+        path='complexchart'
+      />
+      {transpiledCode && <Runner code={transpiledCode} />}
+    </>
   )
 }
