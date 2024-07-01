@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useCallback, useEffect, useLayoutEffect, useState, useTransition} from 'react'
+import React, {useCallback, useEffect, startTransition, useLayoutEffect, useState} from 'react'
 import {usePathname, useRouter} from 'next/navigation'
 import NextLink from 'next/link'
 
@@ -26,8 +26,6 @@ export default function HeaderNaviBar() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
-
-  const [isPending, startTransition] = useTransition()
 
   const handleTheme = useCallback(
     (event: boolean) => {

@@ -43,6 +43,8 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
 
   const handleTranspileCode = async () => {
     try {
+      if (!monaco) return
+
       const worker = await monaco.languages.typescript.getTypeScriptWorker()
       const uri = monaco.Uri.parse('complexchart')
       const client = await worker(uri)
@@ -53,7 +55,7 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
     }
   }
 
-  const handleChange = async (val: string | undefined, ev: any) => {
+  const handleChange = async (val: string | undefined) => {
     if (typeof val === 'undefined') return
 
     editorContent.current = val
@@ -82,7 +84,7 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
 
   const loadTypes = async () => {
     const code = fetchType
-    const tsLang = monaco.languages.typescript
+    const tsLang = monaco!.languages.typescript
     const typescriptDefaults = tsLang.typescriptDefaults
     // validation settings
     typescriptDefaults.setDiagnosticsOptions({

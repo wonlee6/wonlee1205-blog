@@ -5,10 +5,10 @@
   },
   "extends": [
     "eslint:recommended",
+    "plugin:@next/next/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:@next/next/recommended",
-    // "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
@@ -56,10 +56,7 @@
     "no-console": "off",
     "no-undef": "off",
     "no-unused-vars": "off", // 사용하지 않는 변수가 있을때 빌드에러가 나던 규칙 해제
-    // "@typescript-eslint/no-unused-vars": [
-    //   "error",
-    //   { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
-    // ],
+    "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/explicit-function-return-type": "off", // Consider using explicit annotations for object literals and function return types even when they can be inferred.
     "@typescript-eslint/no-explicit-any": 0,
     "no-empty": "warn",
