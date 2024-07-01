@@ -27,7 +27,8 @@ export default function ChartList({selectedMenu}: {selectedMenu: ChartType}) {
                     alt={title}
                     width={800}
                     height={800}
-                    priority={true}
+                    priority
+                    unoptimized
                   />
                 </Link>
               </div>
