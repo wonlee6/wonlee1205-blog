@@ -42,13 +42,15 @@ export default function ChartView({url, getChartType}: props) {
   }
 
   return (
-    <div className='flex size-full rounded bg-default-200 max-md:flex-col'>
-      <div className='h-full w-1/2 p-2 max-md:h-1/2 max-md:w-full'>
-        <MonacoEditor value={value} fetchData={jsonData} fetchType={getChartType} />
+    <>
+      <div className='flex size-full rounded bg-default-200 max-md:flex-col'>
+        <div className='h-full w-1/2 p-2 max-md:h-1/2 max-md:w-full'>
+          <MonacoEditor value={value} fetchData={jsonData} fetchType={getChartType} />
+        </div>
+        <div className='h-full w-1/2 p-2 max-md:h-1/2 max-md:w-full'>
+          <div id='chart' className='relative size-full rounded-sm bg-white p-4'></div>
+        </div>
       </div>
-      <div className='h-full w-1/2 p-2 max-md:h-1/2 max-md:w-full'>
-        <div id='chart' className='relative size-full rounded-sm bg-white p-4'></div>
-      </div>
-    </div>
+    </>
   )
 }
