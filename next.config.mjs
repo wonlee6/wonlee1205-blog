@@ -1,30 +1,30 @@
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
-import createMDX from '@next/mdx'
-
 /** @type {import('next').NextConfig} */
+import withBundleAnalyzer from "@next/bundle-analyzer"
 
+withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true'
+})
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
 //   enabled: process.env.ANALYZE === 'true',
 // })
 
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    optimizePackageImports: ['@nextui-org', 'primereact'],
-    turbo: {
-      rules: {
-        '*.md': [
-          {
-            loader: '@mdx-js/loader',
-            options: {
-              format: 'md',
-            },
-          },
-        ]
-      }
-    }
-  },
+  // experimental: {
+    // optimizePackageImports: ['@nextui-org'],
+    // turbo: {
+    //   rules: {
+    //     '*.md': [
+    //       {
+    //         loader: '@mdx-js/loader',
+    //         options: {
+    //           format: 'md',
+    //         },
+    //       },
+    //     ]
+    //   }
+    // }
+  // },
   // webpack: (config, options) => {
   //   config.module.noParse = [require.resolve('typescript/lib/typescript.js')]
   //   return config
@@ -65,4 +65,5 @@ const nextConfig = {
 //   }
 // })
 
+// export default withBundleAnalyzer(nextConfig);
 export default nextConfig;
