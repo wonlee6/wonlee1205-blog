@@ -1,17 +1,26 @@
-'use client'
+import React from 'react'
 
-import {useEffect, useState} from 'react'
+export const useDebounce = (callback: (...args: any[]) => void, delay: number) => {
+  const callbackRef = React.useRef(callback)
 
-export function useDebounce<T>(value: T, delay?: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+  React.useLayoutEffect(() => {
+    callbackRef.current = callback
+  })
 
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedValue(value), delay || 500)
+  let timer: NodeJS.Timeout
 
-    return () => {
-      clearTimeout(timer)
-    }
-  }, [value, delay])
+  const naiveDebounce = (func: (...args: any[]) => void, delayMs: number, ...args: any[]) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      func(...args)
+    }, delayMs)
+  }
 
-  return debouncedValue
+  return React.useMemo(
+    () =>
+      (...args: any) =>
+        naiveDebounce(callbackRef.current, delay, ...args),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [delay]
+  )
 }

@@ -59,7 +59,7 @@
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/explicit-function-return-type": "off", // Consider using explicit annotations for object literals and function return types even when they can be inferred.
     "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/no-var-requires": "off",
+    // "@typescript-eslint/no-var-requires": "off",
     "no-empty": "warn",
     "prettier/prettier": 0,
     "import/prefer-default-export": ["off"], // export const 문을 쓸때 에러를 내는 규칙 해제

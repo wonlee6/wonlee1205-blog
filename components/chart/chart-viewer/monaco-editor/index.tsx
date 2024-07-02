@@ -1,8 +1,9 @@
 'use client'
 
-import React, {useEffect, useRef, useState} from 'react'
-import Editor, {useMonaco} from '@monaco-editor/react'
+import React, {useRef, useState} from 'react'
+import Editor, {Monaco} from '@monaco-editor/react'
 import {Runner} from 'react-runner'
+import {useDebounce} from '@/hooks/useDebounce'
 
 type Props = {
   value: string
@@ -11,30 +12,22 @@ type Props = {
 }
 
 export default function MonacoEditor({value, fetchData, fetchType}: Props) {
-  const monaco = useMonaco()
+  const monacoInstance = useRef<Monaco | null>(null)
   const editorContent = useRef(value.trim().replace(/export\s+\{\s*\}\s*;?$/g, ''))
 
-  const [isLoadType, setIsLoadType] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const [transpiledCode, setTranspiledCode] = useState<string | null>(null)
 
-  const handleTranspileCode = async () => {
-    try {
-      if (!monaco) return
+  const handleMount = async (editor: any, monaco: Monaco) => {
+    monacoInstance.current = monaco
 
-      const worker = await monaco.languages.typescript.getTypeScriptWorker()
-      const uri = monaco.Uri.parse('complexchart')
-      const client = await worker(uri)
-      const output = await client.getEmitOutput(uri.toString())
-      return output.outputFiles[0].text
-    } catch (e) {
-      console.error('transpile error', e)
-    }
-  }
-
-  const handleMount = async () => {
     try {
+      await loadTypes(fetchType)
+
       const getCode = await handleTranspileCode()
+      if (typeof getCode === 'undefined') return
+
       let code = `
       const chartDom = document.getElementById('chart');
       let myChart = echarts.init(chartDom, null, {renderer: 'svg'});
@@ -53,20 +46,35 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
       code += `
       option && myChart.setOption(option, true, true);
               `
-      // Function(code)()
+
       setTranspiledCode(code)
+      setLoading(false)
     } catch (error) {
       console.error('Mount error', error)
     }
   }
 
-  const handleChange = async (val: string | undefined) => {
-    if (typeof val === 'undefined') return
+  const handleTranspileCode = async () => {
+    try {
+      if (!monacoInstance.current) return
 
-    // editorContent.current = val
+      const worker = await monacoInstance.current.languages.typescript.getTypeScriptWorker()
+      const uri = monacoInstance.current.Uri.parse('sample-chart')
+      const client = await worker(uri)
+      const output = await client.getEmitOutput(uri.toString())
+      return output.outputFiles[0].text
+    } catch (e) {
+      console.error('transpile error', e)
+    }
+  }
+
+  const handleChange = useDebounce(async (val: string | undefined) => {
+    if (typeof val === 'undefined') return
 
     try {
       const getCode = await handleTranspileCode()
+      if (typeof getCode === 'undefined') return
+
       let code = `
       const chartDom = document.getElementById('chart');
       let myChart = echarts.getInstanceByDom(chartDom);
@@ -80,17 +88,18 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
       }
       code += `
       option && myChart.setOption(option, true, true);
-              `
-      // Function(code)()
+      `
+
       setTranspiledCode(code)
     } catch (error) {
       console.error('change event error', error)
     }
-  }
+  }, 250)
 
-  const loadTypes = async () => {
-    const code = fetchType
-    const tsLang = monaco!.languages.typescript
+  const loadTypes = async (fetchType: string) => {
+    if (!monacoInstance.current) return
+
+    const tsLang = monacoInstance.current.languages.typescript
     const typescriptDefaults = tsLang.typescriptDefaults
     // validation settings
     typescriptDefaults.setDiagnosticsOptions({
@@ -103,7 +112,7 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
       allowNonTsExtensions: true,
       noResolve: false
     })
-    typescriptDefaults.addExtraLib(code, 'file:///node_modules/@types/echarts/echarts.d.ts')
+    typescriptDefaults.addExtraLib(fetchType, 'file:///node_modules/@types/echarts/echarts.d.ts')
     typescriptDefaults.addExtraLib(
       `
     import * as echarts from 'echarts';
@@ -141,22 +150,7 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
     }
     `
     )
-    setIsLoadType(true)
   }
-
-  useEffect(() => {
-    if (monaco) {
-      loadTypes()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [monaco])
-
-  useEffect(() => {
-    if (isLoadType) {
-      handleMount()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoadType])
 
   return (
     <>
@@ -165,6 +159,7 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
         height={'100%'}
         language='typescript'
         value={editorContent.current}
+        loading={loading}
         options={{
           minimap: {
             enabled: false
@@ -183,9 +178,9 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
           wordWrap: 'off'
           // fixedOverflowWidgets: true
         }}
-        // onMount={handleMount}
+        onMount={handleMount}
         onChange={handleChange}
-        path='complexchart'
+        path='sample-chart'
       />
       {transpiledCode && <Runner code={transpiledCode} />}
     </>
