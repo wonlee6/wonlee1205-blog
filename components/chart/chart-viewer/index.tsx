@@ -16,7 +16,7 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  Button,
+  Button
 } from '@nextui-org/react'
 
 type props = {
