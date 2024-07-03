@@ -1,4 +1,11 @@
-import {barImageList, complexImageList, lineImageList, pieImageList} from '@/data/ChartImages'
+import {
+  barImageList,
+  funnelImageList,
+  gaugeImageList,
+  sunburstImageList,
+  lineImageList,
+  pieImageList
+} from '@/data/ChartImages'
 import {ChartType} from './../model/Chart.model'
 
 export const ChartHelper = {
@@ -7,7 +14,9 @@ export const ChartHelper = {
       {name: ChartType.Line},
       {name: ChartType.Bar},
       {name: ChartType.Pie},
-      {name: ChartType.Complex}
+      {name: ChartType.Funnel},
+      {name: ChartType.Sunburst},
+      {name: ChartType.Gauge}
     ]
   },
 
@@ -19,8 +28,12 @@ export const ChartHelper = {
         return barImageList
       case ChartType.Pie:
         return pieImageList
-      case ChartType.Complex:
-        return complexImageList
+      case ChartType.Funnel:
+        return funnelImageList
+      case ChartType.Sunburst:
+        return sunburstImageList
+      case ChartType.Gauge:
+        return gaugeImageList
       default:
         return []
     }

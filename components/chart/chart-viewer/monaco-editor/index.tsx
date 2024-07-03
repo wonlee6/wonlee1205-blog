@@ -44,27 +44,15 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
           `
       }
       code += `
-      option && myChart.setOption(option, true, true);
-              `
+      if (option && typeof option === "object") {
+        myChart.setOption(option, true, true);
+      }
+      `
 
       setTranspiledCode(code)
       setLoading(false)
     } catch (error) {
       console.error('Mount error', error)
-    }
-  }
-
-  const handleTranspileCode = async () => {
-    try {
-      if (!monacoInstance.current) return
-
-      const worker = await monacoInstance.current.languages.typescript.getTypeScriptWorker()
-      const uri = monacoInstance.current.Uri.parse('sample-chart')
-      const client = await worker(uri)
-      const output = await client.getEmitOutput(uri.toString())
-      return output.outputFiles[0].text
-    } catch (e) {
-      console.error('transpile error', e)
     }
   }
 
@@ -87,7 +75,9 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
           `
       }
       code += `
-      option && myChart.setOption(option, true, true);
+      if (option && typeof option === "object") {
+        myChart.setOption(option, true, true);
+      }
       `
 
       setTranspiledCode(code)
@@ -95,6 +85,20 @@ export default function MonacoEditor({value, fetchData, fetchType}: Props) {
       console.error('change event error', error)
     }
   }, 250)
+
+  const handleTranspileCode = async () => {
+    try {
+      if (!monacoInstance.current) return
+
+      const worker = await monacoInstance.current.languages.typescript.getTypeScriptWorker()
+      const uri = monacoInstance.current.Uri.parse('sample-chart')
+      const client = await worker(uri)
+      const output = await client.getEmitOutput(uri.toString())
+      return output.outputFiles[0].text
+    } catch (e) {
+      console.error('transpile error', e)
+    }
+  }
 
   const loadTypes = async (fetchType: string) => {
     if (!monacoInstance.current) return
