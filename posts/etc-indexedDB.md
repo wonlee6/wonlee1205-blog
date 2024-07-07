@@ -160,6 +160,15 @@ import CryptoJS from 'crypto-js'
 // uuid 통해 만든 키
 const secretKey = 'f60ef0e0-cf85-414e-a094-c1bb3e4bc947'
 
+const encryptData = (data: string): string => {
+  return CryptoJS.AES.encrypt(data, secretKey).toString()
+}
+
+const decryptData = (data: string): string => {
+  const bytes = CryptoJS.AES.decrypt(data, secretKey)
+  return bytes.toString(CryptoJS.enc.Utf8)
+}
+
 // 위 openDatabase 함수 내 autoIncrement 제거
 // ...
 export const addItem = async (item: Omit<Item, 'id'>): Promise<void> => {
