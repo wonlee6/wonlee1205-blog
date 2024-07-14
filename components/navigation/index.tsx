@@ -6,7 +6,6 @@ import NextLink from 'next/link'
 
 import {
   Navbar,
-  NavbarBrand,
   NavbarContent,
   NavbarItem,
   NavbarMenuToggle,
@@ -66,14 +65,11 @@ export default function HeaderNaviBar() {
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
         className='shadow-md backdrop-blur-sm dark:border-b dark:border-b-default-400 dark:text-neutral-50'>
-        <NavbarContent>
+        <NavbarContent justify='start'>
           <NavbarMenuToggle
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             className='sm:hidden'
           />
-          <NavbarBrand>
-            <p className='text-2xl font-bold text-inherit'>꼬비 집사 블로그</p>
-          </NavbarBrand>
         </NavbarContent>
 
         <NavbarContent className='hidden gap-4 sm:flex' justify='end'>
@@ -83,7 +79,6 @@ export default function HeaderNaviBar() {
               as={NextLink}
               color={pathName.includes('post') || pathName === '/' ? 'primary' : 'foreground'}
               underline={pathName.includes('post') || pathName === '/' ? 'always' : 'none'}
-              size='lg'
               isBlock>
               Post
             </Link>
@@ -94,24 +89,31 @@ export default function HeaderNaviBar() {
               as={NextLink}
               underline={pathName === '/chart' ? 'always' : 'none'}
               color={pathName === '/chart' ? 'primary' : 'foreground'}
-              size='lg'
               isBlock>
               Chart
             </Link>
           </NavbarItem>
-        </NavbarContent>
-        <NavbarContent justify='end'>
-          <NavbarItem>
-            <Switch
-              isSelected={isDarkMode}
-              size='lg'
-              color='default'
-              startContent={<NavIcons.Moon />}
-              endContent={<NavIcons.Sun />}
-              onValueChange={handleTheme}
-            />
+          <NavbarItem isActive={pathName === '/about'}>
+            <Link
+              href={'/about'}
+              as={NextLink}
+              underline={pathName === '/about' ? 'always' : 'none'}
+              color={pathName === '/about' ? 'primary' : 'foreground'}
+              isBlock>
+              About
+            </Link>
           </NavbarItem>
         </NavbarContent>
+
+        <Switch
+          isSelected={isDarkMode}
+          size='lg'
+          color='default'
+          startContent={<NavIcons.Moon />}
+          endContent={<NavIcons.Sun />}
+          onValueChange={handleTheme}
+        />
+
         <NavbarMenu className='gap-y-4'>
           <NavbarMenuItem>
             <Button
@@ -124,6 +126,17 @@ export default function HeaderNaviBar() {
               size='lg'
               variant='ghost'>
               Post
+            </Button>
+            <Button
+              onClick={() => {
+                setIsMenuOpen(false)
+                router.push('/about')
+              }}
+              color='primary'
+              className='w-full'
+              size='lg'
+              variant='ghost'>
+              About
             </Button>
           </NavbarMenuItem>
         </NavbarMenu>
