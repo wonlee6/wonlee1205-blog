@@ -93,7 +93,7 @@ export default function HeaderNaviBar() {
               Chart
             </Link>
           </NavbarItem>
-          <NavbarItem isActive={pathName === '/about'}>
+          {/* <NavbarItem isActive={pathName === '/about'}>
             <Link
               href={'/about'}
               as={NextLink}
@@ -102,7 +102,7 @@ export default function HeaderNaviBar() {
               isBlock>
               About
             </Link>
-          </NavbarItem>
+          </NavbarItem> */}
         </NavbarContent>
 
         <Switch
