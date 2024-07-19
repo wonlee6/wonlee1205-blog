@@ -230,3 +230,29 @@ if (hasData) {
 ```
 
 이런식으로도 가능합니다.
+
+--- 추가
+
+### IndexedDB 삭제하기
+
+```ts
+export const addItem = async (key: string): Promise<void> => {
+  const db = await openDatabase()
+  return new Promise((resolve, reject) => {
+    // 트랜잭션 생성 (읽기/쓰기 모드)
+    const transaction = db.transaction('items', 'readwrite') // readonly, readwrite
+    // 객체 저장소 접근
+    const store = transaction.objectStore('items')
+    // 데이터 추가
+    const request = store.delete(key)
+
+    request.onsuccess = () => {
+      resolve()
+    }
+
+    request.onerror = (event) => {
+      reject((event.target as IDBRequest).error)
+    }
+  })
+}
+```
