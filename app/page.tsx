@@ -3,11 +3,20 @@ import {getSortedPostsData} from '@/lib/posts'
 import HomePage from '@/components/main'
 
 export const metadata: Metadata = {
-  title: '꼬비 집사의 프론트 엔드 관련 기술 블로그',
-  description: '프론트 엔드 기술 블로그',
-  authors: {name: 'Sangwon', url: 'https://wonlee1205-blog.vercel.app/'},
-  keywords: ['react', 'nextjs', 'javascript', 'typescript', 'frontend', '프론트 엔드'],
-  creator: 'Sangwon',
+  title: '꼬비 집사의 프론트 엔드 기술 블로그',
+  description: '프론트 엔드 기술 블로그, front-end dev',
+  authors: [{name: 'Sangwon', url: 'https://wonlee1205-blog.vercel.app/'}],
+  keywords: [
+    'react',
+    'nextjs',
+    'javascript',
+    'typescript',
+    'frontend',
+    'recoil',
+    'tailwindcss',
+    '프론트 엔드'
+  ],
+  creator: 'sang won',
   openGraph: {
     type: 'website',
     countryName: 'Korea',

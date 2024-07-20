@@ -15,20 +15,22 @@ export type Post = {
 
 export async function generateMetadata({params}: {params: {slug: string}}): Promise<Metadata> {
   const postData = (await getPostData(params.slug)) as Post
+
   return {
     title: postData.title,
     description: postData.description,
-    authors: {name: 'Sangwon', url: 'https://wonlee1205-blog.vercel.app/'},
-    creator: 'Sangwon',
-    keywords: postData.tag,
+    authors: [{name: 'sang won', url: `https://wonlee1205-blog.vercel.app/post/${params.slug}`}],
+    creator: 'sang won',
+    keywords: postData.tag.split(',').map((tag) => tag.trim()),
     openGraph: {
       type: 'article',
       countryName: 'South Korea',
       locale: 'ko',
       description: postData.description,
-      title: postData.title
+      title: postData.title,
+      url: `https://wonlee1205-blog.vercel.app/post/${params.slug}`
     },
-    metadataBase: new URL('https://wonlee1205-blog.vercel.app/')
+    metadataBase: new URL(`https://wonlee1205-blog.vercel.app/post/${params.slug}`)
   }
 }
 
