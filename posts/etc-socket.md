@@ -246,7 +246,9 @@ export default function WebSocketCompo() {
 
 ![img](https://i.ibb.co/PmJpbpv/2024-07-20-4-45-45.png)
 
-### 마무리
+### 정리
+
+> `emit`은 방송 내보내고, `Broadcasting` 방송을 청취
 
 서로 다른 브라우저 탭에서 접속한 후, 메세지를 보내는 것까지 만들어봤습니다.
 
