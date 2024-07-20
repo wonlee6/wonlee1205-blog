@@ -2,8 +2,8 @@
 
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 
-import prettier from 'prettier/standalone'
-import tsPrinter from 'prettier/parser-typescript'
+import * as prettier from 'prettier/standalone'
+import * as tsPrinter from 'prettier/parser-typescript'
 import * as prettierPluginEstree from 'prettier/plugins/estree'
 
 import MonacoEditor from './monaco-editor'
@@ -101,7 +101,7 @@ export default function ChartView({url, getChartType}: props) {
         <ModalContent>
           {(onClose: () => void) => (
             <>
-              <ModalHeader className='flex flex-col gap-1'>Modal Title</ModalHeader>
+              <ModalHeader className='flex flex-col gap-1'>All Chart Options</ModalHeader>
               <ModalBody>
                 <Editor
                   key='option-modal'

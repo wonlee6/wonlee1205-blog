@@ -43,7 +43,7 @@ export default async function PostPage({params}: {params: {slug: string}}): Prom
 
   return (
     <>
-      <div className='mx-auto pl-4'>
+      <div className='flex flex-col justify-between p-4'>
         {postData.contentHtml && (
           <div className='prose prose-neutral mb-4 w-full dark:prose-invert 2xl:prose-base prose-headings:underline dark:prose-blockquote:text-black'>
             <MarkdownViwer contentHtml={postData.contentHtml} />

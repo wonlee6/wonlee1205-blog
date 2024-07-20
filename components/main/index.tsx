@@ -2,7 +2,7 @@
 
 import {useMemo, useState} from 'react'
 import Link from 'next/link'
-import {Pagination} from '@nextui-org/react'
+import {Chip, Pagination} from '@nextui-org/react'
 import {PostData} from '@/lib/posts'
 
 type Props = {
@@ -26,8 +26,8 @@ export default function HomePage({allPostsData}: Props) {
   }, [allPostsData, currentPage])
 
   return (
-    <div className='mx-auto my-0 size-full max-w-7xl py-10 pl-4 max-lg:w-full max-lg:px-4'>
-      <div className='mb-auto size-full divide-y divide-gray-200 dark:divide-gray-700'>
+    <div className='mt-10 size-full max-lg:px-4'>
+      <div className='size-full divide-y divide-gray-200 dark:divide-gray-700'>
         <div className='space-y-2 pb-8 pt-6 md:space-y-5'>
           <h1 className='text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-4'>
             Latest
@@ -46,11 +46,15 @@ export default function HomePage({allPostsData}: Props) {
                   </dl>
                   <div className='space-y-5 xl:col-span-3'>
                     <div className='space-y-6'>
-                      <div>
+                      <div className='flex flex-col gap-1'>
                         <h2 className='text-2xl font-bold leading-8 tracking-tight'>
                           {item.title}
                         </h2>
-                        <div className='flex flex-wrap'>{item.tag}</div>
+                        <div className='flex flex-wrap'>
+                          <Chip color='warning' variant='flat'>
+                            {item.tag}
+                          </Chip>
+                        </div>
                       </div>
                       <div className='prose max-w-none text-gray-500 dark:text-gray-400'>
                         {item.description ?? ''}

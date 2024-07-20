@@ -21,8 +21,8 @@ npm i -D prettier
 
 ```jsx
 // in something component
-import prettier from 'prettier/standalone'
-import tsPrinter from 'prettier/parser-typescript'
+import * as prettier from 'prettier/standalone'
+import * as tsPrinter from 'prettier/parser-typescript'
 import * as prettierPluginEstree from 'prettier/plugins/estree'
 ```
 
@@ -38,12 +38,12 @@ chartOption.current = await prettier.format(`option = ${JSON.stringify(getChartO
 })
 ```
 
-#### before
+### before
 
 ![before](https://i.ibb.co/fdS1kcK/before.png)
 
-#### after
+### after
 
-![after](https://i.ibb.co/4KMxyqQ/after.png)
+[![2024-07-20-8-15-36.png](https://i.postimg.cc/15wpN40q/2024-07-20-8-15-36.png)](https://postimg.cc/cr1Kpxbx)
 
 typescipt 말고도 다른 parser 옵션이 많으니 참고하면 된다.

@@ -17,10 +17,10 @@ export default function RootLayout({
     <html lang='en' className='light' suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
-          <div className='relative flex h-screen flex-col'>
+          <div className='relative flex min-h-dvh flex-col'>
             <HeaderNaviBar />
 
-            <main className='flex flex-1'>{children}</main>
+            <main className='flex flex-auto'>{children}</main>
           </div>
         </Providers>
         <Analytics />
