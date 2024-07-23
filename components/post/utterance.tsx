@@ -5,7 +5,6 @@ import React, {memo} from 'react'
 function Utterance(): JSX.Element {
   return (
     <section
-      className='w-3/4'
       ref={(elem): void => {
         if (!elem) return
 
@@ -19,6 +18,7 @@ function Utterance(): JSX.Element {
 
         elem.appendChild(scriptElment)
       }}
+      className='w-3/4'
     />
   )
 }
