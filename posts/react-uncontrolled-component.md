@@ -187,6 +187,10 @@ function App() {
 
 checkbox1만 체크하고 서브밋 버튼을 누르게 되면
 
-각각 true, false를 확인 할 수 있다.
+각각 `true`, `false` 확인 할 수 있다.
+
+> 즉, HTMLFormElement > HTMLFormControlsCollection 정의한 elements에 접근 할 수 있다.
+
+~~Ref 없이~~
 
 [출처](https://www.epicreact.dev/how-to-type-a-react-form-on-submit-handler)

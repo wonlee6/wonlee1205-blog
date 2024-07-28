@@ -13,6 +13,7 @@ export type Tag =
   | 'Typescript'
   | 'Java'
   | 'Etc'
+  | 'All'
 
 export interface PostData {
   id: string

@@ -3,15 +3,15 @@
 import {useMemo, useState} from 'react'
 import Link from 'next/link'
 import {Chip, Pagination} from '@nextui-org/react'
-import {PostData} from '@/lib/posts'
+import {PostData, Tag} from '@/lib/posts'
 
 type Props = {
   allPostsData: PostData[]
 }
 
 export default function HomePage({allPostsData}: Props) {
-  const postsLength = Math.ceil(allPostsData.length / 10)
   const [currentPage, setCurrentPage] = useState(1)
+  const [selectedTag, setSelectedTag] = useState<Tag>()
 
   const handlePagination = (page: number) => {
     setCurrentPage(page)
@@ -21,17 +21,55 @@ export default function HomePage({allPostsData}: Props) {
     })
   }
 
+  const handleSelectTag = (tag: Tag) => {
+    setSelectedTag(tag)
+    setCurrentPage(1)
+  }
+
   const filteredPostsData = useMemo(() => {
-    return [...allPostsData].slice(currentPage * 10 - 10, currentPage * 10)
-  }, [allPostsData, currentPage])
+    if (selectedTag && selectedTag !== 'All') {
+      return allPostsData
+        .filter((v) => v.tag === selectedTag)
+        .slice(currentPage * 10 - 10, currentPage * 10)
+    }
+    return allPostsData.slice(currentPage * 10 - 10, currentPage * 10)
+  }, [allPostsData, currentPage, selectedTag])
+
+  const postsLength = useMemo(() => {
+    if (selectedTag && selectedTag !== 'All') {
+      const filteredTagArr = allPostsData.filter((v) => v.tag === selectedTag)
+      return Math.ceil(filteredTagArr.length / 10)
+    }
+    return Math.ceil(allPostsData.length / 10)
+  }, [allPostsData, selectedTag])
+
+  const filteredTags = useMemo(() => {
+    return [...new Set(allPostsData.map((i) => i.tag)), 'All']
+  }, [allPostsData])
 
   return (
-    <div className='mt-10 size-full max-lg:px-4'>
+    <div className='mt-4 size-full max-lg:px-4'>
       <div className='size-full divide-y divide-gray-200 dark:divide-gray-700'>
-        <div className='space-y-2 pb-8 pt-6 md:space-y-5'>
-          <h1 className='text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-4'>
-            Latest
-          </h1>
+        <div className='flex w-full justify-between pb-8 pt-6 max-md:flex-col max-md:gap-4'>
+          <div className='flex w-1/5 items-center'>
+            <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-4'>
+              Latest
+            </h1>
+          </div>
+
+          <div className='flex w-3/5 flex-wrap gap-2'>
+            {filteredTags.map((item) => (
+              <Chip
+                key={item}
+                className='cursor-pointer'
+                onClick={() => handleSelectTag(item as Tag)}
+                size='sm'
+                color={selectedTag === item ? 'warning' : 'default'}
+                variant='flat'>
+                {item}
+              </Chip>
+            ))}
+          </div>
         </div>
         <ul className='divide-y divide-gray-200 dark:divide-gray-700'>
           {filteredPostsData.map((item) => (
@@ -51,7 +89,12 @@ export default function HomePage({allPostsData}: Props) {
                           {item.title}
                         </h2>
                         <div className='flex flex-wrap'>
-                          <Chip color='warning' variant='flat'>
+                          <Chip
+                            onClick={() => handleSelectTag(item.tag)}
+                            className='cursor-pointer'
+                            color='warning'
+                            variant='flat'
+                            size='sm'>
                             {item.tag}
                           </Chip>
                         </div>
