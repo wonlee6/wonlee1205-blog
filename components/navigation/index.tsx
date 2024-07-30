@@ -128,7 +128,7 @@ export default function HeaderNaviBar() {
               variant='ghost'>
               Post
             </Button>
-            <Button
+            {/* <Button
               onClick={() => {
                 setIsMenuOpen(false)
                 router.push('/about')
@@ -138,7 +138,7 @@ export default function HeaderNaviBar() {
               size='lg'
               variant='ghost'>
               About
-            </Button>
+            </Button> */}
           </NavbarMenuItem>
         </NavbarMenu>
       </Navbar>

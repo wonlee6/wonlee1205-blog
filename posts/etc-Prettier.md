@@ -1,8 +1,8 @@
 ---
-title: 'Prettier 사용하여 코드 정렬(vsCode expansion 아님)'
+title: 'Prettier 사용하여 코드 정렬(vsCode extansion 아님)'
 date: '2024-07-01'
 tag: 'Etc'
-description: 'Prettier 사용하여 코드 정렬 하는 방법(vsCode expansion 아님)'
+description: 'Prettier 사용하여 코드 정렬 하는 방법(vsCode extansion 아님)'
 ---
 
 아마 대부분 vsCode 확장프로그램인 prettier 통해 코드 정렬하는 방법은 잘 알지만
