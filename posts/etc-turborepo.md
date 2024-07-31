@@ -15,7 +15,7 @@ description: 'Turborepo 설치 및 실습해보고 prettier 적용해보기'
 
 ## Monorepo 문제점
 
-확장에 어려움을 겪기 때문에 속도 저하 이슈가 생길 수 있음
+확장에 어려움을 겪기 때문에 퍼포먼스 저하 이슈가 생길 수 있음
 
 ## 솔루션
 
@@ -27,7 +27,7 @@ description: 'Turborepo 설치 및 실습해보고 prettier 적용해보기'
 - 원경 캐시로 동일한 작업을 진행 안함
 - 모든 사용 가능한 코어에서 작업을 병렬화하여 최대 속도로 작업을 예약
 
-위 내용은 공식 홈페이지 소개 글을 인용함
+위 내용은 공식 홈페이지 소개 글을 인용
 
 ## 설치
 
@@ -45,7 +45,7 @@ npm install turbo --save-dev
 
 - template 사용할 때
 
-next js
+디폴트가 nextjs
 
 ```
 npx create-turbo@latest
@@ -73,13 +73,12 @@ npx create-turbo@latest -e with-vite
 
 ```json
 // root > pacakage.json
-
 {
   "workspaces": ["apps/*", "packages/*"]
 }
 ```
 
-`workspaces`에 어플리케이션, 이외의것들을(라이브러리, 공통으로 사용하는 config 등) 분리하는것이 좋다.
+`workspaces`에 어플리케이션과 라이브러리 및 공통으로 사용하는 config 등을 분리
 
 예시
 
@@ -98,15 +97,15 @@ npx create-turbo@latest -e with-vite
 }
 ```
 
-root에 있는 `turbo.json`은 동작을 구성하는 데 사용
+root에 있는 `turbo.json`은 turbo의 동작을 구성하는 데 사용
 
-> [참조](https://turbo.build/repo/docs/crafting-your-repository/configuring-tasks)
+[참조](https://turbo.build/repo/docs/crafting-your-repository/configuring-tasks)
 
 `package-lock.json`은 turbo가 동작하는데 핵심이며 내부 패키지 간의 종속성을 이해함
 
 ## 공통 모듈 추가
 
-### 공통으로 쓸 함수를 만들어서 어플리케이션에서 임포트하는 방법 실습
+### 공통으로 쓸 함수를 만들어서 어플리케이션에서 임포트하는 방법
 
 1. packages 폴더 내 math 폴더 추가
 2. math 폴더 내 package.json 추가
@@ -136,8 +135,8 @@ root에 있는 `turbo.json`은 동작을 구성하는 데 사용
 }
 ```
 
-- `export` 통해 다른 패키지에서도 사용할 수 있도록 함
-- `devDependencies` 통해 해당 패키지가 사용하는 종속성 선언 (typescript, @repo/typescript-config)
+- `export`: 다른 패키지에서도 사용할 수 있도록 함
+- `devDependencies`: 해당 패키지가 사용하는 종속성 선언 (typescript, @repo/typescript-config 등...)
 
 3. tsconfig.json 추가
 
@@ -153,7 +152,7 @@ root에 있는 `turbo.json`은 동작을 구성하는 데 사용
 }
 ```
 
-- 위에서 devDependencies 내 `@repo/typescript-config` 종속성을 선언했기 때문에 해당 파일을 가져올 수 있다.
+- 위에서 devDependencies > `@repo/typescript-config` 종속성을 선언했기 때문에 해당 파일을 가져올 수 있다.
 - `outDir`: TypeScript 컴파일된 곳
 - `rootDir`: src 디렉토리와 동일한 구조를 사용하는지 확인
 
@@ -199,7 +198,7 @@ export default Page
 }
 ```
 
-bulid 시 캐시하기 위해
+turbo는 빌드 할때 output에 정의한 파일(폴더)을 찾아서 빌드함(캐시도)
 
 루트로 돌아와 `turbo build` 실행 후 웹으로 확인할 수 있다.
 
@@ -218,6 +217,7 @@ root > packages > config-prettier
 > .prettierrc
 
 ```json
+// packages/config-prettier/.prettierrc
 {
   "printWidth": 90,
   "bracketSpacing": true,
@@ -230,7 +230,7 @@ root > packages > config-prettier
 }
 ```
 
-위와 같이 정의해주고
+위와 같이 prettier 정의해주고
 
 3. package.json 생성
 
@@ -288,6 +288,6 @@ root > packages > config-prettier
 멀티 레포인 경우 공통으로 사용되는 UI 또는 config 파일 등을 분리하여 Packages 라는 곳에 정의하고
 어플리케이션에서 가져와 사용하고 빌드 캐싱도 되기 때문에 정말 좋은 것 같다.
 
-현재 회사에선 멀티레포를 사용하고 있지만, 중복되는 노드 모듈과 다른 레포에 의존적인 부분이 많아서 불편했는데 Turborepo를 사용하고 싸악 치료되었습니다.
+현재 회사에선 멀티레포같은 멀티레포가를 사용하고 있지만, 중복되는 노드 모듈과 다른 레포에 의존적인 부분이 많아서 불편했는데 Turborepo를 사용하고 싸악 치료되었습니다.
 
 ~~회사 내에도 도입하고 싶지만...~~
