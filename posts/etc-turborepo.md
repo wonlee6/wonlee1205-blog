@@ -175,6 +175,8 @@ export const add = (a: number, b: number) => a + b
   },
 ```
 
+web - package.json에 @repo/math 추가 후
+
 ```jsx
 // apps/web/src/app/page.tsx
 import {add} from '@repo/math/add'
@@ -186,10 +188,11 @@ function Page() {
 export default Page
 ```
 
+web - 컴포넌트에 @repo/math/add 임포트 후 반영
+
 6. turbo.json 수정
 
 ```json
-{
 "tasks": {
   "build": {
     "dependsOn": ["^build"],
