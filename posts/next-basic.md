@@ -136,13 +136,13 @@ const {slug, from} = route.query
 
 `route.push`를 이용하여 원하는 URL로 이동 가능
 
-- ex) route.push('/category/food?date=2022/12/22')
+- ex) `route.push('/category/food?date=2022/12/22')`
 
 ### URL를 바꾸는 방법
 
-1. location.replace("url"): 로컬 state 유지 안됨(리렌더)
-2. route.push(url): 로컬 state 유지, data fetching
-3. rotue.push(url, as, { shallow: true}): 로컬 state 유지, data fetching X
+1. `location.replace("url")`: 로컬 state 유지 안됨(리렌더)
+2. `route.push(url)`: 로컬 state 유지, data fetching
+3. `rotue.push(url, as, { shallow: true})`: 로컬 state 유지, data fetching X
 
 ```tsx
 location.replace('/myInfo/setting?status=editing') // 초기로 돌아감
@@ -189,10 +189,7 @@ const router = useRouter()
 type Data = {
   name: string
 }
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
+export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   const {uid} = req.query
   const cokies = req.cookies
   res.status(200).json({name: `John Doe ${uid}`})
@@ -214,10 +211,7 @@ useEffect(() => {
 ### 쿠키 및 에러, reDirect
 
 ```ts
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
+export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   const {uid} = req.query
   const cokies = req.cookies
   // res

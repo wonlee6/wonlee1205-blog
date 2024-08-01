@@ -13,7 +13,7 @@ description: 'javascript 핵심인 EventLoop에 대한 정리 글'
 
 ![event](https://res.cloudinary.com/practicaldev/image/fetch/s--44yasyNX--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://devtolydiahallie.s3-us-west-1.amazonaws.com/gid1.6.gif)
 
-respond 함수는 setTimeout함수를 반환합니다. setTimeout함수는 Web API에서 제공되는 함수로, 메인 스레드를 막지 않고 작업을 지연시킬 수 있습니다. setTimeout에 전달한 콜백 함수인 화살표 함수 ()=>{return 'Hey'}가 Web API에 추가됩니다. 그동안 setTimeout 함수와 respond 함수는 그들의 값을 반환했으니, 스택에서 빠져나옵니다.
+respond 함수는 setTimeout함수를 반환합니다. setTimeout함수는 Web API에서 제공되는 함수로, 메인 스레드를 막지 않고 작업을 지연시킬 수 있습니다. setTimeout에 전달한 콜백 함수인 화살표 함수 `()=>{return 'Hey'}`가 Web API에 추가됩니다. 그동안 setTimeout 함수와 respond 함수는 그들의 값을 반환했으니, 스택에서 빠져나옵니다.
 
 ![event](https://res.cloudinary.com/practicaldev/image/fetch/s--d_n4m4HH--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://devtolydiahallie.s3-us-west-1.amazonaws.com/gif2.1.gif)
 
@@ -25,11 +25,11 @@ Web API 안에서, 타이머는 setTimeout에 전달한 두 번째 인자 1000ms
 
 이제 우리가 기다리던, 이벤트 루프의 유일한 작업(큐와 콜 스택의 연결)을 수행할 시간입니다! 콜 스택이 비어있다면, 즉 이전에 호출되었던 모든 함수가 값을 반환하고 콜 스택을 빠져나갔다면, 큐에 있는 첫 번째 요소가 콜 스택에 추가됩니다. 이 경우, 다른 함수는 호출되지 않았고, 이는 콜백 함수가 큐의 첫 번째 요소일 때 콜스택이 비어있었음을 의미합니다.
 
-![](https://res.cloudinary.com/practicaldev/image/fetch/s--b2BtLfdz--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://devtolydiahallie.s3-us-west-1.amazonaws.com/gif4.gif)
+![event](https://res.cloudinary.com/practicaldev/image/fetch/s--b2BtLfdz--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://devtolydiahallie.s3-us-west-1.amazonaws.com/gif4.gif)
 
 콜백 함수가 콜 스택에 추가되고, 호출되고, 값을 반환하고, 스택을 빠져나갑니다.
 
-![](https://res.cloudinary.com/practicaldev/image/fetch/s--NYOknEYi--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://devtolydiahallie.s3-us-west-1.amazonaws.com/gif5.gif)
+![event](https://res.cloudinary.com/practicaldev/image/fetch/s--NYOknEYi--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://devtolydiahallie.s3-us-west-1.amazonaws.com/gif5.gif)
 
 콜백이 콜 스택에 추가되고 실행되고, 이 값을 반환한 후에 콜스택에서 나오게 됩니다.
 
@@ -44,7 +44,7 @@ foo()
 baz()
 ```
 
-![](https://res.cloudinary.com/practicaldev/image/fetch/s--BLtCLQcd--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://devtolydiahallie.s3-us-west-1.amazonaws.com/gif14.1.gif)
+![event](https://res.cloudinary.com/practicaldev/image/fetch/s--BLtCLQcd--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_66%2Cw_880/https://devtolydiahallie.s3-us-west-1.amazonaws.com/gif14.1.gif)
 
 1. bar를 호출해서 setTimeout을 반환합니다.
 2. setTimeout에 전달한 콜백은 Web API에 추가되고, setTimeout, bar는 콜스택에서 빠져나옵니다.

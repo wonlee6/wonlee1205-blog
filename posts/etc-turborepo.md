@@ -24,7 +24,7 @@ description: 'Turborepo 설치 및 실습해보고 prettier 적용해보기'
 ### Turborepo
 
 - 모노레포의 스케일링 문제를 해결함
-- 원경 캐시로 동일한 작업을 진행 안함
+- 원격 캐시로 동일한 작업을 진행 안함
 - 모든 사용 가능한 코어에서 작업을 병렬화하여 최대 속도로 작업을 예약
 
 위 내용은 공식 홈페이지 소개 글을 인용
@@ -175,7 +175,7 @@ export const add = (a: number, b: number) => a + b
   },
 ```
 
-web - package.json에 @repo/math 추가 후
+web > package.json에 `@repo/math` 추가 후
 
 ```jsx
 // apps/web/src/app/page.tsx
@@ -188,7 +188,7 @@ function Page() {
 export default Page
 ```
 
-web - 컴포넌트에 @repo/math/add 임포트 후 반영
+web - 컴포넌트에 `@repo/math/add` 임포트 후 반영
 
 6. turbo.json 수정
 
@@ -250,7 +250,7 @@ root > packages > config-prettier
 
 4. web 수정
 
-- .prettierrc 만들고
+- `.prettierrc` 만들고
 
 ```json
 // apps/web/.prettierrc

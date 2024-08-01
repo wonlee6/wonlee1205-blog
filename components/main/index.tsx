@@ -49,7 +49,7 @@ export default function HomePage({allPostsData}: Props) {
 
   return (
     <div className='mt-4 size-full max-lg:px-4'>
-      <div className='size-full divide-y divide-gray-200 dark:divide-gray-700'>
+      <div className='size-full divide-y divide-gray-200 pb-12 dark:divide-gray-700'>
         <div className='flex w-full justify-between pb-8 pt-6 max-md:flex-col max-md:gap-4'>
           <div className='flex w-1/5 items-center'>
             <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-4'>

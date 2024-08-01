@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
-import withBundleAnalyzer from "@next/bundle-analyzer"
+import withBundleAnalyzer from '@next/bundle-analyzer'
+// import createMDX from '@next/mdx'
+// import remarkGfm from 'remark-gfm'
+// import rehypeRaw from 'rehype-raw'
 
 withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
@@ -61,9 +64,10 @@ const nextConfig = {
 //   // Add markdown plugins here, as desired
 //   options: {
 //     remarkPlugins: [remarkGfm],
-//     rehypePlugins: [rehypeRaw],
+//     rehypePlugins: [rehypeRaw]
 //   }
 // })
 
 // export default withBundleAnalyzer(nextConfig);
-export default nextConfig;
+// export default withMDX(nextConfig)
+export default nextConfig

@@ -13,8 +13,8 @@
     // "plugin:import/warnings",
     // "plugin:import/typescript",
     "plugin:jsx-a11y/recommended",
-    "plugin:tailwindcss/recommended",
-    "plugin:prettier/recommended"
+    "plugin:tailwindcss/recommended"
+    // "plugin:prettier/recommended"
   ],
   "plugins": [
     "react",
@@ -79,7 +79,7 @@
           "{}": false
         }
       }
-    ]
+    ],
     // "react/jsx-sort-props": [
     //   "warn",
     //   {
@@ -89,6 +89,7 @@
     //     "reservedFirst": true
     //   }
     // ]
+    "tailwindcss/no-custom-classname": "off"
   },
   "settings": {
     "react": {

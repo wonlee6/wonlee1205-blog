@@ -39,7 +39,6 @@ description: 'spring boot와 JPA 이용하여 간단한 CRUD 구현'
 1. api : Restfull API 컨트롤러 기능 수행
 
 ```java
-
 @RestController
 public class ArticleApiController {
 
@@ -96,7 +95,7 @@ public class ArticleApiController {
 
 `API`를 다루는 클래스는 `@RestController` 어노테이션을 반드시 달아주어야 한다. 그리고 `api method`에 따라, `@GetMapping`, `@PostMapping` 등의 어노테이션을
 달아준다.  
-맵핑 URL 부분에 {id} 와 같이 값을 전달 받을 때에는 `@PathVariable`를 사용하며,
+맵핑 URL 부분에 id 와 같이 값을 전달 받을 때에는 `@PathVariable`를 사용하며,
 `body`로 부터 데이터를 전달 받을 때는 `@RequestBody`로 선언해주면 된다. 결과적으로 값을 받아와서 리턴해주는 역할을 진행하고 데이터 처리같은 세부적인 일은 `service`에 위임한다.
 
 2. controller : api 처리 로직 외의 역할을 하고 있다.
@@ -239,9 +238,13 @@ public class CommentDto {
 }
 ```
 
-`lombok` 이용하여 간결하게 어노테이션을 선언하는 걸로 끝낼 수 있다.  
-@JsonProperty("article_id")  
-private Long articleId;  
+`lombok` 이용하여 간결하게 어노테이션을 선언하는 걸로 끝낼 수 있다.
+
+```java
+@JsonProperty("article_id")
+private Long articleId;
+```
+
 위 코드의 어노테이션은 `article_id`를 받아와 `articleId` 로 사용한다는 내용이다.
 
 4. Entity : 테이블에 대응하는 하나의 클래스
