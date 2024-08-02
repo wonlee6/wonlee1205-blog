@@ -1,6 +1,14 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeStringify from 'rehype-stringify'
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
+import rehypePrettyCode from 'rehype-pretty-code'
 
 const postsDirectory = path.join(process.cwd(), 'posts')
 
@@ -75,44 +83,36 @@ export function getAllPostIds() {
     }
   })
 }
-
 export async function getPostData(id: string) {
   const fullMdPath = path.join(postsDirectory, `${id}.md`)
-  // const mdExist = fs.existsSync(fullMdPath)
+  const fullMdxPath = path.join(postsDirectory, `${id}.mdx`)
+
+  // if (fs.existsSync(fullMdPath)) {
+  //   fileContents = fs.readFileSync(fullMdPath, 'utf8')
+  //   matterResult = matter(fileContents)
+
+  //   return {
+  //     id,
+  //     contentHtml: matterResult.content.toString(),
+  //     ...matterResult.data
+  //   }
+  // }
 
   const fileContents = fs.readFileSync(fullMdPath, 'utf8')
-  // Use gray-matter to parse the post metadata section
   const matterResult = matter(fileContents)
-  // Use remark to convert markdown into HTML string
-  // const processedContent = await remark()
-  // .use(html)
-  // .process(matterResult.content)
-  // const processedContent = await unified()
-  //   .use(remarkParse)
-  //   .use(remarkGfm)
-  //   .use(remarkRehype, {allowDangerousHtml: true})
-  //   .use(rehypeStringify)
-  //   .process(matterResult.content)
 
-  // const contentHtml = processedContent.toString()
+  const processedContent = await unified()
+    .use(remarkParse) // markdown 파싱
+    .use(remarkGfm) // GitHub Flavored Markdown을 지원
+    .use(remarkRehype, {allowDangerousHtml: true}) // Markdown을 HTML로 변환합니다.
+    .use(rehypePrettyCode)
+    .use(rehypeRaw) // 원시 HTML을 처리
+    .use(rehypeStringify) // HTML을 문자열로 변환
+    .process(matterResult.content)
 
-  // Combine the data with the id and contentHtml
   return {
     id,
-    contentHtml: matterResult.content.toString(),
+    contentHtml: processedContent.toString(),
     ...matterResult.data
   }
-  // const fullMdxPath = path.join(postsDirectory, `${id}.mdx`)
-  // const fileContents = fs.readFileSync(fullMdxPath, 'utf8')
-
-  // // Use gray-matter to parse the post metadata section
-  // const matterResult = matter(fileContents)
-
-  // const mdxSource = await serialize(matterResult.content)
-
-  // return {
-  //   id,
-  //   mdxSource,
-  //   ...matterResult.data
-  // }
 }

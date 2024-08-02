@@ -262,28 +262,28 @@ p {
 }
 
 @keyframes animateOutline {
-0% {
-  outline-width: 1px;
-  outline-offset: 0;
-  outline-color: rgba(0, 130, 206, 0);
-}
+  0% {
+    outline-width: 1px;
+    outline-offset: 0;
+    outline-color: rgba(0, 130, 206, 0);
+  }
 
-10% {
-  outline-color: rgba(0, 130, 206, 0.75);
-}
+  0% {
+    outline-color: rgba(0, 130, 206, 0.75);
+  }
 
-/* The animation finishes at 50% */
-50% {
-  outline-width: 7px;
-  outline-offset: 4px;
-  outline-color: rgba(0, 130, 206, 0);
-}
+  /* The animation finishes at 50% */
+  0% {
+    outline-width: 7px;
+    outline-offset: 4px;
+    outline-color: rgba(0, 130, 206, 0);
+  }
 
-100% {
-  outline-width: 7px;
-  outline-offset: 4px;
-  outline-color: rgba(102, 102, 102, 0);
-}
+  100% {
+    outline-width: 7px;
+    outline-offset: 4px;
+    outline-color: rgba(102, 102, 102, 0);
+  }
 }
   
 .example-5 {
@@ -316,27 +316,32 @@ function Left() {
   const monacoRef = React.useRef<Monaco>()
   const editorContent = React.useRef(example)
 
-  const styleElement = React.useRef(null)
+  let styleElement = null
+  if (typeof document !== 'undefined') {
+    styleElement = document.createElement('style')
+  }
 
-  // React.useEffect(() => {
-  //   document.head.appendChild(styleElement.current)
-  //   return () => {
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //     document.head.removeChild(styleElement.current)
-  //   }
-  // }, [])
+  React.useEffect(() => {
+    document.head.appendChild(styleElement as any)
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      document.head.removeChild(styleElement as any)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleBeforMount = (monaco: Monaco) => {
     monacoRef.current = monaco
   }
 
   const handleMount = (editor: any, monaco: Monaco) => {
-    // styleElement.current.innerHTML = example
+    styleElement!.innerHTML = example
   }
 
   const handleChange = (value: string | undefined) => {
     if (!value) return
-    // styleElement.current.innerHTML = value
+    // editorContent.current = value
+    styleElement!.innerHTML = value
   }
 
   return (

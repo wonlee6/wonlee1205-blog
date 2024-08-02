@@ -1,6 +1,5 @@
 import {Metadata} from 'next'
 import {getAllPostIds, getPostData, getSortedPostsData} from '@/lib/posts'
-import MarkdownViwer from '../../../components/post/markdownViwer'
 import PostingGuide from '../../../components/post/postingGuide'
 // import Utterance from '@/components/post/utterance'
 
@@ -47,8 +46,8 @@ export default async function PostPage({params}: {params: {slug: string}}): Prom
     <>
       <div className='flex flex-col justify-between p-4'>
         {postData.contentHtml && (
-          <div className='prose prose-sky mb-4 w-full dark:prose-invert prose-h2:mt-4 prose-p:my-3 prose-blockquote:my-2 prose-code:p-2'>
-            <MarkdownViwer contentHtml={postData.contentHtml} />
+          <div className='prose mb-4 w-full dark:prose-invert'>
+            <article dangerouslySetInnerHTML={{__html: postData.contentHtml}} />
           </div>
         )}
         {/* <Utterance /> */}
