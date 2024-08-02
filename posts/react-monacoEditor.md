@@ -1,7 +1,7 @@
 ---
 title: 'Monaco Editor'
 date: '2023-04-26'
-tag: 'React'
+tag: ['react', 'monaco editor']
 description: 'React에서 Monaco Editor(Code Editor) 사용 방법과 Prettier를 통해 코드 정렬까지 해보는 시간'
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 'Callback'
 date: '2021-06-13'
-tag: 'Javascript'
+tag: ['javascript']
 description: 'javascript의 Callback이란?'
 ---
 

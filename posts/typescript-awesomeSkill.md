@@ -1,7 +1,7 @@
 ---
 title: 'TypeScript usefull Skill'
 date: '2023-10-07'
-tag: 'Typescript'
+tag: ['typescript']
 description: '7 Awesome TypeScript Types. 알고 있으면 좋은 Typescript Type'
 ---
 

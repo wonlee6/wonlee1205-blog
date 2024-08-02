@@ -1,7 +1,7 @@
 ---
 title: 'React - Router'
 date: '2021-11-26'
-tag: 'React'
+tag: ['react']
 description: 'React 라이브러리인 React-router에 대한 기본적인 기능'
 ---
 

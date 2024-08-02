@@ -1,7 +1,7 @@
 ---
 title: 'Md file 가져오기'
 date: '2023-04-17'
-tag: 'Next'
+tag: ['next']
 description: 'Next에서 Md file을 가져오는 방법'
 ---
 
@@ -252,9 +252,7 @@ export async function getPostData(id) {
   const matterResult = matter(fileContents)
 
   // Use remark to convert markdown into HTML string
-  const processedContent = await remark()
-    .use(html)
-    .process(matterResult.content)
+  const processedContent = await remark().use(html).process(matterResult.content)
   const contentHtml = processedContent.toString()
 
   // Combine the data with the id and contentHtml

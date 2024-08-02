@@ -1,7 +1,7 @@
 ---
 title: 'Class 내보내는 방식에 따른 인스턴스 차이점'
 date: '2024-07-22'
-tag: 'Javascript'
+tag: ['javascript']
 description: 'Class 내보내는 방식에 따라 인스턴스가 어떻게 생성되는지 알아보는 시간'
 ---
 

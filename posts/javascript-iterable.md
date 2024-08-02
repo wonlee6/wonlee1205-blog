@@ -1,7 +1,7 @@
 ---
 title: 'Iterable Iterator'
 date: '2021-06-13'
-tag: 'Javascript'
+tag: ['javascript']
 description: 'Iterable이 어떤건지, Iterator가 무엇인지 간략한 소개'
 ---
 

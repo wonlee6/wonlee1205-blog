@@ -1,7 +1,7 @@
 ---
 title: 'TypeScript Utils'
 date: '2024-06-29'
-tag: 'Typescript'
+tag: ['typescript']
 description: 'Typescript utils'
 ---
 

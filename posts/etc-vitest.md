@@ -1,7 +1,7 @@
 ---
 title: 'Vitest 설치, 실행해보기 (vite + react)'
 date: '2024-07-26'
-tag: 'Etc'
+tag: ['vitest', 'etc']
 description: 'Vitest + React TDD 맛 보기'
 ---
 

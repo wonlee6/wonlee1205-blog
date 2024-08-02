@@ -1,7 +1,7 @@
 ---
 title: 'Array Method'
 date: '2021-06-13'
-tag: 'Javascript'
+tag: ['javascript']
 description: 'javascript의 Array method 소개'
 ---
 

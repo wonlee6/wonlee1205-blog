@@ -1,7 +1,7 @@
 ---
 title: 'Method Decorators'
 date: '2024-07-23'
-tag: 'Typescript'
+tag: ['typescript']
 description: 'Typescript DMethod Decorators'
 ---
 

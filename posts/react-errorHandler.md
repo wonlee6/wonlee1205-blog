@@ -1,7 +1,7 @@
 ---
 title: 'Error Handler'
 date: '2021-10-26'
-tag: 'React'
+tag: ['react']
 description: 'Error Handler를 공통 모듈로 만드는 방법'
 ---
 

@@ -6,7 +6,7 @@ import PostingGuide from '../../../components/post/postingGuide'
 export type Post = {
   date: string
   id: string
-  tag: string
+  tag: string[]
   title: string
   contentHtml: string
   description: string
@@ -20,7 +20,7 @@ export async function generateMetadata({params}: {params: {slug: string}}): Prom
     description: postData.description,
     authors: [{name: 'sang won', url: `https://wonlee1205-blog.vercel.app/post/${params.slug}`}],
     creator: 'sang won',
-    keywords: postData.tag.split(',').map((tag) => tag.trim()),
+    keywords: postData.tag,
     openGraph: {
       type: 'article',
       countryName: 'South Korea',

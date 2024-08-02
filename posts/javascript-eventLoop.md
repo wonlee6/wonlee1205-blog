@@ -1,7 +1,7 @@
 ---
 title: 'EventLoop'
 date: '2021-06-13'
-tag: 'Javascript'
+tag: ['javascript']
 description: 'javascript 핵심인 EventLoop에 대한 정리 글'
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 'React-Native 기본'
 date: '2024-06-25'
-tag: 'React-Native'
+tag: ['react-native']
 description: 'React Native 기본'
 ---
 

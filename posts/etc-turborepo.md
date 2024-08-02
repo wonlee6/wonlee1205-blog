@@ -1,7 +1,7 @@
 ---
 title: 'Turborepo 알아보기 (with prettier)'
 date: '2024-07-31'
-tag: 'Etc'
+tag: ['turborepo', 'etc']
 description: 'Turborepo 설치 및 실습해보고 prettier 적용해보기'
 ---
 

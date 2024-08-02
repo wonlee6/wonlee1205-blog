@@ -1,7 +1,7 @@
 ---
 title: 'Js - Reduce'
 date: '2024-07-04'
-tag: 'Javascript'
+tag: ['javascript']
 description: 'reduce is goat. use case'
 ---
 

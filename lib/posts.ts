@@ -4,7 +4,6 @@ import matter from 'gray-matter'
 import {unified} from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
-import rehypeSanitize from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
@@ -12,22 +11,11 @@ import rehypePrettyCode from 'rehype-pretty-code'
 
 const postsDirectory = path.join(process.cwd(), 'posts')
 
-export type Tag =
-  | 'React'
-  | 'React-Native'
-  | 'Recoil'
-  | 'Next'
-  | 'Javascript'
-  | 'Typescript'
-  | 'Java'
-  | 'Etc'
-  | 'All'
-
 export interface PostData {
   id: string
   title: string
   date: string
-  tag: Tag
+  tag: string[]
   description?: string
 }
 

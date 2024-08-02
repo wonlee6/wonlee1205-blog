@@ -1,7 +1,7 @@
 ---
 title: 'ECharts'
 date: '2023-04-26'
-tag: 'React'
+tag: ['react', 'echarts']
 description: 'ECharts 사용법에 대해 간단하게 알아보고, echart-for-react 라이브러리 사용 방법을 알아보자'
 ---
 
@@ -150,5 +150,3 @@ return (
 ```
 
 `onEvents`의 click 이벤트 통해 데이터 확인 가능
-
-

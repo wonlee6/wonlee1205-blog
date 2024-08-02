@@ -1,7 +1,7 @@
 ---
 title: 'HashTable'
 date: '2021-06-23'
-tag: 'Etc'
+tag: ['etc', 'Data Structure']
 description: '자료구조 중에 하나인 HashTable 에 대한 정리'
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 'API 통신'
 date: '2021-11-14'
-tag: 'React'
+tag: ['react']
 description: 'React의 API통신은 어떻게 할까? 기본적인 통신 방법에 대한 정리 글'
 ---
 

@@ -36,7 +36,7 @@ export async function generateMetadata({
 async function fetchChartType() {
   try {
     const response = await fetch(
-      'https://cdn.jsdelivr.net/npm/echarts@5.5.0/types/dist/echarts.d.ts'
+      'https://cdn.jsdelivr.net/npm/echarts@5.5.1/types/dist/echarts.d.ts'
     )
     return await response.text()
   } catch (e) {

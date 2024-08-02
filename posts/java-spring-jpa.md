@@ -1,7 +1,7 @@
 ---
 title: 'Spring Boot - JPA'
 date: '2022-11-26'
-tag: 'Java'
+tag: ['Java']
 description: 'spring boot와 JPA 이용하여 간단한 CRUD 구현'
 ---
 

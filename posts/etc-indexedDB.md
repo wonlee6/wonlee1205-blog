@@ -1,7 +1,7 @@
 ---
 title: 'IndexedDB 사용해보기'
 date: '2024-07-08'
-tag: 'etc'
+tag: ['indexedDB', 'etc']
 description: 'IndexedDB 활용 방법, crypto-js 사용하여 데이터 암호화하기'
 ---
 

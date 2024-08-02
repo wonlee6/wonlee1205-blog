@@ -1,7 +1,7 @@
 ---
 title: 'Cheat Sheet - Control Flow Analysis'
 date: '2024-07-13'
-tag: 'Typescript'
+tag: ['typescript']
 description: 'typescript Cheat Sheet - Control Flow Analysis'
 ---
 

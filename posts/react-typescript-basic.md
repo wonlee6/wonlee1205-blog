@@ -1,7 +1,7 @@
 ---
 title: 'React - TypeScript Base'
 date: '2021-11-14'
-tag: 'React'
+tag: ['react', 'typescript']
 description: 'React에 Typescript를 적용하면 어떤식으로 사용하면 좋을까? React typescript base'
 ---
 
@@ -57,8 +57,7 @@ const onChangeInput = (e: ChangeEvent<HTMLInputElement> | <HTMLSelectElement>) =
 useRef 사용 할 경우
 
 ```ts
-const input_value: React.MutableRefObject<HTMLInputElement | null> =
-  useRef(null)
+const input_value: React.MutableRefObject<HTMLInputElement | null> = useRef(null)
 ```
 
 ```ts

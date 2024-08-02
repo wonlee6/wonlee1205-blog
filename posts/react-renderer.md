@@ -1,7 +1,7 @@
 ---
 title: 'React - Renderer'
 date: '2023-06-25'
-tag: 'React'
+tag: ['react']
 description: 'React 렌더링 과정에 대해 알아보자'
 ---
 
@@ -33,8 +33,8 @@ description: 'React 렌더링 과정에 대해 알아보자'
    - 달라진 부분만 실제 DOM에 반영한다.
 4. useLayoutEffect
    - 브라우저가 화면에 paint 하기 전, useLayoutEffect 함수가 `동기적`으로 실행
-5.  Paint   
-    - 브라우저가 실제 DOM을 화면에 그린다.
+5. Paint
+   - 브라우저가 실제 DOM을 화면에 그린다.
 6. useEffect
    - Mount되어 화면이 그려진 직후, useEffect에 등록해둔 함수가 `비동기`로 실행된다.
    - effect에 return부분이 있다면, 구현부보다 먼저 실행된다.

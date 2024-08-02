@@ -1,7 +1,7 @@
 ---
 title: 'Jest 사용법'
 date: '2023-04-25'
-tag: 'Etc'
+tag: ['jest', 'etc']
 description: 'Jest 사용하는 방법'
 ---
 

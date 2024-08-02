@@ -1,7 +1,7 @@
 ---
 title: 'Web Browser Storage'
 date: '2024-07-07'
-tag: 'Etc'
+tag: ['storage', 'etc']
 description: 'Web browser storage(client 저장소)에 대해 알아보자'
 ---
 

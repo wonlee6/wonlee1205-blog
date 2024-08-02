@@ -1,7 +1,7 @@
 ---
 title: 'Prettier 사용하여 코드 정렬(vsCode extansion 아님)'
 date: '2024-07-01'
-tag: 'Etc'
+tag: ['prettier', 'etc']
 description: 'Prettier 사용하여 코드 정렬 하는 방법(vsCode extansion 아님)'
 ---
 

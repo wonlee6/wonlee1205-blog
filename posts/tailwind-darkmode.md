@@ -1,7 +1,7 @@
 ---
 title: 'Tailwindcss - DarkMode'
 date: '2023-04-25'
-tag: 'Tailwindcss'
+tag: ['tailwindcss']
 description: '(Next)Tailwindcss를 이용하여 간단하게 DarkMode 적용해보자'
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 'Promise'
 date: '2021-06-13'
-tag: 'Javascript'
+tag: ['javascript']
 description: 'javascript의 비동기 작업을 처리할 때 사용하는 Promise에 대해'
 ---
 

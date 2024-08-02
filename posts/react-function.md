@@ -1,7 +1,7 @@
 ---
 title: '자주 사용하는 함수들'
 date: '2021-10-26'
-tag: 'React'
+tag: ['react']
 description: 'React에서 자주 사용하는 함수를 알아보자'
 ---
 
@@ -40,17 +40,15 @@ export const queryToString = (_query: {[name: string]: string}) => {
 /* REGEX */
 // 이메일 형식 체크 함수
 export const emailRegex = (e: string) => {
-  return /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i.test(
-    e
-  )
+  return /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i.test(e)
 }
 // 비밀번호 형식 체크 함수
 export const passwordRegex = (e: string) => {
   return e.length < 8
     ? '비밀번호는 최소 8자리 입니다.'
     : !e.replace(/[^a-z]/gi, '').length || !e.replace(/[^0-9]/gi, '').length
-    ? '비밀번호는 숫자 , 영문 포함해야합니다.'
-    : ''
+      ? '비밀번호는 숫자 , 영문 포함해야합니다.'
+      : ''
 }
 // 날짜 형식 체크 함수
 export const dateRegex = (e: string) => {
@@ -60,10 +58,7 @@ export const dateRegex = (e: string) => {
 export const specialRegex = (e: string) => {
   // eslint-disable-next-line no-useless-escape
   return (
-    e.replace(
-      /[0-9 | a-z | A-Z | ㄱ-힣 | \★ | \☆ | \- | \+ | \( | \) | \, ]/gi,
-      ''
-    ).length === 0
+    e.replace(/[0-9 | a-z | A-Z | ㄱ-힣 | \★ | \☆ | \- | \+ | \( | \) | \, ]/gi, '').length === 0
   )
 }
 ```
@@ -114,7 +109,7 @@ export const second2MS = (e: number): string => {
 7. 중복 제거
 
 ```ts
-export const deduplicateArray = <A,>(array: Array<A>): Array<A> => {
+export const deduplicateArray = <A>(array: Array<A>): Array<A> => {
   return array.reduce((acc: Array<A>, current: A) => {
     return acc.includes(current) ? acc : acc.concat(current)
   }, [])
@@ -124,16 +119,12 @@ export const deduplicateArray = <A,>(array: Array<A>): Array<A> => {
 8. 체크박스
 
 ```ts
-export const checkboxHandler = <T,>(
+export const checkboxHandler = <T>(
   action: React.Dispatch<React.SetStateAction<Array<T>>>,
   array: Array<T>,
   value: T
 ) => {
   if (array.includes(value) && array.length === 1) return
-  action(
-    array.includes(value)
-      ? array.filter((item) => item !== value)
-      : array.concat(value)
-  )
+  action(array.includes(value) ? array.filter((item) => item !== value) : array.concat(value))
 }
 ```

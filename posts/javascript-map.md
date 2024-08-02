@@ -1,7 +1,7 @@
 ---
 title: 'Map and Set'
 date: '2021-06-17'
-tag: 'Javascript'
+tag: ['javascript']
 description: 'Array Method가 아닌 Map과 Set에 대한 정리'
 ---
 
@@ -55,17 +55,7 @@ for (const [key, value] of map) {
 
 ```js
 function unique(arr) {}
-let values = [
-  'Hare',
-  'Krishna',
-  'Hare',
-  'Krishna',
-  'Krishna',
-  'Krishna',
-  'Hare',
-  'Hare',
-  ':-O'
-]
+let values = ['Hare', 'Krishna', 'Hare', 'Krishna', 'Krishna', 'Krishna', 'Hare', 'Hare', ':-O']
 console.log(unique(values))
 ```
 

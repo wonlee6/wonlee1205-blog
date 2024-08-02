@@ -1,7 +1,7 @@
 ---
 title: 'Basic Next'
 date: '2023-04-16'
-tag: 'Next'
+tag: ['next']
 description: 'Next js(12)의 특징인 SSR, SSG, ISR 및 API 통신 방법'
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 'Change Event'
 date: '2021-11-14'
-tag: 'React'
+tag: ['react']
 description: 'React - Change Event에 대한 정리'
 ---
 
@@ -93,9 +93,7 @@ return (
 // checkBox
 const [checked, setChecked] = useState<Array<number>>([])
 const onChangeCheck = (e: number) => {
-  setChecked(
-    checked.includes(e) ? checked.filter((i) => i !== e) : checked.concat(e)
-  )
+  setChecked(checked.includes(e) ? checked.filter((i) => i !== e) : checked.concat(e))
 }
 return (
   <>

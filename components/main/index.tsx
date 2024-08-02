@@ -3,7 +3,7 @@
 import {useMemo, useState} from 'react'
 import Link from 'next/link'
 import {Chip, Pagination} from '@nextui-org/react'
-import {PostData, Tag} from '@/lib/posts'
+import {PostData} from '@/lib/posts'
 
 type Props = {
   allPostsData: PostData[]
@@ -11,7 +11,7 @@ type Props = {
 
 export default function HomePage({allPostsData}: Props) {
   const [currentPage, setCurrentPage] = useState(1)
-  const [selectedTag, setSelectedTag] = useState<Tag>()
+  const [selectedTag, setSelectedTag] = useState<string>()
 
   const handlePagination = (page: number) => {
     setCurrentPage(page)
@@ -21,7 +21,7 @@ export default function HomePage({allPostsData}: Props) {
     })
   }
 
-  const handleSelectTag = (tag: Tag) => {
+  const handleSelectTag = (tag: string) => {
     setSelectedTag(tag)
     setCurrentPage(1)
   }
@@ -29,7 +29,7 @@ export default function HomePage({allPostsData}: Props) {
   const filteredPostsData = useMemo(() => {
     if (selectedTag && selectedTag !== 'All') {
       return allPostsData
-        .filter((v) => v.tag === selectedTag)
+        .filter((v) => v.tag.includes(selectedTag))
         .slice(currentPage * 10 - 10, currentPage * 10)
     }
     return allPostsData.slice(currentPage * 10 - 10, currentPage * 10)
@@ -37,14 +37,14 @@ export default function HomePage({allPostsData}: Props) {
 
   const postsLength = useMemo(() => {
     if (selectedTag && selectedTag !== 'All') {
-      const filteredTagArr = allPostsData.filter((v) => v.tag === selectedTag)
+      const filteredTagArr = allPostsData.filter((v) => v.tag.includes(selectedTag))
       return Math.ceil(filteredTagArr.length / 10)
     }
     return Math.ceil(allPostsData.length / 10)
   }, [allPostsData, selectedTag])
 
   const filteredTags = useMemo(() => {
-    return [...new Set(allPostsData.map((i) => i.tag)), 'All']
+    return [...new Set(allPostsData.map((acc) => acc.tag).flatMap((item) => item))]
   }, [allPostsData])
 
   return (
@@ -62,7 +62,7 @@ export default function HomePage({allPostsData}: Props) {
               <Chip
                 key={item}
                 className='cursor-pointer'
-                onClick={() => handleSelectTag(item as Tag)}
+                onClick={() => handleSelectTag(item)}
                 size='sm'
                 color={selectedTag === item ? 'warning' : 'default'}
                 variant='flat'>
@@ -88,15 +88,18 @@ export default function HomePage({allPostsData}: Props) {
                         <h2 className='text-2xl font-bold leading-8 tracking-tight'>
                           {item.title}
                         </h2>
-                        <div className='flex flex-wrap'>
-                          <Chip
-                            onClick={() => handleSelectTag(item.tag)}
-                            className='cursor-pointer'
-                            color='warning'
-                            variant='flat'
-                            size='sm'>
-                            {item.tag}
-                          </Chip>
+                        <div className='flex flex-wrap gap-3'>
+                          {item.tag.map((v) => (
+                            <Chip
+                              key={v}
+                              onClick={() => handleSelectTag(v)}
+                              className='cursor-pointer'
+                              color='warning'
+                              variant='flat'
+                              size='sm'>
+                              {v}
+                            </Chip>
+                          ))}
                         </div>
                       </div>
                       <div className='prose max-w-none text-gray-500 dark:text-gray-400'>

@@ -1,7 +1,7 @@
 ---
 title: 'Pagination'
 date: '2021-10-26'
-tag: 'React'
+tag: ['react']
 description: 'React에서 Pagination Component 다루는 방법'
 ---
 
@@ -51,9 +51,7 @@ const Pagination = (props) => {
     current_page <= 10 ? onChangePage(1) : onChangePage(current_page - 10)
   }
   const onClickNext = () => {
-    rendering_page_number.length >= 10
-      ? onChangePage(current_page + 10)
-      : onChangePage(max_pages)
+    rendering_page_number.length >= 10 ? onChangePage(current_page + 10) : onChangePage(max_pages)
   }
   return (
     <>

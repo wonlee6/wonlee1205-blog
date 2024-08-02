@@ -1,7 +1,7 @@
 ---
 title: 'Uncontrolled Component'
 date: '2024-07-27'
-tag: 'React'
+tag: ['react']
 description: 'Uncontrolled Component(비제어 컴포넌트)에 대해 알아보자'
 ---
 
