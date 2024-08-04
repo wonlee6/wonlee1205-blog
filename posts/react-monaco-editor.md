@@ -11,7 +11,7 @@ description: 'React에서 Monaco Editor(Code Editor) 사용 방법과 Prettier�
 
 먼저 설치
 
-```
+```shell
 yarn add @monaco-editor/react
 ```
 
@@ -69,7 +69,7 @@ export default function ChartCode(props: Props) {
 
 만약 데이터들이 상태가 더럽다면? 코드들을 이쁘게 화장시켜서 보여주고 싶다면?
 
-```
+```shell
 yarn add prettier/standalone prettier/parser-typescript
 ```
 

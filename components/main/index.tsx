@@ -1,16 +1,21 @@
 'use client'
 
-import {useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import {Chip, Pagination} from '@nextui-org/react'
-import {PostData} from '@/lib/posts'
+import { Chip, Pagination } from '@nextui-org/react'
+import { PostData } from '@/lib/posts'
 
 type Props = {
   allPostsData: PostData[]
 }
 
-export default function HomePage({allPostsData}: Props) {
-  const [currentPage, setCurrentPage] = useState(1)
+export default function HomePage({ allPostsData }: Props) {
+  const [currentPage, setCurrentPage] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return Number(sessionStorage.getItem('lastPage')) || 1
+    }
+    return 1
+  })
   const [selectedTag, setSelectedTag] = useState<string>()
 
   const handlePagination = (page: number) => {
@@ -46,6 +51,10 @@ export default function HomePage({allPostsData}: Props) {
   const filteredTags = useMemo(() => {
     return [...new Set(allPostsData.map((acc) => acc.tag).flatMap((item) => item))]
   }, [allPostsData])
+
+  useEffect(() => {
+    sessionStorage.setItem('lastPage', String(currentPage))
+  }, [currentPage])
 
   return (
     <div className='mt-4 size-full max-lg:px-4'>
@@ -120,6 +129,7 @@ export default function HomePage({allPostsData}: Props) {
             total={postsLength}
             initialPage={currentPage}
             onChange={handlePagination}
+            page={currentPage}
             showControls
           />
         </div>

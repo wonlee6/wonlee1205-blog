@@ -1,5 +1,5 @@
-import {Metadata} from 'next'
-import {getAllPostIds, getPostData, getSortedPostsData} from '@/lib/posts'
+import { Metadata } from 'next'
+import { getAllPostIds, getPostData, getSortedPostsData } from '@/lib/posts'
 import PostingGuide from '../../../components/post/postingGuide'
 // import Utterance from '@/components/post/utterance'
 
@@ -12,13 +12,17 @@ export type Post = {
   description: string
 }
 
-export async function generateMetadata({params}: {params: {slug: string}}): Promise<Metadata> {
+export async function generateMetadata({
+  params
+}: {
+  params: { slug: string }
+}): Promise<Metadata> {
   const postData = (await getPostData(params.slug)) as Post
 
   return {
     title: postData.title,
     description: postData.description,
-    authors: [{name: 'sang won', url: `https://wonlee1205-blog.vercel.app/post/${params.slug}`}],
+    authors: [{ name: 'sang won', url: `https://wonlee1205-blog.vercel.app/post/${params.slug}` }],
     creator: 'sang won',
     keywords: postData.tag,
     openGraph: {
@@ -35,10 +39,14 @@ export async function generateMetadata({params}: {params: {slug: string}}): Prom
 
 export async function generateStaticParams() {
   const paths = getAllPostIds()
-  return paths.map((post) => ({slug: post.params.id}))
+  return paths.map((post) => ({ slug: post.params.id }))
 }
 
-export default async function PostPage({params}: {params: {slug: string}}): Promise<JSX.Element> {
+export default async function PostPage({
+  params
+}: {
+  params: { slug: string }
+}): Promise<JSX.Element> {
   const postData = (await getPostData(params.slug)) as Post
   const allPostsData = await getSortedPostsData()
 
@@ -47,7 +55,7 @@ export default async function PostPage({params}: {params: {slug: string}}): Prom
       <div className='flex flex-col justify-between p-4'>
         {postData.contentHtml && (
           <div className='prose mb-4 w-full dark:prose-invert'>
-            <article dangerouslySetInnerHTML={{__html: postData.contentHtml}} />
+            <article dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
           </div>
         )}
         {/* <Utterance /> */}

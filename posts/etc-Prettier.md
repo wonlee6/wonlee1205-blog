@@ -11,9 +11,11 @@ description: 'Prettier 사용하여 코드 정렬 하는 방법(vsCode extansion
 
 ### `Monaco Editor` 사용하면서 에디터 안의 코드를 Prettier 이용하여 코드 정렬 하는 방법
 
+> nextjs 14.2.5 환경에서 테스트
+
 1. 설치
 
-```
+```shell
 npm i -D prettier
 ```
 

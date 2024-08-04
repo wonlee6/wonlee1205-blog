@@ -15,7 +15,7 @@ description: 'ECharts 사용법에 대해 간단하게 알아보고, echart-for-
 
 ## 2. 설치
 
-```
+```shell
 yarn add echarts
 ```
 
@@ -87,7 +87,7 @@ const ChartComponent = (props: ChartComponentModel) => {
 
 위 방법으로도 충분하지만 좀 더 편하게 작업할 수 있게(React 환경에서) 도와주는 라이브러리가 있다.
 
-```
+```shell
 yarn add echarts-for-react
 ```
 
@@ -96,7 +96,7 @@ yarn add echarts-for-react
 ```tsx
 import ReactECharts from 'echarts-for-react'
 import * as echarts from 'echarts/core'
-import type {SetOptionOpts} from 'echarts'
+import type { SetOptionOpts } from 'echarts'
 
 const ChartComponent = (props: ChartComponentModel) => {
   return (
@@ -109,7 +109,7 @@ const ChartComponent = (props: ChartComponentModel) => {
       }}
       option={props.option}
       showLoading={loading}
-      style={{width: '100%', height: '100%', ...props.style}}
+      style={{ width: '100%', height: '100%', ...props.style }}
       theme={props.theme}
     />
   )

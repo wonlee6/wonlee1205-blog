@@ -7,20 +7,20 @@ description: 'Tailwindcss Prettier plugin 사용해서 자동으로 className �
 
 ## 1. tailwind 설치
 
-```
+```shell
 yarn add -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 ```
 
 ## 2. prettier plugin 설치
 
-```
+```shell
 npm install -D prettier prettier-plugin-tailwindcss
 ```
 
 ## 3. prettier 적용하기
 
-```
+```shell
 // .prettierrc
 "plugins": ["prettier-plugin-tailwindcss"]
 ```

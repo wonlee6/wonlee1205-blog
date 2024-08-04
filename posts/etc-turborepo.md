@@ -33,13 +33,13 @@ description: 'Turborepo 설치 및 실습해보고 prettier 적용해보기'
 
 글로벌로 turbo 설치.
 
-```
+```Shell
 npm install turbo --global
 ```
 
 글로벌 말고 단일 레포지에 설치하려면
 
-```
+```Shell
 npm install turbo --save-dev
 ```
 
@@ -47,19 +47,19 @@ npm install turbo --save-dev
 
 디폴트가 nextjs
 
-```
+```Shell
 npx create-turbo@latest
 ```
 
 with tailwind
 
-```
+```Shell
 npx create-turbo@latest -e with-tailwind
 ```
 
 vite
 
-```
+```Shell
 npx create-turbo@latest -e with-vite
 ```
 
@@ -179,7 +179,7 @@ web > package.json에 `@repo/math` 추가 후
 
 ```jsx
 // apps/web/src/app/page.tsx
-import {add} from '@repo/math/add'
+import { add } from '@repo/math/add'
 
 function Page() {
   return <div>{add(1, 2)}</div>

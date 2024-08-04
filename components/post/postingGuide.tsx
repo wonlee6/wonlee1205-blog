@@ -1,16 +1,16 @@
 'use client'
 
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 import Link from 'next/link'
-import {Post} from '@/app/post/[slug]/page'
-import {PostData} from '@/lib/posts'
+import { Post } from '@/app/post/[slug]/page'
+import { PostData } from '@/lib/posts'
 
 type PostingGuideModel = {
   postData: Post
   allPostsData: PostData[]
 }
 
-export default function PostingGuide({postData, allPostsData}: PostingGuideModel) {
+export default function PostingGuide({ postData, allPostsData }: PostingGuideModel) {
   const nextPost = useMemo(() => {
     const findPostIndex = allPostsData.findIndex((v) => v.id === postData?.id)
 

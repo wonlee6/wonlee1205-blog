@@ -30,7 +30,7 @@ export const openDatabase = (): Promise<IDBDatabase> => {
       const db = (event.target as IDBOpenDBRequest).result
       if (!db.objectStoreNames.contains('items')) {
         // autoIncrement: 자동으로 키가 증가되어 셋팅된다. 1 > 2 > 3 ...
-        db.createObjectStore('items', {keyPath: 'id', autoIncrement: true})
+        db.createObjectStore('items', { keyPath: 'id', autoIncrement: true })
       }
     }
     // 연결 성공
@@ -150,7 +150,7 @@ function App() {
 
 `crypto-js` 라이브러리를 이용하여 암호화, 복호화를 하여 키를 저장
 
-```
+```shell
 npm install crypto-js uuid
 ```
 
@@ -178,7 +178,7 @@ export const addItem = async (item: Omit<Item, 'id'>): Promise<void> => {
     const store = transaction.objectStore('items')
     const id = CryptoJS.lib.WordArray.random(16).toString() // 랜덤한 ID 생성
     const encryptedName = encryptData(item.name)
-    const request = store.add({id, name: encryptedName})
+    const request = store.add({ id, name: encryptedName })
 
     request.onsuccess = () => {
       resolve()
@@ -223,9 +223,9 @@ export const getAllItems = async (): Promise<Item[]> => {
 ```ts
 const hasData = store.get(key)
 if (hasData) {
-  const request = store.put({id, name: encryptedName})
+  const request = store.put({ id, name: encryptedName })
 } else {
-  const request = store.add({id, name: encryptedName})
+  const request = store.add({ id, name: encryptedName })
 }
 ```
 
@@ -234,6 +234,8 @@ if (hasData) {
 --- 추가
 
 ### IndexedDB 삭제하기
+
+`key`를 이용하여 key가 있으면 삭제된다.
 
 ```ts
 export const addItem = async (key: string): Promise<void> => {

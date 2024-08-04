@@ -13,7 +13,7 @@ Socket.IO는 웹 애플리케이션에서 실시간 양방향 통신을 구현�
 
 ## 설치
 
-```
+```shell
 bun i socket.io socket.io-client vite-express express
 ```
 
@@ -25,7 +25,7 @@ bun i socket.io socket.io-client vite-express express
 import express from 'express'
 import ViteExpress from 'vite-express'
 import http from 'http'
-import {Server} from 'socket.io'
+import { Server } from 'socket.io'
 
 const app = express()
 const server = http.createServer(app)
@@ -56,18 +56,18 @@ io.on('connection', (socket) => {
   console.log(`${username} 입장`)
 
   // 자신을 제외, 연결된 모든 클라이언트에게 메시지를 전송
-  socket.broadcast.emit('message', {user: 'system', text: `${username}님이 입장하였습니다.`})
+  socket.broadcast.emit('message', { user: 'system', text: `${username}님이 입장하였습니다.` })
 
   // 클라이언트로부터 메시지를 수신하면, 모든 클라이언트에게 전송
   socket.on('message', (data) => {
     console.log('Message received: ', data)
-    io.emit('message', {user: username, text: data})
+    io.emit('message', { user: username, text: data })
   })
 
   // 클라이언트가 연결을 끊을 때 발생하는 이벤트
   socket.on('disconnect', () => {
     console.log('Client disconnected')
-    io.emit('message', {user: 'system', text: `${username}님이 나갔습니다.`})
+    io.emit('message', { user: 'system', text: `${username}님이 나갔습니다.` })
   })
 
   // 오류가 발생할 때 처리하는 이벤트
@@ -99,7 +99,7 @@ ViteExpress.bind(app, server)
 import express from 'express'
 import ViteExpress from 'vite-express'
 import http from 'http'
-import {Server} from 'socket.io'
+import { Server } from 'socket.io'
 
 const app = express()
 const server = http.createServer(app)
@@ -114,16 +114,16 @@ io.on('connection', (socket) => {
   const username = socket.handshake.query.username
   console.log(`${username} 입장`)
 
-  socket.broadcast.emit('message', {user: 'system', text: `${username}님이 입장하였습니다.`})
+  socket.broadcast.emit('message', { user: 'system', text: `${username}님이 입장하였습니다.` })
 
   socket.on('message', (data) => {
     console.log('Message received: ', data)
-    io.emit('message', {user: username, text: data})
+    io.emit('message', { user: username, text: data })
   })
 
   socket.on('disconnect', () => {
     console.log('Client disconnected')
-    io.emit('message', {user: 'system', text: `${username}님이 나갔습니다.`})
+    io.emit('message', { user: 'system', text: `${username}님이 나갔습니다.` })
   })
 
   socket.on('error', (error) => {

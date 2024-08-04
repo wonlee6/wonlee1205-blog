@@ -50,7 +50,7 @@ function App() {
 export default App;
 ```
 
-`Controlled Component` 상태가 완전히 React에 의해 제어된다.
+`Controlled Component`는 상태가 완전히 React에 의해 제어된다.
 
 ## Uncontrolled Component
 
@@ -94,19 +94,19 @@ export default App;
 
 ### Uncontrolled Component의 장점
 
-1. 단순한 코드: 상태가 DOM에 의해 관리되므로 코드가 더 단순하고 직관적입니다.
-2. 적은 보일러플레이트: 많은 상태 관리 코드를 작성할 필요가 없습니다.
+1. 단순한 코드: 상태가 DOM에 의해 관리되므로 코드가 더 단순하고 직관적
+2. 적은 보일러플레이트: 많은 상태 관리 코드를 작성할 필요가 없다.
 
 ### Uncontrolled Component의 단점
 
-1. 제어의 어려움: 상태가 React에 의해 관리되지 않으므로 컴포넌트의 동작을 제어하고 예측하기가 더 어렵습니다.
-2. 복잡한 Ref 관리: 특히 큰 폼에서는 여러 개의 ref를 관리하는 것이 복잡해질 수 있습니다.
+1. 제어의 어려움: 상태가 React에 의해 관리되지 않으므로 컴포넌트의 동작을 제어하고 예측하기가 더 어렵다.
+2. 복잡한 Ref 관리: 특히 큰 폼에서는 여러 개의 ref를 관리하는 것이 복잡해질 수 있다.
 
 ### Uncontrolled Component를 사용할 때:
 
-- 간단한 폼: React 상태 관리가 과도할 수 있는 간단한 폼을 다룰 때.
+- 간단한 폼: React 상태 관리가 필요없을 때
 
-## form onSubmit handler type
+## 번외) form onSubmit handler type
 
 > 타입스크립트의 이점을 좀 살려보자면
 
@@ -115,7 +115,7 @@ interface FormElements extends HTMLFormControlsCollection {
   sexyValue: HTMLInputElement
 }
 
-export interface AppElements extends HTMLFormElement {
+export interface FilterElements extends HTMLFormElement {
   readonly elements: FormElements
 }
 
@@ -128,12 +128,12 @@ function App() {
   }
 
   return (
-    <div style={{height: '100lvh', width: '100%'}}>
+    <div style={{ height: '100lvh', width: '100%' }}>
       <form
         onSubmit={handleSubmit}
         className='justify-content-center align-items-center flex h-full w-full'>
         <div className='flex-column flex gap-4'>
-          <InputText ref={inputRef} name='sexyValue' />
+          <InputText name='sexyValue' />
 
           <Button type='submit'>Submit</Button>
         </div>
@@ -143,8 +143,7 @@ function App() {
 }
 ```
 
-위 코드에서 handleSubmit 함수내에서 e.currentTarget.elements 다음 타입스크립트 자동완성을 통해,
-Form 안에 있는 input에 접근할 수 있다.
+handleSubmit 함수 내에서 `e.currentTarget.elements` 다음 타입스크립트 자동완성으로 `sexyValue`에 접근할 수 있게 된다.
 
 ### checkbox 일 경우
 
@@ -168,12 +167,12 @@ function App() {
   }
 
   return (
-    <div style={{height: '100lvh', width: '100%'}}>
+    <div style={{ height: '100lvh', width: '100%' }}>
       <form
         onSubmit={handleSubmit}
         className='justify-content-center align-items-center flex h-full w-full'>
         <div className='flex-column flex gap-4'>
-          <InputText ref={inputRef} name='sexyValue' />
+          <InputText name='sexyValue' />
           <input type='checkbox' value='coke' name='checkbox1' />
           <input type='checkbox' value='coke2' name='checkbox2' />
 
@@ -189,8 +188,8 @@ checkbox1만 체크하고 서브밋 버튼을 누르게 되면
 
 각각 `true`, `false` 확인 할 수 있다.
 
-> 즉, HTMLFormElement > HTMLFormControlsCollection 정의한 elements에 접근 할 수 있다.
+> 즉, FormElement > HTMLFormControlsCollection > HtmlElement(내가 정의한)
 
-~~Ref 없이~~
+~~상태가 DOM에 의해 관리되므로 Ref 없이~~
 
 [출처](https://www.epicreact.dev/how-to-type-a-react-form-on-submit-handler)

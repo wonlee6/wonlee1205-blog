@@ -24,7 +24,7 @@ description: 'Typescript DMethod Decorators'
 }
 ```
 
-먼저 위와 같이 tsconfig 설정을 한다.
+먼저 위와 같이 `tsconfig` 설정 진행
 
 ## Method Decorators
 
@@ -152,7 +152,7 @@ apiService.getData().catch((e) => console.error('Caught:', e.message)) // Error 
 
 ```ts
 function cache(duration: number) {
-  const cacheStore: {[key: string]: {value: any; expiry: number}} = {}
+  const cacheStore: { [key: string]: { value: any; expiry: number } } = {}
 
   return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value

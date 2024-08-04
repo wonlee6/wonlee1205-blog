@@ -1,5 +1,5 @@
-import type {Config} from 'tailwindcss'
-import {nextui} from '@nextui-org/react'
+import type { Config } from 'tailwindcss'
+import { nextui } from '@nextui-org/react'
 import typography from '@tailwindcss/typography'
 import colors from 'tailwindcss/colors'
 
@@ -61,10 +61,12 @@ const config = {
             },
             blockquote: {
               fontSize: '90%',
-              color: colors.zinc[500],
-              borderLeftColor: colors.zinc[700],
-              'p::before': {display: 'none'},
-              'p::after': {display: 'none'}
+              color: colors.emerald[500],
+              borderLeftColor: colors.emerald[400],
+              backgroundColor: '#f8f9fa',
+              padding: '0.1rem 0.1rem 0.1rem 1rem',
+              'p::before': { display: 'none' },
+              'p::after': { display: 'none' }
             },
             a: {
               textDecoration: 'none',
@@ -82,9 +84,9 @@ const config = {
               }
             },
             code: {
-              color: '#86e1fc',
-              '&::before': {content: `unset !important`},
-              '&::after': {content: `unset !important`},
+              color: colors.teal[500],
+              '&::before': { content: `unset !important` },
+              '&::after': { content: `unset !important` },
               fontWeight: 'normal'
             },
             'a code': {

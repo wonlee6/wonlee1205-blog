@@ -9,7 +9,7 @@ description: 'Vitest + React TDD 맛 보기'
 
 > 환경: vite + vitest + bun
 
-```
+```shell
 bun i -D vitest jsdom @vitest/coverage-v8 @types/jest @testing-library/jest-dom @testing-library/react @testing-library/user-event @vitest/ui
 ```
 
@@ -24,7 +24,7 @@ bun i -D vitest jsdom @vitest/coverage-v8 @types/jest @testing-library/jest-dom 
 
 /// <reference types="vitest" />
 
-import {defineConfig} from 'vitest/config'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
@@ -61,8 +61,8 @@ export default defineConfig({
 //vitest.setup.ts
 
 import '@testing-library/jest-dom/vitest'
-import {cleanup} from '@testing-library/react'
-import {afterEach, beforeEach} from 'vitest'
+import { cleanup } from '@testing-library/react'
+import { afterEach, beforeEach } from 'vitest'
 
 // 테스트 전후 훅 설정
 beforeEach(() => {
@@ -90,7 +90,7 @@ interface HelloWorldProps {
   name: string
 }
 
-const HelloWorld: React.FC<HelloWorldProps> = ({name}) => {
+const HelloWorld: React.FC<HelloWorldProps> = ({ name }) => {
   return <h1>Hello, {name}!</h1>
 }
 
@@ -100,20 +100,20 @@ export default HelloWorld
 그리고 `HelloWorld.test.tsx` 테스트 컴포넌트 생성
 
 ```tsx
-import {render, screen} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import HelloWorld from './HelloWorld'
-import {describe, expect, test} from 'vitest'
+import { describe, expect, test } from 'vitest'
 
 describe('HelloWorld Component', () => {
   test('renders with the correct name', () => {
     render(<HelloWorld name='Vitest' />)
-    const heading = screen.getByRole('heading', {level: 1})
+    const heading = screen.getByRole('heading', { level: 1 })
     expect(heading).toHaveTextContent('Hello, Vitest!')
   })
 
   test('renders with a different name', () => {
     render(<HelloWorld name='React' />)
-    const heading = screen.getByRole('heading', {level: 1})
+    const heading = screen.getByRole('heading', { level: 1 })
     expect(heading).toHaveTextContent('Hello, React!')
   })
 })
@@ -155,8 +155,8 @@ export default function PlaceHolderText() {
 마찬가지로 테스트 코드 생성
 
 ```tsx
-import {render, screen} from '@testing-library/react'
-import {describe, expect, it} from 'vitest'
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
 import PlaceHolderText from './PlaceHolderText'
 
 describe('placeholder test', () => {
@@ -182,7 +182,7 @@ describe('placeholder test', () => {
 
 package.json script에서 작성한 `coverage` 실행하게 될 경우 테스트 관련 리포팅 테이블을 확인할 수 있다.
 
-```
+```shell
 bun run coverage
 ```
 
