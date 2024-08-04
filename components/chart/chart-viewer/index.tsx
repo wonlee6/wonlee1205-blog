@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import * as prettier from 'prettier/standalone'
 import * as tsPrinter from 'prettier/parser-typescript'
@@ -24,7 +24,7 @@ type props = {
   getChartType: string
 }
 
-export default function ChartView({url, getChartType}: props) {
+export default function ChartView({ url, getChartType }: props) {
   const chartRef = useRef(null)
 
   const [value, setValue] = useState('')
@@ -41,7 +41,7 @@ export default function ChartView({url, getChartType}: props) {
           setJsonData(jsonData)
         }
 
-        const responseChartData = await fetch(`/data/${url}.ts`, {method: 'get'})
+        const responseChartData = await fetch(`/data/${url}.ts`, { method: 'get' })
         const chartData = await responseChartData.text()
 
         setValue(chartData)
@@ -54,7 +54,7 @@ export default function ChartView({url, getChartType}: props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const {isOpen, onOpen, onClose} = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const chartOption = useRef('')
   const handleOpenModal = useCallback(async () => {
@@ -98,7 +98,7 @@ export default function ChartView({url, getChartType}: props) {
           </div>
         </div>
       </div>
-      <Modal size={'5xl'} isOpen={isOpen} onClose={onClose} classNames={{base: 'h-[90vh]'}}>
+      <Modal size={'5xl'} isOpen={isOpen} onClose={onClose} classNames={{ base: 'h-[90vh]' }}>
         <ModalContent>
           {(onClose: () => void) => (
             <>

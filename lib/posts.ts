@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import {unified} from 'unified'
+import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
@@ -92,7 +92,7 @@ export async function getPostData(id: string) {
   const processedContent = await unified()
     .use(remarkParse) // markdown 파싱
     .use(remarkGfm) // GitHub Flavored Markdown을 지원
-    .use(remarkRehype, {allowDangerousHtml: true}) // Markdown을 HTML로 변환합니다.
+    .use(remarkRehype, { allowDangerousHtml: true }) // Markdown을 HTML로 변환합니다.
     .use(rehypePrettyCode)
     .use(rehypeRaw) // 원시 HTML을 처리
     .use(rehypeStringify) // HTML을 문자열로 변환

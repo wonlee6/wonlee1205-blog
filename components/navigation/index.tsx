@@ -1,7 +1,7 @@
 'use client'
 
-import React, {useCallback, useEffect, startTransition, useLayoutEffect, useState} from 'react'
-import {usePathname, useRouter} from 'next/navigation'
+import React, { useCallback, useEffect, startTransition, useLayoutEffect, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import NextLink from 'next/link'
 
 import {
@@ -15,7 +15,7 @@ import {
   Button,
   Switch
 } from '@nextui-org/react'
-import {NavIcons} from './icons'
+import { NavIcons } from './icons'
 
 export default function HeaderNaviBar() {
   const pathName = usePathname()
@@ -94,7 +94,7 @@ export default function HeaderNaviBar() {
               Chart
             </Link>
           </NavbarItem>
-          {/* <NavbarItem isActive={pathName === '/about'}>
+          <NavbarItem isActive={pathName === '/about'}>
             <Link
               href={'/about'}
               as={NextLink}
@@ -103,7 +103,7 @@ export default function HeaderNaviBar() {
               isBlock>
               About
             </Link>
-          </NavbarItem> */}
+          </NavbarItem>
         </NavbarContent>
 
         <Switch
@@ -128,7 +128,7 @@ export default function HeaderNaviBar() {
               variant='ghost'>
               Post
             </Button>
-            {/* <Button
+            <Button
               onClick={() => {
                 setIsMenuOpen(false)
                 router.push('/about')
@@ -138,7 +138,7 @@ export default function HeaderNaviBar() {
               size='lg'
               variant='ghost'>
               About
-            </Button> */}
+            </Button>
           </NavbarMenuItem>
         </NavbarMenu>
       </Navbar>

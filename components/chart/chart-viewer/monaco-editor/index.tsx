@@ -1,9 +1,9 @@
 'use client'
 
-import React, {useRef, useState} from 'react'
-import Editor, {Monaco} from '@monaco-editor/react'
-import {Runner} from 'react-runner'
-import {useDebounce} from '@/hooks/useDebounce'
+import React, { useRef, useState } from 'react'
+import Editor, { Monaco } from '@monaco-editor/react'
+import { Runner } from 'react-runner'
+import { useDebounce } from '@/hooks/useDebounce'
 
 type Props = {
   value: string
@@ -11,7 +11,7 @@ type Props = {
   fetchType: string
 }
 
-export default function MonacoEditor({value, fetchData, fetchType}: Props) {
+export default function MonacoEditor({ value, fetchData, fetchType }: Props) {
   const monacoInstance = useRef<Monaco | null>(null)
   const editorContent = useRef(value.trim().replace(/export\s+\{\s*\}\s*;?$/g, ''))
 
