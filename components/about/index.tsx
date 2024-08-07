@@ -15,14 +15,14 @@ export default function AboutClient() {
 
   return (
     <>
-      <div className='flex items-center justify-center gap-4'>
-        <Tooltip content='Github' showArrow>
+      <div className='flex items-center justify-end gap-4'>
+        {/* <Tooltip content='Github' showArrow>
           <Button isIconOnly aria-label='go to github' variant='light'>
             <Link href={`https://github.com/wonlee6`} target='_blank'>
               <Github size={30} />
             </Link>
           </Button>
-        </Tooltip>
+        </Tooltip> */}
 
         <Tooltip content={isCopy ? 'copied' : 'copy'} showArrow>
           <Button aria-label={isCopy ? 'copied' : 'copy mail'} variant='light' onClick={handleCopy}>
