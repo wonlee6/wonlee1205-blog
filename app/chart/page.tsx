@@ -1,5 +1,5 @@
 import ChartClient from '@/components/chart'
-import {Metadata} from 'next'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Creating a React Chart Component Using Echarts',

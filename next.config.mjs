@@ -57,8 +57,8 @@ const nextConfig = {
     fetches: {
       fullUrl: true
     }
-  },
-  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx']
+  }
+  // pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx']
 }
 
 // const withMDX = createMDX({

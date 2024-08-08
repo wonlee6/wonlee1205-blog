@@ -1,11 +1,11 @@
 import ChartView from '@/components/chart/chart-viewer'
-import {ChartType} from '@/model/Chart.model'
-import {Metadata} from 'next'
+import { ChartType } from '@/model/Chart.model'
+import { Metadata } from 'next'
 
 export async function generateMetadata({
   params
 }: {
-  params: {slug: [ChartType, string]}
+  params: { slug: [ChartType, string] }
 }): Promise<Metadata> {
   const chartType = params.slug[0]
   const chartName = params.slug[1]
@@ -18,7 +18,7 @@ export async function generateMetadata({
   return {
     title,
     description,
-    authors: [{name: 'sang won', url}],
+    authors: [{ name: 'sang won', url }],
     creator: 'sang won',
     keywords: [`${chartType} chart`, `${chartName}`, 'Echarts', 'React', 'Chart Editor'],
     openGraph: {
@@ -45,7 +45,11 @@ async function fetchChartType() {
   }
 }
 
-export default async function SelectedChartPage({params}: {params: {slug: [ChartType, string]}}) {
+export default async function SelectedChartPage({
+  params
+}: {
+  params: { slug: [ChartType, string] }
+}) {
   const getChartType = await fetchChartType()
 
   return <ChartView getChartType={getChartType} url={params.slug[1]} />

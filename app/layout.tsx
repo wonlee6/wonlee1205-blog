@@ -1,12 +1,12 @@
-import {Analytics} from '@vercel/analytics/react'
-import {Inter} from 'next/font/google'
-import {SpeedInsights} from '@vercel/speed-insights/next'
-import {Providers} from './provider'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Providers } from './provider'
 
 import '../styles/globals.css'
 import HeaderNaviBar from '@/components/navigation'
+import localFont from 'next/font/local'
 
-const inter = Inter({subsets: ['latin']})
+const myFont = localFont({ src: '../public/font/FiraCode-SemiBold.woff2', display: 'swap' })
 
 export default function RootLayout({
   children
@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning className='light' lang='ko'>
-      <body className={inter.className}>
+      <body className={myFont.className}>
         <Providers>
           <div className='relative flex min-h-dvh flex-col'>
             <HeaderNaviBar />

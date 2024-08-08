@@ -1,8 +1,8 @@
 'use client'
 
-import React, {useCallback, useState} from 'react'
+import React, { useCallback, useState } from 'react'
 
-import {ChartType} from '@/model/Chart.model'
+import { ChartType } from '@/model/Chart.model'
 import Chart from './chart'
 
 export default function ChartClient() {
