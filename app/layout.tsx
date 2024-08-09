@@ -5,6 +5,7 @@ import { Providers } from './provider'
 import '../styles/globals.css'
 import HeaderNaviBar from '@/components/navigation'
 import localFont from 'next/font/local'
+import { Toaster } from '@/components/ui/toaster'
 
 const myFont = localFont({ src: '../public/font/FiraCode-SemiBold.woff2', display: 'swap' })
 
@@ -25,6 +26,7 @@ export default function RootLayout({
         </Providers>
         <Analytics />
         <SpeedInsights />
+        <Toaster />
       </body>
     </html>
   )
