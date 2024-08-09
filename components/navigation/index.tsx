@@ -58,6 +58,10 @@ export default function HeaderNaviBar() {
     }
   }, [theme])
 
+  if (pathName.includes('editor')) {
+    return null
+  }
+
   return (
     <>
       <Navbar
@@ -80,7 +84,8 @@ export default function HeaderNaviBar() {
               as={NextLink}
               color={pathName.includes('post') || pathName === '/' ? 'primary' : 'foreground'}
               underline={pathName.includes('post') || pathName === '/' ? 'always' : 'none'}
-              isBlock>
+              isBlock
+              prefetch>
               Post
             </Link>
           </NavbarItem>
@@ -90,6 +95,7 @@ export default function HeaderNaviBar() {
               as={NextLink}
               underline={pathName === '/chart' ? 'always' : 'none'}
               color={pathName === '/chart' ? 'primary' : 'foreground'}
+              prefetch
               isBlock>
               Chart
             </Link>
@@ -100,6 +106,7 @@ export default function HeaderNaviBar() {
               as={NextLink}
               underline={pathName === '/about' ? 'always' : 'none'}
               color={pathName === '/about' ? 'primary' : 'foreground'}
+              prefetch
               isBlock>
               About
             </Link>

@@ -10,8 +10,8 @@ import {
   ModalFooter,
   ModalHeader
 } from '@nextui-org/react'
-import { ProjectData } from '.'
 import { createClient } from '@/lib/supabase/client'
+import { ProjectData } from '@/model/web-builder'
 
 type Props = {
   isOpen: boolean
@@ -19,10 +19,11 @@ type Props = {
   selectedItem: ProjectData | undefined
   onSave: (projectData: ProjectData) => void
   modalType: 'add' | 'edit'
+  projectId: string
 }
 
 export default function ProjectEditModal(props: Props) {
-  const { isOpen, onOpenChange, selectedItem, onSave, modalType } = props
+  const { isOpen, onOpenChange, selectedItem, onSave, modalType, projectId } = props
 
   const nameRef = useRef<HTMLInputElement | null>(null)
   const descriptionRef = useRef<HTMLInputElement | null>(null)
@@ -48,7 +49,8 @@ export default function ProjectEditModal(props: Props) {
         .from('project')
         .insert({
           projectName: name,
-          description
+          description,
+          user_id: projectId
         })
         .select()
     } else {
@@ -70,7 +72,7 @@ export default function ProjectEditModal(props: Props) {
 
   const handleKeyDownsubmit = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') {
-      console.log(123)
+      handleSubmit(e)
     }
   }
 
@@ -80,7 +82,15 @@ export default function ProjectEditModal(props: Props) {
         <ModalContent>
           {(onClose) => (
             <form onSubmit={handleSubmit} onKeyDown={handleKeyDownsubmit} autoComplete='false'>
-              <ModalHeader className='flex flex-col gap-1'>Edit Project</ModalHeader>
+              <ModalHeader className='flex flex-col gap-1'>
+                <h2>Edit Project</h2>
+                <p className='flex gap-2 text-sm text-foreground-400'>
+                  Create Date:
+                  <h4 className='underline'>
+                    {new Date(selectedItem?.created_at!).toLocaleString()}
+                  </h4>
+                </p>
+              </ModalHeader>
               <ModalBody>
                 <Input
                   ref={nameRef}

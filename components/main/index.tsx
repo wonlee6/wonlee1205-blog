@@ -116,7 +116,9 @@ export default function HomePage({ allPostsData }: Props) {
                       </div>
                     </div>
                     <div className='text-base font-semibold leading-6 text-teal-500 hover:text-teal-600'>
-                      <Link href={`/post/${item.id}`}>Read More -{'>'}</Link>
+                      <Link href={`/post/${item.id}`} prefetch>
+                        Read More -{'>'}
+                      </Link>
                     </div>
                   </div>
                 </div>

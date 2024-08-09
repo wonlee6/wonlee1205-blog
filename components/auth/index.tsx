@@ -5,14 +5,19 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-o
 import { createClient } from '@/lib/supabase/client'
 import { useToast } from '@/components/ui/use-toast'
 import { AuthIcons } from './icons'
+import { useUserStore } from '@/providers/user-store-provider'
+import { useRouter } from 'next/navigation'
 
 export default function AuthClient() {
+  const { setUserInfo } = useUserStore((state) => state)
+
   const [isSignUp, setIsSignUp] = useState(true)
 
   const [isFirstNameFocus, setIsFirstNameFocus] = useState(false)
   const [isFirstPasswordFocus, setIsFirsPasswordFocus] = useState(false)
 
   const { toast } = useToast()
+  const router = useRouter()
 
   const nameRef = useRef<HTMLInputElement | null>(null)
   const passwordRef = useRef<HTMLInputElement | null>(null)
@@ -36,6 +41,7 @@ export default function AuthClient() {
       })
       return
     }
+
     if (!form.password) {
       passwordRef.current?.focus()
       toast({
@@ -52,18 +58,9 @@ export default function AuthClient() {
     //   }
     // })
 
-    if (isSignUp) {
-      const { data } = await createClient()
-        .from('member')
-        .select()
-        .eq('name', form.name)
-        .eq('password', form.password)
+    const response = await fetchAuth(isSignUp, form.name, form.password)
 
-      if (data && data?.length > 0) {
-        console.log(data)
-        return
-      }
-
+    if (typeof response === 'undefined') {
       toast({
         variant: 'destructive',
         title: 'Invalid user info'
@@ -71,11 +68,8 @@ export default function AuthClient() {
       return
     }
 
-    const response = await createClient().from('member').insert({
-      name: form.name,
-      password: form.password
-    })
-    console.log(response)
+    setUserInfo(response.id, response.name)
+    router.push(`./project/${response.id}`)
   }
 
   return (
@@ -90,7 +84,7 @@ export default function AuthClient() {
           </div>
         </CardHeader>
         <CardBody>
-          <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+          <form onSubmit={handleSubmit} className='flex flex-col gap-4' autoComplete='false'>
             <Input
               ref={nameRef}
               label='Name'
@@ -156,4 +150,44 @@ export default function AuthClient() {
       </Card>
     </>
   )
+}
+
+async function fetchAuth(
+  isSignup: boolean,
+  name: string,
+  password: string
+): Promise<{ id: string; name: string } | undefined> {
+  if (isSignup) {
+    const { data } = await createClient()
+      .from('member')
+      .select()
+      .eq('name', name)
+      .eq('password', password)
+
+    if (data && data?.length > 0) {
+      const { id, name } = data[0]
+      return {
+        id,
+        name
+      }
+    }
+  } else {
+    const { data } = await createClient()
+      .from('member')
+      .insert({
+        name: name,
+        password: password
+      })
+      .select()
+
+    if (data && data.length > 0) {
+      const { id, name } = data[0]
+      return {
+        id,
+        name
+      }
+    }
+  }
+
+  return undefined
 }

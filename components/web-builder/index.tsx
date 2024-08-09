@@ -6,6 +6,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Divider,
   Listbox,
   ListboxItem,
   ListboxSection,
@@ -15,21 +16,19 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Wallpaper, Settings } from 'lucide-react'
 import ProjectEditModal from './project-edit-modal'
 import { createClient } from '@/lib/supabase/client'
-
-export type ProjectData = {
-  id: string
-  created_at: string
-  projectName: string
-  description: string
-  contents: unknown
-}
+import { usePathname, useRouter } from 'next/navigation'
+import { ProjectData } from '@/model/web-builder'
 
 type Props = {
   projectData: ProjectData[]
+  projectId: string
 }
 
 export default function WebBuilderRoot(props: Props) {
-  const { projectData } = props
+  const { projectData, projectId } = props
+
+  const pathName = usePathname()
+  const router = useRouter()
 
   const [projectDataList, setProjectDataList] = useState<ProjectData[]>(projectData)
 
@@ -100,10 +99,16 @@ export default function WebBuilderRoot(props: Props) {
     [modalType]
   )
 
+  const handleGotoPage = () => {
+    const selectedId = [...new Set(selectedKeys)].join('')
+    router.push(`${pathName}/editor/${selectedId}`)
+  }
+
   return (
     <>
       <Card className='w-[500px]' shadow='md'>
         <CardHeader>Project</CardHeader>
+        <Divider />
         <CardBody className='max-h-[400px] overflow-y-auto'>
           <Listbox
             variant='flat'
@@ -130,7 +135,15 @@ export default function WebBuilderRoot(props: Props) {
             </ListboxSection>
           </Listbox>
         </CardBody>
+        <Divider />
         <CardFooter className='justify-end gap-4'>
+          <Button
+            onClick={handleGotoPage}
+            variant='ghost'
+            color='primary'
+            isDisabled={new Set(selectedKeys).size === 0}>
+            Go to Page
+          </Button>
           <Button
             variant='shadow'
             color='success'
@@ -154,6 +167,7 @@ export default function WebBuilderRoot(props: Props) {
           selectedItem={filteredSelectedProject}
           onSave={handleSave}
           modalType={modalType}
+          projectId={projectId}
         />
       )}
     </>
