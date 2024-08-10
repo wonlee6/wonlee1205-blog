@@ -1,22 +1,12 @@
 import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
-import WebBuilderRoot from '@/components/web-builder'
-import { redirect } from 'next/navigation'
+import { ProjectData } from '@/model/web-builder'
+import ProjectRoot from '@/components/web-builder'
 
-export default async function WebBuilderRootPage({ params }: { params: { slug: string } }) {
-  if (!params.slug) {
-    redirect('./auth')
-  }
-
+export default async function WebBuilderProjectPage({ params }: { params: { slug: string } }) {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
+  const { data } = await supabase.from('project').select().eq('user_id', params.slug)
 
-  const response = await supabase.from('project').select().eq('user_id', params.slug)
-
-  if (response.error) {
-    console.error(response.error)
-    return <div>Error</div>
-  }
-
-  return <WebBuilderRoot projectData={response.data} projectId={params.slug} />
+  return <ProjectRoot projectData={data as ProjectData[]} projectId={params.slug} />
 }

@@ -24,7 +24,7 @@ type Props = {
   projectId: string
 }
 
-export default function WebBuilderRoot(props: Props) {
+export default function ProjectRoot(props: Props) {
   const { projectData, projectId } = props
 
   const pathName = usePathname()
@@ -104,36 +104,61 @@ export default function WebBuilderRoot(props: Props) {
     router.push(`${pathName}/editor/${selectedId}`)
   }
 
+  const handleLogout = async (e: React.MouseEvent) => {
+    e.preventDefault()
+
+    const ok = confirm('Are you sure logout')
+    if (!ok) return
+
+    const response = await fetch('/api/web-builder/project')
+    if (response.status === 200) {
+      router.push('/web-builder/sign-in')
+    }
+  }
+
   return (
     <>
       <Card className='w-[500px]' shadow='md'>
-        <CardHeader>Project</CardHeader>
+        <CardHeader className='justify-between'>
+          <h2>Project</h2>
+          <Button
+            variant='light'
+            color='default'
+            className='text-foreground-400 hover:text-foreground'
+            onClick={handleLogout}>
+            Logout
+          </Button>
+        </CardHeader>
         <Divider />
         <CardBody className='max-h-[400px] overflow-y-auto'>
-          <Listbox
-            variant='flat'
-            aria-label='Listbox project with sections'
-            disallowEmptySelection
-            selectionMode='single'
-            selectedKeys={selectedKeys}
-            onSelectionChange={setSelectedKeys}>
-            <ListboxSection>
-              {projectDataList.map((i) => (
-                <ListboxItem
-                  key={i.id}
-                  description={i.description}
-                  startContent={<Wallpaper size={28} />}
-                  endContent={
-                    <Settings
-                      onClick={hanldeEditProject}
-                      className='transition-all hover:scale-125'
-                    />
-                  }>
-                  {i.projectName}
-                </ListboxItem>
-              ))}
-            </ListboxSection>
-          </Listbox>
+          {projectDataList.length > 0 ? (
+            <Listbox
+              variant='flat'
+              aria-label='Listbox project with sections'
+              disallowEmptySelection
+              selectionMode='single'
+              selectedKeys={selectedKeys}
+              onSelectionChange={setSelectedKeys}>
+              <ListboxSection>
+                {projectDataList.map((i) => (
+                  <ListboxItem
+                    key={i.id}
+                    description={i.description}
+                    startContent={<Wallpaper size={28} />}
+                    endContent={
+                      <Settings
+                        onClick={hanldeEditProject}
+                        className='transition-all hover:scale-125'
+                      />
+                    }>
+                    {i.projectName}
+                  </ListboxItem>
+                ))}
+              </ListboxSection>
+            </Listbox>
+          ) : (
+            'Please add a project'
+          )}
         </CardBody>
         <Divider />
         <CardFooter className='justify-end gap-4'>

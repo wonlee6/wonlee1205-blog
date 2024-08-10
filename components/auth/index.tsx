@@ -2,17 +2,16 @@
 
 import { useRef, useState } from 'react'
 import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react'
-import { createClient } from '@/lib/supabase/client'
 import { useToast } from '@/components/ui/use-toast'
 import { AuthIcons } from './icons'
-import { useUserStore } from '@/providers/user-store-provider'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-export default function AuthClient() {
-  const { setUserInfo } = useUserStore((state) => state)
+type Props = {
+  authType: 'sign-up' | 'sign-in'
+}
 
-  const [isSignUp, setIsSignUp] = useState(true)
-
+export default function AuthClient({ authType }: Props) {
   const [isFirstNameFocus, setIsFirstNameFocus] = useState(false)
   const [isFirstPasswordFocus, setIsFirsPasswordFocus] = useState(false)
 
@@ -57,19 +56,26 @@ export default function AuthClient() {
     //     redirectTo: `http://localhost:3000/web-builder/project`
     //   }
     // })
+    try {
+      const response = await fetch(`/api/web-builder/${authType}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          password: form.password
+        })
+      })
 
-    const response = await fetchAuth(isSignUp, form.name, form.password)
-
-    if (typeof response === 'undefined') {
+      if (response.status === 200) {
+        const data = await response.json()
+        router.push(`/web-builder/project/${data.data[0].id}`)
+      }
+    } catch (error) {
       toast({
         variant: 'destructive',
-        title: 'Invalid user info'
+        title: 'Invalid user info!'
       })
-      return
     }
-
-    setUserInfo(response.id, response.name)
-    router.push(`./project/${response.id}`)
   }
 
   return (
@@ -77,9 +83,9 @@ export default function AuthClient() {
       <Card shadow='lg' className='w-[500px] p-2'>
         <CardHeader>
           <div className='flex flex-col items-start justify-center gap-2'>
-            <h1 className='text-2xl'>{isSignUp ? `Welcome back` : 'Get started'}</h1>
+            <h1 className='text-2xl'>{authType === 'sign-in' ? `Welcome back` : 'Get started'}</h1>
             <h4 className='text-sm text-default-500'>
-              {isSignUp ? `Sign in to your account` : 'Create a new account'}
+              {authType === 'sign-in' ? `Sign in to your account` : 'Create a new account'}
             </h4>
           </div>
         </CardHeader>
@@ -131,63 +137,24 @@ export default function AuthClient() {
               autoComplete='false'
             />
             <Button color='success' type='submit'>
-              {isSignUp ? `Sign In` : 'Sign Up'}
+              {authType === 'sign-in' ? `Sign In` : 'Sign Up'}
             </Button>
           </form>
         </CardBody>
 
         <CardFooter className='justify-center'>
           <p className='text-sm text-foreground-500'>
-            {isSignUp ? `Don't have an account?` : 'Have an account?'}
+            {authType === 'sign-in' ? `Don't have an account?` : 'Have an account?'}
             <Button
-              onClick={(e) => setIsSignUp(!isSignUp)}
               variant='light'
               className='cursor-pointer text-foreground underline transition hover:text-foreground-500'>
-              {isSignUp ? 'Sign Up Now' : 'Sign In Now'}
+              <Link href={`./${authType === 'sign-in' ? 'sign-up' : 'sign-in'}`} prefetch>
+                {authType === 'sign-in' ? 'Sign Up Now' : 'Sign In Now'}
+              </Link>
             </Button>
           </p>
         </CardFooter>
       </Card>
     </>
   )
-}
-
-async function fetchAuth(
-  isSignup: boolean,
-  name: string,
-  password: string
-): Promise<{ id: string; name: string } | undefined> {
-  if (isSignup) {
-    const { data } = await createClient()
-      .from('member')
-      .select()
-      .eq('name', name)
-      .eq('password', password)
-
-    if (data && data?.length > 0) {
-      const { id, name } = data[0]
-      return {
-        id,
-        name
-      }
-    }
-  } else {
-    const { data } = await createClient()
-      .from('member')
-      .insert({
-        name: name,
-        password: password
-      })
-      .select()
-
-    if (data && data.length > 0) {
-      const { id, name } = data[0]
-      return {
-        id,
-        name
-      }
-    }
-  }
-
-  return undefined
 }

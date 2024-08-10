@@ -58,6 +58,20 @@ const nextConfig = {
       fullUrl: true
     }
   }
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/web-builder/project/:slug',
+  //       destination: '/web-builder/sign-in',
+  //       permanent: true
+  //     },
+  //     {
+  //       source: '/web-builder/project/:slug',
+  //       destination: '/web-builder/sign-up',
+  //       permanent: true
+  //     }
+  //   ]
+  // }
   // pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx']
 }
 

@@ -83,13 +83,19 @@ export default function ProjectEditModal(props: Props) {
           {(onClose) => (
             <form onSubmit={handleSubmit} onKeyDown={handleKeyDownsubmit} autoComplete='false'>
               <ModalHeader className='flex flex-col gap-1'>
-                <h2>Edit Project</h2>
-                <p className='flex gap-2 text-sm text-foreground-400'>
-                  Create Date:
-                  <h4 className='underline'>
-                    {new Date(selectedItem?.created_at!).toLocaleString()}
-                  </h4>
-                </p>
+                {modalType === 'add' ? (
+                  <h2>Add Project</h2>
+                ) : (
+                  <>
+                    <h2>Edit Project</h2>
+                    <p className='flex gap-2 text-sm text-foreground-400'>
+                      Create Date:
+                      <span className='underline'>
+                        {new Date(selectedItem?.created_at!).toLocaleString()}
+                      </span>
+                    </p>
+                  </>
+                )}
               </ModalHeader>
               <ModalBody>
                 <Input
