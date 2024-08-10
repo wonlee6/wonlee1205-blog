@@ -1,7 +1,7 @@
 ---
 title: 'Md file 가져오기'
 date: '2023-04-17'
-tag: ['next']
+tag: ['next.js']
 description: 'Next에서 Md file을 가져오는 방법'
 ---
 
@@ -117,7 +117,7 @@ export async function getStaticProps() {
 }
 
 // index.tsx
-export default function Home({allPostsData}) {
+export default function Home({ allPostsData }) {
   return (
     <Layout home>
       {/* Keep the existing code here */}
@@ -126,7 +126,7 @@ export default function Home({allPostsData}) {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
-          {allPostsData.map(({id, date, title}) => (
+          {allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
               {title}
               <br />
@@ -241,7 +241,7 @@ yarn add remark remark-html
 이전에 작성했던 함수 수정
 
 ```js
-import {remark} from 'remark'
+import { remark } from 'remark'
 import html from 'remark-html'
 
 export async function getPostData(id) {
@@ -269,7 +269,7 @@ export async function getPostData(id) {
 다시 `post.tsx`
 
 ```jsx
-export async function getStaticProps({params}) {
+export async function getStaticProps({ params }) {
   // Add the "await" keyword like this:
   const postData = await getPostData(params.id)
 
@@ -280,7 +280,7 @@ export async function getStaticProps({params}) {
   }
 }
 
-export default function Post({postData}) {
+export default function Post({ postData }) {
   return (
     <Layout>
       ...
@@ -290,7 +290,7 @@ export default function Post({postData}) {
       <br />
       {postData.date}
       <br />
-      <div dangerouslySetInnerHTML={{__html: postData.contentHtml}} />
+      <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
       ...
     </Layout>
   )

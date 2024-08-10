@@ -1,7 +1,7 @@
 ---
 title: 'Basic Next'
 date: '2023-04-16'
-tag: ['next']
+tag: ['next.js']
 description: 'Next js(12)의 특징인 SSR, SSG, ISR 및 API 통신 방법'
 ---
 
@@ -120,14 +120,14 @@ route 값을 꺼내 올 때
 
 ```jsx
 const route = useRouter()
-const {slug} = route.query
+const { slug } = route.query
 ```
 
 http://localhost:3000/category/food?from=res
 
 ```jsx
 const route = useRouter()
-const {slug, from} = route.query
+const { slug, from } = route.query
 ```
 
 어떤 값이든 가져올 수 있다.
@@ -190,13 +190,13 @@ type Data = {
   name: string
 }
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-  const {uid} = req.query
+  const { uid } = req.query
   const cokies = req.cookies
-  res.status(200).json({name: `John Doe ${uid}`})
+  res.status(200).json({ name: `John Doe ${uid}` })
 }
 // pages/[username]/[info].tsx
 const router = useRouter()
-const {username, info, uid} = router.query
+const { username, info, uid } = router.query
 const [name, setName] = useState('?')
 useEffect(() => {
   if (!uid) return
@@ -212,7 +212,7 @@ useEffect(() => {
 
 ```ts
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-  const {uid} = req.query
+  const { uid } = req.query
   const cokies = req.cookies
   // res
   // 	.status(200)

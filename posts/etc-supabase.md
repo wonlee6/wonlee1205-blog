@@ -1,7 +1,7 @@
 ---
 title: 'Supabase 적용해보기'
 date: '2024-08-08'
-tag: ['supabase', 'next', 'etc']
+tag: ['supabase', 'next.js', 'etc']
 description: 'Supabase - crud 적용해보기'
 ---
 
