@@ -53,7 +53,7 @@ const EditorAttributes = ({ children }: { children?: ReactNode }) => {
 const Editor = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <div className='fixed inset-0 flex size-full flex-col'>{children}</div>
+      <div className='flex size-full h-auto flex-col'>{children}</div>
     </>
   )
 }

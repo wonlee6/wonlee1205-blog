@@ -58,18 +58,18 @@ export default function HeaderNaviBar() {
     }
   }, [theme])
 
-  if (pathName.includes('editor')) {
-    return null
-  }
+  // if (pathName.includes('editor')) {
+  //   return null
+  // }
 
   return (
     <>
       <Navbar
-        shouldHideOnScroll
         isMenuOpen={isMenuOpen}
         onMenuOpenChange={setIsMenuOpen}
         isBordered
-        isBlurred>
+        isBlurred
+        className='backdrop-blur-sm'>
         <NavbarContent justify='start'>
           <NavbarMenuToggle
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}

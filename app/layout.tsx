@@ -20,8 +20,7 @@ export default function RootLayout({
         <Providers>
           <div className='relative flex min-h-dvh flex-col'>
             <HeaderNaviBar />
-
-            <main className='flex flex-auto'>{children}</main>
+            <main className='flex grow'>{children}</main>
           </div>
         </Providers>
         <Analytics />

@@ -3,5 +3,5 @@ export default function ChartsLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <section className='flex flex-1'>{children}</section>
+  return <section className='h-auto w-full'>{children}</section>
 }
