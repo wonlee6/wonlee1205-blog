@@ -143,7 +143,7 @@ export default async function SignInPage() {
 }
 ```
 
-`await verifySession()`를 통해 세션을 검증하거나, `sign in`페이지에서 `route.ts` 핸들러를 통해 세션을 생성할 수 있습니다.
+위와 같이 `await verifySession()`를 통해 세션을 검증하거나, 회원가입 페이지에서 `createSession()`함수를 통해 세션을 생성할 수 있습니다.
 
 ## middleware
 
