@@ -45,6 +45,7 @@ export default function HeaderNaviBar() {
   useLayoutEffect(() => {
     if (localStorage.getItem('theme') === 'dark') {
       setTheme('dark')
+      setIsDarkMode(true)
       return
     }
     setTheme('light')
