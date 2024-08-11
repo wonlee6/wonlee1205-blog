@@ -1,6 +1,6 @@
 'use client'
 
-import React, {memo} from 'react'
+import React, { memo } from 'react'
 
 function Utterance(): JSX.Element {
   return (

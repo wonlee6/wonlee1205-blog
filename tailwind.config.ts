@@ -21,8 +21,8 @@ const linkHeadingStyles = {
 const config = {
   darkMode: ['class'],
   content: [
-    './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}'
   ],
   prefix: '',
