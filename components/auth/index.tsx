@@ -56,24 +56,23 @@ export default function AuthClient({ authType }: Props) {
     //     redirectTo: `http://localhost:3000/web-builder/project`
     //   }
     // })
-    try {
-      const response = await fetch(`/api/web-builder/${authType}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name,
-          password: form.password
-        })
-      })
 
-      if (response.status === 200) {
-        const data = await response.json()
-        router.push(`/web-builder/project/${data.data[0].id}`)
-      }
-    } catch (error) {
+    const response = await fetch(`/api/web-builder/${authType}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: form.name,
+        password: form.password
+      })
+    })
+
+    if (response.status === 200) {
+      const data = await response.json()
+      router.push(`/web-builder/project/${data.data[0].id}`)
+    } else {
       toast({
         variant: 'destructive',
-        title: 'Invalid user info!'
+        title: response.statusText
       })
     }
   }

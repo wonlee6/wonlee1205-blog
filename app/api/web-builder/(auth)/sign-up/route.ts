@@ -25,7 +25,10 @@ export async function POST(request: NextRequest) {
     .select()
 
   if (error) {
-    return new NextResponse('Failed to create user.', { status: 500 })
+    return new NextResponse('Failed to create user.', {
+      status: 500,
+      statusText: 'Failed to create user.'
+    })
   }
 
   if (status === 201) {
@@ -35,6 +38,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ data })
     // return new NextResponse(data, { status: 201 })
   } else {
-    return new NextResponse('Failed to create user.', { status: 500 })
+    return new NextResponse('Failed to create user.', {
+      status: 500,
+      statusText: 'Failed to create user.'
+    })
   }
 }
