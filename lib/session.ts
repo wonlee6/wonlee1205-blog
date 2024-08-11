@@ -52,6 +52,7 @@ export async function verifySession() {
   const session = await decrypt(cook)
 
   if (session?.userId) {
+    console.log(session)
     redirect(`/web-builder/project/${session.userId}`)
   }
   return undefined
@@ -60,4 +61,20 @@ export async function verifySession() {
 export async function deleteSession() {
   cookies().delete(cookie.name)
   // redirect('/web-builder/sign-in')
+}
+
+export async function verifyMemberSession(userId: string) {
+  const getCookie = cookies().get(cookie.name)
+  if (typeof getCookie === 'undefined') {
+    return undefined
+  }
+
+  const cook = getCookie.value
+  const session = await decrypt(cook)
+
+  if (session?.userId !== userId) {
+    redirect(`/web-builder/sign-in?return`)
+  }
+
+  return undefined
 }

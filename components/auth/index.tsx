@@ -106,6 +106,8 @@ export default function AuthClient({ authType }: Props) {
               }}
               onFocus={() => setIsFirstNameFocus(false)}
               maxLength={50}
+              autoComplete='false'
+              type='text'
             />
             <Input
               ref={passwordRef}

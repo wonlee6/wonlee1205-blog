@@ -20,6 +20,7 @@ export async function middleware(request: NextRequest) {
 
     if (typeof cookie !== 'undefined') {
       const session = await decrypt(cookie)
+
       if (!session?.userId) {
         return NextResponse.redirect(new URL('/web-builder/sign-in', request.nextUrl))
       }
