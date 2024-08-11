@@ -118,7 +118,7 @@ export default function ProjectRoot(props: Props) {
 
   return (
     <>
-      <Card className='w-[500px]' shadow='md'>
+      <Card className='m-auto w-[500px]' shadow='md'>
         <CardHeader className='justify-between'>
           <h2>Project</h2>
           <Button

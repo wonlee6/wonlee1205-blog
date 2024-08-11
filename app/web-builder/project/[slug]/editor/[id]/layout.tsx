@@ -3,5 +3,5 @@ export default function WebBuilderRootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return <div className='flex h-auto w-full'>{children}</div>
+  return <>{children}</>
 }

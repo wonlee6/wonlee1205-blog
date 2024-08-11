@@ -58,10 +58,6 @@ export default function HeaderNaviBar() {
     }
   }, [theme])
 
-  // if (pathName.includes('editor')) {
-  //   return null
-  // }
-
   return (
     <>
       <Navbar
@@ -100,6 +96,17 @@ export default function HeaderNaviBar() {
               Chart
             </Link>
           </NavbarItem>
+          {/* <NavbarItem isActive={pathName === '/web-builder/sign-in'}>
+            <Link
+              href={'/web-builder/sign-in'}
+              as={NextLink}
+              underline={pathName === '/web-builder/sign-in' ? 'always' : 'none'}
+              color={pathName === '/web-builder/sign-in' ? 'primary' : 'foreground'}
+              prefetch
+              isBlock>
+              web-builder
+            </Link>
+          </NavbarItem> */}
           <NavbarItem isActive={pathName === '/about'}>
             <Link
               href={'/about'}
