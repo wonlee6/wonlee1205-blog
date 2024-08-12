@@ -6,12 +6,7 @@ import { verifyMemberSession } from '@/lib/session'
 import Link from 'next/link'
 
 export default async function WebBuilderProjectPage({ params }: { params: { slug: string } }) {
-  await verifyMemberSession(params.slug)
-
-  const cookieStore = cookies()
-  const supabase = createClient(cookieStore)
-
-  const { data, error } = await supabase.from('project').select().eq('user_id', params.slug)
+  const { data, error } = await getProject(params.slug)
 
   if (error) {
     return (
@@ -24,4 +19,13 @@ export default async function WebBuilderProjectPage({ params }: { params: { slug
     )
   }
   return <ProjectRoot projectData={data as ProjectData[]} projectId={params.slug} />
+}
+
+const getProject = async (path: string) => {
+  await verifyMemberSession(path)
+
+  const cookieStore = cookies()
+  const supabase = createClient(cookieStore)
+
+  return await supabase.from('project').select().match({ user_id: path })
 }

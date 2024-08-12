@@ -16,26 +16,26 @@ export async function POST(request: NextRequest) {
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
-  const { error, status, data } = await supabase
+  const { error, statusText, data, status } = await supabase
     .from('member')
     .insert({
       name: name,
       password: hashedPassword
     })
     .select()
+    .single()
 
   if (error) {
     return new NextResponse('Failed to create user.', {
-      status: 500,
-      statusText: 'Failed to create user.'
+      status: status,
+      statusText: 'Duplicate name'
     })
   }
 
-  if (status === 201) {
-    // 동작안함
+  if (statusText) {
     // return redirect(`/web-builder/project/${getProjectData[0].id}`)
-    await createSession(data[0].id)
-    return NextResponse.json({ data })
+    await createSession(data.id, data.name)
+    return NextResponse.json(data)
     // return new NextResponse(data, { status: 201 })
   } else {
     return new NextResponse('Failed to create user.', {

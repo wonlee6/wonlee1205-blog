@@ -13,18 +13,22 @@ export async function POST(request: NextRequest) {
 
   const supabase = createClient()
 
-  const { status, error, data } = await supabase.from('member').select('*').eq('name', name)
+  const { statusText, error, data } = await supabase
+    .from('member')
+    .select()
+    .match({ name })
+    .single()
+
   if (error) {
-    return new NextResponse('Failed to fetch user.', {
+    return new NextResponse('User not found.', {
       status: 500,
-      statusText: 'Failed to fetch user.'
+      statusText: 'User not found.'
     })
   }
 
-  if (status === 200) {
-    if (data && data.length > 0) {
-      const user = data[0]
-      const isMatch = await bcrypt.compare(password, user.password)
+  if (statusText) {
+    if (data) {
+      const isMatch = await bcrypt.compare(password, data.password)
 
       if (!isMatch) {
         return new NextResponse('Invalid credentials.', {
@@ -32,9 +36,9 @@ export async function POST(request: NextRequest) {
           statusText: 'Invalid credentials.'
         })
       }
-      await createSession(user.id)
-      return NextResponse.json({ data })
+      await createSession(data.id, data.name)
+      return NextResponse.json(data)
     }
   }
-  return new NextResponse('User not found.', { status: 404, statusText: 'User not found.' })
+  return new NextResponse('User not found.', { status: 500, statusText: 'fetch error' })
 }
