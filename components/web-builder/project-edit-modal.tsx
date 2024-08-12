@@ -81,7 +81,7 @@ export default function ProjectEditModal(props: Props) {
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
         <ModalContent>
           {(onClose) => (
-            <form onSubmit={handleSubmit} onKeyDown={handleKeyDownsubmit} autoComplete='false'>
+            <form onSubmit={handleSubmit} onKeyDown={handleKeyDownsubmit} autoComplete='off'>
               <ModalHeader className='flex flex-col gap-1'>
                 {modalType === 'add' ? (
                   <h2>Add Project</h2>

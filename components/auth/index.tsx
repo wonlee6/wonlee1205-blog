@@ -89,7 +89,7 @@ export default function AuthClient({ authType }: Props) {
           </div>
         </CardHeader>
         <CardBody>
-          <form onSubmit={handleSubmit} className='flex flex-col gap-4' autoComplete='false'>
+          <form onSubmit={handleSubmit} className='flex flex-col gap-4' autoComplete='off'>
             <Input
               ref={nameRef}
               label='Name'
@@ -106,7 +106,6 @@ export default function AuthClient({ authType }: Props) {
               }}
               onFocus={() => setIsFirstNameFocus(false)}
               maxLength={50}
-              autoComplete='false'
               type='text'
             />
             <Input
@@ -135,7 +134,6 @@ export default function AuthClient({ authType }: Props) {
               isInvalid={isFirstPasswordFocus}
               errorMessage={'Password is required'}
               maxLength={20}
-              autoComplete='false'
             />
             <Button color='success' type='submit'>
               {authType === 'sign-in' ? `Sign In` : 'Sign Up'}
