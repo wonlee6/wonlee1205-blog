@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import EditorClient from '@/components/editor/client'
 import Link from 'next/link'
+import EditorClient from '@/components/web-builder/editor/client'
 
 export default async function WebBuilderEditorPage({
   params

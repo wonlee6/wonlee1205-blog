@@ -1,13 +1,14 @@
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Providers } from './provider'
+import { Fira_Code } from 'next/font/google'
 
 import '../styles/globals.css'
 import HeaderNaviBar from '@/components/navigation'
-import localFont from 'next/font/local'
 import { Toaster } from '@/components/ui/toaster'
 
-const myFont = localFont({ src: '../public/font/FiraCode-SemiBold.woff2', display: 'swap' })
+const inter = Fira_Code({ subsets: ['cyrillic'] })
+// const myFont = localFont({ src: 'font/FiraCode-SemiBold.woff2', display: 'swap' })
 
 export default function RootLayout({
   children
@@ -16,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning className='light' lang='ko'>
-      <body className={myFont.className}>
+      <body className={inter.className}>
         <Providers>
           <div className='relative flex min-h-dvh flex-col'>
             <HeaderNaviBar />
