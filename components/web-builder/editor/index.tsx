@@ -41,7 +41,9 @@ import {
   AlignCenterHorizontalIcon,
   AlignVerticalJustifyStart,
   AlignVerticalJustifyCenter,
-  AlignVerticalJustifyEnd
+  AlignVerticalJustifyEnd,
+  BoxSelect,
+  Type
 } from 'lucide-react'
 
 const EditorToolbox = () => {
@@ -118,22 +120,15 @@ const EditorAttributes = ({ children }: { children?: ReactNode }) => {
   return (
     <>
       <div className='flex h-full w-1/5 border-l border-t border-default-300'>
-        <div className='flex h-full w-[85%] flex-col overflow-y-auto border-r border-default-300 p-3'>
+        <div className='size-full border-r border-default-300 p-2'>
           <Tabs aria-label='Options' radius='none'>
-            <Tab key='styles' title='Styles' className='flex h-full flex-col gap-4 overflow-y-auto'>
-              <div className='flex flex-col gap-2 border p-4 shadow-md'>
-                <h3 className='text-lg font-bold'>Styles</h3>
-                <span className='text-sm text-foreground-500'>
-                  Show your creativity! You can customize every component as you like.
-                </span>
-              </div>
-
+            <Tab key='styles' title='Styles'>
               <Accordion
                 selectionMode='multiple'
                 variant='shadow'
                 className='rounded-none'
                 defaultExpandedKeys='all'>
-                <AccordionItem
+                {/* <AccordionItem
                   key='1'
                   aria-label='Custom'
                   title='Custom'
@@ -141,7 +136,7 @@ const EditorAttributes = ({ children }: { children?: ReactNode }) => {
                   <span className='text-sm text-foreground-500'>
                     Show your creativity! You can customize every component as you like.
                   </span>
-                </AccordionItem>
+                </AccordionItem> */}
 
                 <AccordionItem
                   key='2'
@@ -396,25 +391,57 @@ const EditorAttributes = ({ children }: { children?: ReactNode }) => {
               </Accordion>
             </Tab>
 
-            <Tab key='photos' title='Photos'>
-              <Card>
-                <CardBody>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </CardBody>
-              </Card>
+            <Tab key='Components' title='Components'>
+              <Accordion
+                selectionMode='multiple'
+                variant='shadow'
+                className='rounded-none'
+                defaultExpandedKeys='all'>
+                <AccordionItem
+                  key='1'
+                  aria-label='Layout'
+                  title='Layout'
+                  classNames={{ heading: 'font-bold', content: 'pb-4' }}>
+                  <div className='flex flex-col gap-3'>
+                    <div className='flex flex-wrap'>
+                      <div className='flex flex-col items-center justify-center gap-1'>
+                        <div className='cursor-pointer rounded-lg p-1 transition-all hover:bg-default-200'>
+                          <BoxSelect size={50} />
+                        </div>
+                        <span>Container</span>
+                      </div>
+                    </div>
+                  </div>
+                </AccordionItem>
+
+                <AccordionItem
+                  key='2'
+                  aria-label='Elements'
+                  title='Elements'
+                  classNames={{ heading: 'font-bold', content: 'pb-4' }}>
+                  <div className='flex flex-col gap-3'>
+                    <div className='flex flex-wrap'>
+                      <div className='flex flex-col items-center justify-center gap-1'>
+                        <div className='cursor-pointer rounded-lg p-1 transition-all hover:bg-default-200'>
+                          <Type size={50} />
+                        </div>
+                        <span>Container</span>
+                      </div>
+                    </div>
+                  </div>
+                </AccordionItem>
+              </Accordion>
             </Tab>
           </Tabs>
         </div>
-        <div className='flex w-[15%] flex-col items-center gap-4 border-l border-default-300 py-1'>
+        {/* <div className='flex w-[15%] flex-col items-center gap-4 border-l border-default-300 py-1'>
           <Button isIconOnly variant='light'>
             <Settings />
           </Button>
           <Button isIconOnly variant='light'>
             <Plus />
           </Button>
-        </div>
+        </div> */}
       </div>
     </>
   )
