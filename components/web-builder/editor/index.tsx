@@ -11,7 +11,7 @@ const EditorSideBar = dynamic(() => import('./side-bar/index'))
 const Editor = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <div className='relative flex size-full h-auto flex-col'>{children}</div>
+      <div className='flex size-full flex-col'>{children}</div>
     </>
   )
 }

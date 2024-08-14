@@ -6,11 +6,11 @@ import { Accordion, AccordionItem } from '@nextui-org/react'
 import { BoxSelect, Type } from 'lucide-react'
 
 function ComponentsTab() {
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: string) => {
     e.stopPropagation()
 
     e.dataTransfer.clearData()
-    e.dataTransfer.setData('text/plain', 'title')
+    e.dataTransfer.setData('text/plain', item)
     e.dataTransfer.effectAllowed = 'all'
     e.dataTransfer.dropEffect = 'copy'
   }
@@ -29,15 +29,17 @@ function ComponentsTab() {
           classNames={{ heading: 'font-bold', content: 'pb-4' }}>
           <div className='flex flex-col gap-3'>
             <div className='flex flex-wrap'>
-              <div className='flex flex-col items-center justify-center gap-1'>
-                <div
-                  className='cursor-grab rounded-lg p-1 transition-all hover:bg-default-200'
-                  draggable
-                  onDragStart={handleDragStart}>
-                  <BoxSelect size={50} />
+              {layoutList.map((item) => (
+                <div key={item.name} className='flex flex-col items-center justify-center gap-1'>
+                  <div
+                    className='cursor-grab rounded-lg p-1 transition-all hover:bg-default-200'
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, item.name)}>
+                    {item.icon}
+                  </div>
+                  <span>{item.name}</span>
                 </div>
-                <span>Container</span>
-              </div>
+              ))}
             </div>
           </div>
         </AccordionItem>
@@ -49,12 +51,17 @@ function ComponentsTab() {
           classNames={{ heading: 'font-bold', content: 'pb-4' }}>
           <div className='flex flex-col gap-3'>
             <div className='flex flex-wrap'>
-              <div className='flex flex-col items-center justify-center gap-1'>
-                <div className='cursor-grab rounded-lg p-1 transition-all hover:bg-default-200'>
-                  <Type size={50} />
+              {elementList.map((item) => (
+                <div key={item.name} className='flex flex-col items-center justify-center gap-1'>
+                  <div
+                    className='cursor-grab rounded-lg p-1 transition-all hover:bg-default-200'
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, item.name)}>
+                    {item.icon}
+                  </div>
+                  <span>{item.name}</span>
                 </div>
-                <span>Container</span>
-              </div>
+              ))}
             </div>
           </div>
         </AccordionItem>
@@ -64,3 +71,6 @@ function ComponentsTab() {
 }
 
 export default memo(ComponentsTab)
+
+const layoutList = [{ name: 'Container', icon: <BoxSelect size={50} /> }]
+const elementList = [{ name: 'Text', icon: <Type size={50} /> }]

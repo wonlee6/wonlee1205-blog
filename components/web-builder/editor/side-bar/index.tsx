@@ -17,7 +17,7 @@ export default function EditorSideBar({ children }: { children?: ReactNode }) {
           type: 'spring'
         }}
         layout
-        className='flex h-full w-1/5 border-l border-t border-default-300'>
+        className='h-full w-1/5 overflow-auto border-l border-t border-default-300'>
         <div className='size-full border-r border-default-300 p-2'>
           <Tabs aria-label='Options' radius='none'>
             <Tab key='styles' title='Styles'>

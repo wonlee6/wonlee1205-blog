@@ -19,9 +19,9 @@ export default function RootLayout({
     <html suppressHydrationWarning className='light' lang='ko'>
       <body className={inter.className}>
         <Providers>
-          <div className='relative flex h-dvh flex-col overflow-auto'>
+          <div className='relative flex h-dvh flex-col'>
             <HeaderNaviBar />
-            <main className='flex grow'>{children}</main>
+            <main className='flex grow overflow-auto'>{children}</main>
           </div>
         </Providers>
         <Analytics />

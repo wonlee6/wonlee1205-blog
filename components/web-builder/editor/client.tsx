@@ -14,8 +14,8 @@ export default function EditorClient(props: Props) {
     <LazyMotion features={domAnimation}>
       <Editor>
         <Editor.Toolbox />
-        <div className='flex size-full'>
-          <Editor.Canvas>Drag here</Editor.Canvas>
+        <div className='flex w-full' style={{ height: '97%' }}>
+          <Editor.Canvas></Editor.Canvas>
           <Editor.SideBar></Editor.SideBar>
         </div>
       </Editor>

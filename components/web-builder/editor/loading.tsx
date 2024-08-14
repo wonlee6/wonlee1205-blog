@@ -4,7 +4,7 @@ import { Skeleton, Spinner } from '@nextui-org/react'
 
 export default function EditorLoading() {
   return (
-    <div className='flex size-full h-auto flex-col'>
+    <div className='flex h-auto w-full flex-col'>
       <div className='flex min-h-14 w-full items-center justify-between border-b border-default-300 px-4'>
         <div className='flex h-full w-[200px] space-x-1 p-2'>
           <Skeleton className='h-full w-[50px] rounded-lg' />

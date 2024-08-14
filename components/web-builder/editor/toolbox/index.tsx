@@ -12,23 +12,23 @@ function EditorToolbox() {
       <m.div
         initial={{ x: -1000 }}
         animate={{ x: 0 }}
-        layout
+        layout='preserve-aspect'
         transition={{ ease: 'easeInOut', type: 'spring' }}
-        className='flex min-h-14 w-full items-center justify-between border-b border-default-300 px-4'>
+        className='flex h-[3%] w-full items-center justify-between border-b border-default-300 px-4'>
         <div className='flex items-center gap-4'>
-          <Button variant='light' onClick={() => {}} startContent={<DoorOpen />}>
-            Back
-          </Button>
-          <div className='flex flex-col gap-1'>
-            <h2 className='text-base'>title</h2>
-            <span className='text-sm text-foreground-500'>description</span>
+          <div className='border-r pr-2'>
+            <Button variant='light' size='sm' onClick={() => {}} startContent={<DoorOpen />}>
+              Back
+            </Button>
           </div>
+          <h2 className='text-base'>title</h2>
         </div>
         <div className='flex items-center gap-4'>
           <Tooltip content='Desktop'>
             <Button
               isIconOnly
               variant='light'
+              size='sm'
               color={device === 'Desktop' ? 'primary' : 'default'}
               onClick={() => setDevice('Desktop')}>
               <Monitor />
@@ -38,6 +38,7 @@ function EditorToolbox() {
             <Button
               isIconOnly
               variant='light'
+              size='sm'
               color={device === 'Tablet' ? 'primary' : 'default'}
               onClick={() => setDevice('Tablet')}>
               <TabletSmartphone />
@@ -46,6 +47,7 @@ function EditorToolbox() {
           <Tooltip content='Mobile'>
             <Button
               isIconOnly
+              size='sm'
               variant='light'
               color={device === 'Mobile' ? 'primary' : 'default'}
               onClick={() => setDevice('Mobile')}>
@@ -55,12 +57,12 @@ function EditorToolbox() {
         </div>
         <div className='flex items-center gap-4'>
           <Tooltip content='Play'>
-            <Button isIconOnly variant='light'>
+            <Button isIconOnly variant='light' size='sm'>
               <Play />
             </Button>
           </Tooltip>
 
-          <Button variant='shadow' color='primary'>
+          <Button variant='shadow' color='primary' size='sm'>
             Save
           </Button>
         </div>
