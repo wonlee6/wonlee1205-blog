@@ -1,5 +1,7 @@
-import LoadingSpinner from '@/components/common/loading-spinner'
+'use client'
+
+import EditorLoading from '@/components/web-builder/editor/loading'
 
 export default function ChartLoading() {
-  return <LoadingSpinner />
+  return <EditorLoading />
 }

@@ -2,33 +2,34 @@
 
 import { createContext, ReactNode, useContext, useRef } from 'react'
 import { useStore } from 'zustand'
+import { createEditorStore, type EditorStore } from '@/stores/editor-store'
 
-import { createUserStore, type UserStore } from '@/stores/user-store'
+export type EditorStoreApi = ReturnType<typeof createEditorStore>
 
-export type UserStoreApi = ReturnType<typeof createUserStore>
+export const EditorStoreContext = createContext<EditorStoreApi | undefined>(undefined)
 
-export const UserStoreContext = createContext<UserStoreApi | undefined>(undefined)
-
-export interface UserStoreProviderProps {
+export interface EditorStoreProviderProps {
   children: ReactNode
 }
 
-export const UserStoreProvider = ({ children }: UserStoreProviderProps) => {
-  const storeRef = useRef<UserStoreApi>()
+export const UserStoreProvider = ({ children }: EditorStoreProviderProps) => {
+  const storeRef = useRef<EditorStoreApi>()
 
   if (!storeRef.current) {
-    storeRef.current = createUserStore()
+    storeRef.current = createEditorStore()
   }
 
-  return <UserStoreContext.Provider value={storeRef.current}>{children}</UserStoreContext.Provider>
+  return (
+    <EditorStoreContext.Provider value={storeRef.current}>{children}</EditorStoreContext.Provider>
+  )
 }
 
-export const useUserStore = <T,>(selector: (store: UserStore) => T): T => {
-  const userStoreContext = useContext(UserStoreContext)
+export const useEditorStore = <T,>(selector: (store: EditorStore) => T): T => {
+  const editorStoreContext = useContext(EditorStoreContext)
 
-  if (!userStoreContext) {
-    throw new Error(`userStoreContext must be used within UserStoreProvider`)
+  if (!editorStoreContext) {
+    throw new Error(`EditorStoreContext must be used within UserStoreProvider`)
   }
 
-  return useStore(userStoreContext, selector)
+  return useStore(editorStoreContext, selector)
 }

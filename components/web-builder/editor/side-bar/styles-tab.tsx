@@ -27,7 +27,7 @@ import {
   AlignVerticalJustifyEnd
 } from 'lucide-react'
 
-function StylesComponent() {
+function StylesTab() {
   const [value, setValue] = useState<string>('')
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -296,7 +296,7 @@ function StylesComponent() {
   )
 }
 
-export default memo(StylesComponent)
+export default memo(StylesTab)
 
 export const animals = [
   { key: 'cat', label: 'Cat' },

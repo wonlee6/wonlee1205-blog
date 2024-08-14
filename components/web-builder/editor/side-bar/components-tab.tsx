@@ -5,7 +5,7 @@ import { Accordion, AccordionItem } from '@nextui-org/react'
 
 import { BoxSelect, Type } from 'lucide-react'
 
-function DragComponents() {
+function ComponentsTab() {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation()
 
@@ -63,4 +63,4 @@ function DragComponents() {
   )
 }
 
-export default memo(DragComponents)
+export default memo(ComponentsTab)

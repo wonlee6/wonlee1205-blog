@@ -1,4 +1,7 @@
+'use client'
+
 import { memo, ReactNode } from 'react'
+import { m } from 'framer-motion'
 
 const EditorCanvas = ({ children }: { children?: ReactNode }) => {
   const handleDrop = (e: React.DragEvent) => {
@@ -13,13 +16,20 @@ const EditorCanvas = ({ children }: { children?: ReactNode }) => {
   }
   return (
     <>
-      <div
+      <m.section
+        layout
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          opacity: { ease: 'linear' },
+          layout: { duration: 0.5 }
+        }}
         className='relative h-full w-4/5 overflow-auto border-r border-t border-default-300 p-1'
         id='___body'
         onDrop={handleDrop}
         onDragOver={handleDragOver}>
         {children}
-      </div>
+      </m.section>
     </>
   )
 }

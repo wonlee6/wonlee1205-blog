@@ -13,6 +13,8 @@ export default async function WebBuilderEditorPage({
     redirect('./auth')
   }
 
+  await sleep(1000)
+
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
 
@@ -30,4 +32,12 @@ export default async function WebBuilderEditorPage({
   }
 
   return <EditorClient data={response.data} />
+}
+
+async function sleep(delay: number, fn?: any) {
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      return resolve(fn)
+    }, delay)
+  )
 }
