@@ -2,7 +2,7 @@ import { isElementType } from '@/lib/editor'
 import { ComponentType, EditorElement } from '@/model/web-builder'
 import { createStore } from 'zustand/vanilla'
 
-export type EditorState = {
+type EditorState = {
   device: 'Desktop' | 'Tablet' | 'Mobile'
   elements: EditorElement[]
   selectedElement: EditorElement
@@ -10,38 +10,56 @@ export type EditorState = {
   liveMode: boolean
 }
 
-export type EditorActions = {
+type EditorActions = {
   setDevice: (device: 'Desktop' | 'Tablet' | 'Mobile') => void
-  handleAddElement: (id: string, elementDetails: EditorElement) => void
+  onAddElement: (id: string, elementDetails: EditorElement) => void
+  onSelectElement: (element: EditorElement) => void
+  onDeleteElement: (id: string) => void
 }
 
 export type EditorStore = EditorState & EditorActions
 
+const initialState: EditorState = {
+  previewMode: false,
+  liveMode: false,
+  device: 'Desktop',
+  elements: [
+    {
+      id: '___body',
+      name: 'Body',
+      styles: {},
+      type: '___body',
+      content: []
+    }
+  ],
+  selectedElement: {
+    id: '',
+    name: '',
+    styles: {},
+    type: null,
+    content: []
+  }
+}
+
 export const createEditorStore = () => {
   return createStore<EditorStore>()((set) => ({
-    previewMode: false,
-    liveMode: false,
-    device: 'Desktop',
-    elements: [
-      {
-        id: '___body',
-        name: 'Body',
-        styles: {},
-        type: '___body',
-        content: []
-      }
-    ],
-    selectedElement: {
-      id: '',
-      name: '',
-      styles: {},
-      type: null,
-      content: []
-    },
+    ...initialState,
     setDevice: (device: 'Desktop' | 'Tablet' | 'Mobile') => set(() => ({ device })),
-    handleAddElement: (id: string, elementDetails: EditorElement) =>
+    onAddElement: (id: string, elementDetails: EditorElement) =>
       set((state) => ({
         elements: addElement(state.elements, id, elementDetails)
+      })),
+    onDeleteElement: (id: string) =>
+      set((state) => ({ elements: deleteElement(state.elements, id) })),
+    onSelectElement: (element: EditorElement) =>
+      set(() => ({
+        selectedElement: {
+          id: element.id,
+          name: element.name,
+          styles: element.styles,
+          type: element.type,
+          content: element.content
+        }
       }))
   }))
 }
@@ -67,26 +85,21 @@ const addElement = (
   })
 }
 
-// const addAnElement = (
-//   editorArray: EditorElement[],
-//   action: EditorAction
-// ): EditorElement[] => {
-//   if (action.type !== 'ADD_ELEMENT')
-//     throw Error(
-//       'You sent the wrong action type to the Add Element editor State'
-//     )
-//   return editorArray.map((item) => {
-//     if (item.id === action.payload.containerId && Array.isArray(item.content)) {
-//       return {
-//         ...item,
-//         content: [...item.content, action.payload.elementDetails],
-//       }
-//     } else if (item.content && Array.isArray(item.content)) {
-//       return {
-//         ...item,
-//         content: addAnElement(item.content, action),
-//       }
-//     }
-//     return item
-//   })
-// }
+const deleteElement = (editorArray: EditorElement[], id: string): EditorElement[] => {
+  return editorArray.map((item) => {
+    if (!isElementType(item.content)) {
+      const existElement = item.content.some((i) => i.id === id)
+      if (existElement) {
+        return {
+          ...item,
+          content: item.content.filter((v) => v.id !== id)
+        }
+      }
+      return {
+        ...item,
+        content: deleteElement(item.content, id)
+      }
+    }
+    return item
+  })
+}

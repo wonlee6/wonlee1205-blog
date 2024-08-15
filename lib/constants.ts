@@ -5,3 +5,11 @@ export const defaultStyles: React.CSSProperties = {
   textAlign: 'left',
   opacity: '100%'
 }
+
+export const ContainerDefaultStyles: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  minHeight: '6rem'
+}

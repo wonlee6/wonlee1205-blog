@@ -9,7 +9,7 @@ import Recursive from './recursive'
 import { cn } from '@/lib/utils'
 
 function Canvas(props: EditorElement) {
-  const { device, handleAddElement } = useEditorStore((state) => state)
+  const { device, onAddElement } = useEditorStore((state) => state)
   const { id, content } = props
 
   const handleDrop = (e: React.DragEvent) => {
@@ -22,7 +22,7 @@ function Canvas(props: EditorElement) {
     if (typeof value === 'undefined') {
       return
     }
-    handleAddElement(id, value)
+    onAddElement(id, value)
   }
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -36,7 +36,7 @@ function Canvas(props: EditorElement) {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         className={cn(
-          'relative z-20 mx-auto h-full rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500',
+          'relative mx-auto h-full space-y-4 rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
           deviceSize[device]
         )}>
         {(content as EditorElement[]).map((i) => (
@@ -60,7 +60,7 @@ const EditorCanvas = () => {
       transition={{
         ease: 'linear'
       }}
-      className='h-full w-4/5 overflow-auto border-r border-t border-default-300 bg-zinc-800/10 p-6'>
+      className='h-full w-4/5 overflow-auto border-r border-t border-default-300 bg-zinc-800/10 p-5'>
       {elements.map((item) => (
         <Canvas key={item.id} {...item} />
       ))}

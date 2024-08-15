@@ -1,6 +1,6 @@
 import { ComponentType, EditorElement, ElementType } from '@/model/web-builder'
 import { v4 } from 'uuid'
-import { defaultStyles } from './constants'
+import { ContainerDefaultStyles, defaultStyles } from './constants'
 
 export function isElementType(content: EditorElement[] | ElementType): content is ElementType {
   return typeof content !== 'undefined' && !Array.isArray(content)
@@ -13,7 +13,7 @@ export function addElementByType(componentType: ComponentType): EditorElement | 
         content: [],
         id: v4(),
         name: 'Container',
-        styles: { ...defaultStyles },
+        styles: { ...ContainerDefaultStyles },
         type: 'Container'
       }
     case 'Text':
