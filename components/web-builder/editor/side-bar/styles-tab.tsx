@@ -112,7 +112,7 @@ function StylesTab() {
         aria-label='Dimensions'
         title='Dimensions'
         classNames={{ heading: 'font-bold' }}>
-        <div className='flex flex-col gap-3'>
+        <div className='flex flex-col gap-3 pb-3'>
           <div className='flex gap-2'>
             <div className='flex w-1/2 flex-col'>
               <span className='text-foreground-600'>Height</span>
@@ -128,57 +128,53 @@ function StylesTab() {
 
           <h3 className='text-base font-medium'>Margin px</h3>
 
-          <div className='flex gap-2'>
-            <div className='flex w-1/2 flex-col'>
-              <span className='text-foreground-600'>top</span>
-              <Input radius='sm' placeholder='px' />
+          <div className='grid h-44 grid-cols-3 border'>
+            <div className='flex items-center'>
+              <div className='flex p-1'>
+                <Input size='sm' label='Left' radius='sm' />
+              </div>
             </div>
-            <div className='flex w-1/2 flex-col'>
-              <span className='text-foreground-600'>Bottm</span>
-              <Input radius='sm' placeholder='px' />
+            <div className='flex flex-col justify-between px-1'>
+              <div className='flex p-1'>
+                <Input size='sm' label='Top' radius='sm' />
+              </div>
+              <div className='flex min-h-12 items-center justify-center border'>
+                <span className='text-sm text-foreground-400'>component</span>
+              </div>
+              <div className='flex p-1'>
+                <Input size='sm' label='Bottom' radius='sm' />
+              </div>
+            </div>
+            <div className='flex items-center'>
+              <div className='flex p-1'>
+                <Input size='sm' label='Right' radius='sm' />
+              </div>
             </div>
           </div>
-          <div className='flex gap-2'>
-            <div className='flex w-1/2 flex-col'>
-              <span className='text-foreground-600'>Left</span>
-              <Input radius='sm' placeholder='px' />
-            </div>
-            <div className='flex w-1/2 flex-col'>
-              <span className='text-foreground-600'>Right</span>
-              <Input radius='sm' placeholder='px' />
-            </div>
-          </div>
-
-          <Divider />
 
           <h3 className='text-base font-medium'>Padding px</h3>
 
-          <div className='flex gap-2'>
-            <div className='flex w-1/2 flex-col'>
-              <span className='text-foreground-600'>top</span>
-              <Input radius='sm' placeholder='px' />
+          <div className='grid h-44 grid-cols-3 border'>
+            <div className='flex items-center'>
+              <div className='flex p-1'>
+                <Input size='sm' label='Left' radius='sm' />
+              </div>
             </div>
-            <div className='flex w-1/2 flex-col'>
-              <span className='text-foreground-600'>Bottm</span>
-              <Input radius='sm' placeholder='px' />
+            <div className='flex flex-col justify-between px-1'>
+              <div className='flex p-1'>
+                <Input size='sm' label='Top' radius='sm' />
+              </div>
+              <div className='flex min-h-12 items-center justify-center border'>
+                <span className='text-sm text-foreground-400'>component</span>
+              </div>
+              <div className='flex p-1'>
+                <Input size='sm' label='Bottom' radius='sm' />
+              </div>
             </div>
-          </div>
-          <div className='flex gap-2'>
-            <div className='flex w-1/2 flex-col'>
-              <span className='text-foreground-600'>Left</span>
-              <Input radius='sm' placeholder='px' />
-            </div>
-            <div className='flex w-1/2 flex-col'>
-              <span className='text-foreground-600'>Right</span>
-              <Input radius='sm' placeholder='px' />
-            </div>
-          </div>
-
-          <div className='relative flex items-center justify-center border bg-amber-500/50 py-10'>
-            <p className='absolute left-2 top-1'>margin</p>
-            <div className='relative flex items-center justify-center border bg-green-400/40 p-10'>
-              <p className='absolute left-1 top-1'>padding</p>
-              <div className='border bg-sky-600/50 p-1'>Component</div>
+            <div className='flex items-center'>
+              <div className='flex p-1'>
+                <Input size='sm' label='Right' radius='sm' />
+              </div>
             </div>
           </div>
         </div>
