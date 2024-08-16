@@ -1,26 +1,25 @@
-import React from 'react'
+import debounce from 'lodash.debounce'
+import { useEffect, useMemo } from 'react'
+import { usePreservedCallback } from './usePreservedCallback'
+import { usePreservedReference } from './usePreservedReference'
 
-export const useDebounce = (callback: (...args: any[]) => void, delay: number) => {
-  const callbackRef = React.useRef(callback)
+export function useDebounce<F extends (...args: any[]) => any>(
+  callback: F,
+  wait: number,
+  options: Parameters<typeof debounce>[2] = {}
+) {
+  const preservedCallback = usePreservedCallback(callback)
+  const preservedOptions = usePreservedReference(options)
 
-  React.useLayoutEffect(() => {
-    callbackRef.current = callback
-  })
+  const debounced = useMemo(() => {
+    return debounce(preservedCallback, wait, preservedOptions)
+  }, [preservedCallback, preservedOptions, wait])
 
-  let timer: NodeJS.Timeout
+  useEffect(() => {
+    return () => {
+      debounced.cancel()
+    }
+  }, [debounced])
 
-  const naiveDebounce = (func: (...args: any[]) => void, delayMs: number, ...args: any[]) => {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      func(...args)
-    }, delayMs)
-  }
-
-  return React.useMemo(
-    () =>
-      (...args: any) =>
-        naiveDebounce(callbackRef.current, delay, ...args),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [delay]
-  )
+  return debounced
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import { memo, useEffect, useState } from 'react'
 import { Button, Tooltip } from '@nextui-org/react'
 import { DoorOpen, Monitor, Play, Smartphone, TabletSmartphone } from 'lucide-react'

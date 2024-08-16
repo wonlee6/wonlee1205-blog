@@ -26,8 +26,14 @@ import {
   AlignVerticalJustifyCenter,
   AlignVerticalJustifyEnd
 } from 'lucide-react'
+import useUpdateElement from '@/hooks/useUpdateElement'
+import { useEditorStore } from '@/providers/user-store-provider'
 
 function StylesTab() {
+  const selectedElement = useEditorStore((state) => state.selectedElement)
+
+  const { handleInputUpdateElement, handleBtnUpdateElement } = useUpdateElement()
+
   const [value, setValue] = useState<string>('')
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -38,6 +44,7 @@ function StylesTab() {
 
   return (
     <Accordion
+      key={selectedElement.id}
       selectionMode='multiple'
       variant='shadow'
       className='rounded-none'
@@ -51,7 +58,11 @@ function StylesTab() {
           <span className='text-foreground-500'>Text Align</span>
           <div className='grid w-full grid-cols-4 rounded-lg border p-1'>
             <div className='border-r text-center'>
-              <Button isIconOnly size='sm' variant='light'>
+              <Button
+                isIconOnly
+                size='sm'
+                variant='light'
+                onClick={() => handleBtnUpdateElement('textAlign', 'left')}>
                 <AlignLeft />
               </Button>
             </div>
@@ -74,35 +85,49 @@ function StylesTab() {
 
           <Divider />
 
-          <span className='text-foreground-500'>Font Family</span>
-          <Input radius='sm' />
-
+          <Select
+            name='fontFamily'
+            label='Font Family'
+            labelPlacement='outside'
+            selectedKeys={[value]}
+            onChange={handleSelectionChange}>
+            {animals.map((animal) => (
+              <SelectItem key={animal.key}>{animal.label}</SelectItem>
+            ))}
+          </Select>
           <Divider />
 
-          <span className='text-foreground-500'>Color</span>
-          <Input radius='sm' />
-          {/* <input type='color' /> */}
+          <Input
+            value={String(selectedElement.styles['color'] ?? '')}
+            radius='sm'
+            label='color'
+            name='color'
+            labelPlacement='outside'
+            onChange={handleInputUpdateElement}
+          />
 
           <Divider />
 
           <div className='flex gap-2'>
-            <div className='flex w-3/5 flex-col'>
-              <span className='text-foreground-500'>Weight</span>
-              <Select
-                label='Select a weight'
-                className='max-w-xs'
-                size='sm'
-                selectedKeys={[value]}
-                onChange={handleSelectionChange}>
-                {animals.map((animal) => (
-                  <SelectItem key={animal.key}>{animal.label}</SelectItem>
-                ))}
-              </Select>
-            </div>
-            <div className='flex w-2/5 flex-col'>
-              <span className='text-foreground-500'>Size</span>
-              <Input placeholder='px' size='lg' radius='sm' />
-            </div>
+            <Select
+              label='Select a weight'
+              className='w-3/5'
+              labelPlacement='outside'
+              selectedKeys={[value]}
+              onChange={handleSelectionChange}>
+              {animals.map((animal) => (
+                <SelectItem key={animal.key}>{animal.label}</SelectItem>
+              ))}
+            </Select>
+            <Input
+              className='w-2/5'
+              radius='sm'
+              label='font-size'
+              name='fontSize'
+              value={String(selectedElement.styles['fontSize'] ?? '')}
+              onChange={handleInputUpdateElement}
+              labelPlacement='outside'
+            />
           </div>
         </div>
       </AccordionItem>
@@ -114,14 +139,29 @@ function StylesTab() {
         classNames={{ heading: 'font-bold' }}>
         <div className='flex flex-col gap-3 pb-3'>
           <div className='flex gap-2'>
-            <div className='flex w-1/2 flex-col'>
-              <span className='text-foreground-600'>Height</span>
-              <Input radius='sm' placeholder='px' />
-            </div>
-            <div className='flex w-1/2 flex-col'>
-              <span className='text-foreground-600'>Width</span>
-              <Input radius='sm' placeholder='px' />
-            </div>
+            <Input
+              className='w-1/2'
+              value={String(selectedElement.styles['height'] ?? '')}
+              name='height'
+              radius='sm'
+              onChange={handleInputUpdateElement}
+              maxLength={20}
+              autoComplete='off'
+              labelPlacement='outside'
+              label='height'
+            />
+
+            <Input
+              className='w-1/2'
+              value={String(selectedElement.styles['width'] ?? '')}
+              name='width'
+              radius='sm'
+              onChange={handleInputUpdateElement}
+              maxLength={20}
+              autoComplete='off'
+              labelPlacement='outside'
+              label='width'
+            />
           </div>
 
           <Divider />

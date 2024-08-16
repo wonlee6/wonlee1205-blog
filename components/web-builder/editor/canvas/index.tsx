@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useEffect } from 'react'
+import { useEffect } from 'react'
 import { m } from 'framer-motion'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { ComponentType, EditorElement } from '@/model/web-builder'
@@ -48,7 +48,7 @@ function Canvas(props: EditorElement) {
 }
 
 const EditorCanvas = () => {
-  const { elements } = useEditorStore((state) => state)
+  const elements = useEditorStore((state) => state.elements)
 
   useEffect(() => console.log('elements', elements), [elements])
 
@@ -68,7 +68,7 @@ const EditorCanvas = () => {
   )
 }
 
-export default memo(EditorCanvas)
+export default EditorCanvas
 
 const deviceSize = {
   Desktop: 'max-w-full',

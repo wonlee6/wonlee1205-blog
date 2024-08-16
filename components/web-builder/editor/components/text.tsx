@@ -36,21 +36,6 @@ export default function Text(props: EditorElement) {
     handleSelectElement()
   }
 
-  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-
-    if (e.currentTarget === e.target) {
-      console.log('unfocused self')
-      onSelectElement({ id: '', name: '', styles: {}, type: null, content: [] })
-    } else {
-      console.log('unfocused child', e.target)
-    }
-    if (!e.currentTarget.contains(e.relatedTarget)) {
-      // Not triggered when swapping focus between children
-      console.log('focus left self')
-    }
-  }
-
   const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
 
@@ -70,7 +55,6 @@ export default function Text(props: EditorElement) {
       <Input
         ref={inputRef}
         onClick={handleClick}
-        onBlur={handleBlur}
         onFocus={handleFocus}
         className={'relative w-full rounded-sm border-default-300 dark:border-default-300'}
         style={styles}

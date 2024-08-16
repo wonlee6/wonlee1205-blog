@@ -15,6 +15,7 @@ type EditorActions = {
   onAddElement: (id: string, elementDetails: EditorElement) => void
   onSelectElement: (element: EditorElement) => void
   onDeleteElement: (id: string) => void
+  onInputUpdateElement: (name: string, value: string) => void
 }
 
 export type EditorStore = EditorState & EditorActions
@@ -60,7 +61,24 @@ export const createEditorStore = () => {
           type: element.type,
           content: element.content
         }
-      }))
+      })),
+    onInputUpdateElement: (name: string, value: string) =>
+      set((state) => {
+        const styleObject = {
+          [name]: value
+        }
+        return {
+          ...state,
+          selectedElement: {
+            ...state.selectedElement,
+            styles: {
+              ...state.selectedElement.styles,
+              ...styleObject
+            }
+          },
+          elements: updateElement(state.elements, state.selectedElement.id, { ...styleObject })
+        }
+      })
   }))
 }
 
@@ -98,6 +116,30 @@ const deleteElement = (editorArray: EditorElement[], id: string): EditorElement[
       return {
         ...item,
         content: deleteElement(item.content, id)
+      }
+    }
+    return item
+  })
+}
+
+const updateElement = (
+  editorArray: EditorElement[],
+  id: string,
+  styleObject: object
+): EditorElement[] => {
+  return editorArray.map((item) => {
+    if (item.id === id) {
+      return {
+        ...item,
+        styles: {
+          ...item.styles,
+          ...styleObject
+        }
+      }
+    } else if (item.content && Array.isArray(item.content)) {
+      return {
+        ...item,
+        content: updateElement(item.content, id, styleObject)
       }
     }
     return item
