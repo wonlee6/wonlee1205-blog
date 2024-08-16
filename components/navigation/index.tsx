@@ -59,6 +59,10 @@ export default function HeaderNaviBar() {
     }
   }, [theme])
 
+  if (pathName.includes('editor')) {
+    return null
+  }
+
   return (
     <>
       <Navbar
