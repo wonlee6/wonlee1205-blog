@@ -1,15 +1,9 @@
 'use client'
 
-import React from 'react'
 import { LazyMotion, domAnimation } from 'framer-motion'
-import { ProjectData } from '@/model/web-builder'
 import Editor from './index'
 
-type Props = {
-  data: ProjectData[]
-}
-
-export default function EditorClient(props: Props) {
+export default function EditorClient() {
   return (
     <LazyMotion features={domAnimation}>
       <Editor>

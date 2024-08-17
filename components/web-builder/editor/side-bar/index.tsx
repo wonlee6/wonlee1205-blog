@@ -8,13 +8,17 @@ import LayersTab from './layers-tab'
 import { m } from 'framer-motion'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { useShallow } from 'zustand/react/shallow'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 // [BUG] - Accordion component is avoiding focus on inputs
 // https://github.com/nextui-org/nextui/issues/3478
 
 export default function EditorSideBar() {
-  // const data = useEditorStore(useShallow((state) => Object.keys(state)))
+  const [selectedElement] = useEditorStore(useShallow((state) => [state.selectedElement]))
+
+  const selectedStyles = useMemo(() => selectedElement.styles, [selectedElement])
+
+  useEffect(() => console.log('styles', selectedStyles), [selectedStyles])
 
   return (
     <>
@@ -28,7 +32,12 @@ export default function EditorSideBar() {
         className='h-full w-1/5 overflow-auto border-l border-t border-default-300 p-2'>
         <Tabs aria-label='Options' radius='none'>
           <Tab key='styles' title='Styles'>
-            <StylesTab />
+            <StylesTab key={selectedElement.id}>
+              <StylesTab.Typography selectedStyles={selectedStyles} />
+              <StylesTab.Dimensions selectedStyles={selectedStyles} />
+              <StylesTab.Decorations selectedStyles={selectedStyles} />
+              <StylesTab.FlexBox selectedStyles={selectedStyles} />
+            </StylesTab>
           </Tab>
 
           <Tab key='Components' title='Components'>

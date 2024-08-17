@@ -32,7 +32,7 @@ export default async function WebBuilderEditorPage({
   // }
 
   // return <EditorClient data={response.data} />
-  return <EditorClient data={[]} />
+  return <EditorClient />
 }
 
 async function sleep(delay: number, fn?: any) {

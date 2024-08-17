@@ -5,9 +5,10 @@ import { Button, Tooltip } from '@nextui-org/react'
 import { DoorOpen, Monitor, Play, Smartphone, TabletSmartphone } from 'lucide-react'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { m } from 'framer-motion'
+import { useShallow } from 'zustand/react/shallow'
 
 function EditorToolbox() {
-  const { device, setDevice } = useEditorStore((state) => state)
+  const [device, setDevice] = useEditorStore(useShallow((state) => [state.device, state.setDevice]))
 
   return (
     <>

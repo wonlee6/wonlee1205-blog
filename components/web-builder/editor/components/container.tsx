@@ -8,12 +8,18 @@ import { useEditorStore } from '@/providers/user-store-provider'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import Recursive from '../canvas/recursive'
+import { useShallow } from 'zustand/react/shallow'
 
 export default function Container(props: EditorElement) {
   const { id, name, styles, type, content } = props
 
-  const { selectedElement, onAddElement, onSelectElement, onDeleteElement } = useEditorStore(
-    (state) => state
+  const [selectedElement, onAddElement, onSelectElement, onDeleteElement] = useEditorStore(
+    useShallow((state) => [
+      state.selectedElement,
+      state.onAddElement,
+      state.onSelectElement,
+      state.onDeleteElement
+    ])
   )
 
   const containerRef = useRef<HTMLDivElement | null>(null)

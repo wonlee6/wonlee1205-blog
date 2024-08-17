@@ -1,16 +1,20 @@
 'use client'
 
-import { useEffect } from 'react'
+import { memo, useEffect } from 'react'
 import { m } from 'framer-motion'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { ComponentType, EditorElement } from '@/model/web-builder'
 import { addElementByType } from '@/lib/editor'
 import Recursive from './recursive'
 import { cn } from '@/lib/utils'
+import { useShallow } from 'zustand/react/shallow'
 
-function Canvas(props: EditorElement) {
-  const { device, onAddElement } = useEditorStore((state) => state)
+const Canvas = memo((props: EditorElement) => {
   const { id, content } = props
+
+  const [device, onAddElement] = useEditorStore(
+    useShallow((state) => [state.device, state.onAddElement])
+  )
 
   const handleDrop = (e: React.DragEvent) => {
     e.stopPropagation()
@@ -45,10 +49,12 @@ function Canvas(props: EditorElement) {
       </div>
     </>
   )
-}
+})
+
+Canvas.displayName = 'Canvas'
 
 const EditorCanvas = () => {
-  const elements = useEditorStore((state) => state.elements)
+  const [elements] = useEditorStore(useShallow((state) => [state.elements]))
 
   useEffect(() => console.log('elements', elements), [elements])
 

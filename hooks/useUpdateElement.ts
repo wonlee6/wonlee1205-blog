@@ -2,21 +2,32 @@ import React, { useCallback } from 'react'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function useUpdateElement() {
-  const { onInputUpdateElement } = useEditorStore((state) => state)
+  const { onUpdateElement } = useEditorStore((state) => state)
 
   const handleInputUpdateElement = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      onInputUpdateElement(e.target.name, e.target.value)
+      onUpdateElement(e.target.name, e.target.value)
     },
-    [onInputUpdateElement]
+    [onUpdateElement]
   )
 
-  const handleBtnUpdateElement = useCallback((name: string, value: string) => {
-    //
-  }, [])
+  const handleBtnUpdateElement = useCallback(
+    (name: string, value: string) => {
+      onUpdateElement(name, value)
+    },
+    [onUpdateElement]
+  )
+
+  const handleSliderUpdateElement = useCallback(
+    (name: string, value: number | string) => {
+      onUpdateElement(name, value)
+    },
+    [onUpdateElement]
+  )
 
   return {
     handleInputUpdateElement,
-    handleBtnUpdateElement
+    handleBtnUpdateElement,
+    handleSliderUpdateElement
   }
 }

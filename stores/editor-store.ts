@@ -15,7 +15,7 @@ type EditorActions = {
   onAddElement: (id: string, elementDetails: EditorElement) => void
   onSelectElement: (element: EditorElement) => void
   onDeleteElement: (id: string) => void
-  onInputUpdateElement: (name: string, value: string) => void
+  onUpdateElement: (name: string, value: string | number) => void
 }
 
 export type EditorStore = EditorState & EditorActions
@@ -62,7 +62,7 @@ export const createEditorStore = () => {
           content: element.content
         }
       })),
-    onInputUpdateElement: (name: string, value: string) =>
+    onUpdateElement: (name: string, value: string | number) =>
       set((state) => {
         const styleObject = {
           [name]: value
