@@ -36,7 +36,7 @@ export default function EditorSideBar() {
               <StylesTab.Typography selectedStyles={selectedStyles} />
               <StylesTab.Dimensions selectedStyles={selectedStyles} />
               <StylesTab.Decorations selectedStyles={selectedStyles} />
-              <StylesTab.FlexBox selectedStyles={selectedStyles} />
+              <StylesTab.FlexBox componentType={selectedElement.type} />
             </StylesTab>
           </Tab>
 

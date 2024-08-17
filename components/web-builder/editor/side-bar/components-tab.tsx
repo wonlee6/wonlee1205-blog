@@ -74,3 +74,9 @@ export default memo(ComponentsTab)
 
 const layoutList = [{ name: 'Container', icon: <BoxSelect size={50} /> }]
 const elementList = [{ name: 'Text', icon: <Type size={50} /> }]
+
+// Text Link, Heading
+
+// Image, Video, Youtube
+
+// Label, Input, Text Area Checkbox, Radio Button, Button

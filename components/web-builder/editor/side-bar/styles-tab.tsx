@@ -29,10 +29,11 @@ import {
 } from 'lucide-react'
 import useUpdateElement from '@/hooks/useUpdateElement'
 import { useDebounce } from '@/hooks/useDebounce'
+import { ComponentType } from '@/model/web-builder'
 
 const Typography = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) => {
   const { handleInputUpdateElement, handleBtnUpdateElement } = useUpdateElement()
-  console.log('Typography')
+
   const [form, setForm] = useState({
     fontSize: selectedStyles['fontSize'] ?? '',
     fontWeight: selectedStyles['fontWeight'] ?? '',
@@ -175,7 +176,6 @@ const Typography = ({ selectedStyles }: { selectedStyles: React.CSSProperties })
 
 const Dimensions = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) => {
   const { handleInputUpdateElement } = useUpdateElement()
-  console.log('Dimensions')
 
   const [form, setForm] = useState({
     height: selectedStyles['height'] ?? '',
@@ -353,7 +353,6 @@ const Dimensions = ({ selectedStyles }: { selectedStyles: React.CSSProperties })
 
 const Decorations = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) => {
   const { handleInputUpdateElement, handleSliderUpdateElement } = useUpdateElement()
-  console.log('Decorations')
 
   const [form, setForm] = useState({
     backgroundColor: selectedStyles['backgroundColor'] ?? '#000000',
@@ -487,9 +486,10 @@ const Decorations = ({ selectedStyles }: { selectedStyles: React.CSSProperties }
   )
 }
 
-const FlexBox = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) => {
+const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
   const { handleBtnUpdateElement } = useUpdateElement()
-  console.log('FlexBox')
+
+  const isDisable = componentType !== 'Container'
 
   return (
     <>
@@ -502,6 +502,7 @@ const FlexBox = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) =>
               <Button
                 isIconOnly
                 variant='light'
+                isDisabled={isDisable}
                 onClick={() => handleBtnUpdateElement('justifyContent', 'start')}>
                 <AlignHorizontalJustifyStart />
               </Button>
@@ -512,6 +513,7 @@ const FlexBox = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) =>
               <Button
                 isIconOnly
                 variant='light'
+                isDisabled={isDisable}
                 onClick={() => handleBtnUpdateElement('justifyContent', 'center')}>
                 <AlignHorizontalJustifyCenter />
               </Button>
@@ -522,6 +524,7 @@ const FlexBox = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) =>
               <Button
                 isIconOnly
                 variant='light'
+                isDisabled={isDisable}
                 onClick={() => handleBtnUpdateElement('justifyContent', 'end')}>
                 <AlignHorizontalJustifyEnd />
               </Button>
@@ -532,6 +535,7 @@ const FlexBox = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) =>
               <Button
                 isIconOnly
                 variant='light'
+                isDisabled={isDisable}
                 onClick={() => handleBtnUpdateElement('justifyContent', 'between')}>
                 <AlignHorizontalSpaceBetween />
               </Button>
@@ -542,6 +546,7 @@ const FlexBox = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) =>
               <Button
                 isIconOnly
                 variant='light'
+                isDisabled={isDisable}
                 onClick={() => handleBtnUpdateElement('justifyContent', 'around')}>
                 <AlignHorizontalSpaceAround />
               </Button>
@@ -557,6 +562,7 @@ const FlexBox = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) =>
               <Button
                 isIconOnly
                 variant='light'
+                isDisabled={isDisable}
                 onClick={() => handleBtnUpdateElement('alignItems', 'start')}>
                 <AlignVerticalJustifyStart />
               </Button>
@@ -567,6 +573,7 @@ const FlexBox = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) =>
               <Button
                 isIconOnly
                 variant='light'
+                isDisabled={isDisable}
                 onClick={() => handleBtnUpdateElement('alignItems', 'center')}>
                 <AlignVerticalJustifyCenter />
               </Button>
@@ -577,6 +584,7 @@ const FlexBox = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) =>
               <Button
                 isIconOnly
                 variant='light'
+                isDisabled={isDisable}
                 onClick={() => handleBtnUpdateElement('alignItems', 'end')}>
                 <AlignVerticalJustifyEnd />
               </Button>
