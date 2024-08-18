@@ -18,14 +18,17 @@ import ProjectEditModal from './project-edit-modal'
 import { createClient } from '@/lib/supabase/client'
 import { usePathname, useRouter } from 'next/navigation'
 import { ProjectData } from '@/model/web-builder'
+import { useClerk } from '@clerk/nextjs'
 
 type Props = {
   projectData: ProjectData[]
-  projectId: string
+  memberId: string
 }
 
 export default function ProjectRoot(props: Props) {
-  const { projectData, projectId } = props
+  const { projectData, memberId } = props
+
+  const { signOut } = useClerk()
 
   const pathName = usePathname()
   const router = useRouter()
@@ -104,16 +107,17 @@ export default function ProjectRoot(props: Props) {
     router.push(`${pathName}/editor/${selectedId}`)
   }
 
-  const handleLogout = async (e: React.MouseEvent) => {
+  const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault()
 
     const ok = confirm('Are you sure logout')
     if (!ok) return
 
-    const response = await fetch('/api/web-builder/project')
-    if (response.status === 200) {
-      router.push('/web-builder/sign-in')
-    }
+    signOut({ redirectUrl: '/web-builder/sign-in' })
+    // const response = await fetch('/api/web-builder/project')
+    // if (response.status === 200) {
+    //   router.push('/web-builder/sign-in')
+    // }
   }
 
   return (
@@ -192,7 +196,7 @@ export default function ProjectRoot(props: Props) {
           selectedItem={filteredSelectedProject}
           onSave={handleSave}
           modalType={modalType}
-          projectId={projectId}
+          memberId={memberId}
         />
       )}
     </>

@@ -101,17 +101,17 @@ export default function HeaderNaviBar() {
               Chart
             </Link>
           </NavbarItem>
-          {/* <NavbarItem isActive={pathName === '/web-builder/sign-in'}>
+          <NavbarItem isActive={pathName.includes('web-builder')}>
             <Link
               href={'/web-builder/sign-in'}
               as={NextLink}
-              underline={pathName === '/web-builder/sign-in' ? 'always' : 'none'}
-              color={pathName === '/web-builder/sign-in' ? 'primary' : 'foreground'}
+              underline={pathName.includes('web-builder') ? 'always' : 'none'}
+              color={pathName.includes('web-builder') ? 'primary' : 'foreground'}
               prefetch
               isBlock>
-              web-builder
+              Web-builder
             </Link>
-          </NavbarItem> */}
+          </NavbarItem>
           <NavbarItem isActive={pathName === '/about'}>
             <Link
               href={'/about'}
