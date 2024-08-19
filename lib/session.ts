@@ -54,7 +54,7 @@ export async function verifySession() {
 
   if (session?.userId) {
     revalidatePath('/', 'layout')
-    redirect(`/web-builder/project/${session.userId}`)
+    redirect(`/web-builder/project`)
   }
 }
 

@@ -72,7 +72,7 @@ export default function ProjectEditModal(props: Props) {
     onOpenChange()
   }
 
-  const handleKeyDownsubmit = (e: React.KeyboardEvent<HTMLFormElement>) => {
+  const handleKeyDownSubmit = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') {
       handleSubmit(e)
     }
@@ -83,7 +83,7 @@ export default function ProjectEditModal(props: Props) {
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement='top-center'>
         <ModalContent>
           {(onClose) => (
-            <form onSubmit={handleSubmit} onKeyDown={handleKeyDownsubmit} autoComplete='off'>
+            <form onSubmit={handleSubmit} onKeyDown={handleKeyDownSubmit} autoComplete='off'>
               <ModalHeader className='flex flex-col gap-1'>
                 {modalType === 'add' ? (
                   <h2>Add Project</h2>

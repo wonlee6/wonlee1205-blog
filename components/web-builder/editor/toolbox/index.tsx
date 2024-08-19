@@ -6,6 +6,7 @@ import { DoorOpen, Monitor, Play, Smartphone, TabletSmartphone } from 'lucide-re
 import { useEditorStore } from '@/providers/user-store-provider'
 import { m } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
+import Link from 'next/link'
 
 function EditorToolbox() {
   const [device, setDevice] = useEditorStore(useShallow((state) => [state.device, state.setDevice]))
@@ -21,7 +22,7 @@ function EditorToolbox() {
         <div className='flex items-center gap-4'>
           <div className='border-r pr-2'>
             <Button variant='light' size='sm' onClick={() => {}} startContent={<DoorOpen />}>
-              Back
+              <Link href={'/web-builder/project'}>Back</Link>
             </Button>
           </div>
           <h2 className='text-base'>title</h2>
