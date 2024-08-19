@@ -34,9 +34,11 @@ export async function middleware(request: NextRequest) {
   if (isProtectedRoute) {
     const cookie = cookies().get('session')?.value
 
-    if (typeof cookie === 'undefined') {
-      return NextResponse.redirect(new URL('/web-builder/sign-in', request.nextUrl))
-    }
+    // if (typeof cookie === 'undefined') {
+    //   return NextResponse.redirect(
+    //     new URL(`/web-builder/sign-in/${request.nextUrl.pathname}`, request.nextUrl)
+    //   )
+    // }
 
     if (typeof cookie !== 'undefined') {
       const session = await decrypt(cookie)

@@ -8,8 +8,8 @@ export default async function WebBuilderProjectPage() {
   const userId = await getUserIdInSession()
 
   if (typeof userId === 'undefined') {
-    revalidatePath('/', 'layout')
-    redirect(`/web-builder/sign-in?return`)
+    revalidatePath('/')
+    redirect(`/web-builder/sign-in`)
   }
 
   const { data, error } = await createClient().from('project').select().eq('user_id', userId)

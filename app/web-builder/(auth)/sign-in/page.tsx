@@ -11,8 +11,10 @@ export default async function SignInPage({
   if (searchParams && Object.keys(searchParams)[0]) {
     //
   } else {
-    await verifySession()
+    //
   }
+
+  await verifySession()
 
   return <AuthClient authType='sign-in' />
 }

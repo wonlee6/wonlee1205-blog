@@ -36,8 +36,10 @@ export const metadata: Metadata = {
 export default async function Home() {
   const allPostsData = await getSortedPostsData()
   return (
-    <section className='mx-auto flex h-full max-w-5xl items-center justify-center'>
-      <HomePage allPostsData={allPostsData} />
+    <section className='size-full'>
+      <div className='mx-auto flex h-full max-w-5xl items-center justify-center'>
+        <HomePage allPostsData={allPostsData} />
+      </div>
     </section>
   )
 }

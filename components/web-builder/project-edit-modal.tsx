@@ -10,7 +10,6 @@ import {
   ModalFooter,
   ModalHeader
 } from '@nextui-org/react'
-import { createClient } from '@/lib/supabase/client'
 import { ProjectData } from '@/model/web-builder'
 
 type Props = {
@@ -28,8 +27,10 @@ export default function ProjectEditModal(props: Props) {
   const nameRef = useRef<HTMLInputElement | null>(null)
   const descriptionRef = useRef<HTMLInputElement | null>(null)
 
-  const [name, setName] = useState(selectedItem?.projectName ?? '')
-  const [description, setDescription] = useState(selectedItem?.description ?? '')
+  const [name, setName] = useState(modalType === 'add' ? '' : selectedItem!.projectName)
+  const [description, setDescription] = useState(
+    modalType === 'add' ? '' : selectedItem!.description
+  )
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -41,34 +42,37 @@ export default function ProjectEditModal(props: Props) {
       descriptionRef.current?.focus()
     }
 
-    const supabase = createClient()
+    let data = null
+    let errorMsg = ''
 
-    let response = null
-    if (modalType === 'add') {
-      response = await supabase
-        .from('project')
-        .insert({
-          projectName: name,
-          description,
-          user_id: userId
+    try {
+      if (modalType === 'add') {
+        const response = await fetch('/api/web-builder/project', {
+          method: 'POST',
+          body: JSON.stringify({ projectName: name, description, user_id: userId, type: 'add' })
         })
-        .select()
-        .single()
-    } else {
-      response = await supabase
-        .from('project')
-        .update({ projectName: name, description, updated_at: new Date().toISOString() })
-        .eq('id', selectedItem!.id)
-        .select()
-        .single()
-    }
-
-    if (response.error || !response.data) {
-      alert('Error')
+        errorMsg = response.statusText
+        data = await response.json()
+      } else {
+        const response = await fetch('/api/web-builder/project', {
+          method: 'POST',
+          body: JSON.stringify({
+            id: selectedItem!.id,
+            projectName: name,
+            description,
+            user_id: userId,
+            type: 'update'
+          })
+        })
+        errorMsg = response.statusText
+        data = await response.json()
+      }
+    } catch (e) {
+      alert(errorMsg)
       return
     }
 
-    onSave(response.data)
+    onSave(data)
     onOpenChange()
   }
 

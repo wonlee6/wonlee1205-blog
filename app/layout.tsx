@@ -16,12 +16,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html suppressHydrationWarning className='light' lang='ko'>
+    <html suppressHydrationWarning lang='ko'>
       <body className={inter.className}>
         <Providers>
-          <div className='relative flex h-dvh flex-col'>
+          <div className='relative flex h-dvh flex-col overflow-hidden'>
             <HeaderNavBar />
-            <main className='flex grow overflow-auto'>{children}</main>
+            <main className='flex h-auto grow overflow-y-auto'>{children}</main>
           </div>
         </Providers>
         <Analytics />

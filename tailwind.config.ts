@@ -128,5 +128,5 @@ const config = {
   },
   plugins: [require('tailwindcss-animate'), typography, nextui()]
 } satisfies Config
-
+// { themes: { dark: {layout: { backgroundColor: '#121212' }} } }
 export default config

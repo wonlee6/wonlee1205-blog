@@ -36,7 +36,7 @@ export default function PostingGuide({ postData, allPostsData }: PostingGuideMod
   }, [allPostsData, postData])
 
   return (
-    <div className='flex justify-between gap-4 max-sm:flex-col max-sm:items-center'>
+    <div className='flex justify-between gap-8 max-sm:flex-col max-sm:items-center'>
       <Link
         className='font-semibold text-teal-500 hover:text-teal-600'
         href={prevPost ? `/post/${prevPost.id}` : `/`}>

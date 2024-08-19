@@ -15,9 +15,9 @@ import {
 import React, { useCallback, useMemo, useState } from 'react'
 import { Wallpaper, Settings } from 'lucide-react'
 import ProjectEditModal from './project-edit-modal'
-import { createClient } from '@/lib/supabase/client'
 import { usePathname, useRouter } from 'next/navigation'
 import { ProjectData } from '@/model/web-builder'
+import { useToast } from '../ui/use-toast'
 
 type Props = {
   projectData: ProjectData[]
@@ -29,6 +29,8 @@ export default function ProjectRoot(props: Props) {
 
   const pathName = usePathname()
   const router = useRouter()
+
+  const { toast } = useToast()
 
   const [projectDataList, setProjectDataList] = useState<ProjectData[]>(projectData)
 
@@ -57,15 +59,27 @@ export default function ProjectRoot(props: Props) {
   const handleDeleteProject = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
-    const response = await createClient()
-      .from('project')
-      .delete()
-      .eq('id', filteredSelectedProject?.id)
+    if (!filteredSelectedProject) return
 
-    if (response.error) {
-      alert('failed')
+    try {
+      const response = await fetch('/api/web-builder/project', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          id: filteredSelectedProject.id
+        })
+      })
+
+      if (!response.ok) {
+        toast({
+          variant: 'destructive',
+          title: response.statusText
+        })
+      }
+    } catch (error) {
+      console.error(error)
       return
     }
+
     setProjectDataList((prev) => prev.filter((i) => i.id !== filteredSelectedProject?.id))
   }
 
@@ -110,7 +124,9 @@ export default function ProjectRoot(props: Props) {
     const ok = confirm('Are you sure logout')
     if (!ok) return
 
-    const response = await fetch('/api/web-builder/project')
+    const response = await fetch('/api/web-builder/project', {
+      method: 'GET'
+    })
     if (response.status === 200) {
       router.push('/web-builder/sign-in')
     }

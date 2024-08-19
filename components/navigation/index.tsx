@@ -16,12 +16,13 @@ import {
   Switch
 } from '@nextui-org/react'
 import { NavIcons } from './icons'
+import { useTheme } from 'next-themes'
 
 export default function HeaderNavBar() {
   const pathName = usePathname()
   const router = useRouter()
 
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark')
+  const { theme, setTheme, resolvedTheme, systemTheme } = useTheme()
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
@@ -30,10 +31,10 @@ export default function HeaderNavBar() {
     (event: boolean) => {
       if (event) {
         setTheme('dark')
-        localStorage.setItem('theme', 'dark')
+        // localStorage.setItem('theme', 'dark')
       } else {
         setTheme('light')
-        localStorage.setItem('theme', 'light')
+        // localStorage.setItem('theme', 'light')
       }
       startTransition(() => {
         setIsDarkMode(event)
@@ -42,22 +43,30 @@ export default function HeaderNavBar() {
     [setTheme]
   )
 
-  useLayoutEffect(() => {
-    if (localStorage.getItem('theme') === 'dark') {
-      setTheme('dark')
-      setIsDarkMode(true)
-      return
-    }
-    setTheme('light')
-  }, [])
-
   useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
+    // console.log(theme, resolvedTheme, systemTheme)
+    if (theme === 'system' && resolvedTheme === 'dark') {
+      setIsDarkMode(true)
     }
-  }, [theme])
+  }, [theme, resolvedTheme])
+
+  // useLayoutEffect(() => {
+  //   console.log(1)
+  //   if (localStorage.getItem('theme') === 'dark') {
+  //     setTheme('dark')
+  //     setIsDarkMode(true)
+  //     return
+  //   }
+  //   setTheme('light')
+  // }, [])
+
+  // useEffect(() => {
+  //   if (theme === 'dark') {
+  //     document.documentElement.classList.add('dark')
+  //   } else {
+  //     document.documentElement.classList.remove('dark')
+  //   }
+  // }, [theme])
 
   if (pathName.includes('editor')) {
     return null

@@ -3,6 +3,6 @@ export default function PostLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <section className='mx-auto my-4 max-w-4xl overflow-auto'>{children}</section>
+  return <section className='mx-auto my-4 size-full max-w-4xl'>{children}</section>
 }
 6

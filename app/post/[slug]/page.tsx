@@ -52,7 +52,7 @@ export default async function PostPage({
 
   return (
     <>
-      <div className='flex flex-col justify-between p-4'>
+      <div className='flex flex-col justify-between p-4 pb-20'>
         {postData.contentHtml && (
           <div className='prose mb-4 w-full dark:prose-invert'>
             <article dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />

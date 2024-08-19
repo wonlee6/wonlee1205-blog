@@ -1,5 +1,4 @@
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose'
-import { revalidatePath } from 'next/cache'
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -46,14 +45,13 @@ export async function createSession(userId: string, name: string) {
 export async function verifySession() {
   const getCookie = cookies().get(cookie.name)
   if (typeof getCookie === 'undefined') {
-    return undefined
+    return
   }
 
   const cook = getCookie.value
   const session = await decrypt(cook)
 
   if (session?.userId) {
-    revalidatePath('/', 'layout')
     redirect(`/web-builder/project`)
   }
 }
@@ -61,21 +59,6 @@ export async function verifySession() {
 export async function deleteSession() {
   cookies().delete(cookie.name)
   // redirect('/web-builder/sign-in')
-}
-
-export async function verifyMemberSession(userId: string) {
-  const getCookie = cookies().get(cookie.name)
-  if (typeof getCookie === 'undefined') {
-    return undefined
-  }
-
-  const cook = getCookie.value
-  const session = await decrypt(cook)
-
-  if (session?.userId !== userId) {
-    revalidatePath('/', 'layout')
-    redirect(`/web-builder/sign-in?return`)
-  }
 }
 
 export async function getUserIdInSession(): Promise<string | undefined> {
