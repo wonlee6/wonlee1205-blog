@@ -19,11 +19,11 @@ type Props = {
   selectedItem: ProjectData | undefined
   onSave: (projectData: ProjectData) => void
   modalType: 'add' | 'edit'
-  memberId: string
+  userId: string
 }
 
 export default function ProjectEditModal(props: Props) {
-  const { isOpen, onOpenChange, selectedItem, onSave, modalType, memberId } = props
+  const { isOpen, onOpenChange, selectedItem, onSave, modalType, userId } = props
 
   const nameRef = useRef<HTMLInputElement | null>(null)
   const descriptionRef = useRef<HTMLInputElement | null>(null)
@@ -50,20 +50,20 @@ export default function ProjectEditModal(props: Props) {
         .insert({
           projectName: name,
           description,
-          member_id: memberId
+          user_id: userId
         })
         .select()
         .single()
     } else {
       response = await supabase
         .from('project')
-        .update({ projectName: name, description })
+        .update({ projectName: name, description, updated_at: new Date().toISOString() })
         .eq('id', selectedItem!.id)
         .select()
         .single()
     }
 
-    if (response.error) {
+    if (response.error || !response.data) {
       alert('Error')
       return
     }

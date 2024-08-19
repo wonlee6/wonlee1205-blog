@@ -77,3 +77,18 @@ export async function verifyMemberSession(userId: string) {
     redirect(`/web-builder/sign-in?return`)
   }
 }
+
+export async function getUserIdInSession(): Promise<string | undefined> {
+  const cookie = cookies().get('session')?.value
+
+  if (!cookie) {
+    return undefined
+  }
+
+  const session = await decrypt(cookie)
+
+  if (!session) {
+    return undefined
+  }
+  return session.userId as string
+}

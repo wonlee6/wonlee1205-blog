@@ -17,7 +17,7 @@ import {
 } from '@nextui-org/react'
 import { NavIcons } from './icons'
 
-export default function HeaderNaviBar() {
+export default function HeaderNavBar() {
   const pathName = usePathname()
   const router = useRouter()
 

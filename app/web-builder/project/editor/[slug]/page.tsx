@@ -4,12 +4,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import EditorClient from '@/components/web-builder/editor/client'
 
-export default async function WebBuilderEditorPage({
-  params
-}: {
-  params: { slug: string; id: string }
-}) {
-  if (!params.slug || !params.id) {
+export default async function WebBuilderEditorPage({ params }: { params: { slug: string } }) {
+  if (!params.slug) {
     redirect('./auth')
   }
 

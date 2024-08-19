@@ -1,53 +1,53 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-// import { NextRequest, NextResponse } from 'next/server'
-// import { updateSession } from './lib/supabase/middleware'
-// import { cookies } from 'next/headers'
-// import { decrypt } from './lib/session'
+// import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { updateSession } from './lib/supabase/middleware'
+import { cookies } from 'next/headers'
+import { decrypt } from './lib/session'
 
 // const isProtectedRoute = createRouteMatcher([
 //   '/web-builder/sign-in(.*)',
 //   '/web-builder/sign-up(.*)'
 // ])
 
-const isProtectedRoute = createRouteMatcher(['/web-builder/project(.*)'])
+// const isProtectedRoute = createRouteMatcher(['/web-builder/project(.*)'])
 
-export default clerkMiddleware((auth, request) => {
-  // if (!isProtectedRoute(request)) {
-  //   auth().protect()
-  // }
+// export default clerkMiddleware((auth, request) => {
+//   // if (!isProtectedRoute(request)) {
+//   //   auth().protect()
+//   // }
 
-  if (!auth().userId && isProtectedRoute(request)) {
-    return auth().redirectToSignIn()
-  }
-})
+//   if (!auth().userId && isProtectedRoute(request)) {
+//     return auth().redirectToSignIn()
+//   }
+// })
 
 // export default clerkMiddleware()
 
-// export async function middleware(request: NextRequest) {
-//   // update user's auth session (supabase)
-//   // await updateSession(request)
+export async function middleware(request: NextRequest) {
+  // update user's auth session (supabase)
+  await updateSession(request)
 
-//   const protectedRoutes = '/web-builder/project'
-//   const currentPath = request.nextUrl.pathname
-//   const isProtectedRoute = currentPath.includes(protectedRoutes)
+  const protectedRoutes = '/web-builder/project'
+  const currentPath = request.nextUrl.pathname
+  const isProtectedRoute = currentPath.includes(protectedRoutes)
 
-//   if (isProtectedRoute) {
-//     const cookie = cookies().get('session')?.value
+  if (isProtectedRoute) {
+    const cookie = cookies().get('session')?.value
 
-//     if (typeof cookie === 'undefined') {
-//       return NextResponse.redirect(new URL('/web-builder/sign-in', request.nextUrl))
-//     }
+    if (typeof cookie === 'undefined') {
+      return NextResponse.redirect(new URL('/web-builder/sign-in', request.nextUrl))
+    }
 
-//     if (typeof cookie !== 'undefined') {
-//       const session = await decrypt(cookie)
+    if (typeof cookie !== 'undefined') {
+      const session = await decrypt(cookie)
 
-//       if (!session?.userId) {
-//         return NextResponse.redirect(new URL('/web-builder/sign-in', request.nextUrl))
-//       }
-//     }
-//   }
-//   return NextResponse.next()
-// }
+      if (!session?.userId) {
+        return NextResponse.redirect(new URL('/web-builder/sign-in', request.nextUrl))
+      }
+    }
+  }
+  return NextResponse.next()
+}
 
 export const config = {
   // matcher: [

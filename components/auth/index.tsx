@@ -67,8 +67,7 @@ export default function AuthClient({ authType }: Props) {
     })
 
     if (response.status === 200) {
-      const data = await response.json()
-      router.push(`/web-builder/project/${data.id}`)
+      router.push(`/web-builder/project`)
     } else {
       toast({
         variant: 'destructive',

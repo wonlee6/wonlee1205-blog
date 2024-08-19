@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
   const { statusText, error, data } = await supabase
     .from('member')
     .select()
-    .match({ name })
+    .match({ userName: name })
     .single()
 
   if (error) {

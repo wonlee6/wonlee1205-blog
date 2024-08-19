@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
   const { error, statusText, data, status } = await supabase
     .from('member')
     .insert({
-      name: name,
+      userName: name,
       password: hashedPassword
     })
     .select()
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
   if (error) {
     return new NextResponse('Failed to create user.', {
       status: status,
-      statusText: 'Duplicate name'
+      statusText: 'Failed to create user.'
     })
   }
 

@@ -18,17 +18,14 @@ import ProjectEditModal from './project-edit-modal'
 import { createClient } from '@/lib/supabase/client'
 import { usePathname, useRouter } from 'next/navigation'
 import { ProjectData } from '@/model/web-builder'
-import { useClerk } from '@clerk/nextjs'
 
 type Props = {
   projectData: ProjectData[]
-  memberId: string
+  userId: string
 }
 
 export default function ProjectRoot(props: Props) {
-  const { projectData, memberId } = props
-
-  const { signOut } = useClerk()
+  const { projectData, userId } = props
 
   const pathName = usePathname()
   const router = useRouter()
@@ -42,7 +39,7 @@ export default function ProjectRoot(props: Props) {
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
-  const hanldeEditProject = (e: React.MouseEvent<SVGSVGElement>) => {
+  const handleEditProject = (e: React.MouseEvent<SVGSVGElement>) => {
     e.stopPropagation()
     e.preventDefault()
 
@@ -57,7 +54,7 @@ export default function ProjectRoot(props: Props) {
     onOpen()
   }
 
-  const handleDeletProject = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDeleteProject = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
 
     const response = await createClient()
@@ -107,17 +104,16 @@ export default function ProjectRoot(props: Props) {
     router.push(`${pathName}/editor/${selectedId}`)
   }
 
-  const handleLogout = (e: React.MouseEvent) => {
+  const handleLogout = async (e: React.MouseEvent) => {
     e.preventDefault()
 
     const ok = confirm('Are you sure logout')
     if (!ok) return
 
-    signOut({ redirectUrl: '/web-builder/sign-in' })
-    // const response = await fetch('/api/web-builder/project')
-    // if (response.status === 200) {
-    //   router.push('/web-builder/sign-in')
-    // }
+    const response = await fetch('/api/web-builder/project')
+    if (response.status === 200) {
+      router.push('/web-builder/sign-in')
+    }
   }
 
   return (
@@ -151,7 +147,7 @@ export default function ProjectRoot(props: Props) {
                     startContent={<Wallpaper size={28} />}
                     endContent={
                       <Settings
-                        onClick={hanldeEditProject}
+                        onClick={handleEditProject}
                         className='transition-all hover:scale-125'
                       />
                     }>
@@ -184,7 +180,7 @@ export default function ProjectRoot(props: Props) {
             variant='light'
             color='danger'
             aria-label='delete project'
-            onClick={handleDeletProject}>
+            onClick={handleDeleteProject}>
             Delete
           </Button>
         </CardFooter>
@@ -196,7 +192,7 @@ export default function ProjectRoot(props: Props) {
           selectedItem={filteredSelectedProject}
           onSave={handleSave}
           modalType={modalType}
-          memberId={memberId}
+          userId={userId}
         />
       )}
     </>
