@@ -12,7 +12,11 @@ export default async function WebBuilderProjectPage() {
     redirect(`/web-builder/sign-in`)
   }
 
-  const { data, error } = await createClient().from('project').select().eq('user_id', userId)
+  const { data, error } = await createClient()
+    .from('project')
+    .select()
+    .eq('user_id', userId)
+    .order('projectName', { ascending: true })
 
   if (error) {
     return <div>Error</div>

@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import EditorClient from '@/components/web-builder/editor/client'
+import { sleep } from '@/lib/utils'
 
 export default async function WebBuilderEditorPage({ params }: { params: { slug: string } }) {
   if (!params.slug) {
@@ -29,12 +30,4 @@ export default async function WebBuilderEditorPage({ params }: { params: { slug:
 
   // return <EditorClient data={response.data} />
   return <EditorClient />
-}
-
-async function sleep(delay: number, fn?: any) {
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      return resolve(fn)
-    }, delay)
-  )
 }

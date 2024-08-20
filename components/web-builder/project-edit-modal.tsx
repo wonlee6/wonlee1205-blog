@@ -11,18 +11,20 @@ import {
   ModalHeader
 } from '@nextui-org/react'
 import { ProjectData } from '@/model/web-builder'
+import { sleep } from '@/lib/utils'
 
 type Props = {
   isOpen: boolean
   onOpenChange: () => void
   selectedItem: ProjectData | undefined
   onSave: (projectData: ProjectData) => void
+  onDelete: (id: string) => void
   modalType: 'add' | 'edit'
   userId: string
 }
 
 export default function ProjectEditModal(props: Props) {
-  const { isOpen, onOpenChange, selectedItem, onSave, modalType, userId } = props
+  const { isOpen, onOpenChange, selectedItem, onSave, onDelete, modalType, userId } = props
 
   const nameRef = useRef<HTMLInputElement | null>(null)
   const descriptionRef = useRef<HTMLInputElement | null>(null)
@@ -31,6 +33,8 @@ export default function ProjectEditModal(props: Props) {
   const [description, setDescription] = useState(
     modalType === 'add' ? '' : selectedItem!.description
   )
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -74,6 +78,31 @@ export default function ProjectEditModal(props: Props) {
 
     onSave(data)
     onOpenChange()
+  }
+
+  const handleDeleteProject = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if (!selectedItem) return
+
+    setIsLoading(true)
+
+    const response = await fetch('/api/web-builder/project', {
+      method: 'DELETE',
+      body: JSON.stringify({
+        id: selectedItem.id
+      })
+    })
+
+    if (!response.ok) {
+      alert(response.statusText)
+      return
+    }
+
+    await sleep(1000)
+    setIsLoading(false)
+
+    onOpenChange()
+    onDelete(selectedItem.id)
   }
 
   const handleKeyDownSubmit = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -127,6 +156,16 @@ export default function ProjectEditModal(props: Props) {
                 <Button color='primary' type='submit'>
                   Save
                 </Button>
+                {modalType === 'edit' && (
+                  <Button
+                    variant='ghost'
+                    color='danger'
+                    aria-label='delete project'
+                    onClick={handleDeleteProject}
+                    isLoading={isLoading}>
+                    Delete
+                  </Button>
+                )}
                 <Button color='danger' variant='light' onPress={onClose}>
                   Close
                 </Button>

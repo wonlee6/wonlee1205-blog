@@ -56,31 +56,8 @@ export default function ProjectRoot(props: Props) {
     onOpen()
   }
 
-  const handleDeleteProject = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
-    if (!filteredSelectedProject) return
-
-    try {
-      const response = await fetch('/api/web-builder/project', {
-        method: 'DELETE',
-        body: JSON.stringify({
-          id: filteredSelectedProject.id
-        })
-      })
-
-      if (!response.ok) {
-        toast({
-          variant: 'destructive',
-          title: response.statusText
-        })
-      }
-    } catch (error) {
-      console.error(error)
-      return
-    }
-
-    setProjectDataList((prev) => prev.filter((i) => i.id !== filteredSelectedProject?.id))
+  const handleDeleteProject = (id: string) => {
+    setProjectDataList((prev) => prev.filter((i) => i.id !== id))
   }
 
   const filteredSelectedProject = useMemo(() => {
@@ -192,13 +169,6 @@ export default function ProjectRoot(props: Props) {
             onClick={handleAddProject}>
             Add
           </Button>
-          <Button
-            variant='light'
-            color='danger'
-            aria-label='delete project'
-            onClick={handleDeleteProject}>
-            Delete
-          </Button>
         </CardFooter>
       </Card>
       {isOpen && (
@@ -207,6 +177,7 @@ export default function ProjectRoot(props: Props) {
           onOpenChange={onOpenChange}
           selectedItem={filteredSelectedProject}
           onSave={handleSave}
+          onDelete={handleDeleteProject}
           modalType={modalType}
           userId={userId}
         />
