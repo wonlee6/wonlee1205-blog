@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import { z } from 'zod'
 import {
   Button,
   Input,
@@ -10,8 +11,9 @@ import {
   ModalFooter,
   ModalHeader
 } from '@nextui-org/react'
-import { ProjectData } from '@/model/web-builder'
+import { ProjectData, ProjectFormSchema, ProjectFormSchemaModel } from '@/model/web-builder'
 import { sleep } from '@/lib/utils'
+import { decryptFormData, encryptFormData } from '@/lib/editor'
 
 type Props = {
   isOpen: boolean
@@ -29,82 +31,86 @@ export default function ProjectEditModal(props: Props) {
   const nameRef = useRef<HTMLInputElement | null>(null)
   const descriptionRef = useRef<HTMLInputElement | null>(null)
 
-  const [name, setName] = useState(modalType === 'add' ? '' : selectedItem!.projectName)
-  const [description, setDescription] = useState(
-    modalType === 'add' ? '' : selectedItem!.description
-  )
+  const [form, setForm] = useState<ProjectFormSchemaModel>({
+    user_id: userId,
+    type: modalType,
+    projectName: modalType === 'add' ? '' : selectedItem!.projectName,
+    description: modalType === 'add' ? '' : selectedItem!.description,
+    selectedItemId: selectedItem?.id
+  })
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (name === '') {
-      nameRef.current?.focus()
-    }
-    if (description === '') {
-      descriptionRef.current?.focus()
-    }
-
-    if (!selectedItem) return
-
+    setIsLoading(true)
     let data = null
-    let errorMsg = ''
 
     try {
+      const parseForm = ProjectFormSchema.parse(form)
+
+      const encryptedData = encryptFormData(JSON.stringify(parseForm))
+
       if (modalType === 'add') {
         const response = await fetch('/api/web-builder/project', {
           method: 'POST',
-          body: JSON.stringify({ projectName: name, description, user_id: userId, type: 'add' })
+          body: JSON.stringify({ data: encryptedData })
         })
-        errorMsg = response.statusText
         data = await response.json()
       } else {
         const response = await fetch('/api/web-builder/project', {
           method: 'POST',
-          body: JSON.stringify({
-            id: selectedItem!.id,
-            projectName: name,
-            description,
-            user_id: userId,
-            type: 'update'
-          })
+          body: JSON.stringify({ data: encryptedData })
         })
-        errorMsg = response.statusText
         data = await response.json()
       }
-    } catch (error) {
-      alert(errorMsg)
-      return
-    }
 
-    onSave(data)
-    onOpenChange()
+      const decryptData = decryptFormData<ProjectData>(data.data)
+
+      await sleep(1000)
+
+      onSave(decryptData)
+      onOpenChange()
+    } catch (e) {
+      if (e instanceof z.ZodError) {
+        alert(e.issues[0].message)
+        if (e.issues[0].path[0] === 'projectName') {
+          nameRef.current?.focus()
+        } else {
+          descriptionRef.current?.focus()
+        }
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleDeleteProject = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (!selectedItem) return
 
-    setIsLoading(true)
+    setIsDeleteLoading(true)
 
-    const response = await fetch('/api/web-builder/project', {
-      method: 'DELETE',
-      body: JSON.stringify({
-        id: selectedItem.id
+    try {
+      const parseId = z.string().parse(form.selectedItemId)
+      const encryptedData = encryptFormData(JSON.stringify({ id: parseId }))
+
+      await fetch('/api/web-builder/project', {
+        method: 'DELETE',
+        body: JSON.stringify({ data: encryptedData })
       })
-    })
 
-    if (!response.ok) {
-      alert(response.statusText)
-      return
+      onOpenChange()
+      onDelete(parseId)
+    } catch (e) {
+      if (e instanceof z.ZodError) {
+        alert(e.issues[0].message)
+      }
+    } finally {
+      setIsDeleteLoading(false)
     }
-
-    await sleep(1000)
-    setIsLoading(false)
-
-    onOpenChange()
-    onDelete(selectedItem.id)
   }
 
   const handleKeyDownSubmit = (e: React.KeyboardEvent<HTMLFormElement>) => {
@@ -137,8 +143,8 @@ export default function ProjectEditModal(props: Props) {
               <ModalBody>
                 <Input
                   ref={nameRef}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={form.projectName}
+                  onChange={(e) => setForm({ ...form, projectName: e.target.value })}
                   label='Project Name'
                   placeholder='Enter your project name'
                   variant='bordered'
@@ -146,8 +152,8 @@ export default function ProjectEditModal(props: Props) {
                 />
                 <Input
                   ref={descriptionRef}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={form.description}
+                  onChange={(e) => setForm({ ...form, description: e.target.value })}
                   label='Description'
                   placeholder='Enter your description'
                   variant='bordered'
@@ -155,19 +161,19 @@ export default function ProjectEditModal(props: Props) {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color='primary' type='submit'>
-                  Save
-                </Button>
                 {modalType === 'edit' && (
                   <Button
                     variant='ghost'
                     color='danger'
                     aria-label='delete project'
                     onClick={handleDeleteProject}
-                    isLoading={isLoading}>
+                    isLoading={isDeleteLoading}>
                     Delete
                   </Button>
                 )}
+                <Button color='primary' type='submit' isLoading={isLoading}>
+                  Save
+                </Button>
                 <Button color='danger' variant='light' onPress={onClose}>
                   Close
                 </Button>

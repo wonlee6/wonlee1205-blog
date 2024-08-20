@@ -1,5 +1,7 @@
+import { decryptFormData, encryptFormData } from '@/lib/editor'
 import { deleteSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/client'
+import { ProjectFormSchemaModel } from '@/model/web-builder'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
@@ -9,8 +11,15 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const body = await request.json()
-  const { type, projectName, description, user_id } = body
+  const response = await request.json()
+
+  const {
+    type,
+    projectName,
+    description,
+    user_id,
+    selectedItemId = ''
+  } = decryptFormData<ProjectFormSchemaModel>(response.data)
 
   if (type === 'add') {
     const { data, error, status } = await createClient()
@@ -29,21 +38,19 @@ export async function POST(request: Request) {
         statusText: 'Duplicate project name'
       })
     }
-
     if (error) {
       return new NextResponse('An error occurred while adding', {
         status: status,
         statusText: 'An error occurred while adding'
       })
     }
-
-    return NextResponse.json({ ...data }, { status: status })
+    return NextResponse.json({ data: encryptFormData(JSON.stringify(data)) }, { status: status })
   }
 
   const { data, error, status } = await createClient()
     .from('project')
     .update({ projectName, description, updated_at: new Date().toISOString() })
-    .eq('id', body.id)
+    .eq('id', selectedItemId)
     .select()
     .single()
 
@@ -61,20 +68,29 @@ export async function POST(request: Request) {
     })
   }
 
-  return NextResponse.json({ ...data }, { status: status })
+  return NextResponse.json({ data: encryptFormData(JSON.stringify(data)) }, { status: status })
 }
 
 export async function DELETE(request: Request) {
-  const body = await request.json()
-  const { id } = body
+  const response = await request.json()
+  console.log('response', response)
 
-  const { error } = await createClient().from('project').delete().eq('id', id)
+  const { id } = decryptFormData<{ id: string }>(response.data)
+
+  const { error, statusText, status } = await createClient().from('project').delete().eq('id', id)
 
   if (error) {
     revalidatePath('/web-builder/project')
     return new NextResponse('An error occurred while deleting', {
       status: 500,
       statusText: 'An error occurred while deleting'
+    })
+  }
+  if (status === 204) {
+    revalidatePath('/web-builder/project')
+    return new NextResponse(statusText, {
+      status: 500,
+      statusText
     })
   }
   return new NextResponse('You have successfully deleted the project.', {
