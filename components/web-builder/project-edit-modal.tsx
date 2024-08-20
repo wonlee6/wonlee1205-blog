@@ -46,6 +46,8 @@ export default function ProjectEditModal(props: Props) {
       descriptionRef.current?.focus()
     }
 
+    if (!selectedItem) return
+
     let data = null
     let errorMsg = ''
 
@@ -71,7 +73,7 @@ export default function ProjectEditModal(props: Props) {
         errorMsg = response.statusText
         data = await response.json()
       }
-    } catch (e) {
+    } catch (error) {
       alert(errorMsg)
       return
     }

@@ -1,3 +1,12 @@
+import { z } from 'zod'
+
+export const AuthFormSchema = z.object({
+  name: z.string().min(4).max(20),
+  password: z.string().min(4).max(20)
+})
+
+export type AuthFormSchemaModel = z.infer<typeof AuthFormSchema>
+
 export type ProjectData = {
   id: string
   created_at: string

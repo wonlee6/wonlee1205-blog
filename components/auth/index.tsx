@@ -1,11 +1,13 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react'
-import { useToast } from '@/components/ui/use-toast'
-import { AuthIcons } from './icons'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react'
+import { ZodError } from 'zod'
+import { useToast } from '@/components/ui/use-toast'
+import { AuthFormSchema, AuthFormSchemaModel } from '@/model/web-builder'
+import { AuthIcons } from './icons'
 
 type Props = {
   authType: 'sign-up' | 'sign-in'
@@ -21,7 +23,7 @@ export default function AuthClient({ authType }: Props) {
   const nameRef = useRef<HTMLInputElement | null>(null)
   const passwordRef = useRef<HTMLInputElement | null>(null)
 
-  const [form, setForm] = useState<{ name: string; password: string }>({
+  const [form, setForm] = useState<AuthFormSchemaModel>({
     name: '',
     password: ''
   })
@@ -32,22 +34,40 @@ export default function AuthClient({ authType }: Props) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!form.name) {
+    try {
+      const parseForm = AuthFormSchema.parse(form)
+
+      const response = await fetch(`/api/web-builder/${authType}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(parseForm)
+      })
+
+      if (response.status === 200) {
+        router.push(`/web-builder/project`)
+        return
+      }
+
       nameRef.current?.focus()
       toast({
         variant: 'destructive',
-        title: 'Uh oh! Name is required'
+        title: response.statusText
       })
-      return
-    }
+    } catch (error) {
+      if (error instanceof ZodError) {
+        toast({
+          variant: 'destructive',
+          title: error.issues[0].message
+        })
 
-    if (!form.password) {
-      passwordRef.current?.focus()
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Password is required.'
-      })
-      return
+        if (error.issues[0].path[0] === 'name') {
+          nameRef.current?.focus()
+        } else {
+          passwordRef.current?.focus()
+        }
+      } else {
+        console.error('Unexpected error: ', error)
+      }
     }
 
     // const response = await createClient().auth.signInWithOAuth({
@@ -56,24 +76,6 @@ export default function AuthClient({ authType }: Props) {
     //     redirectTo: `http://localhost:3000/web-builder/project`
     //   }
     // })
-
-    const response = await fetch(`/api/web-builder/${authType}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: form.name,
-        password: form.password
-      })
-    })
-
-    if (response.status === 200) {
-      router.push(`/web-builder/project`)
-    } else {
-      toast({
-        variant: 'destructive',
-        title: response.statusText
-      })
-    }
   }
 
   return (

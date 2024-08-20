@@ -1,22 +1,16 @@
 import bcrypt from 'bcrypt'
-import { createClient } from '@/lib/supabase/client'
 import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/client'
 import { createSession } from '@/lib/session'
+import { AuthFormSchemaModel } from '@/model/web-builder'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-
-  const { name, password } = body
-
-  if (!name || !password) {
-    return new NextResponse('Name and password are required.', { status: 500 })
-  }
-
-  const supabase = createClient()
+  const { name, password } = body as AuthFormSchemaModel
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
-  const { error, statusText, data, status } = await supabase
+  const { error, statusText, data, status } = await createClient()
     .from('member')
     .insert({
       userName: name,

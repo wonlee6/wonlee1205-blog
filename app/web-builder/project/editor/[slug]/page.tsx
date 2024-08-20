@@ -1,9 +1,9 @@
 import { cookies } from 'next/headers'
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import EditorClient from '@/components/web-builder/editor/client'
 import { sleep } from '@/lib/utils'
+import { createClient } from '@/lib/supabase/client'
 
 export default async function WebBuilderEditorPage({ params }: { params: { slug: string } }) {
   if (!params.slug) {
@@ -15,7 +15,7 @@ export default async function WebBuilderEditorPage({ params }: { params: { slug:
   // const cookieStore = cookies()
   // const supabase = createClient(cookieStore)
 
-  // const response = await supabase.from('project').select('*').eq('id', params.id)
+  const response = await createClient().from('project').select().eq('id', params.slug)
 
   // if (response.error) {
   //   return (
