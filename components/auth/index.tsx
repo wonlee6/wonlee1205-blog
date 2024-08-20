@@ -1,10 +1,12 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react'
 import { ZodError } from 'zod'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+
+import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react'
+import { encryptFormData } from '@/lib/editor'
 import { useToast } from '@/components/ui/use-toast'
 import { AuthFormSchema, AuthFormSchemaModel } from '@/model/web-builder'
 import { AuthIcons } from './icons'
@@ -36,14 +38,15 @@ export default function AuthClient({ authType }: Props) {
 
     try {
       const parseForm = AuthFormSchema.parse(form)
+      const encryptData = encryptFormData(JSON.stringify(parseForm))
 
       const response = await fetch(`/api/web-builder/${authType}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(parseForm)
+        body: JSON.stringify({ data: encryptData })
       })
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         router.push(`/web-builder/project`)
         return
       }

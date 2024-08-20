@@ -3,12 +3,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/client'
 import { createSession } from '@/lib/session'
 import { AuthFormSchemaModel } from '@/model/web-builder'
+import { decryptFormData } from '@/lib/editor'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  const { name, password } = body as AuthFormSchemaModel
+  const { name, password } = decryptFormData<AuthFormSchemaModel>(body.data)
 
-  const { statusText, error, data } = await createClient()
+  const { statusText, error, data, status } = await createClient()
     .from('member')
     .select()
     .match({ userName: name })
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
         })
       }
       await createSession(data.id, data.name)
-      return NextResponse.json(data)
+      return new NextResponse('success', { status })
     }
   }
   return new NextResponse('User not found.', { status: 500, statusText: 'fetch error' })
