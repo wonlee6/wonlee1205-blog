@@ -3,5 +3,5 @@
 import React from 'react'
 
 export default function LayersTab() {
-  return <div>LayersTab</div>
+  return <div>View the editor in a tree like structure</div>
 }

@@ -15,7 +15,7 @@ export default async function WebBuilderEditorPage({ params }: { params: { slug:
   // const cookieStore = cookies()
   // const supabase = createClient(cookieStore)
 
-  const response = await createClient().from('project').select().eq('id', params.slug)
+  // const response = await createClient().from('project').select().eq('id', params.slug)
 
   // if (response.error) {
   //   return (

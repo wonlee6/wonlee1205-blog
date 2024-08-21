@@ -66,7 +66,7 @@ const EditorCanvas = () => {
       transition={{
         ease: 'linear'
       }}
-      className='h-full w-4/5 overflow-auto border-r border-t border-default-300 bg-zinc-800/10 p-5'>
+      className='h-full w-9/12 overflow-auto border-r border-t border-default-300 bg-zinc-800/10 p-5'>
       {elements.map((item) => (
         <Canvas key={item.id} {...item} />
       ))}

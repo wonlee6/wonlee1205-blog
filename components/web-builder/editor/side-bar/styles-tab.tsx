@@ -260,7 +260,7 @@ const Dimensions = ({ selectedStyles }: { selectedStyles: React.CSSProperties })
               />
             </div>
             <div className='flex min-h-12 items-center justify-center border'>
-              <span className='text-sm text-foreground-400'>component</span>
+              <span className='truncate text-sm text-foreground-400'>component</span>
             </div>
             <div className='flex p-1'>
               <Input
@@ -318,7 +318,7 @@ const Dimensions = ({ selectedStyles }: { selectedStyles: React.CSSProperties })
               />
             </div>
             <div className='flex min-h-12 items-center justify-center border'>
-              <span className='text-sm text-foreground-400'>component</span>
+              <span className='truncate text-sm text-foreground-400'>component</span>
             </div>
             <div className='flex p-1'>
               <Input
@@ -414,7 +414,6 @@ const Decorations = ({ selectedStyles }: { selectedStyles: React.CSSProperties }
           step={0.01}
           maxValue={1}
           minValue={0}
-          className='max-w-md'
           showOutline
           value={form.opacity}
           onChange={handleSlider('opacity')}
@@ -596,6 +595,23 @@ const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
   )
 }
 
+const CustomBox = ({ componentType }: { componentType: ComponentType }) => {
+  const { handleBtnUpdateElement } = useUpdateElement()
+
+  return (
+    <>
+      <div className='flex flex-col gap-4'>
+        <span className='text-foreground-600'>Custom</span>
+
+        <div className='flex gap-1'>
+          <Input className='w-1/2' placeholder='Key' />
+          <Input className='w-1/2' placeholder='Value' />
+        </div>
+      </div>
+    </>
+  )
+}
+
 function StylesTab({ children }: { children: React.ReactNode }) {
   return (
     <Accordion
@@ -634,6 +650,14 @@ function StylesTab({ children }: { children: React.ReactNode }) {
         classNames={{ heading: 'font-bold' }}>
         {React.Children.toArray(children)[3]}
       </AccordionItem>
+
+      {/* <AccordionItem
+        key='5'
+        aria-label='CustomBox'
+        title='CustomBox'
+        classNames={{ heading: 'font-bold' }}>
+        {React.Children.toArray(children)[4]}
+      </AccordionItem> */}
     </Accordion>
   )
 }
@@ -642,6 +666,7 @@ StylesTab.Typography = Typography
 StylesTab.Dimensions = Dimensions
 StylesTab.Decorations = Decorations
 StylesTab.FlexBox = FlexBox
+// StylesTab.CustomBox = CustomBox
 export default StylesTab
 
 function isHexColor(value: string) {

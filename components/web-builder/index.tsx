@@ -16,7 +16,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Wallpaper, Settings } from 'lucide-react'
 import ProjectEditModal from './project-edit-modal'
 import { usePathname, useRouter } from 'next/navigation'
-import { ProjectData } from '@/model/web-builder'
+import { FunnelPage, ProjectData } from '@/model/web-builder'
 import { useToast } from '../ui/use-toast'
 
 type Props = {
@@ -37,6 +37,9 @@ export default function ProjectRoot(props: Props) {
   const [selectedKeys, setSelectedKeys] = useState<'all' | Iterable<string | number> | undefined>(
     new Set()
   )
+
+  const [funnelPageList, setFunnelPageList] = useState<FunnelPage[]>([])
+
   const [modalType, setModalType] = useState<'add' | 'edit'>('add')
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -111,7 +114,7 @@ export default function ProjectRoot(props: Props) {
 
   return (
     <>
-      <Card className='m-auto w-[500px]' shadow='md'>
+      <Card className='m-auto h-[50vh] w-[20vw]' shadow='md'>
         <CardHeader className='justify-between'>
           <h2>Project</h2>
           <Button
@@ -123,7 +126,7 @@ export default function ProjectRoot(props: Props) {
           </Button>
         </CardHeader>
         <Divider />
-        <CardBody className='max-h-[400px] overflow-y-auto'>
+        <CardBody className='overflow-y-auto'>
           {projectDataList.length > 0 ? (
             <Listbox
               variant='flat'
@@ -167,7 +170,7 @@ export default function ProjectRoot(props: Props) {
             color='success'
             aria-label='add project'
             onClick={handleAddProject}>
-            Add
+            Add Project
           </Button>
         </CardFooter>
       </Card>

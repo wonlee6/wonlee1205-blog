@@ -21,9 +21,11 @@ function EditorToolbox() {
         className='flex h-[3%] w-full items-center justify-between border-b border-default-300 px-4'>
         <div className='flex items-center gap-4'>
           <div className='border-r pr-2'>
-            <Button variant='light' size='sm' startContent={<DoorOpen />}>
-              <Link href={'/web-builder/project'}>Back</Link>
-            </Button>
+            <Link href={'/web-builder/project'}>
+              <Button variant='light' size='sm' startContent={<DoorOpen />}>
+                Back
+              </Button>
+            </Link>
           </div>
           <h2 className='text-base'>title</h2>
         </div>

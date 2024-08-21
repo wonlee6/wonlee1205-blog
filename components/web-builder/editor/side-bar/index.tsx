@@ -9,6 +9,7 @@ import { m } from 'framer-motion'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { useShallow } from 'zustand/react/shallow'
 import { useEffect, useMemo } from 'react'
+import StorageTab from './storage-tab'
 
 // [BUG] - Accordion component is avoiding focus on inputs
 // https://github.com/nextui-org/nextui/issues/3478
@@ -29,14 +30,18 @@ export default function EditorSideBar() {
           type: 'spring'
         }}
         layout
-        className='h-full w-1/5 overflow-auto border-l border-t border-default-300 p-2'>
-        <Tabs aria-label='Options' radius='none'>
+        className='h-full w-3/12 overflow-auto border-l border-t border-default-300 p-2'>
+        <Tabs
+          aria-label='Options'
+          radius='none'
+          classNames={{ tabList: 'grid grid grid-cols-4 max-xl:flex-wrap max-xl:flex' }}>
           <Tab key='styles' title='Styles'>
             <StylesTab key={selectedElement.id}>
               <StylesTab.Typography selectedStyles={selectedStyles} />
               <StylesTab.Dimensions selectedStyles={selectedStyles} />
               <StylesTab.Decorations selectedStyles={selectedStyles} />
               <StylesTab.FlexBox componentType={selectedElement.type} />
+              {/* <StylesTab.CustomBox componentType={selectedElement.type} /> */}
             </StylesTab>
           </Tab>
 
@@ -46,6 +51,10 @@ export default function EditorSideBar() {
 
           <Tab key='Layers' title='Layers'>
             <LayersTab />
+          </Tab>
+
+          <Tab key='Storage' title='Storage'>
+            <StorageTab />
           </Tab>
         </Tabs>
       </m.aside>
