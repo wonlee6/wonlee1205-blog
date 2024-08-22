@@ -467,7 +467,7 @@ const Decorations = ({ selectedStyles }: { selectedStyles: React.CSSProperties }
             name='backgroundColor'
             value={isHexColor(form.backgroundColor) ? form.backgroundColor : '#ffffff'}
             onChange={handleColor}
-            className='h-auto w-1/5'
+            className='h-auto w-1/5 cursor-pointer'
           />
           <Input
             value={form.backgroundColor}

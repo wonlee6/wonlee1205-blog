@@ -19,6 +19,7 @@ export default function EditorSideBar() {
 
   const selectedStyles = useMemo(() => selectedElement.styles, [selectedElement])
 
+  useEffect(() => console.log('selectedElement', selectedElement), [selectedElement])
   useEffect(() => console.log('styles', selectedStyles), [selectedStyles])
 
   return (
