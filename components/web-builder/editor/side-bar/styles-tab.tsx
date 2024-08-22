@@ -1,6 +1,6 @@
 'use client'
 
-import React, { memo, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Accordion,
   AccordionItem,
@@ -35,12 +35,18 @@ const Typography = ({ selectedStyles }: { selectedStyles: React.CSSProperties })
   const { handleInputUpdateElement, handleBtnUpdateElement } = useUpdateElement()
 
   const [form, setForm] = useState({
+    textAlign: selectedStyles['textAlign'] ?? 'left',
     fontSize: selectedStyles['fontSize'] ?? '',
     fontWeight: selectedStyles['fontWeight'] ?? '',
     fontFamily: selectedStyles['fontFamily'] ?? '',
     paddingLeft: selectedStyles['paddingLeft'] ?? '',
     color: selectedStyles['color'] ?? '#000000'
   })
+
+  const handleTextAlign = (align: string) => {
+    handleBtnUpdateElement('textAlign', align)
+    setForm((prev) => ({ ...prev, textAlign: align as any }))
+  }
 
   const inputDebounce = useDebounce((e) => handleInputUpdateElement(e), 250)
 
@@ -73,10 +79,11 @@ const Typography = ({ selectedStyles }: { selectedStyles: React.CSSProperties })
           <div className='border-r text-center'>
             <Tooltip content='left'>
               <Button
+                color={form.textAlign === 'left' ? 'primary' : 'default'}
                 isIconOnly
                 size='sm'
                 variant='light'
-                onClick={() => handleBtnUpdateElement('textAlign', 'left')}>
+                onClick={() => handleTextAlign('left')}>
                 <AlignLeft />
               </Button>
             </Tooltip>
@@ -84,10 +91,11 @@ const Typography = ({ selectedStyles }: { selectedStyles: React.CSSProperties })
           <div className='border-r text-center'>
             <Tooltip content='right'>
               <Button
+                color={form.textAlign === 'right' ? 'primary' : 'default'}
                 isIconOnly
                 size='sm'
                 variant='light'
-                onClick={() => handleBtnUpdateElement('textAlign', 'right')}>
+                onClick={() => handleTextAlign('right')}>
                 <AlignRight />
               </Button>
             </Tooltip>
@@ -95,10 +103,11 @@ const Typography = ({ selectedStyles }: { selectedStyles: React.CSSProperties })
           <div className='border-r text-center'>
             <Tooltip content='justify'>
               <Button
+                color={form.textAlign === 'justify' ? 'primary' : 'default'}
                 isIconOnly
                 size='sm'
                 variant='light'
-                onClick={() => handleBtnUpdateElement('textAlign', 'justify')}>
+                onClick={() => handleTextAlign('justify')}>
                 <AlignJustify />
               </Button>
             </Tooltip>
@@ -106,10 +115,11 @@ const Typography = ({ selectedStyles }: { selectedStyles: React.CSSProperties })
           <div className='text-center'>
             <Tooltip content='center'>
               <Button
+                color={form.textAlign === 'center' ? 'primary' : 'default'}
                 isIconOnly
                 size='sm'
                 variant='light'
-                onClick={() => handleBtnUpdateElement('textAlign', 'center')}>
+                onClick={() => handleTextAlign('center')}>
                 <AlignCenter />
               </Button>
             </Tooltip>
@@ -485,8 +495,24 @@ const Decorations = ({ selectedStyles }: { selectedStyles: React.CSSProperties }
   )
 }
 
-const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
+const FlexBox = ({
+  selectedStyles,
+  componentType
+}: {
+  selectedStyles: React.CSSProperties
+  componentType: ComponentType
+}) => {
   const { handleBtnUpdateElement } = useUpdateElement()
+
+  const [form, setForm] = useState({
+    justifyContent: selectedStyles['justifyContent'] ?? 'center',
+    alignItems: selectedStyles['alignItems'] ?? 'center'
+  })
+
+  const handleBtn = (key: string, value: string) => {
+    handleBtnUpdateElement(key, value)
+    setForm((prev) => ({ ...prev, [key]: value }))
+  }
 
   const isDisable = componentType !== 'Container'
 
@@ -499,10 +525,11 @@ const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
           <div className='border-r text-center'>
             <Tooltip content='start'>
               <Button
+                color={form.justifyContent === 'start' ? 'primary' : 'default'}
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtnUpdateElement('justifyContent', 'start')}>
+                onClick={() => handleBtn('justifyContent', 'start')}>
                 <AlignHorizontalJustifyStart />
               </Button>
             </Tooltip>
@@ -510,10 +537,11 @@ const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
           <div className='border-r text-center'>
             <Tooltip content='center'>
               <Button
+                color={form.justifyContent === 'center' ? 'primary' : 'default'}
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtnUpdateElement('justifyContent', 'center')}>
+                onClick={() => handleBtn('justifyContent', 'center')}>
                 <AlignHorizontalJustifyCenter />
               </Button>
             </Tooltip>
@@ -521,10 +549,11 @@ const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
           <div className='border-r text-center'>
             <Tooltip content='end'>
               <Button
+                color={form.justifyContent === 'end' ? 'primary' : 'default'}
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtnUpdateElement('justifyContent', 'end')}>
+                onClick={() => handleBtn('justifyContent', 'end')}>
                 <AlignHorizontalJustifyEnd />
               </Button>
             </Tooltip>
@@ -532,10 +561,11 @@ const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
           <div className='border-r text-center'>
             <Tooltip content='between'>
               <Button
+                color={form.justifyContent === 'between' ? 'primary' : 'default'}
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtnUpdateElement('justifyContent', 'between')}>
+                onClick={() => handleBtn('justifyContent', 'between')}>
                 <AlignHorizontalSpaceBetween />
               </Button>
             </Tooltip>
@@ -543,10 +573,11 @@ const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
           <div className='border-r text-center'>
             <Tooltip content='around'>
               <Button
+                color={form.justifyContent === 'around' ? 'primary' : 'default'}
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtnUpdateElement('justifyContent', 'around')}>
+                onClick={() => handleBtn('justifyContent', 'around')}>
                 <AlignHorizontalSpaceAround />
               </Button>
             </Tooltip>
@@ -559,10 +590,11 @@ const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
           <div className='border-r text-center'>
             <Tooltip content='start'>
               <Button
+                color={form.alignItems === 'start' ? 'primary' : 'default'}
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtnUpdateElement('alignItems', 'start')}>
+                onClick={() => handleBtn('alignItems', 'start')}>
                 <AlignVerticalJustifyStart />
               </Button>
             </Tooltip>
@@ -570,10 +602,11 @@ const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
           <div className='border-r text-center'>
             <Tooltip content='center'>
               <Button
+                color={form.alignItems === 'center' ? 'primary' : 'default'}
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtnUpdateElement('alignItems', 'center')}>
+                onClick={() => handleBtn('alignItems', 'center')}>
                 <AlignVerticalJustifyCenter />
               </Button>
             </Tooltip>
@@ -581,10 +614,11 @@ const FlexBox = ({ componentType }: { componentType: ComponentType }) => {
           <div className='border-r text-center'>
             <Tooltip content='end'>
               <Button
+                color={form.alignItems === 'end' ? 'primary' : 'default'}
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtnUpdateElement('alignItems', 'end')}>
+                onClick={() => handleBtn('alignItems', 'end')}>
                 <AlignVerticalJustifyEnd />
               </Button>
             </Tooltip>
