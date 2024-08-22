@@ -502,16 +502,27 @@ const FlexBox = ({
   selectedStyles: React.CSSProperties
   componentType: ComponentType
 }) => {
-  const { handleBtnUpdateElement } = useUpdateElement()
+  const { handleBtnUpdateElement, handleInputUpdateElement } = useUpdateElement()
+
+  const inputDebounce = useDebounce((e) => handleInputUpdateElement(e), 250)
 
   const [form, setForm] = useState({
     justifyContent: selectedStyles['justifyContent'] ?? 'center',
-    alignItems: selectedStyles['alignItems'] ?? 'center'
+    alignItems: selectedStyles['alignItems'] ?? 'center',
+    gap: selectedStyles['gap'] ?? ''
   })
 
   const handleBtn = (key: string, value: string) => {
     handleBtnUpdateElement(key, value)
     setForm((prev) => ({ ...prev, [key]: value }))
+  }
+
+  const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+    inputDebounce(e)
   }
 
   const isDisable = componentType !== 'Container'
@@ -624,6 +635,18 @@ const FlexBox = ({
             </Tooltip>
           </div>
         </div>
+
+        <span className='text-foreground-600'>Gap</span>
+
+        <Input
+          value={String(form.gap)}
+          name='gap'
+          radius='sm'
+          autoComplete='off'
+          placeholder='Gap'
+          aria-label='gap attribute'
+          onChange={handleInputValue}
+        />
       </div>
     </>
   )
