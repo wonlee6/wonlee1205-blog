@@ -1,6 +1,6 @@
 import { ComponentType, EditorElement, ElementType } from '@/model/web-builder'
 import { v4 } from 'uuid'
-import { ContainerDefaultStyles, defaultStyles } from './constants'
+import { ContainerDefaultStyles, InputDefaultStyles } from './constants'
 import CryptoJS from 'crypto-js'
 
 export function isElementType(content: EditorElement[] | ElementType): content is ElementType {
@@ -23,10 +23,17 @@ export function addElementByType(componentType: ComponentType): EditorElement | 
         id: v4(),
         name: 'Text',
         styles: {
-          color: 'black',
-          ...defaultStyles
+          ...InputDefaultStyles
         },
         type: 'Text'
+      }
+    case 'Button':
+      return {
+        content: { innerText: 'Button' },
+        id: v4(),
+        name: 'Button',
+        styles: {},
+        type: 'Button'
       }
     default:
       return undefined

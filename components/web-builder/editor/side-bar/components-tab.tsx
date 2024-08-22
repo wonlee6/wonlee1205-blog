@@ -3,7 +3,7 @@
 import React, { memo } from 'react'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 
-import { BoxSelect, Type } from 'lucide-react'
+import { BoxSelect, CircleArrowOutUpLeft, SquareArrowOutUpLeft, Type } from 'lucide-react'
 
 function ComponentsTab() {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: string) => {
@@ -28,7 +28,7 @@ function ComponentsTab() {
           title='Layout'
           classNames={{ heading: 'font-bold', content: 'pb-4' }}>
           <div className='flex flex-col gap-3'>
-            <div className='flex flex-wrap'>
+            <div className='grid grid-cols-4'>
               {layoutList.map((item) => (
                 <div key={item.name} className='flex flex-col items-center justify-center gap-1'>
                   <div
@@ -50,7 +50,7 @@ function ComponentsTab() {
           title='Elements'
           classNames={{ heading: 'font-bold', content: 'pb-4' }}>
           <div className='flex flex-col gap-3'>
-            <div className='flex flex-wrap'>
+            <div className='grid grid-cols-4'>
               {elementList.map((item) => (
                 <div key={item.name} className='flex flex-col items-center justify-center gap-1'>
                   <div
@@ -73,10 +73,15 @@ function ComponentsTab() {
 export default memo(ComponentsTab)
 
 const layoutList = [{ name: 'Container', icon: <BoxSelect size={50} /> }]
-const elementList = [{ name: 'Text', icon: <Type size={50} /> }]
+const elementList = [
+  { name: 'Text', icon: <Type size={50} /> },
+  { name: 'Button', icon: <CircleArrowOutUpLeft size={50} /> }
+]
 
 // Text Link, Heading
 
 // Image, Video, Youtube
+// <Youtube />
 
 // Label, Input, Text Area Checkbox, Radio Button, Button
+// <TextCursor />

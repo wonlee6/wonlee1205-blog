@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { Trash } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { EditorElement } from '@/model/web-builder'
+import { EditorElement, ElementType } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function Text(props: EditorElement) {
@@ -56,6 +56,7 @@ export default function Text(props: EditorElement) {
         ref={inputRef}
         onClick={handleClick}
         onFocus={handleFocus}
+        placeholder={(content as ElementType).innerText}
         className={'relative w-full rounded-sm border-default-300 dark:border-default-300'}
         style={styles}
         tabIndex={0}

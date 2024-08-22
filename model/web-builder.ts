@@ -45,7 +45,7 @@ export type ProjectData = {
   updated_at: string
 }
 
-export type ComponentType = '___body' | 'Container' | 'Text' | null
+export type ComponentType = '___body' | 'Container' | 'Text' | 'Button' | null
 
 export type ElementType = { href?: string; innerText?: string; src?: string }
 

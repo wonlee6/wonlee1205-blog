@@ -1,9 +1,5 @@
-export const defaultStyles: React.CSSProperties = {
-  backgroundPosition: 'center',
-  objectFit: 'cover',
-  backgroundRepeat: 'no-repeat',
-  textAlign: 'left',
-  opacity: 1
+export const InputDefaultStyles: React.CSSProperties = {
+  textAlign: 'left'
 }
 
 export const ContainerDefaultStyles: React.CSSProperties = {
@@ -12,6 +8,8 @@ export const ContainerDefaultStyles: React.CSSProperties = {
   alignItems: 'center',
   width: '100%',
   minHeight: '6rem',
-  padding: '1rem',
-  opacity: 1
+  paddingLeft: '1rem',
+  paddingRight: '1rem',
+  paddingTop: '1rem',
+  paddingBottom: '1rem'
 }
