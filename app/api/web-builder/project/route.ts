@@ -73,11 +73,12 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   const response = await request.json()
-  console.log('response', response)
 
   const { id } = decryptFormData<{ id: string }>(response.data)
+  console.log('id', id)
 
   const { error, statusText, status } = await createClient().from('project').delete().eq('id', id)
+  console.log(error, statusText, status)
 
   if (error) {
     revalidatePath('/web-builder/project')
@@ -88,13 +89,13 @@ export async function DELETE(request: Request) {
   }
   if (status === 204) {
     revalidatePath('/web-builder/project')
-    return new NextResponse(statusText, {
-      status: 500,
-      statusText
+    return new NextResponse('You have successfully deleted the project.', {
+      status: 200,
+      statusText: 'You have successfully deleted the project.'
     })
   }
-  return new NextResponse('You have successfully deleted the project.', {
-    status: 200,
-    statusText: 'You have successfully deleted the project.'
+  return new NextResponse(statusText, {
+    status: 500,
+    statusText
   })
 }
