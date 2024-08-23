@@ -25,7 +25,7 @@ import { decrypt } from './lib/session'
 
 export async function middleware(request: NextRequest) {
   // update user's auth session (supabase)
-  await updateSession(request)
+  // await updateSession(request)
 
   const protectedRoutes = '/web-builder/project'
   const currentPath = request.nextUrl.pathname

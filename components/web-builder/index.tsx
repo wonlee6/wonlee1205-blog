@@ -12,27 +12,24 @@ import {
   ListboxSection,
   useDisclosure
 } from '@nextui-org/react'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Wallpaper, Settings } from 'lucide-react'
 import ProjectEditModal from './project-edit-modal'
 import { usePathname, useRouter } from 'next/navigation'
 import { FunnelPage, ProjectData } from '@/model/web-builder'
-import { useToast } from '../ui/use-toast'
+import { decryptFormData } from '@/helper/editor.helper'
 
 type Props = {
-  projectData: ProjectData[]
   userId: string
 }
 
 export default function ProjectRoot(props: Props) {
-  const { projectData, userId } = props
+  const { userId } = props
 
   const pathName = usePathname()
   const router = useRouter()
 
-  const { toast } = useToast()
-
-  const [projectDataList, setProjectDataList] = useState<ProjectData[]>(projectData)
+  const [projectDataList, setProjectDataList] = useState<ProjectData[]>([])
 
   const [selectedKeys, setSelectedKeys] = useState<'all' | Iterable<string | number> | undefined>(
     new Set()
@@ -99,22 +96,35 @@ export default function ProjectRoot(props: Props) {
   }
 
   const handleLogout = async (e: React.MouseEvent) => {
-    e.preventDefault()
-
-    const ok = confirm('Are you sure logout')
-    if (!ok) return
-
-    const response = await fetch('/api/web-builder/project', {
-      method: 'GET'
+    const response = await fetch('/api/web-builder/project/logout', {
+      method: 'POST'
     })
-    if (response.status === 200) {
+
+    if (response.ok) {
       router.push('/web-builder/sign-in')
     }
   }
 
+  useEffect(() => {
+    // eslint-disable-next-line prettier/prettier, no-extra-semi
+    ;(async () => {
+      try {
+        const response = await fetch('/api/web-builder/project', {
+          method: 'GET'
+        })
+        const data = await response.json()
+        const decryptData = decryptFormData<ProjectData[]>(data.data)
+
+        setProjectDataList(decryptData as ProjectData[])
+      } catch (error) {
+        console.error
+      }
+    })()
+  }, [userId])
+
   return (
     <>
-      <Card className='m-auto h-[50vh] w-[20vw]' shadow='md'>
+      <Card className='m-auto h-[50vh] w-[30vw]' shadow='md'>
         <CardHeader className='justify-between'>
           <h2>Project</h2>
           <Button
