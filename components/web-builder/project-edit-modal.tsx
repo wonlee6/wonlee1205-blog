@@ -13,7 +13,7 @@ import {
 } from '@nextui-org/react'
 import { ProjectData, ProjectFormSchema, ProjectFormSchemaModel } from '@/model/web-builder'
 import { sleep } from '@/lib/utils'
-import { decryptFormData, encryptFormData } from '@/lib/editor'
+import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
 
 type Props = {
   isOpen: boolean

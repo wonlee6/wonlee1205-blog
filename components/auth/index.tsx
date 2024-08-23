@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react'
-import { encryptFormData } from '@/lib/editor'
 import { useToast } from '@/components/ui/use-toast'
 import { AuthFormSchema, AuthFormSchemaModel } from '@/model/web-builder'
 import { AuthIcons } from './icons'
+import { encryptFormData } from '@/helper/editor.helper'
 
 type Props = {
   authType: 'sign-up' | 'sign-in'

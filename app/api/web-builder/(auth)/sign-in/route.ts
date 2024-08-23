@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/client'
 import { createSession } from '@/lib/session'
 import { AuthFormSchemaModel } from '@/model/web-builder'
-import { decryptFormData } from '@/lib/editor'
+import { decryptFormData } from '@/helper/editor.helper'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()

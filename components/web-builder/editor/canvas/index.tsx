@@ -4,10 +4,10 @@ import { memo, useEffect } from 'react'
 import { m } from 'framer-motion'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { ComponentType, EditorElement } from '@/model/web-builder'
-import { addElementByType } from '@/lib/editor'
 import Recursive from './recursive'
 import { cn } from '@/lib/utils'
 import { useShallow } from 'zustand/react/shallow'
+import { addElementByType } from '@/helper/editor.helper'
 
 const Canvas = memo((props: EditorElement) => {
   const { id, content } = props

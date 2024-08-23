@@ -1,4 +1,4 @@
-import { isElementType } from '@/lib/editor'
+import { isElementType } from '@/helper/editor.helper'
 import { ComponentType, EditorElement } from '@/model/web-builder'
 import { createStore } from 'zustand/vanilla'
 

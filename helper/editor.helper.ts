@@ -1,7 +1,7 @@
-import { ComponentType, EditorElement, ElementType } from '@/model/web-builder'
 import { v4 } from 'uuid'
-import { ContainerDefaultStyles, InputDefaultStyles } from './constants'
 import CryptoJS from 'crypto-js'
+import { ContainerDefaultStyles, InputDefaultStyles } from '@/lib/constants'
+import { ComponentType, EditorElement, ElementType } from '@/model/web-builder'
 
 export function isElementType(content: EditorElement[] | ElementType): content is ElementType {
   return typeof content !== 'undefined' && !Array.isArray(content)

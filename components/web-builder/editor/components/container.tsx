@@ -2,13 +2,13 @@
 
 import React, { useRef } from 'react'
 import { Trash } from 'lucide-react'
-import { addElementByType } from '@/lib/editor'
 import { ComponentType, EditorElement } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import Recursive from '../canvas/recursive'
 import { useShallow } from 'zustand/react/shallow'
+import { addElementByType } from '@/helper/editor.helper'
 
 export default function Container(props: EditorElement) {
   const { id, name, styles, type, content } = props

@@ -1,4 +1,4 @@
-import { decryptFormData, encryptFormData } from '@/lib/editor'
+import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
 import { deleteSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/client'
 import { ProjectFormSchemaModel } from '@/model/web-builder'
