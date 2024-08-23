@@ -42,6 +42,7 @@ export default function Container(props: EditorElement) {
 
   const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
+    e.stopPropagation()
 
     onDeleteElement(id)
   }
@@ -61,13 +62,18 @@ export default function Container(props: EditorElement) {
     handleSelectElement()
   }
 
-  const handleFocus = (e: React.FormEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    handleSelectElement()
-  }
+  // const handleFocus = (e: React.FormEvent<HTMLDivElement>) => {
+  //   e.stopPropagation()
+  //   e.preventDefault()
+  //   e.isPropagationStopped()
+  //   console.log('handleFocus')
+
+  //   handleSelectElement()
+  // }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Backspace' || e.key === 'Delete') {
+      e.preventDefault()
       onDeleteElement(id)
     }
   }
@@ -79,7 +85,7 @@ export default function Container(props: EditorElement) {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onClick={handleClick}
-        onFocus={handleFocus}
+        // onFocus={handleFocus}
         onKeyDown={handleKeyDown}
         role='button'
         tabIndex={0}

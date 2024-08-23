@@ -734,7 +734,7 @@ const CustomBox = ({ customStyles }: { customStyles: React.CSSProperties | undef
           ))}
         </div>
 
-        <div className='flex gap-1'>
+        <div className='flex gap-2'>
           <Input
             ref={keyRef}
             className='w-1/2'

@@ -38,7 +38,7 @@ export default function Text(props: EditorElement) {
 
   const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
-
+    e.stopPropagation()
     onDeleteElement(id)
   }
 
@@ -65,8 +65,9 @@ export default function Text(props: EditorElement) {
       {selectedElement.id === id && (
         <Badge
           onClick={handleDeleteElement}
-          className='absolute -top-6 right-0 flex cursor-pointer gap-1 rounded-none rounded-t-lg'
-          variant='destructive'>
+          className='absolute -top-6 right-0 z-20 flex cursor-pointer gap-1 rounded-none rounded-t-lg'
+          variant='destructive'
+          aria-label='Delete Element'>
           Delete
           <Trash size={16} />
         </Badge>
