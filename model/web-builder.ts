@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 export const AuthFormSchema = z.object({
-  name: z.string().min(4).max(20),
-  password: z.string().min(4).max(20)
+  name: z.string().min(4, { message: 'ID must contain at least 4 character(s)' }).max(20),
+  password: z.string().min(4, { message: 'Password must contain at least 4 character(s)' }).max(20)
 })
 
 export type AuthFormSchemaModel = z.infer<typeof AuthFormSchema>

@@ -69,8 +69,6 @@ export default function ProjectEditModal(props: Props) {
 
       const decryptData = decryptFormData<ProjectData>(data.data)
 
-      await sleep(1000)
-
       onSave(decryptData)
       onOpenChange()
     } catch (e) {
