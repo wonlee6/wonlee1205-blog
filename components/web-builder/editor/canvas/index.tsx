@@ -20,7 +20,7 @@ const Canvas = memo((props: EditorElement) => {
     e.stopPropagation()
 
     const componentType = e.dataTransfer.getData('text')
-    console.log(componentType)
+    console.log(e)
 
     const value = addElementByType(componentType as ComponentType)
     if (typeof value === 'undefined') {

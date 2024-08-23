@@ -1,4 +1,5 @@
 import { isElementType } from '@/helper/editor.helper'
+import { ContainerDefaultStyles, InputDefaultStyles } from '@/lib/constants'
 import { ComponentType, EditorElement } from '@/model/web-builder'
 import { createStore } from 'zustand/vanilla'
 
@@ -15,7 +16,8 @@ type EditorActions = {
   onAddElement: (id: string, elementDetails: EditorElement) => void
   onSelectElement: (element: EditorElement) => void
   onDeleteElement: (id: string) => void
-  onUpdateElement: (name: string, value: string | number) => void
+  onUpdateElement: (name: string, value: string | number, custom?: boolean) => void
+  onDeleteCustomCss: (property: string) => void
 }
 
 export type EditorStore = EditorState & EditorActions
@@ -62,7 +64,7 @@ export const createEditorStore = () => {
           content: element.content
         }
       })),
-    onUpdateElement: (name: string, value: string | number) =>
+    onUpdateElement: (name: string, value: string | number, custom = false) =>
       set((state) => {
         const styleObject = {
           [name]: value
@@ -74,9 +76,37 @@ export const createEditorStore = () => {
             styles: {
               ...state.selectedElement.styles,
               ...styleObject
+            },
+            ...(custom && {
+              customStyles: {
+                ...state.selectedElement.customStyles,
+                ...styleObject
+              }
+            })
+          },
+          elements: updateElement(
+            state.elements,
+            state.selectedElement.id,
+            { ...styleObject },
+            custom
+          )
+        }
+      }),
+    onDeleteCustomCss: (property: string) =>
+      set((state) => {
+        return {
+          ...state,
+          selectedElement: {
+            ...state.selectedElement,
+            customStyles: {
+              [property]: undefined
+            },
+            styles: {
+              ...state.selectedElement.styles,
+              ...getDefaultStyleByComponentType(state.selectedElement.type)
             }
           },
-          elements: updateElement(state.elements, state.selectedElement.id, { ...styleObject })
+          elements: deleteCustomCssInElement(state.elements, state.selectedElement.id, property)
         }
       })
   }))
@@ -125,7 +155,8 @@ const deleteElement = (editorArray: EditorElement[], id: string): EditorElement[
 const updateElement = (
   editorArray: EditorElement[],
   id: string,
-  styleObject: object
+  styleObject: object,
+  custom: boolean
 ): EditorElement[] => {
   return editorArray.map((item) => {
     if (item.id === id) {
@@ -134,14 +165,58 @@ const updateElement = (
         styles: {
           ...item.styles,
           ...styleObject
-        }
+        },
+        ...(custom && {
+          customStyles: {
+            ...item.customStyles,
+            ...styleObject
+          }
+        })
       }
     } else if (item.content && Array.isArray(item.content)) {
       return {
         ...item,
-        content: updateElement(item.content, id, styleObject)
+        content: updateElement(item.content, id, styleObject, custom)
       }
     }
     return item
   })
+}
+
+const deleteCustomCssInElement = (
+  editorArray: EditorElement[],
+  id: string,
+  property: string
+): EditorElement[] => {
+  return editorArray.map((item) => {
+    if (item.id === id) {
+      return {
+        ...item,
+        customStyles: {
+          [property]: undefined
+        },
+        styles: {
+          ...item.styles,
+          ...getDefaultStyleByComponentType(item.type)
+        }
+      }
+    } else if (Array.isArray(item.content)) {
+      return {
+        ...item,
+        content: deleteCustomCssInElement(item.content, id, property)
+      }
+    }
+    return item
+  })
+}
+
+function getDefaultStyleByComponentType(componentType: ComponentType) {
+  switch (componentType) {
+    case 'Container':
+      return { ...ContainerDefaultStyles }
+    case 'Text':
+      return { ...InputDefaultStyles }
+    default:
+      return {}
+  }
 }

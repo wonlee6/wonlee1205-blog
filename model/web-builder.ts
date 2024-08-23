@@ -52,6 +52,7 @@ export type ElementType = { href?: string; innerText?: string; src?: string }
 export type EditorElement = {
   id: string
   styles: React.CSSProperties
+  customStyles?: React.CSSProperties | undefined
   name: string
   type: ComponentType
   content: EditorElement[] | ElementType

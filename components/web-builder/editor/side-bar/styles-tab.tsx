@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import {
   Accordion,
   AccordionItem,
   Button,
+  Chip,
   Divider,
   Input,
   Select,
@@ -507,6 +508,7 @@ const FlexBox = ({
   const inputDebounce = useDebounce((e) => handleInputUpdateElement(e), 250)
 
   const [form, setForm] = useState({
+    flexDirection: selectedStyles['flexDirection'] ?? 'column',
     justifyContent: selectedStyles['justifyContent'] ?? 'center',
     alignItems: selectedStyles['alignItems'] ?? 'center',
     gap: selectedStyles['gap'] ?? ''
@@ -522,6 +524,11 @@ const FlexBox = ({
       ...prev,
       [e.target.name]: e.target.value
     }))
+    inputDebounce(e)
+  }
+
+  const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
     inputDebounce(e)
   }
 
@@ -645,37 +652,122 @@ const FlexBox = ({
           autoComplete='off'
           placeholder='Gap'
           aria-label='gap attribute'
+          isDisabled={isDisable}
           onChange={handleInputValue}
         />
+
+        <span className='text-foreground-600'>Direction</span>
+
+        <Select
+          name='flexDirection'
+          labelPlacement='outside'
+          aria-label='flexDirection'
+          selectedKeys={[form.flexDirection]}
+          isDisabled={isDisable}
+          onChange={handleSelectionChange}>
+          {flexDirectionOptions.map((fontWeight) => (
+            <SelectItem key={fontWeight.key}>{fontWeight.label}</SelectItem>
+          ))}
+        </Select>
       </div>
     </>
   )
 }
 
-const CustomBox = ({ componentType }: { componentType: ComponentType }) => {
-  const { handleBtnUpdateElement } = useUpdateElement()
+const CustomBox = ({ customStyles }: { customStyles: React.CSSProperties | undefined }) => {
+  const { handleBtnUpdateElement, handleCustomCss } = useUpdateElement()
+
+  const keyRef = useRef<HTMLInputElement | null>(null)
+  const valueRef = useRef<HTMLInputElement | null>(null)
+
+  const [isValid, setIsValid] = useState(false)
+
+  const handleDeleteCustomCss = (property: string) => {
+    handleCustomCss(property)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+
+      const key = keyRef.current?.value!
+      const value = valueRef.current?.value!
+
+      try {
+        if (validateCssProperty(key, value)) {
+          setIsValid(false)
+          handleBtnUpdateElement(key, value, true)
+
+          keyRef.current!.value = ''
+          valueRef.current!.value = ''
+        } else {
+          setIsValid(true)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+
+  const filteredCustomCss = useMemo(() => {
+    if (typeof customStyles === 'undefined') return []
+
+    return Object.entries(customStyles).filter(([_, value]) => typeof value !== 'undefined')
+  }, [customStyles])
 
   return (
     <>
-      <div className='flex flex-col gap-4'>
-        <span className='text-foreground-600'>Custom</span>
+      <form onKeyDown={handleKeyDown} className='flex flex-col gap-4'>
+        <span className='text-foreground-600'>
+          Enter your CSS properties, e.g. margin, 10px in this format
+        </span>
+
+        <div className='flex flex-wrap gap-3'>
+          {filteredCustomCss.map(([property, value]) => (
+            <Chip
+              key={`${property}-${value}`}
+              onClose={() => handleDeleteCustomCss(property)}
+              variant='flat'
+              color='success'>
+              {`${property}: ${value}`}
+            </Chip>
+          ))}
+        </div>
 
         <div className='flex gap-1'>
-          <Input className='w-1/2' placeholder='Key' />
-          <Input className='w-1/2' placeholder='Value' />
+          <Input
+            ref={keyRef}
+            className='w-1/2'
+            placeholder='e.g. margin'
+            isInvalid={isValid}
+            errorMessage='This is not a valid format'
+          />
+          <Input ref={valueRef} className='w-1/2' placeholder='e.g. 10px' isInvalid={isValid} />
         </div>
-      </div>
+      </form>
     </>
   )
 }
 
-function StylesTab({ children }: { children: React.ReactNode }) {
+function StylesTab({
+  children,
+  componentType
+}: React.PropsWithChildren<{ componentType: ComponentType }>) {
+  const isDisable = componentType !== 'Container'
   return (
     <Accordion
       selectionMode='multiple'
       variant='shadow'
       className='rounded-none'
       defaultExpandedKeys='all'>
+      <AccordionItem
+        key='5'
+        aria-label='CustomBox'
+        title='CustomBox'
+        classNames={{ heading: 'font-bold' }}>
+        {React.Children.toArray(children)[4]}
+      </AccordionItem>
+
       <AccordionItem
         key='1'
         aria-label='Typography'
@@ -704,17 +796,10 @@ function StylesTab({ children }: { children: React.ReactNode }) {
         key='4'
         aria-label='Flexbox'
         title='Flexbox'
+        isDisabled={isDisable}
         classNames={{ heading: 'font-bold' }}>
         {React.Children.toArray(children)[3]}
       </AccordionItem>
-
-      {/* <AccordionItem
-        key='5'
-        aria-label='CustomBox'
-        title='CustomBox'
-        classNames={{ heading: 'font-bold' }}>
-        {React.Children.toArray(children)[4]}
-      </AccordionItem> */}
     </Accordion>
   )
 }
@@ -723,7 +808,7 @@ StylesTab.Typography = Typography
 StylesTab.Dimensions = Dimensions
 StylesTab.Decorations = Decorations
 StylesTab.FlexBox = FlexBox
-// StylesTab.CustomBox = CustomBox
+StylesTab.CustomBox = CustomBox
 export default StylesTab
 
 function isHexColor(value: string) {
@@ -771,3 +856,24 @@ const fontWeightOptions = [
   { key: 'lighter', label: 'lighter' },
   { key: 'normal', label: 'normal' }
 ]
+
+const flexDirectionOptions = [
+  { key: 'column', label: 'column' },
+  { key: 'column-reverse', label: 'column-reverse' },
+  { key: 'row', label: 'row' },
+  { key: 'row-reverse', label: 'row-reverse' }
+]
+
+const validateCssProperty = (property: string, value: string): boolean => {
+  const emptyElement = document.createElement('div')
+  const checkProperty = Object.keys(emptyElement.style).some((i) => i === property)
+  if (!checkProperty) return false
+
+  emptyElement.style[property as any] = value
+
+  if (emptyElement.style[property as any]) {
+    return true
+  } else {
+    return false
+  }
+}

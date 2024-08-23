@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useRef } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import { Trash } from 'lucide-react'
 import { ComponentType, EditorElement } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import Recursive from '../canvas/recursive'
-import { useShallow } from 'zustand/react/shallow'
 import { addElementByType } from '@/helper/editor.helper'
+import Recursive from '../canvas/recursive'
 
 export default function Container(props: EditorElement) {
   const { id, name, styles, type, content } = props
@@ -31,6 +31,7 @@ export default function Container(props: EditorElement) {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation()
 
+    console.log(e)
     const componentType = e.dataTransfer.getData('text')
 
     const value = addElementByType(componentType as ComponentType)

@@ -37,7 +37,7 @@ export default function EditorSideBar() {
           radius='none'
           classNames={{ tabList: 'grid grid grid-cols-4 max-xl:flex-wrap max-xl:flex' }}>
           <Tab key='styles' title='Styles'>
-            <StylesTab key={selectedElement.id}>
+            <StylesTab key={selectedElement.id} componentType={selectedElement.type}>
               <StylesTab.Typography selectedStyles={selectedStyles} />
               <StylesTab.Dimensions selectedStyles={selectedStyles} />
               <StylesTab.Decorations selectedStyles={selectedStyles} />
@@ -45,7 +45,7 @@ export default function EditorSideBar() {
                 selectedStyles={selectedStyles}
                 componentType={selectedElement.type}
               />
-              {/* <StylesTab.CustomBox componentType={selectedElement.type} /> */}
+              <StylesTab.CustomBox customStyles={selectedElement.customStyles} />
             </StylesTab>
           </Tab>
 

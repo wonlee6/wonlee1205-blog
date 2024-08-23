@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function useUpdateElement() {
-  const { onUpdateElement } = useEditorStore((state) => state)
+  const { onUpdateElement, onDeleteCustomCss } = useEditorStore((state) => state)
 
   const handleInputUpdateElement = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,8 +12,8 @@ export default function useUpdateElement() {
   )
 
   const handleBtnUpdateElement = useCallback(
-    (name: string, value: string) => {
-      onUpdateElement(name, value)
+    (name: string, value: string, custom = false) => {
+      onUpdateElement(name, value, custom)
     },
     [onUpdateElement]
   )
@@ -25,9 +25,17 @@ export default function useUpdateElement() {
     [onUpdateElement]
   )
 
+  const handleCustomCss = useCallback(
+    (property: string) => {
+      onDeleteCustomCss(property)
+    },
+    [onDeleteCustomCss]
+  )
+
   return {
     handleInputUpdateElement,
     handleBtnUpdateElement,
-    handleSliderUpdateElement
+    handleSliderUpdateElement,
+    handleCustomCss
   }
 }
