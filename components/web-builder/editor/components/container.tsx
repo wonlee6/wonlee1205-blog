@@ -3,24 +3,26 @@
 import React, { useRef } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { Trash } from 'lucide-react'
-import { ComponentName, EditorElement } from '@/model/web-builder'
+import { ComponentName, EditorElement, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { addElementByType } from '@/helper/editor.helper'
 import Recursive from '../canvas/recursive'
 
-export default function Container(props: EditorElement) {
-  const { id, name, styles, group, content } = props
+export default function Container(props: RecursiveComponent) {
+  const { id, name, styles, group, content, index, parentId } = props
 
-  const [selectedElement, onAddElement, onSelectElement, onDeleteElement] = useEditorStore(
-    useShallow((state) => [
-      state.selectedElement,
-      state.onAddElement,
-      state.onSelectElement,
-      state.onDeleteElement
-    ])
-  )
+  const [selectedElement, onAddElement, onSelectElement, onDeleteElement, onDragItemOrder] =
+    useEditorStore(
+      useShallow((state) => [
+        state.selectedElement,
+        state.onAddElement,
+        state.onSelectElement,
+        state.onDeleteElement,
+        state.onDragItemOrder
+      ])
+    )
 
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -28,16 +30,28 @@ export default function Container(props: EditorElement) {
     e.preventDefault()
   }
 
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+
+    e.dataTransfer.clearData()
+    e.dataTransfer.setData('text/plain', String(index))
+    e.dataTransfer.effectAllowed = 'all'
+    e.dataTransfer.dropEffect = 'copy'
+  }
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation()
 
-    console.log(e)
-    const componentType = e.dataTransfer.getData('text')
+    const dragItem = e.dataTransfer.getData('text')
 
-    const value = addElementByType(componentType as ComponentName)
-    if (typeof value !== 'undefined') {
-      onAddElement(id, value)
+    if (isNaN(Number(dragItem))) {
+      const value = addElementByType(dragItem as ComponentName)
+      if (typeof value !== 'undefined') {
+        onAddElement(id, value)
+        return
+      }
     }
+    onDragItemOrder(parentId, Number(dragItem), index)
   }
 
   const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -47,7 +61,8 @@ export default function Container(props: EditorElement) {
     onDeleteElement(id)
   }
 
-  const handleSelectElement = () => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
     onSelectElement({
       id,
       name,
@@ -57,20 +72,6 @@ export default function Container(props: EditorElement) {
     })
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    handleSelectElement()
-  }
-
-  // const handleFocus = (e: React.FormEvent<HTMLDivElement>) => {
-  //   e.stopPropagation()
-  //   e.preventDefault()
-  //   e.isPropagationStopped()
-  //   console.log('handleFocus')
-
-  //   handleSelectElement()
-  // }
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Backspace' || e.key === 'Delete') {
       e.preventDefault()
@@ -79,43 +80,42 @@ export default function Container(props: EditorElement) {
   }
 
   return (
-    <>
-      <div
-        ref={containerRef}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        onClick={handleClick}
-        // onFocus={handleFocus}
-        onKeyDown={handleKeyDown}
-        role='button'
-        tabIndex={0}
-        className={cn('relative border border-default-400 p-2', {
-          'border-dashed': selectedElement.id === id,
-          'border-primary-500 outline-none': selectedElement.id === id
-        })}
-        style={styles}>
-        {selectedElement.id === id && (
-          <Badge
-            className='absolute -top-6 left-0 cursor-pointer rounded-none rounded-t-lg bg-primary-500 dark:bg-primary-500'
-            variant='default'>
-            {name}
-          </Badge>
-        )}
+    <div
+      ref={containerRef}
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragStart={handleDragStart}
+      draggable
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role='button'
+      tabIndex={0}
+      className={cn('relative border border-default-400 p-2', {
+        'border-dashed': selectedElement.id === id,
+        'border-primary-500 outline-none': selectedElement.id === id
+      })}
+      style={styles}>
+      {selectedElement.id === id && (
+        <Badge
+          className='absolute -top-6 left-0 cursor-pointer rounded-none rounded-t-lg bg-primary-500 dark:bg-primary-500'
+          variant='default'>
+          {name}
+        </Badge>
+      )}
 
-        {(content as EditorElement[]).map((item) => (
-          <Recursive key={item.id} {...item} />
-        ))}
+      {(content as EditorElement[]).map((item, index) => (
+        <Recursive key={item.id} index={index} {...item} parentId={id} />
+      ))}
 
-        {selectedElement.id === id && (
-          <Badge
-            onClick={handleDeleteElement}
-            className='absolute -top-6 right-0 flex cursor-pointer gap-1 rounded-none rounded-t-lg'
-            variant='destructive'>
-            Delete
-            <Trash size={16} />
-          </Badge>
-        )}
-      </div>
-    </>
+      {selectedElement.id === id && (
+        <Badge
+          onClick={handleDeleteElement}
+          className='absolute -top-6 right-0 flex cursor-pointer gap-1 rounded-none rounded-t-lg'
+          variant='destructive'>
+          Delete
+          <Trash size={16} />
+        </Badge>
+      )}
+    </div>
   )
 }

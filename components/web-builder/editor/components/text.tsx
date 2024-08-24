@@ -4,13 +4,15 @@ import { useRef } from 'react'
 import { Trash } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { EditorElement, ElementType } from '@/model/web-builder'
+import { ElementType, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function Text(props: EditorElement) {
-  const { content, name, id, styles, group } = props
+export default function Text(props: RecursiveComponent) {
+  const { content, name, id, styles, group, index, parentId } = props
 
-  const { selectedElement, onSelectElement, onDeleteElement } = useEditorStore((state) => state)
+  const { selectedElement, onSelectElement, onDeleteElement, onDragItemOrder } = useEditorStore(
+    (state) => state
+  )
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -42,6 +44,23 @@ export default function Text(props: EditorElement) {
     onDeleteElement(id)
   }
 
+  const handleDragStart = (e: React.DragEvent) => {
+    e.stopPropagation()
+
+    e.dataTransfer.clearData()
+    e.dataTransfer.setData('text/plain', String(index))
+    e.dataTransfer.effectAllowed = 'all'
+    e.dataTransfer.dropEffect = 'copy'
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.stopPropagation()
+
+    const sourceIndex = e.dataTransfer.getData('text')
+    const destinationIndex = index
+    onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
+  }
+
   return (
     <div className='relative w-full'>
       {selectedElement.id === id && (
@@ -56,10 +75,15 @@ export default function Text(props: EditorElement) {
         ref={inputRef}
         onClick={handleClick}
         onFocus={handleFocus}
+        aria-label={(content as ElementType).innerText}
         placeholder={(content as ElementType).innerText}
         className={'relative w-full rounded-sm border-default-300 dark:border-default-300'}
         style={styles}
         tabIndex={0}
+        draggable
+        onDragOver={(e) => e.preventDefault()}
+        onDragStart={handleDragStart}
+        onDrop={handleDrop}
       />
 
       {selectedElement.id === id && (

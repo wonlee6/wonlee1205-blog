@@ -58,6 +58,11 @@ export type EditorElement = {
   content: EditorElement[] | ElementType
 }
 
+export type RecursiveComponent = EditorElement & {
+  index: number
+  parentId: string
+}
+
 type EditorContent = {
   id: string
   elementDetails: {

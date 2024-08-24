@@ -1,9 +1,9 @@
-import { EditorElement } from '@/model/web-builder'
+import { RecursiveComponent } from '@/model/web-builder'
 import Container from '../components/container'
 import Text from '../components/text'
 import ButtonElement from '../components/button'
 
-export default function Recursive(props: EditorElement) {
+export default function Recursive(props: RecursiveComponent) {
   const { name } = props
 
   switch (name) {

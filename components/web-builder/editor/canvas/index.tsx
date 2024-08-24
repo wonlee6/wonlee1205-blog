@@ -3,13 +3,13 @@
 import { memo, useEffect } from 'react'
 import { m } from 'framer-motion'
 import { useEditorStore } from '@/providers/user-store-provider'
-import { ComponentName, EditorElement } from '@/model/web-builder'
+import { ComponentName, EditorElement, RecursiveComponent } from '@/model/web-builder'
 import Recursive from './recursive'
 import { cn } from '@/lib/utils'
 import { useShallow } from 'zustand/react/shallow'
 import { addElementByType } from '@/helper/editor.helper'
 
-const Canvas = memo((props: EditorElement) => {
+const Canvas = memo((props: RecursiveComponent) => {
   const { id, content } = props
 
   const [device, onAddElement] = useEditorStore(
@@ -19,14 +19,15 @@ const Canvas = memo((props: EditorElement) => {
   const handleDrop = (e: React.DragEvent) => {
     e.stopPropagation()
 
-    const componentType = e.dataTransfer.getData('text')
-    console.log(e)
+    const dragItem = e.dataTransfer.getData('text')
 
-    const value = addElementByType(componentType as ComponentName)
-    if (typeof value === 'undefined') {
-      return
+    if (isNaN(Number(dragItem))) {
+      const value = addElementByType(dragItem as ComponentName)
+      if (typeof value !== 'undefined') {
+        onAddElement(id, value)
+        return
+      }
     }
-    onAddElement(id, value)
   }
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -43,8 +44,8 @@ const Canvas = memo((props: EditorElement) => {
           'relative mx-auto h-full space-y-4 rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
           deviceSize[device]
         )}>
-        {(content as EditorElement[]).map((i) => (
-          <Recursive key={i.id} {...i} />
+        {(content as EditorElement[]).map((i, index) => (
+          <Recursive key={i.id} {...i} index={index} parentId={id} />
         ))}
       </div>
     </>
@@ -67,8 +68,8 @@ const EditorCanvas = () => {
         ease: 'linear'
       }}
       className='h-full w-9/12 overflow-auto border-r border-t border-default-300 bg-zinc-800/10 p-5'>
-      {elements.map((item) => (
-        <Canvas key={item.id} {...item} />
+      {elements.map((item, index) => (
+        <Canvas key={item.id} {...item} index={index} parentId={item.id} />
       ))}
     </m.section>
   )

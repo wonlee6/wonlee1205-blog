@@ -1,6 +1,6 @@
 import { isElementType } from '@/helper/editor.helper'
-import { ContainerDefaultStyles, InputDefaultStyles } from '@/lib/constants'
-import { ComponentName, EditorElement } from '@/model/web-builder'
+import { getDefaultStyleByComponentType } from '@/lib/constants'
+import { EditorElement } from '@/model/web-builder'
 import { createStore } from 'zustand/vanilla'
 
 type EditorState = {
@@ -18,6 +18,7 @@ type EditorActions = {
   onDeleteElement: (id: string) => void
   onUpdateElement: (name: string, value: string | number, custom?: boolean) => void
   onDeleteCustomCss: (property: string) => void
+  onDragItemOrder: (parentId: string, sourceIndex: number, destinationIndex: number) => void
 }
 
 export type EditorStore = EditorState & EditorActions
@@ -108,7 +109,11 @@ export const createEditorStore = () => {
           },
           elements: deleteCustomCssInElement(state.elements, state.selectedElement.id, property)
         }
-      })
+      }),
+    onDragItemOrder: (parentId: string, sourceIndex: number, destinationIndex: number) =>
+      set((state) => ({
+        elements: changeDragItemOrder(state.elements, parentId, sourceIndex, destinationIndex)
+      }))
   }))
 }
 
@@ -210,13 +215,31 @@ const deleteCustomCssInElement = (
   })
 }
 
-function getDefaultStyleByComponentType(componentName: ComponentName) {
-  switch (componentName) {
-    case 'Container':
-      return { ...ContainerDefaultStyles }
-    case 'Text':
-      return { ...InputDefaultStyles }
-    default:
-      return {}
-  }
+function changeDragItemOrder(
+  editorArray: EditorElement[],
+  parentId: string,
+  sourceIndex: number,
+  destinationIndex: number
+): EditorElement[] {
+  return editorArray.map((item) => {
+    if (item.id === parentId && Array.isArray(item.content)) {
+      const sourceItem = item.content.at(sourceIndex)
+      const removeSourceItem = item.content.toSpliced(sourceIndex, 1)
+      const addSourceItemInDestination = removeSourceItem.toSpliced(
+        destinationIndex,
+        0,
+        sourceItem!
+      )
+      return {
+        ...item,
+        content: addSourceItemInDestination
+      }
+    } else if (Array.isArray(item.content)) {
+      return {
+        ...item,
+        content: changeDragItemOrder(item.content, parentId, sourceIndex, destinationIndex)
+      }
+    }
+    return item
+  })
 }

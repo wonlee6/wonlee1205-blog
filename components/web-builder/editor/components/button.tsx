@@ -3,14 +3,16 @@
 import React, { useRef } from 'react'
 import { Trash } from 'lucide-react'
 import { useEditorStore } from '@/providers/user-store-provider'
-import { EditorElement, ElementType } from '@/model/web-builder'
+import { EditorElement, ElementType, RecursiveComponent } from '@/model/web-builder'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
-export default function ButtonElement(props: EditorElement) {
-  const { content, name, id, styles, group } = props
+export default function ButtonElement(props: RecursiveComponent) {
+  const { content, name, id, styles, group, index, parentId } = props
 
-  const { selectedElement, onSelectElement, onDeleteElement } = useEditorStore((state) => state)
+  const { selectedElement, onSelectElement, onDeleteElement, onDragItemOrder } = useEditorStore(
+    (state) => state
+  )
 
   const buttonRef = useRef<HTMLButtonElement | null>(null)
 
@@ -42,6 +44,23 @@ export default function ButtonElement(props: EditorElement) {
     onDeleteElement(id)
   }
 
+  const handleDragStart = (e: React.DragEvent) => {
+    e.stopPropagation()
+
+    e.dataTransfer.clearData()
+    e.dataTransfer.setData('text/plain', String(index))
+    e.dataTransfer.effectAllowed = 'all'
+    e.dataTransfer.dropEffect = 'copy'
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.stopPropagation()
+
+    const sourceIndex = e.dataTransfer.getData('text')
+    const destinationIndex = index
+    onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
+  }
+
   return (
     <div className='relative w-min'>
       <Button
@@ -49,7 +68,12 @@ export default function ButtonElement(props: EditorElement) {
         onClick={handleClick}
         onFocus={handleFocus}
         style={styles}
-        tabIndex={0}>
+        tabIndex={0}
+        aria-label={(content as ElementType).innerText}
+        draggable
+        onDragStart={handleDragStart}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={handleDrop}>
         {(content as ElementType).innerText}
       </Button>
 
