@@ -1,6 +1,6 @@
 import { isElementType } from '@/helper/editor.helper'
 import { ContainerDefaultStyles, InputDefaultStyles } from '@/lib/constants'
-import { ComponentType, EditorElement } from '@/model/web-builder'
+import { ComponentName, EditorElement } from '@/model/web-builder'
 import { createStore } from 'zustand/vanilla'
 
 type EditorState = {
@@ -31,15 +31,15 @@ const initialState: EditorState = {
       id: '___body',
       name: 'Body',
       styles: {},
-      type: '___body',
+      group: 'Body',
       content: []
     }
   ],
   selectedElement: {
     id: '',
-    name: '',
+    name: null,
     styles: {},
-    type: null,
+    group: null,
     content: []
   }
 }
@@ -60,7 +60,7 @@ export const createEditorStore = () => {
           id: element.id,
           name: element.name,
           styles: element.styles,
-          type: element.type,
+          group: element.group,
           content: element.content
         }
       })),
@@ -103,7 +103,7 @@ export const createEditorStore = () => {
             },
             styles: {
               ...state.selectedElement.styles,
-              ...getDefaultStyleByComponentType(state.selectedElement.type)
+              ...getDefaultStyleByComponentType(state.selectedElement.name)
             }
           },
           elements: deleteCustomCssInElement(state.elements, state.selectedElement.id, property)
@@ -197,7 +197,7 @@ const deleteCustomCssInElement = (
         },
         styles: {
           ...item.styles,
-          ...getDefaultStyleByComponentType(item.type)
+          ...getDefaultStyleByComponentType(item.name)
         }
       }
     } else if (Array.isArray(item.content)) {
@@ -210,8 +210,8 @@ const deleteCustomCssInElement = (
   })
 }
 
-function getDefaultStyleByComponentType(componentType: ComponentType) {
-  switch (componentType) {
+function getDefaultStyleByComponentType(componentName: ComponentName) {
+  switch (componentName) {
     case 'Container':
       return { ...ContainerDefaultStyles }
     case 'Text':

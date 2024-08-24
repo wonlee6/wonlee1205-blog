@@ -3,7 +3,7 @@
 import { memo, useEffect } from 'react'
 import { m } from 'framer-motion'
 import { useEditorStore } from '@/providers/user-store-provider'
-import { ComponentType, EditorElement } from '@/model/web-builder'
+import { ComponentName, EditorElement } from '@/model/web-builder'
 import Recursive from './recursive'
 import { cn } from '@/lib/utils'
 import { useShallow } from 'zustand/react/shallow'
@@ -22,7 +22,7 @@ const Canvas = memo((props: EditorElement) => {
     const componentType = e.dataTransfer.getData('text')
     console.log(e)
 
-    const value = addElementByType(componentType as ComponentType)
+    const value = addElementByType(componentType as ComponentName)
     if (typeof value === 'undefined') {
       return
     }

@@ -1,14 +1,12 @@
-'use client'
-
 import { EditorElement } from '@/model/web-builder'
 import Container from '../components/container'
 import Text from '../components/text'
 import ButtonElement from '../components/button'
 
 export default function Recursive(props: EditorElement) {
-  const { type } = props
+  const { name } = props
 
-  switch (type) {
+  switch (name) {
     case 'Text':
       return <Text {...props} />
     case 'Container':

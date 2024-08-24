@@ -1,21 +1,21 @@
 import { v4 } from 'uuid'
 import CryptoJS from 'crypto-js'
 import { ContainerDefaultStyles, InputDefaultStyles } from '@/lib/constants'
-import { ComponentType, EditorElement, ElementType } from '@/model/web-builder'
+import { ComponentName, EditorElement, ElementType } from '@/model/web-builder'
 
 export function isElementType(content: EditorElement[] | ElementType): content is ElementType {
   return typeof content !== 'undefined' && !Array.isArray(content)
 }
 
-export function addElementByType(componentType: ComponentType): EditorElement | undefined {
-  switch (componentType) {
+export function addElementByType(componentName: ComponentName): EditorElement | undefined {
+  switch (componentName) {
     case 'Container':
       return {
         content: [],
         id: v4(),
         name: 'Container',
         styles: { ...ContainerDefaultStyles },
-        type: 'Container'
+        group: 'Layout'
       }
     case 'Text':
       return {
@@ -25,7 +25,7 @@ export function addElementByType(componentType: ComponentType): EditorElement | 
         styles: {
           ...InputDefaultStyles
         },
-        type: 'Text'
+        group: 'Element'
       }
     case 'Button':
       return {
@@ -33,7 +33,7 @@ export function addElementByType(componentType: ComponentType): EditorElement | 
         id: v4(),
         name: 'Button',
         styles: {},
-        type: 'Button'
+        group: 'Element'
       }
     default:
       return undefined

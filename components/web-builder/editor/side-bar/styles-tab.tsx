@@ -30,7 +30,7 @@ import {
 } from 'lucide-react'
 import useUpdateElement from '@/hooks/useUpdateElement'
 import { useDebounce } from '@/hooks/useDebounce'
-import { ComponentType } from '@/model/web-builder'
+import { ComponentGroup } from '@/model/web-builder'
 
 const Typography = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) => {
   const { handleInputUpdateElement, handleBtnUpdateElement } = useUpdateElement()
@@ -498,10 +498,10 @@ const Decorations = ({ selectedStyles }: { selectedStyles: React.CSSProperties }
 
 const FlexBox = ({
   selectedStyles,
-  componentType
+  componentGroup
 }: {
   selectedStyles: React.CSSProperties
-  componentType: ComponentType
+  componentGroup: ComponentGroup
 }) => {
   const { handleBtnUpdateElement, handleInputUpdateElement } = useUpdateElement()
 
@@ -532,7 +532,7 @@ const FlexBox = ({
     inputDebounce(e)
   }
 
-  const isDisable = componentType !== 'Container'
+  const isDisable = componentGroup !== 'Layout'
 
   return (
     <>
@@ -751,9 +751,9 @@ const CustomBox = ({ customStyles }: { customStyles: React.CSSProperties | undef
 
 function StylesTab({
   children,
-  componentType
-}: React.PropsWithChildren<{ componentType: ComponentType }>) {
-  const isDisable = componentType !== 'Container'
+  componentGroup
+}: React.PropsWithChildren<{ componentGroup: ComponentGroup }>) {
+  const isDisable = componentGroup !== 'Layout'
   return (
     <Accordion
       selectionMode='multiple'

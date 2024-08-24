@@ -4,7 +4,7 @@ import React from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { FolderRoot, SquareDashedMousePointer, SquareMousePointer } from 'lucide-react'
 import { useEditorStore } from '@/providers/user-store-provider'
-import { EditorElement } from '@/model/web-builder'
+import { ComponentGroup, EditorElement } from '@/model/web-builder'
 import { cn } from '@/lib/utils'
 import { isElementType } from '@/helper/editor.helper'
 
@@ -21,7 +21,7 @@ export default function LayersTab() {
 }
 
 function LayersRecursive(props: EditorElement & { depth?: number }) {
-  const { id, name, content, type, styles, depth = 1 } = props
+  const { id, name, content, group, styles, depth = 1 } = props
 
   const [selectedElement, onSelectElement] = useEditorStore(
     useShallow((state) => [state.selectedElement, state.onSelectElement])
@@ -36,7 +36,7 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
             selectedElement.id === id ? 'bg-default-100' : ''
           )}
           aria-hidden
-          onClick={() => onSelectElement({ id, name, content, type, styles })}
+          onClick={() => onSelectElement({ id, name, content, group, styles })}
           style={{ paddingLeft: `${depth}rem` }}>
           <SquareMousePointer />
           {name}
@@ -52,11 +52,10 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
           'flex cursor-pointer gap-2 rounded-md p-1 hover:bg-default-100',
           selectedElement.id === id ? 'bg-default-100' : ''
         )}
-        onClick={() => onSelectElement({ id, name, content, type, styles })}
+        onClick={() => onSelectElement({ id, name, content, group, styles })}
         aria-hidden
         style={{ paddingLeft: id === '___body' ? '0.5rem' : `${depth}rem` }}>
-        {id === '___body' ? <FolderRoot /> : <SquareDashedMousePointer />}
-
+        {group ? LayerIcon[group as Exclude<ComponentGroup, 'Element' | null>] : null}
         {name}
       </div>
 
@@ -65,4 +64,9 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
         : null}
     </>
   )
+}
+
+const LayerIcon = {
+  Body: <FolderRoot />,
+  Layout: <SquareDashedMousePointer />
 }

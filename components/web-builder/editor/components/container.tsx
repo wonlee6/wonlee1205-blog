@@ -3,7 +3,7 @@
 import React, { useRef } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { Trash } from 'lucide-react'
-import { ComponentType, EditorElement } from '@/model/web-builder'
+import { ComponentName, EditorElement } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
@@ -11,7 +11,7 @@ import { addElementByType } from '@/helper/editor.helper'
 import Recursive from '../canvas/recursive'
 
 export default function Container(props: EditorElement) {
-  const { id, name, styles, type, content } = props
+  const { id, name, styles, group, content } = props
 
   const [selectedElement, onAddElement, onSelectElement, onDeleteElement] = useEditorStore(
     useShallow((state) => [
@@ -34,7 +34,7 @@ export default function Container(props: EditorElement) {
     console.log(e)
     const componentType = e.dataTransfer.getData('text')
 
-    const value = addElementByType(componentType as ComponentType)
+    const value = addElementByType(componentType as ComponentName)
     if (typeof value !== 'undefined') {
       onAddElement(id, value)
     }
@@ -51,7 +51,7 @@ export default function Container(props: EditorElement) {
     onSelectElement({
       id,
       name,
-      type,
+      group,
       styles,
       content
     })

@@ -8,7 +8,7 @@ import { EditorElement, ElementType } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function Text(props: EditorElement) {
-  const { content, name, id, styles, type } = props
+  const { content, name, id, styles, group } = props
 
   const { selectedElement, onSelectElement, onDeleteElement } = useEditorStore((state) => state)
 
@@ -18,7 +18,7 @@ export default function Text(props: EditorElement) {
     onSelectElement({
       id,
       name,
-      type,
+      group,
       styles,
       content
     })

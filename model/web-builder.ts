@@ -45,16 +45,16 @@ export type ProjectData = {
   updated_at: string
 }
 
-export type ComponentType = '___body' | 'Container' | 'Text' | 'Button' | null
-
+export type ComponentName = 'Body' | 'Container' | 'Text' | 'Button' | null
+export type ComponentGroup = 'Body' | 'Layout' | 'Element' | null
 export type ElementType = { href?: string; innerText?: string; src?: string }
 
 export type EditorElement = {
   id: string
   styles: React.CSSProperties
   customStyles?: React.CSSProperties | undefined
-  name: string
-  type: ComponentType
+  name: ComponentName
+  group: ComponentGroup
   content: EditorElement[] | ElementType
 }
 
