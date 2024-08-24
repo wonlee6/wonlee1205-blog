@@ -1,4 +1,4 @@
-import { getUserIdInSession } from '@/lib/session'
+import { getUserSession } from '@/lib/session'
 // import { createClient } from '@/lib/supabase/client'
 import ProjectRoot from '@/components/web-builder'
 import { redirect } from 'next/navigation'
@@ -12,9 +12,9 @@ import { unstable_noStore as noStore } from 'next/cache'
 export default async function WebBuilderProjectPage() {
   noStore()
 
-  const userId = await getUserIdInSession()
+  const session = await getUserSession()
 
-  if (typeof userId === 'undefined') {
+  if (typeof session === 'undefined') {
     revalidatePath('/', 'layout')
     redirect(`/web-builder/sign-in`)
   }
@@ -28,7 +28,7 @@ export default async function WebBuilderProjectPage() {
 
   // const { data, error } = await getProjectData(userId)
 
-  return <ProjectRoot userId={userId} />
+  return <ProjectRoot userId={session.userId} />
   // return <ProjectRoot userId={userId} />
 }
 /*

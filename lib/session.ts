@@ -35,9 +35,9 @@ export async function decrypt(session: string | Uint8Array): Promise<JWTPayload 
   }
 }
 
-export async function createSession(userId: string, name: string) {
+export async function createSession(userId: string, userName: string) {
   const expires = new Date(Date.now() + cookie.duration)
-  const session = await encrypt({ userId, name, expires })
+  const session = await encrypt({ userId, userName, expires })
   cookies().set(cookie.name, session, { ...cookie.option, expires } as ResponseCookie)
   // redirect(`/web-builder/project/${userId}`)
 }
@@ -61,7 +61,7 @@ export async function deleteSession() {
   // redirect('/web-builder/sign-in')
 }
 
-export async function getUserIdInSession(): Promise<string | undefined> {
+export async function getUserSession(): Promise<{ userId: string; userName: string } | undefined> {
   const cookie = cookies().get('session')?.value
 
   if (!cookie) {
@@ -73,5 +73,8 @@ export async function getUserIdInSession(): Promise<string | undefined> {
   if (!session) {
     return undefined
   }
-  return session.userId as string
+  return {
+    userId: session.userId as string,
+    userName: session.userName as string
+  }
 }

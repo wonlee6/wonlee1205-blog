@@ -1,16 +1,16 @@
 import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
-import { getUserIdInSession } from '@/lib/session'
+import { getUserSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/client'
 import { ProjectFormSchemaModel } from '@/model/web-builder'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-  const userId = await getUserIdInSession()
+  const session = await getUserSession()
 
   const { data, error, status, statusText } = await createClient()
     .from('project')
     .select()
-    .eq('user_id', userId)
+    .eq('user_id', session!.userId)
     .order('projectName', { ascending: true })
 
   if (error) {

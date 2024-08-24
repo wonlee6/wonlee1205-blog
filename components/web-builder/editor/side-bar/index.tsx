@@ -32,6 +32,7 @@ export default function EditorSideBar() {
         <Tabs
           aria-label='Options'
           radius='none'
+          destroyInactiveTabPanel={false}
           classNames={{ tabList: 'grid grid grid-cols-4 max-xl:flex-wrap max-xl:flex' }}>
           <Tab key='styles' title='Styles'>
             <StylesTab key={selectedElement.id} componentGroup={selectedElement.group}>

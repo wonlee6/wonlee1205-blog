@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
           statusText: 'Invalid credentials.'
         })
       }
-      await createSession(data.id, data.name)
+      await createSession(data.id, data.userName)
       return new NextResponse('success', { status })
     }
   }
