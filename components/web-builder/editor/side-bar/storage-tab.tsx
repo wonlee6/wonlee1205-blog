@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/client'
 import { Button, Divider, Image } from '@nextui-org/react'
-import { Plus } from 'lucide-react'
+import { Ban, Plus, UploadCloud } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 
 export default function StorageTab() {
@@ -66,11 +66,6 @@ export default function StorageTab() {
 
   return (
     <div className='flex flex-col gap-3'>
-      {/* <div className='relative w-min cursor-pointer overflow-hidden bg-primary-500 text-white'>
-        <span className='p-5'>Choose</span>
-        <input className='hidden' type='file' name='image_uploads' accept='.jpg, .jpeg, .png' />
-      </div> */}
-
       <div className='flex flex-wrap gap-3'>
         <label htmlFor='file-choose'>
           <div className='flex w-min cursor-pointer items-center gap-2 overflow-hidden rounded-md bg-primary-400 p-2 text-white transition-all hover:bg-primary-300'>
@@ -80,6 +75,7 @@ export default function StorageTab() {
         </label>
 
         <Button onClick={handleUpload} isDisabled={!files} color='primary' radius='sm'>
+          <UploadCloud />
           Upload
         </Button>
 
@@ -91,6 +87,7 @@ export default function StorageTab() {
           isDisabled={!files}
           color='danger'
           radius='sm'>
+          <Ban />
           Cancel
         </Button>
       </div>
@@ -113,7 +110,8 @@ export default function StorageTab() {
           classNames={{ wrapper: 'm-2 w-full cursor-pointer' }}
         />
       ) : (
-        <div className='flex h-[200px] items-center justify-center border border-dashed border-primary-300'>
+        <div className='flex h-[200px] items-center justify-center gap-2 border border-dashed border-primary-300'>
+          <UploadCloud />
           <label htmlFor='file-choose' className='cursor-pointer text-foreground-500'>
             Upload
           </label>
