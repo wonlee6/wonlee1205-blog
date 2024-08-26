@@ -1,8 +1,9 @@
 'use client'
 
+import { Button } from '@nextui-org/react'
+
 import { ChartHelper } from '@/helper/ChartHelper'
 import { ChartType } from '@/model/Chart.model'
-import { Button } from '@nextui-org/react'
 
 type Props = {
   selectedMenu: ChartType

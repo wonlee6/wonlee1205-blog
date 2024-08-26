@@ -1,9 +1,11 @@
 'use client'
 
-import { createClient } from '@/lib/supabase/client'
+import React, { useEffect, useRef, useState } from 'react'
+
 import { Button, Divider, Image } from '@nextui-org/react'
 import { Ban, Plus, UploadCloud } from 'lucide-react'
-import React, { useEffect, useRef, useState } from 'react'
+
+import { createClient } from '@/lib/supabase/client'
 
 export default function StorageTab() {
   const inputRef = useRef<HTMLInputElement | null>(null)

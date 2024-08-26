@@ -1,14 +1,16 @@
 'use client'
 
 import React, { useRef } from 'react'
-import { useShallow } from 'zustand/react/shallow'
+
 import { Trash } from 'lucide-react'
+import { useShallow } from 'zustand/react/shallow'
+
+import Recursive from '../canvas/recursive'
+import { Badge } from '@/components/ui/badge'
+import { addElementByType } from '@/helper/editor.helper'
+import { cn } from '@/lib/utils'
 import { ComponentName, EditorElement, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
-import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
-import { addElementByType } from '@/helper/editor.helper'
-import Recursive from '../canvas/recursive'
 
 export default function Container(props: RecursiveComponent) {
   const { id, name, styles, group, content, index, parentId } = props

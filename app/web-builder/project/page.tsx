@@ -1,9 +1,10 @@
-import { getUserSession } from '@/lib/session'
 // import { createClient } from '@/lib/supabase/client'
-import ProjectRoot from '@/components/web-builder'
-import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { unstable_noStore as noStore } from 'next/cache'
+import { redirect } from 'next/navigation'
+
+import ProjectRoot from '@/components/web-builder'
+import { getUserSession } from '@/lib/session'
 
 // export const revalidate = 0
 

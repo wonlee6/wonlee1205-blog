@@ -1,9 +1,10 @@
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+
 import EditorClient from '@/components/web-builder/editor/client'
-import { sleep } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
+import { sleep } from '@/lib/utils'
 
 export default async function WebBuilderEditorPage({ params }: { params: { slug: string } }) {
   if (!params.slug) {

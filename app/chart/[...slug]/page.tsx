@@ -1,6 +1,7 @@
+import { Metadata } from 'next'
+
 import ChartView from '@/components/chart/chart-viewer'
 import { ChartType } from '@/model/Chart.model'
-import { Metadata } from 'next'
 
 export async function generateMetadata({
   params

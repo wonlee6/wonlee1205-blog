@@ -1,12 +1,14 @@
 'use client'
 
 import React from 'react'
-import { useShallow } from 'zustand/react/shallow'
+
 import { FolderRoot, SquareDashedMousePointer, SquareMousePointer } from 'lucide-react'
-import { useEditorStore } from '@/providers/user-store-provider'
-import { ComponentGroup, EditorElement } from '@/model/web-builder'
-import { cn } from '@/lib/utils'
+import { useShallow } from 'zustand/react/shallow'
+
 import { isElementType } from '@/helper/editor.helper'
+import { cn } from '@/lib/utils'
+import { ComponentGroup, EditorElement } from '@/model/web-builder'
+import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function LayersTab() {
   const [elements] = useEditorStore(useShallow((state) => [state.elements]))

@@ -1,9 +1,10 @@
 import bcrypt from 'bcrypt'
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/client'
-import { createSession } from '@/lib/session'
-import { AuthFormSchemaModel } from '@/model/web-builder'
+
 import { decryptFormData } from '@/helper/editor.helper'
+import { createSession } from '@/lib/session'
+import { createClient } from '@/lib/supabase/client'
+import { AuthFormSchemaModel } from '@/model/web-builder'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()

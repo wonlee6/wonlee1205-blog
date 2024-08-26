@@ -1,15 +1,16 @@
 'use client'
 
-import { Tab, Tabs } from '@nextui-org/react'
+import { useEffect, useMemo } from 'react'
 
-import StylesTab from './styles-tab'
+import { Tab, Tabs } from '@nextui-org/react'
+import { m } from 'framer-motion'
+import { useShallow } from 'zustand/react/shallow'
+
 import ComponentsTab from './components-tab'
 import LayersTab from './layers-tab'
-import { m } from 'framer-motion'
-import { useEditorStore } from '@/providers/user-store-provider'
-import { useShallow } from 'zustand/react/shallow'
-import { useEffect, useMemo } from 'react'
 import StorageTab from './storage-tab'
+import StylesTab from './styles-tab'
+import { useEditorStore } from '@/providers/user-store-provider'
 
 // [BUG] - Accordion component is avoiding focus on inputs
 // https://github.com/nextui-org/nextui/issues/3478

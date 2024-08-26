@@ -1,5 +1,7 @@
 'use client'
 
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import {
   Button,
   Card,
@@ -12,12 +14,12 @@ import {
   ListboxSection,
   useDisclosure
 } from '@nextui-org/react'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Wallpaper, Settings } from 'lucide-react'
-import ProjectEditModal from './project-edit-modal'
 import { usePathname, useRouter } from 'next/navigation'
-import { FunnelPage, ProjectData } from '@/model/web-builder'
+
+import ProjectEditModal from './project-edit-modal'
 import { decryptFormData } from '@/helper/editor.helper'
+import { FunnelPage, ProjectData } from '@/model/web-builder'
 
 type Props = {
   userId: string

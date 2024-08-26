@@ -1,7 +1,9 @@
 'use client'
 
 import { useRef } from 'react'
+
 import { Trash } from 'lucide-react'
+
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { ElementType, RecursiveComponent } from '@/model/web-builder'

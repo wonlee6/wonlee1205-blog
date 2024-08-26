@@ -1,7 +1,7 @@
-import { RecursiveComponent } from '@/model/web-builder'
+import ButtonElement from '../components/button'
 import Container from '../components/container'
 import Text from '../components/text'
-import ButtonElement from '../components/button'
+import { RecursiveComponent } from '@/model/web-builder'
 
 export default function Recursive(props: RecursiveComponent) {
   const { name } = props

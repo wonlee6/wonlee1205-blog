@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useMemo, useRef, useState } from 'react'
+
 import {
   Accordion,
   AccordionItem,
@@ -28,8 +29,9 @@ import {
   AlignVerticalJustifyCenter,
   AlignVerticalJustifyEnd
 } from 'lucide-react'
-import useUpdateElement from '@/hooks/useUpdateElement'
+
 import { useDebounce } from '@/hooks/useDebounce'
+import useUpdateElement from '@/hooks/useUpdateElement'
 import { ComponentGroup } from '@/model/web-builder'
 
 const Typography = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) => {

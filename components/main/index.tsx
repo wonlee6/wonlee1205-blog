@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import Link from 'next/link'
+
 import { Chip, Pagination } from '@nextui-org/react'
+import Link from 'next/link'
+
 import { PostData } from '@/lib/posts'
 
 type Props = {

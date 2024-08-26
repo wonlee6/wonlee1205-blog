@@ -1,6 +1,7 @@
+import { NextResponse } from 'next/server'
+
 import { getUserSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/client'
-import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   const session = await getUserSession()

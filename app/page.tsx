@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import { getSortedPostsData } from '@/lib/posts'
+
 import HomePage from '@/components/main'
+import { getSortedPostsData } from '@/lib/posts'
 
 export const metadata: Metadata = {
   title: 'Frontend - 기술 블로그',

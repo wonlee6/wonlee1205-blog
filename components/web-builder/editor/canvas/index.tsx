@@ -1,13 +1,15 @@
 'use client'
 
 import { memo, useEffect } from 'react'
+
 import { m } from 'framer-motion'
-import { useEditorStore } from '@/providers/user-store-provider'
-import { ComponentName, EditorElement, RecursiveComponent } from '@/model/web-builder'
-import Recursive from './recursive'
-import { cn } from '@/lib/utils'
 import { useShallow } from 'zustand/react/shallow'
+
+import Recursive from './recursive'
 import { addElementByType } from '@/helper/editor.helper'
+import { cn } from '@/lib/utils'
+import { ComponentName, EditorElement, RecursiveComponent } from '@/model/web-builder'
+import { useEditorStore } from '@/providers/user-store-provider'
 
 const Canvas = memo((props: RecursiveComponent) => {
   const { id, content } = props

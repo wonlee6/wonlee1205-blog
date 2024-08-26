@@ -1,8 +1,8 @@
 'use client'
 
 import React, { memo } from 'react'
-import { Accordion, AccordionItem } from '@nextui-org/react'
 
+import { Accordion, AccordionItem } from '@nextui-org/react'
 import { BoxSelect, CircleArrowOutUpLeft, SquareArrowOutUpLeft, Type } from 'lucide-react'
 
 function ComponentsTab() {

@@ -1,8 +1,6 @@
 'use client'
 
 import React, { useCallback, useEffect, startTransition, useLayoutEffect, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
-import NextLink from 'next/link'
 
 import {
   Navbar,
@@ -15,8 +13,11 @@ import {
   Button,
   Switch
 } from '@nextui-org/react'
-import { NavIcons } from './icons'
+import NextLink from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
+
+import { NavIcons } from './icons'
 
 export default function HeaderNavBar() {
   const pathName = usePathname()

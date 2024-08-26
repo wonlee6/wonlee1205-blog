@@ -1,8 +1,9 @@
+import { NextResponse } from 'next/server'
+
 import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
 import { getUserSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/client'
 import { ProjectFormSchemaModel } from '@/model/web-builder'
-import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
   const session = await getUserSession()

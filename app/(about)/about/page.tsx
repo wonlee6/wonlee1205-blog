@@ -1,5 +1,6 @@
-import AboutClient from '@/components/about'
 import { Divider } from '@nextui-org/react'
+
+import AboutClient from '@/components/about'
 
 export default function AboutPage() {
   return (

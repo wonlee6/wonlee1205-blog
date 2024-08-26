@@ -2,11 +2,6 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import * as prettier from 'prettier/standalone'
-import * as tsPrinter from 'prettier/parser-typescript'
-import * as prettierPluginEstree from 'prettier/plugins/estree'
-
-import MonacoEditor from './monaco-editor'
 import Editor from '@monaco-editor/react'
 import {
   Spinner,
@@ -18,6 +13,11 @@ import {
   useDisclosure,
   Button
 } from '@nextui-org/react'
+import * as tsPrinter from 'prettier/parser-typescript'
+import * as prettierPluginEstree from 'prettier/plugins/estree'
+import * as prettier from 'prettier/standalone'
+
+import MonacoEditor from './monaco-editor'
 
 type props = {
   url: string

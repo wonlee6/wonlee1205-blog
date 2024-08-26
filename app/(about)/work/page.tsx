@@ -1,8 +1,10 @@
-import WorkIndex from '@/components/work'
-import { createClient } from '@/lib/supabase/server'
+import { cache } from 'react'
+
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { cache } from 'react'
+
+import WorkIndex from '@/components/work'
+import { createClient } from '@/lib/supabase/server'
 
 export default async function AboutPage() {
   const { data, error, publicUrl } = await getImageList()

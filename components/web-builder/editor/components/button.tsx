@@ -1,11 +1,13 @@
 'use client'
 
 import React, { useRef } from 'react'
+
 import { Trash } from 'lucide-react'
-import { useEditorStore } from '@/providers/user-store-provider'
-import { EditorElement, ElementType, RecursiveComponent } from '@/model/web-builder'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { EditorElement, ElementType, RecursiveComponent } from '@/model/web-builder'
+import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function ButtonElement(props: RecursiveComponent) {
   const { content, name, id, styles, group, index, parentId } = props

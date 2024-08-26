@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
-import { getAllPostIds, getPostData, getSortedPostsData } from '@/lib/posts'
+
 import PostingGuide from '../../../components/post/postingGuide'
+import { getAllPostIds, getPostData, getSortedPostsData } from '@/lib/posts'
 // import Utterance from '@/components/post/utterance'
 
 export type Post = {

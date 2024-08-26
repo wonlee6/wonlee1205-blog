@@ -1,6 +1,7 @@
 'use client'
 
 import { LazyMotion, domAnimation } from 'framer-motion'
+
 import Editor from './index'
 
 export default function EditorClient() {

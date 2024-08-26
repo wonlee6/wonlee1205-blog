@@ -1,15 +1,16 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { ZodError } from 'zod'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 
 import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react'
-import { useToast } from '@/components/ui/use-toast'
-import { AuthFormSchema, AuthFormSchemaModel } from '@/model/web-builder'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { ZodError } from 'zod'
+
 import { AuthIcons } from './icons'
+import { useToast } from '@/components/ui/use-toast'
 import { encryptFormData } from '@/helper/editor.helper'
+import { AuthFormSchema, AuthFormSchemaModel } from '@/model/web-builder'
 
 type Props = {
   authType: 'sign-up' | 'sign-in'
