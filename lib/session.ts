@@ -1,7 +1,11 @@
+'use server'
+
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose'
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+
+import { createClient } from './supabase/client'
 
 const key = new TextEncoder().encode(process.env.NEXT_PUBLIC_SESSION_KEY)
 
@@ -77,4 +81,24 @@ export async function getUserSession(): Promise<{ userId: string; userName: stri
     userId: session.userId as string,
     userName: session.userName as string
   }
+}
+
+export async function getStorageUrl() {
+  const cookie = cookies().get('session')?.value
+
+  if (!cookie) {
+    redirect('/web-builder/sign-in')
+  }
+
+  const session = await decrypt(cookie)
+
+  if (!session) {
+    redirect('/web-builder/sign-in')
+  }
+
+  const {
+    data: { publicUrl }
+  } = createClient().storage.from('images').getPublicUrl(`web-builder/${session.userName}`)
+
+  return publicUrl
 }

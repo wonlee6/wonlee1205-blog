@@ -20,7 +20,7 @@ function EditorToolbox() {
         animate={{ x: 0 }}
         layout='preserve-aspect'
         transition={{ ease: 'easeInOut', type: 'spring' }}
-        className='flex h-[3%] w-full items-center justify-between border-b border-default-300 px-4'>
+        className='flex h-[4%] w-full items-center justify-between border-b border-default-300 px-4'>
         <div className='flex items-center gap-4'>
           <div className='border-r pr-2'>
             <Link href={'/web-builder/project'}>

@@ -45,6 +45,26 @@ export type ProjectData = {
   updated_at: string
 }
 
+const StorageSchema = z.object({
+  name: z.string(),
+  id: z.string(),
+  updated_at: z.string(),
+  created_at: z.string(),
+  last_accessed_at: z.string(),
+  url: z.string(),
+  metadata: z.object({
+    eTag: z.string(),
+    size: z.number(),
+    mimetype: z.string(),
+    cacheControl: z.string(),
+    lastModified: z.string(),
+    contentLength: z.number(),
+    httpStatusCode: z.number()
+  })
+})
+
+export type StorageSchemaModel = z.infer<typeof StorageSchema>
+
 export type ComponentName = 'Body' | 'Container' | 'Text' | 'Button' | null
 export type ComponentGroup = 'Body' | 'Layout' | 'Element' | null
 export type ElementType = { href?: string; innerText?: string; src?: string }
