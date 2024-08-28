@@ -1,7 +1,8 @@
+import { createStore } from 'zustand/vanilla'
+
 import { isElementType } from '@/helper/editor.helper'
 import { getDefaultStyleByComponentType } from '@/lib/constants'
 import { EditorElement } from '@/model/web-builder'
-import { createStore } from 'zustand/vanilla'
 
 type EditorState = {
   device: 'Desktop' | 'Tablet' | 'Mobile'
@@ -9,6 +10,7 @@ type EditorState = {
   selectedElement: EditorElement
   previewMode: boolean
   liveMode: boolean
+  uploadImages: Array<{ path: string }>
 }
 
 type EditorActions = {
@@ -19,6 +21,7 @@ type EditorActions = {
   onUpdateElement: (name: string, value: string | number, custom?: boolean) => void
   onDeleteCustomCss: (property: string) => void
   onDragItemOrder: (parentId: string, sourceIndex: number, destinationIndex: number) => void
+  onUploadImage: (images: Array<{ path: string }>) => void
 }
 
 export type EditorStore = EditorState & EditorActions
@@ -42,7 +45,8 @@ const initialState: EditorState = {
     styles: {},
     group: null,
     content: []
-  }
+  },
+  uploadImages: []
 }
 
 export const createEditorStore = () => {
@@ -54,7 +58,16 @@ export const createEditorStore = () => {
         elements: addElement(state.elements, id, elementDetails)
       })),
     onDeleteElement: (id: string) =>
-      set((state) => ({ elements: deleteElement(state.elements, id) })),
+      set((state) => ({
+        elements: deleteElement(state.elements, id),
+        selectedElement: {
+          id: '',
+          name: null,
+          styles: {},
+          group: null,
+          content: []
+        }
+      })),
     onSelectElement: (element: EditorElement) =>
       set(() => ({
         selectedElement: {
@@ -113,7 +126,8 @@ export const createEditorStore = () => {
     onDragItemOrder: (parentId: string, sourceIndex: number, destinationIndex: number) =>
       set((state) => ({
         elements: changeDragItemOrder(state.elements, parentId, sourceIndex, destinationIndex)
-      }))
+      })),
+    onUploadImage: (images: Array<{ path: string }>) => set(() => ({ uploadImages: images }))
   }))
 }
 

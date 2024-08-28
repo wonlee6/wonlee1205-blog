@@ -37,7 +37,7 @@ export default function ProjectRoot(props: Props) {
     new Set()
   )
 
-  const [funnelPageList, setFunnelPageList] = useState<FunnelPage[]>([])
+  // const [funnelPageList, setFunnelPageList] = useState<FunnelPage[]>([])
 
   const [modalType, setModalType] = useState<'add' | 'edit'>('add')
 

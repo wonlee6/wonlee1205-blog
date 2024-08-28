@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import {
   Accordion,
@@ -8,12 +8,19 @@ import {
   Button,
   Chip,
   Divider,
+  Image,
   Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Select,
   SelectItem,
   Slider,
   Switch,
-  Tooltip
+  Tooltip,
+  useDisclosure
 } from '@nextui-org/react'
 import {
   AlignLeft,
@@ -27,11 +34,14 @@ import {
   AlignHorizontalSpaceAround,
   AlignVerticalJustifyStart,
   AlignVerticalJustifyCenter,
-  AlignVerticalJustifyEnd
+  AlignVerticalJustifyEnd,
+  ImageIcon
 } from 'lucide-react'
 
 import { useDebounce } from '@/hooks/useDebounce'
 import useUpdateElement from '@/hooks/useUpdateElement'
+import { getStorageUrl } from '@/lib/session'
+import { cn } from '@/lib/utils'
 import { ComponentGroup } from '@/model/web-builder'
 
 const Typography = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) => {
@@ -364,16 +374,26 @@ const Dimensions = ({ selectedStyles }: { selectedStyles: React.CSSProperties })
   )
 }
 
-const Decorations = ({ selectedStyles }: { selectedStyles: React.CSSProperties }) => {
-  const { handleInputUpdateElement, handleSliderUpdateElement } = useUpdateElement()
+type DecorationsProps = {
+  selectedStyles: React.CSSProperties
+  uploadImages: { path: string }[]
+  hasSelectedItem: boolean
+}
+
+const Decorations = ({ selectedStyles, uploadImages, hasSelectedItem }: DecorationsProps) => {
+  const { handleInputUpdateElement, handleSliderUpdateElement, handleBtnUpdateElement } =
+    useUpdateElement()
 
   const [form, setForm] = useState({
     backgroundColor: selectedStyles['backgroundColor'] ?? '#000000',
     opacity: Number(selectedStyles['opacity'] ?? 1),
     borderRadius: selectedStyles['borderRadius']
       ? Number((selectedStyles['borderRadius'] as string).replace(/px/g, ''))
-      : 0
+      : 0,
+    backgroundImage: selectedStyles['backgroundImage'] ?? null
   })
+
+  const urlRef = useRef('')
 
   const inputDebounce = useDebounce((e) => handleInputUpdateElement(e), 250)
   const sliderDebounce = useDebounce((name, value) => handleSliderUpdateElement(name, value), 250)
@@ -417,6 +437,32 @@ const Decorations = ({ selectedStyles }: { selectedStyles: React.CSSProperties }
     }
     sliderDebounce(name, `${form.borderRadius}px`)
   }
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  useEffect(() => {
+    // eslint-disable-next-line prettier/prettier, no-extra-semi
+    ;(async () => {
+      urlRef.current = await getStorageUrl()
+    })()
+  }, [])
+
+  const handleSelectImage = (path: string) => {
+    setForm((prev) => ({ ...prev, backgroundImage: path }))
+  }
+
+  const handleSaveImage = () => {
+    handleBtnUpdateElement('backgroundImage', `url(${form.backgroundImage})`)
+  }
+
+  const handleImageDelete = () => {
+    const ok = confirm('Do you want to delete?')
+    if (ok) {
+      setForm((prev) => ({ ...prev, backgroundImage: null }))
+      handleBtnUpdateElement('backgroundImage', '')
+    }
+  }
+
   return (
     <>
       <div className='flex flex-col gap-3'>
@@ -493,7 +539,84 @@ const Decorations = ({ selectedStyles }: { selectedStyles: React.CSSProperties }
         </div>
 
         <span className='text-foreground-600'>Background Image</span>
+        <Button
+          variant='solid'
+          color='primary'
+          radius='sm'
+          isDisabled={!hasSelectedItem}
+          onPress={onOpen}
+          startContent={<ImageIcon />}>
+          Select Background Image
+        </Button>
       </div>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        shadow='md'
+        backdrop='blur'
+        className='max-h-[80vh] overflow-y-auto'
+        size='xl'>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className='flex flex-col gap-1'>Image list in storage</ModalHeader>
+              <ModalBody>
+                {uploadImages.length > 0 ? (
+                  uploadImages.map((item, index) => {
+                    return (
+                      // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+                      <div
+                        className={cn(
+                          'flex cursor-pointer items-center gap-4 rounded-md shadow-md hover:bg-default-100',
+                          {
+                            'bg-primary-50':
+                              form.backgroundImage &&
+                              form.backgroundImage === `${urlRef.current}/${item.path}`
+                          }
+                        )}
+                        onClick={() => handleSelectImage(`${urlRef.current}/${item.path}`)}
+                        tabIndex={0}
+                        role='listbox'
+                        key={`${urlRef.current}/${item.path}-${index}`}>
+                        <Image
+                          src={`${urlRef.current}/${item.path}`}
+                          alt={item.path}
+                          isBlurred
+                          width={120}
+                          radius='none'
+                        />
+                        <span className='truncate' title={item.path}>
+                          {item.path}
+                        </span>
+                      </div>
+                    )
+                  })
+                ) : (
+                  <>Empty Image.</>
+                )}
+              </ModalBody>
+              <ModalFooter>
+                <Button color='warning' variant='flat' onPress={onClose}>
+                  Close
+                </Button>
+                <Button
+                  color='primary'
+                  onPress={() => {
+                    onClose()
+                    handleSaveImage()
+                  }}>
+                  Save
+                </Button>
+                {form.backgroundImage && (
+                  <Button color='danger' variant='light' onPress={handleImageDelete}>
+                    Delete
+                  </Button>
+                )}
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   )
 }

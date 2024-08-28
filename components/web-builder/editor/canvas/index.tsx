@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useEffect } from 'react'
+import { memo } from 'react'
 
 import { m } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
@@ -58,8 +58,6 @@ Canvas.displayName = 'Canvas'
 
 const EditorCanvas = () => {
   const [elements] = useEditorStore(useShallow((state) => [state.elements]))
-
-  useEffect(() => console.log('elements', elements), [elements])
 
   return (
     <m.section

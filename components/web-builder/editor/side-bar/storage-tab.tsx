@@ -13,13 +13,19 @@ import {
   useDisclosure
 } from '@nextui-org/react'
 import { Ban, Plus, UploadCloud } from 'lucide-react'
+import { useShallow } from 'zustand/react/shallow'
 
 import { useToast } from '@/components/ui/use-toast'
 import { getStorageUrl } from '@/lib/session'
 import { StorageSchemaModel } from '@/model/web-builder'
+import { useEditorStore } from '@/providers/user-store-provider'
 import errorImg from '@/public/images/error_img.png'
 
 export default function StorageTab() {
+  const [uploadedImages, onUploadImage] = useEditorStore(
+    useShallow((state) => [state.uploadImages, state.onUploadImage])
+  )
+
   const inputRef = useRef<HTMLInputElement | null>(null)
   const urlRef = useRef('')
 
@@ -28,18 +34,16 @@ export default function StorageTab() {
   const [files, setFiles] = useState<File>()
   const [previewImage, setPreviewImage] = useState<string | ArrayBuffer>()
 
-  const [uploadedImages, setUploadedImages] = useState<{ path: string }[]>([])
-
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const [modalImg, setModalImg] = useState<string>()
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
-      const file = e.target.files[0] // 하나만 선택되도록 하기에 0번째 정보를 가져옴
+      const file = e.target.files[0]
       setFiles(file)
 
-      const reader = new FileReader() // FileReader 함수 이용
+      const reader = new FileReader()
 
       reader.readAsDataURL(file)
       reader.onloadend = () => {
@@ -62,7 +66,7 @@ export default function StorageTab() {
     })
 
     if (response.ok) {
-      setUploadedImages((prev) => [...prev, { path: files.name }])
+      onUploadImage([...uploadedImages, { path: files.name }])
       setFiles(undefined)
       setPreviewImage(undefined)
     } else {
@@ -93,7 +97,7 @@ export default function StorageTab() {
             .map((i) => ({
               path: i.name
             }))
-          setUploadedImages(filterEmptyData)
+          onUploadImage(filterEmptyData)
         }
         if (response[1].status === 'fulfilled') {
           urlRef.current = response[1].value
@@ -103,6 +107,7 @@ export default function StorageTab() {
       }
     }
     fetchImage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -116,8 +121,12 @@ export default function StorageTab() {
             </div>
           </label>
 
-          <Button onClick={handleUpload} isDisabled={!files} color='primary' radius='sm'>
-            <UploadCloud size={20} />
+          <Button
+            onClick={handleUpload}
+            isDisabled={!files}
+            color='primary'
+            radius='sm'
+            startContent={<UploadCloud size={20} />}>
             Upload
           </Button>
 
@@ -128,8 +137,8 @@ export default function StorageTab() {
             }}
             isDisabled={!files}
             color='danger'
-            radius='sm'>
-            <Ban size={20} />
+            radius='sm'
+            startContent={<Ban size={20} />}>
             Cancel
           </Button>
         </div>

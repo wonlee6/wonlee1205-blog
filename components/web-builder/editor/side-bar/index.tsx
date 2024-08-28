@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { Tab, Tabs } from '@nextui-org/react'
 import { m } from 'framer-motion'
@@ -16,9 +16,12 @@ import { useEditorStore } from '@/providers/user-store-provider'
 // https://github.com/nextui-org/nextui/issues/3478
 
 export default function EditorSideBar() {
-  const [selectedElement] = useEditorStore(useShallow((state) => [state.selectedElement]))
+  const [selectedElement, uploadImages] = useEditorStore(
+    useShallow((state) => [state.selectedElement, state.uploadImages])
+  )
 
   const selectedStyles = useMemo(() => selectedElement.styles, [selectedElement])
+  const hasSelectedItem = selectedElement.id !== '' && selectedElement.group === 'Layout'
 
   return (
     <>
@@ -39,7 +42,11 @@ export default function EditorSideBar() {
             <StylesTab key={selectedElement.id} componentGroup={selectedElement.group}>
               <StylesTab.Typography selectedStyles={selectedStyles} />
               <StylesTab.Dimensions selectedStyles={selectedStyles} />
-              <StylesTab.Decorations selectedStyles={selectedStyles} />
+              <StylesTab.Decorations
+                selectedStyles={selectedStyles}
+                uploadImages={uploadImages}
+                hasSelectedItem={hasSelectedItem}
+              />
               <StylesTab.FlexBox
                 selectedStyles={selectedStyles}
                 componentGroup={selectedElement.group}
