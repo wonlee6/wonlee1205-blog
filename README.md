@@ -2,8 +2,10 @@
 
 ## [Blog](https://wonlee1205-blog.vercel.app/)
 
-### React - 18.3.1, Next 14.2.5 (app router), typescript - 5.5.4
+### React, Next (app router), typescript
 
-### TailWindCss - 3.4.7, Next UI - 2.4.6
+### TailWindCss, Next UI
 
-### implemenet chart component with echarts and monaco-editor
+### implement chart component with echarts and monaco-editor
+
+### Implement Web Builder with Supabase
