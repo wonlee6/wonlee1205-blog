@@ -81,6 +81,8 @@ export default function Container(props: RecursiveComponent) {
     }
   }
 
+  const isFirstElementInBody = index === 0 && parentId === '___body'
+
   return (
     <div
       ref={containerRef}
@@ -99,7 +101,14 @@ export default function Container(props: RecursiveComponent) {
       style={styles}>
       {selectedElement.id === id && (
         <Badge
-          className='absolute -top-6 left-0 cursor-pointer rounded-none rounded-t-lg bg-primary-500 dark:bg-primary-500'
+          className={cn(
+            'absolute left-0 cursor-pointer rounded-none rounded-t-lg bg-primary-500 dark:bg-primary-500',
+            {
+              'bottom-0': isFirstElementInBody,
+              'left-1': isFirstElementInBody,
+              '-top-6': !isFirstElementInBody
+            }
+          )}
           variant='default'>
           {name}
         </Badge>
@@ -112,7 +121,14 @@ export default function Container(props: RecursiveComponent) {
       {selectedElement.id === id && (
         <Badge
           onClick={handleDeleteElement}
-          className='absolute -top-6 right-0 flex cursor-pointer gap-1 rounded-none rounded-t-lg'
+          className={cn(
+            'absolute right-0 z-20 flex cursor-pointer gap-1 rounded-none rounded-t-lg',
+            {
+              'bottom-0': isFirstElementInBody,
+              'right-1': isFirstElementInBody,
+              '-top-6': !isFirstElementInBody
+            }
+          )}
           variant='destructive'>
           Delete
           <Trash size={16} />

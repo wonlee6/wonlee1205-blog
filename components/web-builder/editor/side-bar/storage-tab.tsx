@@ -12,18 +12,18 @@ import {
   ModalHeader,
   useDisclosure
 } from '@nextui-org/react'
-import { Ban, Plus, UploadCloud } from 'lucide-react'
+import { Ban, Plus, Trash, TrashIcon, UploadCloud } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useToast } from '@/components/ui/use-toast'
 import { getStorageUrl } from '@/lib/session'
 import { StorageSchemaModel } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
-import errorImg from '@/public/images/error_img.png'
+import errorImg from '@/public/images/nope-not-here.webp'
 
 export default function StorageTab() {
-  const [uploadedImages, onUploadImage] = useEditorStore(
-    useShallow((state) => [state.uploadImages, state.onUploadImage])
+  const [uploadedImages, onUploadImage, onDeleteImage] = useEditorStore(
+    useShallow((state) => [state.uploadImages, state.onUploadImage, state.onDeleteImage])
   )
 
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -54,10 +54,12 @@ export default function StorageTab() {
     }
   }
 
+  const [isLoading, setIsLoading] = useState(false)
   const handleUpload = async (e: React.MouseEvent) => {
     if (!files) return
-
     e.preventDefault()
+
+    setIsLoading(true)
     const formData = new FormData()
     formData.append('file', files!)
     const response = await fetch('/api/web-builder/storage', {
@@ -75,12 +77,31 @@ export default function StorageTab() {
         title: response.statusText
       })
     }
+    setIsLoading(false)
   }
 
   const handleSetModalImg = (img: string) => {
     setModalImg(img)
   }
 
+  const handleDeleteImage = async (e: React.MouseEvent<HTMLOrSVGElement>, path: string) => {
+    e.stopPropagation()
+
+    const response = await fetch('/api/web-builder/storage', {
+      method: 'DELETE',
+      body: JSON.stringify({ path })
+    })
+
+    if (response.ok) {
+      onDeleteImage(path)
+      toast({
+        variant: 'default',
+        title: response.statusText
+      })
+    }
+  }
+
+  const [isFetchLoading, setIsFetchLoading] = useState(true)
   useEffect(() => {
     const fetchImage = async () => {
       try {
@@ -105,6 +126,7 @@ export default function StorageTab() {
       } catch (e) {
         console.error(e)
       }
+      setIsFetchLoading(false)
     }
     fetchImage()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,6 +184,7 @@ export default function StorageTab() {
               onOpen()
               handleSetModalImg(previewImage as string)
             }}
+            isLoading={isLoading}
             classNames={{ wrapper: 'm-2 w-full cursor-pointer' }}
           />
         ) : (
@@ -175,11 +198,11 @@ export default function StorageTab() {
 
         <Divider className='my-2' />
         <span className='text-foreground-600'>Upload Images List</span>
-        <div className='flex flex-col gap-1 overflow-y-auto'>
+        <div className='flex flex-col gap-1 overflow-y-auto p-2'>
           {uploadedImages.map((item, index) => {
             return (
               <div
-                className='flex cursor-pointer items-center gap-4 rounded-md shadow-md hover:bg-default-100'
+                className='flex min-h-[70px] cursor-pointer items-center gap-4 rounded-md shadow-md hover:bg-default-100'
                 onClick={() => {
                   setModalImg(`${urlRef.current}/${item.path}`)
                   onOpen()
@@ -191,16 +214,24 @@ export default function StorageTab() {
                 <Image
                   src={`${urlRef.current}/${item.path}`}
                   alt={item.path}
-                  width={60}
+                  width={100}
                   fallbackSrc={errorImg.src}
                   isBlurred
                   radius='sm'
-                  className='transition-all hover:scale-110'
-                  classNames={{ wrapper: 'm-2 cursor-pointer' }}
+                  className='transition-all hover:scale-105'
+                  classNames={{ wrapper: 'm-2 cursor-pointer size-full' }}
+                  isLoading={isFetchLoading}
                 />
-                <span className='truncate' title={item.path}>
-                  {item.path}
-                </span>
+                <div className='flex size-full items-center justify-between px-4'>
+                  <span className='truncate' title={item.path}>
+                    {item.path}
+                  </span>
+                  <TrashIcon
+                    onClick={(e) => handleDeleteImage(e, item.path)}
+                    className='hover:text-primary-400'
+                    size={20}
+                  />
+                </div>
               </div>
             )
           })}
@@ -211,14 +242,14 @@ export default function StorageTab() {
           {() => (
             <>
               <ModalHeader></ModalHeader>
-              <ModalBody>
+              <ModalBody className='size-full'>
                 <Image
                   src={modalImg}
                   alt={'previewImage'}
                   radius='sm'
                   onError={() => setPreviewImage(errorImg.src)}
-                  // className='h-[70vh] w-[70vw]'
-                  classNames={{ wrapper: 'm-2' }}
+                  className='w-[60vw]'
+                  classNames={{ wrapper: 'm-2 size-full' }}
                 />
               </ModalBody>
             </>

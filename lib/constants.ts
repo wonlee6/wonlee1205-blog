@@ -3,7 +3,8 @@ import { ComponentName } from '@/model/web-builder'
 export const defaultStyles: React.CSSProperties = {
   backgroundPosition: 'center',
   objectFit: 'cover',
-  backgroundRepeat: 'no-repeat'
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover'
 }
 
 export const InputDefaultStyles: React.CSSProperties = {

@@ -45,3 +45,23 @@ export async function POST(request: Request) {
 
   return NextResponse.json(data, { status: 200 })
 }
+
+export async function DELETE(request: Request) {
+  const session = await getUserSession()
+
+  if (typeof session === 'undefined') {
+    return new NextResponse('Session Error', { status: 500 })
+  }
+
+  const response = await request.json()
+
+  const { data, error } = await createClient()
+    .storage.from('images')
+    .remove([`web-builder/${session.userName}/${response.path}`])
+
+  if (error || data.length === 0) {
+    return new NextResponse('Failed to delete an image', { status: 500 })
+  }
+
+  return new NextResponse('Success to delete an image', { status: 200 })
+}

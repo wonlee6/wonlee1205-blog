@@ -13,6 +13,10 @@ import { useEditorStore } from '@/providers/user-store-provider'
 function EditorToolbox() {
   const [device, setDevice] = useEditorStore(useShallow((state) => [state.device, state.setDevice]))
 
+  const handleSave = () => {
+    alert('진행 중에 있습니다...')
+  }
+
   return (
     <>
       <m.div
@@ -29,7 +33,7 @@ function EditorToolbox() {
               </Button>
             </Link>
           </div>
-          <h2 className='text-base'>title</h2>
+          <h2 className='text-base'>HomePage</h2>
         </div>
         <div className='flex items-center gap-4'>
           <Tooltip content='Desktop'>
@@ -65,12 +69,12 @@ function EditorToolbox() {
         </div>
         <div className='flex items-center gap-4'>
           <Tooltip content='Play'>
-            <Button isIconOnly variant='light' size='sm'>
+            <Button isIconOnly variant='light' size='sm' onClick={handleSave}>
               <Play />
             </Button>
           </Tooltip>
 
-          <Button variant='shadow' color='primary' size='sm'>
+          <Button variant='shadow' color='primary' size='sm' onClick={handleSave}>
             Save
           </Button>
         </div>

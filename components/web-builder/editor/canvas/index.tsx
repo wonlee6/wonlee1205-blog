@@ -43,7 +43,7 @@ const Canvas = memo((props: RecursiveComponent) => {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         className={cn(
-          'relative mx-auto h-full space-y-4 rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
+          'relative mx-auto h-full space-y-4 overflow-auto rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
           deviceSize[device]
         )}>
         {(content as EditorElement[]).map((i, index) => (
@@ -67,7 +67,7 @@ const EditorCanvas = () => {
       transition={{
         ease: 'linear'
       }}
-      className='h-full w-9/12 overflow-auto border-r border-t border-default-300 bg-zinc-800/10 p-5'>
+      className='h-full w-9/12 border-r border-t border-default-300 bg-zinc-800/10 p-1'>
       {elements.map((item, index) => (
         <Canvas key={item.id} {...item} index={index} parentId={item.id} />
       ))}

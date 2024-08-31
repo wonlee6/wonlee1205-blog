@@ -22,6 +22,7 @@ type EditorActions = {
   onDeleteCustomCss: (property: string) => void
   onDragItemOrder: (parentId: string, sourceIndex: number, destinationIndex: number) => void
   onUploadImage: (images: Array<{ path: string }>) => void
+  onDeleteImage: (deletePath: string) => void
 }
 
 export type EditorStore = EditorState & EditorActions
@@ -127,7 +128,9 @@ export const createEditorStore = () => {
       set((state) => ({
         elements: changeDragItemOrder(state.elements, parentId, sourceIndex, destinationIndex)
       })),
-    onUploadImage: (images: Array<{ path: string }>) => set(() => ({ uploadImages: images }))
+    onUploadImage: (images: Array<{ path: string }>) => set(() => ({ uploadImages: images })),
+    onDeleteImage: (deletePath: string) =>
+      set((state) => ({ uploadImages: state.uploadImages.filter((i) => i.path !== deletePath) }))
   }))
 }
 

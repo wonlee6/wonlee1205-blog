@@ -465,7 +465,7 @@ const Decorations = ({ selectedStyles, uploadImages, hasSelectedItem }: Decorati
 
   return (
     <>
-      <div className='flex flex-col gap-3'>
+      <div className='flex flex-col gap-3 pb-3'>
         <Slider
           name='opacity'
           label='Opacity'
