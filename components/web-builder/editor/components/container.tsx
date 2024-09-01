@@ -75,8 +75,9 @@ export default function Container(props: RecursiveComponent) {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace' || e.key === 'Delete') {
+    if (e.key === 'Delete') {
       e.preventDefault()
+      e.stopPropagation()
       onDeleteElement(id)
     }
   }
