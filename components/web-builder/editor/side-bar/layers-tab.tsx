@@ -14,7 +14,7 @@ export default function LayersTab() {
   const [elements] = useEditorStore(useShallow((state) => [state.elements]))
 
   return (
-    <div className='flex flex-col gap-1 rounded-md border p-2'>
+    <div className='flex flex-col gap-1 rounded-md border p-2' role='tree'>
       {elements.map((i) => (
         <LayersRecursive key={i.id} {...i} />
       ))}
@@ -37,7 +37,10 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
             'flex cursor-pointer gap-2 rounded-md p-1 hover:bg-default-100',
             selectedElement.id === id ? 'bg-default-100' : ''
           )}
-          aria-hidden
+          role='treeitem'
+          aria-selected={selectedElement.id === id}
+          onKeyDown={() => {}}
+          tabIndex={0}
           onClick={() => onSelectElement({ id, name, content, group, styles })}
           style={{ paddingLeft: `${depth}rem` }}>
           <SquareMousePointer />
@@ -55,7 +58,10 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
           selectedElement.id === id ? 'bg-default-100' : ''
         )}
         onClick={() => onSelectElement({ id, name, content, group, styles })}
-        aria-hidden
+        role='treeitem'
+        aria-selected={selectedElement.id === id}
+        onKeyDown={() => {}}
+        tabIndex={0}
         style={{ paddingLeft: id === '___body' ? '0.5rem' : `${depth}rem` }}>
         {group ? LayerIcon[group as Exclude<ComponentGroup, 'Element' | null>] : null}
         {name}

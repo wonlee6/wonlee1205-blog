@@ -72,6 +72,6 @@ Supabase에 image 등록 후 Background image 삽입
 
 - React, Next (app router), typescript, Zustand
 - Tailwindcss, Next UI, shadcn UI
-- Supabase
+- Supabase, Zod
 
 > 전체적인 기능 구현이 100% 되지 않았습니다. 양해 부탁드립니다.

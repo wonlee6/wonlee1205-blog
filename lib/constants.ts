@@ -28,6 +28,14 @@ export const ContainerDefaultStyles: React.CSSProperties = {
   textAlign: 'left'
 }
 
+export const YouTubeDefaultStyles: React.CSSProperties = {
+  width: '100%',
+  height: '600px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+}
+
 export function getDefaultStyleByComponentType(componentName: ComponentName) {
   switch (componentName) {
     case 'Container':

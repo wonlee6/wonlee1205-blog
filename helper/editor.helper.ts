@@ -1,6 +1,7 @@
-import { v4 } from 'uuid'
 import CryptoJS from 'crypto-js'
-import { ContainerDefaultStyles, InputDefaultStyles } from '@/lib/constants'
+import { v4 } from 'uuid'
+
+import { ContainerDefaultStyles, InputDefaultStyles, YouTubeDefaultStyles } from '@/lib/constants'
 import { ComponentName, EditorElement, ElementType } from '@/model/web-builder'
 
 export function isElementType(content: EditorElement[] | ElementType): content is ElementType {
@@ -33,6 +34,16 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         id: v4(),
         name: 'Button',
         styles: {},
+        group: 'Element'
+      }
+    case 'YouTube':
+      return {
+        content: {},
+        id: v4(),
+        name: 'YouTube',
+        styles: {
+          ...YouTubeDefaultStyles
+        },
         group: 'Element'
       }
     default:

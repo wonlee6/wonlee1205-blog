@@ -3,7 +3,7 @@
 import React, { memo } from 'react'
 
 import { Accordion, AccordionItem } from '@nextui-org/react'
-import { BoxSelect, CircleArrowOutUpLeft, SquareArrowOutUpLeft, Type } from 'lucide-react'
+import { BoxSelect, CircleArrowOutUpLeftIcon, TypeIcon, YoutubeIcon } from 'lucide-react'
 
 function ComponentsTab() {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: string) => {
@@ -74,8 +74,9 @@ export default memo(ComponentsTab)
 
 const layoutList = [{ name: 'Container', icon: <BoxSelect size={50} /> }]
 const elementList = [
-  { name: 'Text', icon: <Type size={50} /> },
-  { name: 'Button', icon: <CircleArrowOutUpLeft size={50} /> }
+  { name: 'Text', icon: <TypeIcon size={50} /> },
+  { name: 'Button', icon: <CircleArrowOutUpLeftIcon size={50} /> },
+  { name: 'YouTube', icon: <YoutubeIcon size={50} /> }
 ]
 
 // Text Link, Heading
