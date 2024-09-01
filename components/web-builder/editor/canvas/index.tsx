@@ -14,8 +14,13 @@ import { useEditorStore } from '@/providers/user-store-provider'
 const Canvas = memo((props: RecursiveComponent) => {
   const { id, content } = props
 
-  const [device, onAddElement] = useEditorStore(
-    useShallow((state) => [state.device, state.onAddElement])
+  const [device, selectedElement, onAddElement, onDeleteElement] = useEditorStore(
+    useShallow((state) => [
+      state.device,
+      state.selectedElement,
+      state.onAddElement,
+      state.onDeleteElement
+    ])
   )
 
   const handleDrop = (e: React.DragEvent) => {
@@ -36,6 +41,13 @@ const Canvas = memo((props: RecursiveComponent) => {
     e.preventDefault()
   }
 
+  const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>, id: string) => {
+    e.stopPropagation()
+    e.preventDefault()
+
+    onDeleteElement(id)
+  }
+
   return (
     <>
       <div
@@ -43,12 +55,24 @@ const Canvas = memo((props: RecursiveComponent) => {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         className={cn(
-          'relative mx-auto h-full space-y-4 overflow-auto rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
+          'relative mx-auto h-full overflow-auto rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
           deviceSize[device]
         )}>
         {(content as EditorElement[]).map((i, index) => (
           <Recursive key={i.id} {...i} index={index} parentId={id} />
         ))}
+
+        {selectedElement.id ? (
+          <div className='absolute bottom-1 right-1 flex h-[40px] w-[200px] cursor-pointer gap-1 opacity-40 transition-all hover:opacity-100'>
+            <div
+              className='flex w-full items-center justify-center rounded-md bg-danger-400'
+              aria-hidden
+              onClick={(e) => handleDeleteElement(e, selectedElement.id)}>
+              Delete
+              <span className='ml-2 text-foreground-700'>{selectedElement.name}</span>
+            </div>
+          </div>
+        ) : null}
       </div>
     </>
   )

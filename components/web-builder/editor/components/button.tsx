@@ -2,19 +2,14 @@
 
 import React, { useRef } from 'react'
 
-import { Trash } from 'lucide-react'
-
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { EditorElement, ElementType, RecursiveComponent } from '@/model/web-builder'
+import { ElementType, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function ButtonElement(props: RecursiveComponent) {
   const { content, name, id, styles, group, index, parentId } = props
 
-  const { selectedElement, onSelectElement, onDeleteElement, onDragItemOrder } = useEditorStore(
-    (state) => state
-  )
+  const { selectedElement, onSelectElement, onDragItemOrder } = useEditorStore((state) => state)
 
   const buttonRef = useRef<HTMLButtonElement | null>(null)
 
@@ -40,11 +35,11 @@ export default function ButtonElement(props: RecursiveComponent) {
     handleSelectElement()
   }
 
-  const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault()
+  // const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
+  //   e.preventDefault()
 
-    onDeleteElement(id)
-  }
+  //   onDeleteElement(id)
+  // }
 
   const handleDragStart = (e: React.DragEvent) => {
     e.stopPropagation()
@@ -79,7 +74,7 @@ export default function ButtonElement(props: RecursiveComponent) {
         {(content as ElementType).innerText}
       </Button>
 
-      {selectedElement.id === id && (
+      {/* {selectedElement.id === id && (
         <Badge
           onClick={handleDeleteElement}
           className='absolute -top-6 right-0 flex cursor-pointer gap-1 rounded-none rounded-t-lg'
@@ -87,7 +82,7 @@ export default function ButtonElement(props: RecursiveComponent) {
           Delete
           <Trash size={16} />
         </Badge>
-      )}
+      )} */}
     </div>
   )
 }

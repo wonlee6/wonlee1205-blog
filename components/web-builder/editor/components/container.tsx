@@ -100,7 +100,7 @@ export default function Container(props: RecursiveComponent) {
         'border-primary-500 outline-none': selectedElement.id === id
       })}
       style={styles}>
-      {selectedElement.id === id && (
+      {/* {selectedElement.id === id && (
         <Badge
           className={cn(
             'absolute left-0 cursor-pointer rounded-none rounded-t-lg bg-primary-500 dark:bg-primary-500',
@@ -113,13 +113,13 @@ export default function Container(props: RecursiveComponent) {
           variant='default'>
           {name}
         </Badge>
-      )}
+      )} */}
 
       {(content as EditorElement[]).map((item, index) => (
         <Recursive key={item.id} index={index} {...item} parentId={id} />
       ))}
 
-      {selectedElement.id === id && (
+      {/* {selectedElement.id === id && (
         <Badge
           onClick={handleDeleteElement}
           className={cn(
@@ -134,7 +134,7 @@ export default function Container(props: RecursiveComponent) {
           Delete
           <Trash size={16} />
         </Badge>
-      )}
+      )} */}
     </div>
   )
 }

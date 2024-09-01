@@ -2,9 +2,6 @@
 
 import { useRef } from 'react'
 
-import { Trash } from 'lucide-react'
-
-import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { ElementType, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
@@ -12,9 +9,7 @@ import { useEditorStore } from '@/providers/user-store-provider'
 export default function Text(props: RecursiveComponent) {
   const { content, name, id, styles, group, index, parentId } = props
 
-  const { selectedElement, onSelectElement, onDeleteElement, onDragItemOrder } = useEditorStore(
-    (state) => state
-  )
+  const { selectedElement, onSelectElement, onDragItemOrder } = useEditorStore((state) => state)
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -40,11 +35,11 @@ export default function Text(props: RecursiveComponent) {
     handleSelectElement()
   }
 
-  const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    onDeleteElement(id)
-  }
+  // const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
+  //   e.preventDefault()
+  //   e.stopPropagation()
+  //   onDeleteElement(id)
+  // }
 
   const handleDragStart = (e: React.DragEvent) => {
     e.stopPropagation()
@@ -65,13 +60,13 @@ export default function Text(props: RecursiveComponent) {
 
   return (
     <div className='relative w-full'>
-      {selectedElement.id === id && (
+      {/* {selectedElement.id === id && (
         <Badge
           className='absolute -top-6 left-0 cursor-pointer rounded-none rounded-t-lg bg-primary-500 dark:bg-primary-500'
           variant='default'>
           {name}
         </Badge>
-      )}
+      )} */}
 
       <Input
         ref={inputRef}
@@ -88,7 +83,7 @@ export default function Text(props: RecursiveComponent) {
         onDrop={handleDrop}
       />
 
-      {selectedElement.id === id && (
+      {/* {selectedElement.id === id && (
         <Badge
           onClick={handleDeleteElement}
           className='absolute -top-6 right-0 z-20 flex cursor-pointer gap-1 rounded-none rounded-t-lg'
@@ -97,7 +92,7 @@ export default function Text(props: RecursiveComponent) {
           Delete
           <Trash size={16} />
         </Badge>
-      )}
+      )} */}
     </div>
   )
 }
