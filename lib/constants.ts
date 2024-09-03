@@ -30,7 +30,7 @@ export const ContainerDefaultStyles: React.CSSProperties = {
 
 export const YouTubeDefaultStyles: React.CSSProperties = {
   width: '100%',
-  height: '600px',
+  // height: '600px',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center'

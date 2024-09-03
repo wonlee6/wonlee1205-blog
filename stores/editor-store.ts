@@ -18,7 +18,8 @@ type EditorActions = {
   onAddElement: (id: string, elementDetails: EditorElement) => void
   onSelectElement: (element: EditorElement) => void
   onDeleteElement: (id: string) => void
-  onUpdateElement: (name: string, value: string | number, custom?: boolean) => void
+  onUpdateElement: <T>(key: string, value: T) => void
+  onUpdateElementStyle: (name: string, value: string | number, custom?: boolean) => void
   onDeleteCustomCss: (property: string) => void
   onDragItemOrder: (parentId: string, sourceIndex: number, destinationIndex: number) => void
   onUploadImage: (images: Array<{ path: string }>) => void
@@ -79,7 +80,11 @@ export const createEditorStore = () => {
           content: element.content
         }
       })),
-    onUpdateElement: (name: string, value: string | number, custom = false) =>
+    onUpdateElement: <T>(key: string, value: T) =>
+      set((state) => ({
+        elements: updateElement(state.elements, state.selectedElement.id, key, value)
+      })),
+    onUpdateElementStyle: (name: string, value: string | number, custom = false) =>
       set((state) => {
         const styleObject = {
           [name]: value
@@ -99,7 +104,7 @@ export const createEditorStore = () => {
               }
             })
           },
-          elements: updateElement(
+          elements: updateElementStyle(
             state.elements,
             state.selectedElement.id,
             { ...styleObject },
@@ -174,7 +179,33 @@ const deleteElement = (editorArray: EditorElement[], id: string): EditorElement[
   })
 }
 
-const updateElement = (
+const updateElement = <T>(
+  editorArray: EditorElement[],
+  id: string,
+  key: string,
+  value: T
+): EditorElement[] => {
+  return editorArray.map((item) => {
+    if (!isElementType(item.content)) {
+      return {
+        ...item,
+        content: updateElement(item.content, id, key, value)
+      }
+    }
+    if (item.id === id) {
+      return {
+        ...item,
+        content: {
+          ...item.content,
+          [key]: value
+        }
+      }
+    }
+    return item
+  })
+}
+
+const updateElementStyle = (
   editorArray: EditorElement[],
   id: string,
   styleObject: object,
@@ -198,7 +229,7 @@ const updateElement = (
     } else if (item.content && Array.isArray(item.content)) {
       return {
         ...item,
-        content: updateElement(item.content, id, styleObject, custom)
+        content: updateElementStyle(item.content, id, styleObject, custom)
       }
     }
     return item

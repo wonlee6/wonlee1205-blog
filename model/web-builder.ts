@@ -67,7 +67,7 @@ export type StorageSchemaModel = z.infer<typeof StorageSchema>
 
 export type ComponentName = 'Body' | 'Container' | 'Text' | 'Button' | 'YouTube' | null
 export type ComponentGroup = 'Body' | 'Layout' | 'Element' | null
-export type ElementType = { href?: string; innerText?: string; src?: string }
+export type ElementType = { href?: string; innerText?: string; url?: string }
 
 export type EditorElement = {
   id: string

@@ -38,7 +38,9 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
       }
     case 'YouTube':
       return {
-        content: {},
+        content: {
+          url: ''
+        },
         id: v4(),
         name: 'YouTube',
         styles: {
