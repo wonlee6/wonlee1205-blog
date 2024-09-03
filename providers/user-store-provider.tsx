@@ -1,7 +1,9 @@
 'use client'
 
 import { createContext, ReactNode, useContext, useRef } from 'react'
+
 import { useStore } from 'zustand'
+
 import { createEditorStore, type EditorStore } from '@/stores/editor-store'
 
 export type EditorStoreApi = ReturnType<typeof createEditorStore>
