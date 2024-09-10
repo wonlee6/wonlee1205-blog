@@ -39,20 +39,24 @@ export default function EditorSideBar() {
           destroyInactiveTabPanel={false}
           classNames={{ tabList: 'grid grid grid-cols-4 max-xl:flex-wrap max-xl:flex' }}>
           <Tab key='styles' title='Styles'>
-            <StylesTab key={selectedElement.id} componentGroup={selectedElement.group}>
-              <StylesTab.Typography selectedStyles={selectedStyles} />
-              <StylesTab.Dimensions selectedStyles={selectedStyles} />
-              <StylesTab.Decorations
-                selectedStyles={selectedStyles}
-                uploadImages={uploadImages}
-                hasSelectedItem={hasSelectedItem}
-              />
-              <StylesTab.FlexBox
-                selectedStyles={selectedStyles}
-                componentGroup={selectedElement.group}
-              />
-              <StylesTab.CustomBox customStyles={selectedElement.customStyles} />
-            </StylesTab>
+            {selectedElement.id !== '' ? (
+              <StylesTab key={selectedElement.id} componentGroup={selectedElement.group}>
+                <StylesTab.Typography selectedStyles={selectedStyles} />
+                <StylesTab.Dimensions selectedStyles={selectedStyles} />
+                <StylesTab.Decorations
+                  selectedStyles={selectedStyles}
+                  uploadImages={uploadImages}
+                  hasSelectedItem={hasSelectedItem}
+                />
+                <StylesTab.FlexBox
+                  selectedStyles={selectedStyles}
+                  componentGroup={selectedElement.group}
+                />
+                <StylesTab.CustomBox customStyles={selectedElement.customStyles} />
+              </StylesTab>
+            ) : (
+              <EmptyStyleTab />
+            )}
           </Tab>
 
           <Tab key='Components' title='Components'>
@@ -68,6 +72,16 @@ export default function EditorSideBar() {
           </Tab>
         </Tabs>
       </m.aside>
+    </>
+  )
+}
+
+function EmptyStyleTab() {
+  return (
+    <>
+      <div className='mt-3 flex size-full justify-center'>
+        <span className='select-none border-b text-foreground-500'>Please Select Element!</span>
+      </div>
     </>
   )
 }

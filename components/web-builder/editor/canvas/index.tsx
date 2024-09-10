@@ -27,7 +27,7 @@ const Canvas = memo((props: RecursiveComponent) => {
       const value = addElementByType(dragItem as ComponentName)
       if (typeof value !== 'undefined') {
         onAddElement(id, value)
-        return
+        onSelectElement(value)
       }
     }
   }
@@ -36,26 +36,25 @@ const Canvas = memo((props: RecursiveComponent) => {
     e.preventDefault()
   }
 
-  const handleClickBody = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
+  // const handleClickBody = (e: React.MouseEvent<HTMLDivElement>) => {
+  //   e.preventDefault()
+  //   e.stopPropagation()
 
-    onSelectElement({
-      id: '',
-      name: null,
-      styles: {},
-      group: null,
-      content: []
-    })
-  }
+  //   onSelectElement({
+  //     id: '',
+  //     name: null,
+  //     styles: {},
+  //     group: null,
+  //     content: []
+  //   })
+  // }
 
   return (
     <>
       <div
         id={id}
-        role='article'
-        onKeyDown={() => {}}
-        onClick={handleClickBody}
+        // onKeyDown={() => {}}
+        // onClick={handleClickBody}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         className={cn(
@@ -77,13 +76,6 @@ const EditorCanvas = () => {
     useShallow((state) => [state.elements, state.selectedElement, state.onDeleteElement])
   )
 
-  const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>, id: string) => {
-    e.stopPropagation()
-    e.preventDefault()
-
-    onDeleteElement(id)
-  }
-
   return (
     <m.section
       layout
@@ -96,18 +88,6 @@ const EditorCanvas = () => {
       {elements.map((item, index) => (
         <Canvas key={item.id} {...item} index={index} parentId={item.id} />
       ))}
-
-      {selectedElement.id ? (
-        <div className='absolute bottom-3 right-7 flex h-[40px] w-[200px] cursor-pointer gap-1 opacity-40 transition-all hover:opacity-100'>
-          <div
-            className='flex w-full items-center justify-center rounded-md bg-danger-400'
-            aria-hidden
-            onClick={(e) => handleDeleteElement(e, selectedElement.id)}>
-            Delete
-            <span className='ml-2 text-foreground-700'>{selectedElement.name}</span>
-          </div>
-        </div>
-      ) : null}
     </m.section>
   )
 }

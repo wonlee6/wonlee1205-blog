@@ -30,7 +30,7 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
       }
     case 'Button':
       return {
-        content: { innerText: 'Button' },
+        content: { innerText: 'Button Text' },
         id: v4(),
         name: 'Button',
         styles: {},

@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react'
 
-import { Trash } from 'lucide-react'
+import { TrashIcon } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 
 import Recursive from '../canvas/recursive'
@@ -100,41 +100,33 @@ export default function Container(props: RecursiveComponent) {
         'border-primary-500 outline-none': selectedElement.id === id
       })}
       style={styles}>
-      {/* {selectedElement.id === id && (
+      {selectedElement.id === id && (
         <Badge
           className={cn(
-            'absolute left-0 cursor-pointer rounded-none rounded-t-lg bg-primary-500 dark:bg-primary-500',
-            {
-              'bottom-0': isFirstElementInBody,
-              'left-1': isFirstElementInBody,
-              '-top-6': !isFirstElementInBody
-            }
+            'absolute left-0 cursor-pointer rounded-none bg-primary-500 dark:bg-primary-500',
+            isFirstElementInBody ? 'top-0 rounded-b-lg' : '-top-6 rounded-t-lg'
           )}
           variant='default'>
           {name}
         </Badge>
-      )} */}
+      )}
 
       {(content as EditorElement[]).map((item, index) => (
         <Recursive key={item.id} index={index} {...item} parentId={id} />
       ))}
 
-      {/* {selectedElement.id === id && (
+      {selectedElement.id === id && (
         <Badge
           onClick={handleDeleteElement}
           className={cn(
-            'absolute right-0 z-20 flex cursor-pointer gap-1 rounded-none rounded-t-lg',
-            {
-              'bottom-0': isFirstElementInBody,
-              'right-1': isFirstElementInBody,
-              '-top-6': !isFirstElementInBody
-            }
+            'absolute right-0 z-20 flex cursor-pointer gap-1 rounded-none',
+            isFirstElementInBody ? 'top-0 rounded-b-lg' : '-top-6 rounded-t-lg'
           )}
           variant='destructive'>
           Delete
-          <Trash size={16} />
+          <TrashIcon size={16} />
         </Badge>
-      )} */}
+      )}
     </div>
   )
 }

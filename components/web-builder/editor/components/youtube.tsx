@@ -2,16 +2,13 @@
 
 import React, { useRef, useState } from 'react'
 
-import ReactPlayer from 'react-player/youtube'
+import { Checkbox, Divider } from '@nextui-org/react'
+import { Settings, Trash2Icon } from 'lucide-react'
+import ReactPlayer from 'react-player/lazy'
 
 import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger
-} from '@/components/ui/context-menu'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
@@ -21,12 +18,13 @@ import { useEditorStore } from '@/providers/user-store-provider'
 export default function YouTube(props: RecursiveComponent) {
   const { content, name, id, styles, group, index, parentId } = props
 
-  const { liveMode, selectedElement, onSelectElement, onDragItemOrder, onUpdateElement } =
+  const { liveMode, selectedElement, onSelectElement, onDeleteElement, onUpdateContentInElement } =
     useEditorStore((state) => state)
 
   const URLRef = useRef<HTMLInputElement | null>(null)
 
   const [url, setURL] = useState((content as ElementType).url ?? '')
+  const [showEdit, setShowEdit] = useState(true)
 
   const handleClick = (e: React.FormEvent<HTMLFormElement | HTMLDivElement>) => {
     e.stopPropagation()
@@ -46,49 +44,31 @@ export default function YouTube(props: RecursiveComponent) {
       URLRef.current?.focus()
       return
     }
-
-    onUpdateElement<string>('url', url)
+    setShowEdit(false)
+    setURL(url)
+    onUpdateContentInElement({ url })
   }
 
-  const handleEditURL = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
-
-    onUpdateElement<string>('url', '')
+    onDeleteElement(id)
   }
+
+  const [isMute, setIsMute] = useState(false)
+  const [isAutoplay, setIsAutoplay] = useState(false)
+  const [isLoop, setIsLoop] = useState(false)
+  const [showPlayerControls, setShowPlayerControls] = useState(true)
+
+  const [isError, setIsError] = useState(false)
+
+  const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
     <>
-      {(content as ElementType).url ? (
-        <ContextMenu>
-          <ContextMenuTrigger className='cursor-context-menu'>
-            <AspectRatio
-              className={cn('', liveMode ? 'p-0' : 'cursor-pointer rounded-sm border p-3', {
-                'border-dashed': selectedElement.id === id,
-                'border-primary-500 outline-none': selectedElement.id === id
-              })}
-              ratio={16 / 9}
-              style={styles}
-              onClick={handleClick}>
-              <ReactPlayer
-                // url='https://youtu.be/5wvW7OvUyQY'
-                url={url}
-                height={'100%'}
-                width={'100%'}
-                controls
-                volume={0.5}
-                pip={false}
-              />
-            </AspectRatio>
-          </ContextMenuTrigger>
-
-          <ContextMenuContent>
-            <ContextMenuItem onClick={handleEditURL}>Edit URL</ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
-      ) : (
+      {showEdit ? (
         <form
           className={cn(
-            'flex h-[300px] w-full items-center justify-center',
+            'flex h-[350px] w-full items-center justify-center',
             liveMode ? 'p-0' : 'cursor-pointer rounded-sm border p-3',
             {
               'border-dashed': selectedElement.id === id,
@@ -107,9 +87,91 @@ export default function YouTube(props: RecursiveComponent) {
               autoComplete='off'
               onChange={(e) => setURL(e.target.value)}
             />
+            <Checkbox isSelected={isMute} onValueChange={setIsMute}>
+              Mute
+            </Checkbox>
+            <Checkbox isSelected={isLoop} onValueChange={setIsLoop}>
+              Loop
+            </Checkbox>
+            <Checkbox isSelected={isAutoplay} onValueChange={setIsAutoplay}>
+              Autoplay
+            </Checkbox>
+            <Checkbox isSelected={showPlayerControls} onValueChange={setShowPlayerControls}>
+              Show player controls
+            </Checkbox>
+            <Divider className='my-2' />
             <Button type='submit'>Save</Button>
           </div>
         </form>
+      ) : (
+        <AspectRatio
+          className={cn('relative', liveMode ? 'p-0' : 'cursor-pointer rounded-sm border p-1', {
+            'border-dashed': selectedElement.id === id,
+            'border-primary-500 outline-none': selectedElement.id === id
+          })}
+          ratio={16 / 9}
+          style={styles}
+          onClick={handleClick}>
+          {isError ? (
+            <div className='flex flex-col items-center justify-center gap-3'>
+              <span className='text-danger-500'>The URL address does not exist.</span>
+              <Button
+                onClick={() => {
+                  setShowEdit(true)
+                  setIsError(false)
+                }}>
+                Please try again
+              </Button>
+            </div>
+          ) : (
+            <ReactPlayer
+              // url='https://youtu.be/5wvW7OvUyQY'
+              url={url}
+              height={'100%'}
+              width={'100%'}
+              controls={showPlayerControls}
+              volume={0.5}
+              pip={false}
+              loop={isLoop}
+              muted={isMute}
+              playing={isAutoplay}
+              onError={() => {
+                setIsError(true)
+                onUpdateContentInElement({ url: '' })
+              }}
+            />
+          )}
+
+          {selectedElement.id === id && (
+            <>
+              <Badge
+                className={cn(
+                  'absolute left-0 cursor-pointer gap-2 rounded-none bg-primary-500 dark:bg-primary-500',
+                  isFirstElementInBody
+                    ? 'bottom-0 translate-y-full rounded-b-lg'
+                    : '-top-6 rounded-t-lg'
+                )}
+                variant='default'
+                onClick={() => setShowEdit(true)}>
+                {name}
+                <Settings size={15} />
+              </Badge>
+
+              <Badge
+                onClick={handleDeleteElement}
+                className={cn(
+                  'absolute right-0 cursor-pointer gap-1 rounded-none',
+                  isFirstElementInBody
+                    ? 'bottom-0 translate-y-full rounded-b-lg'
+                    : '-top-6 rounded-t-lg'
+                )}
+                variant='destructive'>
+                Delete
+                <Trash2Icon size={16} />
+              </Badge>
+            </>
+          )}
+        </AspectRatio>
       )}
     </>
   )

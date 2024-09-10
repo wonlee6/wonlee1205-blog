@@ -18,7 +18,7 @@ type EditorActions = {
   onAddElement: (id: string, elementDetails: EditorElement) => void
   onSelectElement: (element: EditorElement) => void
   onDeleteElement: (id: string) => void
-  onUpdateElement: <T>(key: string, value: T) => void
+  onUpdateContentInElement: <T>(content: T) => void
   onUpdateElementStyle: (name: string, value: string | number, custom?: boolean) => void
   onDeleteCustomCss: (property: string) => void
   onDragItemOrder: (parentId: string, sourceIndex: number, destinationIndex: number) => void
@@ -80,9 +80,9 @@ export const createEditorStore = () => {
           content: element.content
         }
       })),
-    onUpdateElement: <T>(key: string, value: T) =>
+    onUpdateContentInElement: <T>(content: T) =>
       set((state) => ({
-        elements: updateElement(state.elements, state.selectedElement.id, key, value)
+        elements: updateContentInElement(state.elements, state.selectedElement.id, content)
       })),
     onUpdateElementStyle: (name: string, value: string | number, custom = false) =>
       set((state) => {
@@ -179,17 +179,16 @@ const deleteElement = (editorArray: EditorElement[], id: string): EditorElement[
   })
 }
 
-const updateElement = <T>(
+const updateContentInElement = <T>(
   editorArray: EditorElement[],
   id: string,
-  key: string,
-  value: T
+  contents: T
 ): EditorElement[] => {
   return editorArray.map((item) => {
     if (!isElementType(item.content)) {
       return {
         ...item,
-        content: updateElement(item.content, id, key, value)
+        content: updateContentInElement(item.content, id, contents)
       }
     }
     if (item.id === id) {
@@ -197,7 +196,7 @@ const updateElement = <T>(
         ...item,
         content: {
           ...item.content,
-          [key]: value
+          ...contents
         }
       }
     }

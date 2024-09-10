@@ -2,14 +2,20 @@
 
 import { useRef } from 'react'
 
+import { TrashIcon } from 'lucide-react'
+
+import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 import { ElementType, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function Text(props: RecursiveComponent) {
   const { content, name, id, styles, group, index, parentId } = props
 
-  const { selectedElement, onSelectElement, onDragItemOrder } = useEditorStore((state) => state)
+  const { selectedElement, onSelectElement, onDragItemOrder, onDeleteElement } = useEditorStore(
+    (state) => state
+  )
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -35,11 +41,11 @@ export default function Text(props: RecursiveComponent) {
     handleSelectElement()
   }
 
-  // const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
-  //   e.preventDefault()
-  //   e.stopPropagation()
-  //   onDeleteElement(id)
-  // }
+  const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    onDeleteElement(id)
+  }
 
   const handleDragStart = (e: React.DragEvent) => {
     e.stopPropagation()
@@ -58,15 +64,20 @@ export default function Text(props: RecursiveComponent) {
     onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
   }
 
+  const isFirstElementInBody = index === 0 && parentId === '___body'
+
   return (
     <div className='relative w-full'>
-      {/* {selectedElement.id === id && (
+      {selectedElement.id === id && (
         <Badge
-          className='absolute -top-6 left-0 cursor-pointer rounded-none rounded-t-lg bg-primary-500 dark:bg-primary-500'
+          className={cn(
+            'absolute left-0 cursor-pointer gap-2 rounded-none bg-primary-500 dark:bg-primary-500',
+            isFirstElementInBody ? 'bottom-0 translate-y-full' : '-top-6 rounded-t-lg'
+          )}
           variant='default'>
           {name}
         </Badge>
-      )} */}
+      )}
 
       <Input
         ref={inputRef}
@@ -83,16 +94,19 @@ export default function Text(props: RecursiveComponent) {
         onDrop={handleDrop}
       />
 
-      {/* {selectedElement.id === id && (
+      {selectedElement.id === id && (
         <Badge
           onClick={handleDeleteElement}
-          className='absolute -top-6 right-0 z-20 flex cursor-pointer gap-1 rounded-none rounded-t-lg'
+          className={cn(
+            'absolute right-0 z-20 flex cursor-pointer gap-1 rounded-none',
+            isFirstElementInBody ? 'bottom-0 translate-y-full' : '-top-6 rounded-t-lg'
+          )}
           variant='destructive'
           aria-label='Delete Element'>
           Delete
-          <Trash size={16} />
+          <TrashIcon size={16} />
         </Badge>
-      )} */}
+      )}
     </div>
   )
 }
