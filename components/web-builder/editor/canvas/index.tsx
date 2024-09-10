@@ -84,7 +84,7 @@ const EditorCanvas = () => {
       transition={{
         ease: 'linear'
       }}
-      className='relative h-full w-9/12 border-r border-t border-default-300 bg-zinc-800/10 p-1'>
+      className='relative h-full flex-1 border-r border-t border-default-300 bg-zinc-800/10 p-1'>
       {elements.map((item, index) => (
         <Canvas key={item.id} {...item} index={index} parentId={item.id} />
       ))}

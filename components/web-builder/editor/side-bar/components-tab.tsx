@@ -1,11 +1,11 @@
 'use client'
 
-import React, { memo } from 'react'
+import React from 'react'
 
 import { Accordion, AccordionItem } from '@nextui-org/react'
-import { BoxSelect, CircleArrowOutUpLeftIcon, TypeIcon, YoutubeIcon } from 'lucide-react'
+import { BoxSelect, CircleArrowLeftIcon, TypeIcon, YoutubeIcon } from 'lucide-react'
 
-function ComponentsTab() {
+export default function ComponentsTab() {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: string) => {
     e.stopPropagation()
 
@@ -16,17 +16,17 @@ function ComponentsTab() {
   }
 
   return (
-    <div>
+    <>
       <Accordion
         selectionMode='multiple'
         variant='shadow'
-        className='rounded-none'
+        className='rounded-sm'
         defaultExpandedKeys='all'>
         <AccordionItem
           key='1'
           aria-label='Layout'
           title='Layout'
-          classNames={{ heading: 'font-bold', content: 'pb-4' }}>
+          classNames={{ heading: 'font-bold' }}>
           <div className='flex flex-col gap-3'>
             <div className='grid grid-cols-4'>
               {layoutList.map((item) => (
@@ -48,9 +48,9 @@ function ComponentsTab() {
           key='2'
           aria-label='Elements'
           title='Elements'
-          classNames={{ heading: 'font-bold', content: 'pb-4' }}>
+          classNames={{ heading: 'font-bold' }}>
           <div className='flex flex-col gap-3'>
-            <div className='grid grid-cols-4'>
+            <div className='grid grid-cols-4 gap-2'>
               {elementList.map((item) => (
                 <div key={item.name} className='flex flex-col items-center justify-center gap-1'>
                   <div
@@ -66,16 +66,14 @@ function ComponentsTab() {
           </div>
         </AccordionItem>
       </Accordion>
-    </div>
+    </>
   )
 }
 
-export default memo(ComponentsTab)
-
-const layoutList = [{ name: 'Container', icon: <BoxSelect size={50} /> }]
+const layoutList = [{ name: 'Flex', icon: <BoxSelect size={50} /> }]
 const elementList = [
   { name: 'Text', icon: <TypeIcon size={50} /> },
-  { name: 'Button', icon: <CircleArrowOutUpLeftIcon size={50} /> },
+  { name: 'Button', icon: <CircleArrowLeftIcon size={50} /> },
   { name: 'YouTube', icon: <YoutubeIcon size={50} /> }
 ]
 

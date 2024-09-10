@@ -10,7 +10,7 @@ export default function Recursive(props: RecursiveComponent) {
   switch (name) {
     case 'Text':
       return <Text {...props} />
-    case 'Container':
+    case 'Flex':
       return <Container {...props} />
     case 'Button':
       return <ButtonElement {...props} />

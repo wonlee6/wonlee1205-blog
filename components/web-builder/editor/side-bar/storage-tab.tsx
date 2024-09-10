@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 import {
   Button,
@@ -12,22 +12,24 @@ import {
   ModalHeader,
   useDisclosure
 } from '@nextui-org/react'
-import { Ban, Plus, Trash, TrashIcon, UploadCloud } from 'lucide-react'
+import { Ban, Plus, Trash2Icon, UploadCloud } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useToast } from '@/components/ui/use-toast'
-import { getStorageUrl } from '@/lib/session'
-import { StorageSchemaModel } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 import errorImg from '@/public/images/nope-not-here.webp'
 
 export default function StorageTab() {
-  const [uploadedImages, onUploadImage, onDeleteImage] = useEditorStore(
-    useShallow((state) => [state.uploadImages, state.onUploadImage, state.onDeleteImage])
+  const [uploadedImages, storageUrl, onUploadImage, onDeleteImage] = useEditorStore(
+    useShallow((state) => [
+      state.uploadImages,
+      state.storageUrl,
+      state.onUploadImage,
+      state.onDeleteImage
+    ])
   )
 
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const urlRef = useRef('')
 
   const { toast } = useToast()
 
@@ -101,43 +103,12 @@ export default function StorageTab() {
     }
   }
 
-  const [isFetchLoading, setIsFetchLoading] = useState(true)
-  useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const fetchImageList = fetch('/api/web-builder/storage', {
-          method: 'GET'
-        })
-        const fetchUrl = getStorageUrl()
-        const response = await Promise.allSettled([fetchImageList, fetchUrl])
-
-        if (response[0].status === 'fulfilled') {
-          const data: StorageSchemaModel[] = await response[0].value.json()
-          const filterEmptyData = data
-            .filter((i) => i.name !== '.emptyFolderPlaceholder')
-            .map((i) => ({
-              path: i.name
-            }))
-          onUploadImage(filterEmptyData)
-        }
-        if (response[1].status === 'fulfilled') {
-          urlRef.current = response[1].value
-        }
-      } catch (e) {
-        console.error(e)
-      }
-      setIsFetchLoading(false)
-    }
-    fetchImage()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return (
     <>
       <div className='flex flex-col gap-3'>
-        <div className='flex flex-wrap gap-3'>
-          <label htmlFor='file-choose'>
-            <div className='flex w-min cursor-pointer items-center gap-1 overflow-hidden rounded-md bg-primary-400 p-2 text-white transition-all hover:bg-primary-300'>
+        <div className='grid grid-cols-3 gap-1'>
+          <label htmlFor='file-choose' className='text-sm'>
+            <div className='flex h-8 w-min cursor-pointer items-center gap-1 overflow-hidden rounded-md bg-primary-400 px-2 text-white transition-all hover:bg-primary-300'>
               <Plus size={20} />
               Choose
             </div>
@@ -148,6 +119,7 @@ export default function StorageTab() {
             isDisabled={!files}
             color='primary'
             radius='sm'
+            size='sm'
             startContent={<UploadCloud size={20} />}>
             Upload
           </Button>
@@ -160,6 +132,7 @@ export default function StorageTab() {
             isDisabled={!files}
             color='danger'
             radius='sm'
+            size='sm'
             startContent={<Ban size={20} />}>
             Cancel
           </Button>
@@ -195,42 +168,50 @@ export default function StorageTab() {
             </label>
           </div>
         )}
-
         <Divider className='my-2' />
-        <span className='text-foreground-600'>Upload Images List</span>
+        <span className='pl-1 text-foreground-600'>Upload Images List</span>
         <div className='flex flex-col gap-1 overflow-y-auto p-2'>
           {uploadedImages.map((item, index) => {
             return (
               <div
-                className='flex min-h-[70px] cursor-pointer items-center gap-4 rounded-md shadow-md hover:bg-default-100'
+                className='group flex min-h-[70px] cursor-pointer items-center gap-4 rounded-md shadow-md'
                 onClick={() => {
-                  setModalImg(`${urlRef.current}/${item.path}`)
+                  setModalImg(`${storageUrl}/${item.path}`)
                   onOpen()
                 }}
                 tabIndex={0}
                 role='button'
                 aria-hidden
-                key={`${urlRef.current}/${item.path}-${index}`}>
+                key={`${storageUrl}/${item.path}-${index}`}>
                 <Image
-                  src={`${urlRef.current}/${item.path}`}
+                  src={`${storageUrl}/${item.path}`}
                   alt={item.path}
                   width={100}
                   fallbackSrc={errorImg.src}
                   isBlurred
                   radius='sm'
                   className='transition-all hover:scale-105'
-                  classNames={{ wrapper: 'm-2 cursor-pointer size-full' }}
-                  isLoading={isFetchLoading}
+                  classNames={{ wrapper: 'm-1 cursor-pointer size-full' }}
+                  // isLoading={isFetchLoading}
                 />
-                <div className='flex size-full items-center justify-between px-4'>
-                  <span className='truncate' title={item.path}>
+                <div className='flex size-full flex-col items-center justify-between gap-2'>
+                  <span className='truncate text-xs' title={item.path}>
                     {item.path}
                   </span>
-                  <TrashIcon
+                  <div
+                    className='group flex items-center gap-1'
                     onClick={(e) => handleDeleteImage(e, item.path)}
-                    className='hover:text-primary-400'
-                    size={20}
-                  />
+                    role='button'
+                    onKeyDown={() => {}}
+                    tabIndex={0}>
+                    <span className='text-xs text-foreground-400 group-hover:text-danger-400'>
+                      Delete
+                    </span>
+                    <Trash2Icon
+                      className='text-foreground-400 group-hover:text-danger-400'
+                      size={15}
+                    />
+                  </div>
                 </div>
               </div>
             )

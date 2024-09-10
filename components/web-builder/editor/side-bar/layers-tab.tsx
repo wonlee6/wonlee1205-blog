@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { memo } from 'react'
 
 import { FolderRoot, SquareDashedMousePointer, SquareMousePointer } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
@@ -14,7 +14,7 @@ export default function LayersTab() {
   const [elements] = useEditorStore(useShallow((state) => [state.elements]))
 
   return (
-    <div className='flex flex-col gap-1 rounded-md border p-2' role='tree'>
+    <div className='flex flex-col gap-1 rounded-md border bg-white p-2' role='tree'>
       {elements.map((i) => (
         <LayersRecursive key={i.id} {...i} />
       ))}

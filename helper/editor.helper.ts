@@ -10,11 +10,11 @@ export function isElementType(content: EditorElement[] | ElementType): content i
 
 export function addElementByType(componentName: ComponentName): EditorElement | undefined {
   switch (componentName) {
-    case 'Container':
+    case 'Flex':
       return {
         content: [],
         id: v4(),
-        name: 'Container',
+        name: 'Flex',
         styles: { ...ContainerDefaultStyles },
         group: 'Layout'
       }

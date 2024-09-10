@@ -1,27 +1,69 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useState } from 'react'
 
-import { Tab, Tabs } from '@nextui-org/react'
 import { m } from 'framer-motion'
+import { DatabaseIcon, LayersIcon, PackagePlusIcon, PaintbrushIcon } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 
 import ComponentsTab from './components-tab'
 import LayersTab from './layers-tab'
 import StorageTab from './storage-tab'
 import StylesTab from './styles-tab'
+import { getStorageUrl } from '@/lib/session'
+import { StorageSchemaModel } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-// [BUG] - Accordion component is avoiding focus on inputs
-// https://github.com/nextui-org/nextui/issues/3478
+export type SideTab = 'styles' | 'component' | 'layer' | 'storage'
+
+const ComponentList = {
+  styles: <StylesTab />,
+  component: <ComponentsTab />,
+  layer: <LayersTab />,
+  storage: <StorageTab />
+}
 
 export default function EditorSideBar() {
-  const [selectedElement, uploadImages] = useEditorStore(
-    useShallow((state) => [state.selectedElement, state.uploadImages])
-  )
+  const [onUploadImage] = useEditorStore(useShallow((state) => [state.onUploadImage]))
 
-  const selectedStyles = useMemo(() => selectedElement.styles, [selectedElement])
-  const hasSelectedItem = selectedElement.id !== '' && selectedElement.group === 'Layout'
+  const [selectedTab, setSelectedTab] = useState<SideTab>('styles')
+
+  const handleSelectTab = (tab: SideTab) => {
+    setSelectedTab(tab)
+  }
+
+  const handleSelectTabByKeyboard = (e: React.KeyboardEvent<HTMLDivElement>, tab: SideTab) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      setSelectedTab(tab)
+    }
+  }
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const fetchImageList = fetch('/api/web-builder/storage', {
+          method: 'GET'
+        })
+        const fetchUrl = getStorageUrl()
+        const response = await Promise.allSettled([fetchImageList, fetchUrl])
+
+        if (response[0].status === 'fulfilled' && response[1].status === 'fulfilled') {
+          const data: StorageSchemaModel[] = await response[0].value.json()
+          const filterEmptyData = data
+            .filter((i) => i.name !== '.emptyFolderPlaceholder')
+            .map((i) => ({
+              path: i.name
+            }))
+          onUploadImage(filterEmptyData, response[1].value)
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    fetchImage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
@@ -32,56 +74,67 @@ export default function EditorSideBar() {
           type: 'spring'
         }}
         layout
-        className='h-full w-3/12 overflow-auto border-l border-t border-default-300 p-2'>
-        <Tabs
-          aria-label='Options'
-          radius='none'
-          destroyInactiveTabPanel={false}
-          classNames={{ tabList: 'grid grid grid-cols-4 max-xl:flex-wrap max-xl:flex' }}>
-          <Tab key='styles' title='Styles'>
-            {selectedElement.id !== '' ? (
-              <StylesTab key={selectedElement.id} componentGroup={selectedElement.group}>
-                <StylesTab.Typography selectedStyles={selectedStyles} />
-                <StylesTab.Dimensions selectedStyles={selectedStyles} />
-                <StylesTab.Decorations
-                  selectedStyles={selectedStyles}
-                  uploadImages={uploadImages}
-                  hasSelectedItem={hasSelectedItem}
-                />
-                <StylesTab.FlexBox
-                  selectedStyles={selectedStyles}
-                  componentGroup={selectedElement.group}
-                />
-                <StylesTab.CustomBox customStyles={selectedElement.customStyles} />
-              </StylesTab>
-            ) : (
-              <EmptyStyleTab />
-            )}
-          </Tab>
+        className='sticky right-0 top-0 h-auto w-[370px] text-clip border-t'>
+        <nav className='absolute right-0 top-0 z-[1] flex h-full w-[75px] flex-col items-center justify-normal gap-4 overflow-auto border-l border-default-300 bg-[#f6f7f9] pb-6 pt-2'>
+          <div
+            className='group flex cursor-pointer flex-col items-center justify-center font-medium'
+            onClick={() => handleSelectTab('styles')}
+            onKeyDown={(e) => handleSelectTabByKeyboard(e, 'styles')}
+            tabIndex={0}
+            role='button'
+            aria-label='Styles Tab'>
+            <div className='rounded-lg p-2 group-hover:bg-default-200'>
+              <PaintbrushIcon className='text-default-600' />
+            </div>
+            <span className='text-xs text-foreground-400'>Styles</span>
+          </div>
 
-          <Tab key='Components' title='Components'>
-            <ComponentsTab />
-          </Tab>
+          <div
+            className='group flex cursor-pointer flex-col items-center justify-center font-medium'
+            onClick={() => handleSelectTab('component')}
+            onKeyDown={(e) => handleSelectTabByKeyboard(e, 'component')}
+            tabIndex={0}
+            role='button'
+            aria-label='Component Tab'>
+            <div className='rounded-lg p-2 group-hover:bg-default-200'>
+              <PackagePlusIcon className='text-default-600' />
+            </div>
+            <span className='text-xs text-foreground-400'>Component</span>
+          </div>
 
-          <Tab key='Layers' title='Layers'>
-            <LayersTab />
-          </Tab>
+          <div
+            className='group flex cursor-pointer flex-col items-center justify-center font-medium'
+            onClick={() => handleSelectTab('layer')}
+            onKeyDown={(e) => handleSelectTabByKeyboard(e, 'layer')}
+            tabIndex={0}
+            role='button'
+            aria-label='Layer Tab'>
+            <div className='rounded-lg p-2 group-hover:bg-default-200'>
+              <LayersIcon className='text-default-600' />
+            </div>
+            <span className='text-xs text-foreground-400'>Layer</span>
+          </div>
 
-          <Tab key='Storage' title='Storage'>
-            <StorageTab />
-          </Tab>
-        </Tabs>
+          <div
+            className='group flex cursor-pointer flex-col items-center justify-center font-medium'
+            onClick={() => handleSelectTab('storage')}
+            onKeyDown={(e) => handleSelectTabByKeyboard(e, 'storage')}
+            tabIndex={0}
+            role='button'
+            aria-label='Storage Tab'>
+            <div className='rounded-lg p-2 group-hover:bg-default-200'>
+              <DatabaseIcon className='text-default-600' />
+            </div>
+            <span className='text-xs text-foreground-400'>Storage</span>
+          </div>
+        </nav>
+
+        <div className='grid h-full w-[295px] grid-cols-1 grid-rows-1 border-l bg-[#f6f7f9] py-1'>
+          <div className='flex-1 overflow-y-auto px-1 pb-1 scrollbar-hide'>
+            {ComponentList[selectedTab]}
+          </div>
+        </div>
       </m.aside>
-    </>
-  )
-}
-
-function EmptyStyleTab() {
-  return (
-    <>
-      <div className='mt-3 flex size-full justify-center'>
-        <span className='select-none border-b text-foreground-500'>Please Select Element!</span>
-      </div>
     </>
   )
 }

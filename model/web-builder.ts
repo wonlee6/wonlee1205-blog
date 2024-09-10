@@ -65,7 +65,7 @@ const StorageSchema = z.object({
 
 export type StorageSchemaModel = z.infer<typeof StorageSchema>
 
-export type ComponentName = 'Body' | 'Container' | 'Text' | 'Button' | 'YouTube' | null
+export type ComponentName = 'Body' | 'Flex' | 'Text' | 'Button' | 'YouTube' | null
 export type ComponentGroup = 'Body' | 'Layout' | 'Element' | null
 export type ElementType = { href?: string; innerText?: string; url?: string }
 
@@ -81,13 +81,4 @@ export type EditorElement = {
 export type RecursiveComponent = EditorElement & {
   index: number
   parentId: string
-}
-
-type EditorContent = {
-  id: string
-  elementDetails: {
-    componentType: string
-    content: EditorContent[] | ElementType
-    styles: React.CSSProperties
-  }
 }

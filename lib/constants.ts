@@ -38,7 +38,7 @@ export const YouTubeDefaultStyles: React.CSSProperties = {
 
 export function getDefaultStyleByComponentType(componentName: ComponentName) {
   switch (componentName) {
-    case 'Container':
+    case 'Flex':
       return { ...ContainerDefaultStyles }
     case 'Text':
       return { ...InputDefaultStyles }

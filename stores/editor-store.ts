@@ -11,6 +11,7 @@ type EditorState = {
   previewMode: boolean
   liveMode: boolean
   uploadImages: Array<{ path: string }>
+  storageUrl: string
 }
 
 type EditorActions = {
@@ -22,7 +23,7 @@ type EditorActions = {
   onUpdateElementStyle: (name: string, value: string | number, custom?: boolean) => void
   onDeleteCustomCss: (property: string) => void
   onDragItemOrder: (parentId: string, sourceIndex: number, destinationIndex: number) => void
-  onUploadImage: (images: Array<{ path: string }>) => void
+  onUploadImage: (images: Array<{ path: string }>, url?: string) => void
   onDeleteImage: (deletePath: string) => void
 }
 
@@ -48,7 +49,8 @@ const initialState: EditorState = {
     group: null,
     content: []
   },
-  uploadImages: []
+  uploadImages: [],
+  storageUrl: ''
 }
 
 export const createEditorStore = () => {
@@ -133,7 +135,8 @@ export const createEditorStore = () => {
       set((state) => ({
         elements: changeDragItemOrder(state.elements, parentId, sourceIndex, destinationIndex)
       })),
-    onUploadImage: (images: Array<{ path: string }>) => set(() => ({ uploadImages: images })),
+    onUploadImage: (images: Array<{ path: string }>, url?: string) =>
+      set(() => ({ uploadImages: images, ...(url && { storageUrl: url }) })),
     onDeleteImage: (deletePath: string) =>
       set((state) => ({ uploadImages: state.uploadImages.filter((i) => i.path !== deletePath) }))
   }))
