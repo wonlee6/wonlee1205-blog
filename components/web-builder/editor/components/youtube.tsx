@@ -64,7 +64,7 @@ export default function YouTube(props: RecursiveComponent) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <>
+    <div className='relative'>
       {showEdit ? (
         <form
           className={cn(
@@ -141,39 +141,39 @@ export default function YouTube(props: RecursiveComponent) {
               }}
             />
           )}
-
-          {selectedElement.id === id && (
-            <>
-              <Badge
-                className={cn(
-                  'absolute left-0 cursor-pointer gap-2 rounded-none bg-primary-500 dark:bg-primary-500',
-                  isFirstElementInBody
-                    ? 'bottom-0 translate-y-full rounded-b-lg'
-                    : '-top-6 rounded-t-lg'
-                )}
-                variant='default'
-                onClick={() => setShowEdit(true)}>
-                {name}
-                <Settings size={15} />
-              </Badge>
-
-              <Badge
-                onClick={handleDeleteElement}
-                className={cn(
-                  'absolute right-0 cursor-pointer gap-1 rounded-none',
-                  isFirstElementInBody
-                    ? 'bottom-0 translate-y-full rounded-b-lg'
-                    : '-top-6 rounded-t-lg'
-                )}
-                variant='destructive'>
-                Delete
-                <Trash2Icon size={16} />
-              </Badge>
-            </>
-          )}
         </AspectRatio>
       )}
-    </>
+
+      {selectedElement.id === id && (
+        <>
+          <Badge
+            className={cn(
+              'absolute left-0 cursor-pointer gap-2 rounded-none bg-primary-500 hover:bg-primary-400',
+              isFirstElementInBody
+                ? 'bottom-0 translate-y-full rounded-b-lg'
+                : '-top-6 rounded-t-lg'
+            )}
+            variant='default'
+            onClick={() => setShowEdit(true)}>
+            {name}
+            <Settings size={15} />
+          </Badge>
+
+          <Badge
+            onClick={handleDeleteElement}
+            className={cn(
+              'absolute right-0 cursor-pointer gap-1 rounded-none',
+              isFirstElementInBody
+                ? 'bottom-0 translate-y-full rounded-b-lg'
+                : '-top-6 rounded-t-lg'
+            )}
+            variant='destructive'>
+            Delete
+            <Trash2Icon size={16} />
+          </Badge>
+        </>
+      )}
+    </div>
   )
 }
 

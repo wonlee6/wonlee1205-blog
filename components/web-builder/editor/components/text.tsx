@@ -71,10 +71,11 @@ export default function Text(props: RecursiveComponent) {
       {selectedElement.id === id && (
         <Badge
           className={cn(
-            'absolute left-0 cursor-pointer gap-2 rounded-none bg-primary-500 dark:bg-primary-500',
+            'absolute left-0 cursor-pointer gap-2 rounded-none bg-primary-500 hover:bg-primary-400',
             isFirstElementInBody ? 'bottom-0 translate-y-full' : '-top-6 rounded-t-lg'
           )}
-          variant='default'>
+          variant='default'
+          onClick={(e) => e.stopPropagation()}>
           {name}
         </Badge>
       )}

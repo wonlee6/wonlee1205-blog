@@ -100,7 +100,7 @@ export default function ButtonElement(props: RecursiveComponent) {
   return (
     <div className='relative w-min'>
       <Popover modal onOpenChange={handleButtonLabelValue}>
-        <PopoverTrigger>
+        <PopoverTrigger onClick={(e) => e.stopPropagation()}>
           <Button
             ref={buttonRef}
             onClick={handleClick}
@@ -117,7 +117,7 @@ export default function ButtonElement(props: RecursiveComponent) {
           {selectedElement.id === id && (
             <Badge
               className={cn(
-                'absolute left-1 cursor-pointer gap-2 rounded-none bg-primary-500 dark:bg-primary-500',
+                'absolute left-1 cursor-pointer gap-2 rounded-none bg-primary-500 hover:bg-primary-400',
                 isFirstElementInBody
                   ? 'bottom-0 translate-y-full rounded-b-lg'
                   : '-top-5 rounded-t-lg'

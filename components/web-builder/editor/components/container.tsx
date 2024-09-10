@@ -103,7 +103,7 @@ export default function Container(props: RecursiveComponent) {
       {selectedElement.id === id && (
         <Badge
           className={cn(
-            'absolute left-0 cursor-pointer rounded-none bg-primary-500 dark:bg-primary-500',
+            'absolute left-0 cursor-pointer rounded-none bg-primary-500 hover:bg-primary-400',
             isFirstElementInBody ? 'top-0 rounded-b-lg' : '-top-6 rounded-t-lg'
           )}
           variant='default'>
