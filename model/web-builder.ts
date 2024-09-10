@@ -65,7 +65,7 @@ const StorageSchema = z.object({
 
 export type StorageSchemaModel = z.infer<typeof StorageSchema>
 
-export type ComponentName = 'Body' | 'Flex' | 'Text' | 'Button' | 'YouTube' | null
+export type ComponentName = 'Body' | 'Flex' | 'Label' | 'Text' | 'Button' | 'YouTube' | null
 export type ComponentGroup = 'Body' | 'Layout' | 'Element' | null
 export type ElementType = { href?: string; innerText?: string; url?: string }
 

@@ -55,6 +55,14 @@ export default function ButtonElement(props: RecursiveComponent) {
     onDeleteElement(id)
   }
 
+  const handleDeleteKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Delete') {
+      e.preventDefault()
+      e.stopPropagation()
+      onDeleteElement(id)
+    }
+  }
+
   const handleDragStart = (e: React.DragEvent) => {
     e.stopPropagation()
 
@@ -99,7 +107,7 @@ export default function ButtonElement(props: RecursiveComponent) {
 
   return (
     <div className='relative w-min'>
-      <Popover modal onOpenChange={handleButtonLabelValue}>
+      <Popover onOpenChange={handleButtonLabelValue}>
         <PopoverTrigger onClick={(e) => e.stopPropagation()}>
           <Button
             ref={buttonRef}
@@ -111,7 +119,8 @@ export default function ButtonElement(props: RecursiveComponent) {
             draggable
             onDragStart={handleDragStart}
             onDragOver={(e) => e.preventDefault()}
-            onDrop={handleDrop}>
+            onDrop={handleDrop}
+            onKeyDown={handleDeleteKeyDown}>
             {(content as ElementType).innerText}
           </Button>
           {selectedElement.id === id && (
@@ -128,10 +137,10 @@ export default function ButtonElement(props: RecursiveComponent) {
             </Badge>
           )}
         </PopoverTrigger>
-        <PopoverContent align='start' sideOffset={0}>
+        <PopoverContent align='start' sideOffset={0} onClick={(e) => e.stopPropagation()}>
           <div className='grid gap-4'>
             <div className='space-y-2'>
-              <h4 className='font-medium leading-none'>Button</h4>
+              <h4 className='font-medium leading-none'>Button Setting</h4>
             </div>
             <Divider />
             <div className='grid gap-2'>

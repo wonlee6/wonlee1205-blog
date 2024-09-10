@@ -3,7 +3,7 @@
 import React from 'react'
 
 import { Accordion, AccordionItem } from '@nextui-org/react'
-import { BoxSelect, CircleArrowLeftIcon, TypeIcon, YoutubeIcon } from 'lucide-react'
+import { BoxSelect, CircleArrowLeftIcon, TagIcon, TypeIcon, YoutubeIcon } from 'lucide-react'
 
 export default function ComponentsTab() {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: string) => {
@@ -52,7 +52,7 @@ export default function ComponentsTab() {
           <div className='flex flex-col gap-3'>
             <div className='grid grid-cols-4 gap-2'>
               {elementList.map((item) => (
-                <div key={item.name} className='flex flex-col items-center justify-center gap-1'>
+                <div key={item.name} className='flex flex-col items-center justify-center gap-0'>
                   <div
                     className='cursor-grab rounded-lg p-1 transition-all hover:bg-default-200'
                     draggable
@@ -70,11 +70,12 @@ export default function ComponentsTab() {
   )
 }
 
-const layoutList = [{ name: 'Flex', icon: <BoxSelect size={50} /> }]
+const layoutList = [{ name: 'Flex', icon: <BoxSelect size={40} /> }]
 const elementList = [
-  { name: 'Text', icon: <TypeIcon size={50} /> },
-  { name: 'Button', icon: <CircleArrowLeftIcon size={50} /> },
-  { name: 'YouTube', icon: <YoutubeIcon size={50} /> }
+  { name: 'Label', icon: <TagIcon size={40} /> },
+  { name: 'Text', icon: <TypeIcon size={40} /> },
+  { name: 'Button', icon: <CircleArrowLeftIcon size={40} /> },
+  { name: 'YouTube', icon: <YoutubeIcon size={40} /> }
 ]
 
 // Text Link, Heading

@@ -8,7 +8,6 @@ export const defaultStyles: React.CSSProperties = {
 }
 
 export const InputDefaultStyles: React.CSSProperties = {
-  ...defaultStyles,
   textAlign: 'left'
 }
 

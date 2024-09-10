@@ -18,6 +18,16 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         styles: { ...ContainerDefaultStyles },
         group: 'Layout'
       }
+    case 'Label':
+      return {
+        content: { innerText: 'Name' },
+        id: v4(),
+        name: 'Label',
+        styles: {
+          ...InputDefaultStyles
+        },
+        group: 'Element'
+      }
     case 'Text':
       return {
         content: { innerText: 'Text Element' },
