@@ -67,7 +67,27 @@ export type StorageSchemaModel = z.infer<typeof StorageSchema>
 
 export type ComponentName = 'Body' | 'Flex' | 'Label' | 'Text' | 'Button' | 'YouTube' | null
 export type ComponentGroup = 'Body' | 'Layout' | 'Element' | null
-export type ElementType = { href?: string; innerText?: string; url?: string }
+
+type ButtonElement = {
+  href: string
+  innerText: string
+}
+type TextElement = {
+  id: string
+  maxLength?: number
+}
+
+type YouTubeElement = {
+  url: string
+  mute: boolean
+  loop: boolean
+  autoplay: boolean
+  showControls: boolean
+}
+
+type AllElementType = keyof ButtonElement | keyof TextElement | keyof YouTubeElement
+
+export type ElementType = Record<AllElementType, any>
 
 export type EditorElement = {
   id: string
@@ -75,10 +95,14 @@ export type EditorElement = {
   customStyles?: React.CSSProperties | undefined
   name: ComponentName
   group: ComponentGroup
-  content: EditorElement[] | ElementType
+  content: EditorElement[] | Partial<ElementType>
 }
 
 export type RecursiveComponent = EditorElement & {
   index: number
   parentId: string
 }
+
+type PrettifyType<T> = {
+  [K in keyof T]: T[K]
+} & {}

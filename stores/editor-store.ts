@@ -16,6 +16,7 @@ type EditorState = {
 
 type EditorActions = {
   setDevice: (device: 'Desktop' | 'Tablet' | 'Mobile') => void
+  setLiveMode: () => void
   onAddElement: (id: string, elementDetails: EditorElement) => void
   onSelectElement: (element: EditorElement) => void
   onDeleteElement: (id: string) => void
@@ -57,6 +58,7 @@ export const createEditorStore = () => {
   return createStore<EditorStore>()((set) => ({
     ...initialState,
     setDevice: (device: 'Desktop' | 'Tablet' | 'Mobile') => set(() => ({ device })),
+    setLiveMode: () => set((state) => ({ liveMode: !state.liveMode })),
     onAddElement: (id: string, elementDetails: EditorElement) =>
       set((state) => ({
         elements: addElement(state.elements, id, elementDetails)

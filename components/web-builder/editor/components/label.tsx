@@ -1,12 +1,11 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 
-import { Checkbox, Divider } from '@nextui-org/react'
+import { Divider } from '@nextui-org/react'
 import { Settings, Trash2Icon } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -14,7 +13,7 @@ import { cn } from '@/lib/utils'
 import { ElementType, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function ButtonElement(props: RecursiveComponent) {
+export default function LabelElement(props: RecursiveComponent) {
   const { content, name, id, styles, group, index, parentId } = props
 
   const {
@@ -26,8 +25,6 @@ export default function ButtonElement(props: RecursiveComponent) {
     onUpdateContentInElement
   } = useEditorStore((state) => state)
 
-  const buttonRef = useRef<HTMLButtonElement | null>(null)
-
   const handleSelectElement = () => {
     onSelectElement({
       id,
@@ -38,13 +35,13 @@ export default function ButtonElement(props: RecursiveComponent) {
     })
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLLabelElement>) => {
     e.stopPropagation()
 
     handleSelectElement()
   }
 
-  const handleFocus = (e: React.FormEvent<HTMLButtonElement>) => {
+  const handleFocus = (e: React.FormEvent<HTMLLabelElement>) => {
     e.stopPropagation()
 
     handleSelectElement()
@@ -81,18 +78,16 @@ export default function ButtonElement(props: RecursiveComponent) {
     onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
   }
 
-  const [buttonOption, setButtonOption] = useState<{ label: string; url: string }>({
-    label: (content as ElementType).innerText ?? '',
-    url: ''
+  const [labelOption, setLabelOption] = useState<{ text: string; id: string }>({
+    text: (content as ElementType).innerText ?? '',
+    id: (content as ElementType).id ?? ''
   })
-  const [isNewTap, setIsNewTap] = useState(false)
 
-  const handleButtonLabelValue = (open: boolean) => {
+  const handleUpdateLabelValue = (open: boolean) => {
     if (!open) {
       onUpdateContentInElement({
-        innerText: buttonOption.label,
-        ...(buttonOption.url !== '' && { url: buttonOption.url }),
-        ...(isNewTap && { isNewTap })
+        innerText: labelOption.text,
+        ...(labelOption.id !== '' && { id: labelOption.id })
       })
     }
   }
@@ -107,11 +102,12 @@ export default function ButtonElement(props: RecursiveComponent) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative w-min'>
-      <Button
-        ref={buttonRef}
+    <div className='relative w-full'>
+      <Label
+        htmlFor={liveMode && labelOption.id ? labelOption.id : undefined}
         onClick={handleClick}
         onFocus={handleFocus}
+        className={liveMode ? '' : 'border'}
         style={styles}
         tabIndex={0}
         aria-label={(content as ElementType).innerText}
@@ -121,14 +117,14 @@ export default function ButtonElement(props: RecursiveComponent) {
         onDrop={handleDrop}
         onKeyDown={handleDeleteKeyDown}>
         {(content as ElementType).innerText}
-      </Button>
+      </Label>
       {!liveMode ? (
-        <Popover modal onOpenChange={handleButtonLabelValue}>
+        <Popover modal onOpenChange={handleUpdateLabelValue}>
           <PopoverTrigger
             onClick={(e) => e.stopPropagation()}
             className={cn(
-              'absolute z-10',
-              isFirstElementInBody ? 'bottom-0 left-1' : '-top-6 left-1'
+              'absolute left-0 z-10',
+              isFirstElementInBody ? 'bottom-0' : '-top-6 left-0'
             )}>
             {selectedElement.id === id && (
               <Badge
@@ -145,36 +141,26 @@ export default function ButtonElement(props: RecursiveComponent) {
           <PopoverContent align='start' sideOffset={0} onClick={(e) => e.stopPropagation()}>
             <div className='grid gap-4'>
               <div className='space-y-2'>
-                <h4 className='font-medium leading-none'>Button Setting</h4>
+                <h4 className='font-medium leading-none'>Label Setting</h4>
               </div>
               <Divider />
               <div className='grid gap-2'>
-                <Label htmlFor='button-label'>Label</Label>
+                <Label htmlFor='label-text'>Text</Label>
                 <Input
-                  id='button-label'
-                  value={buttonOption.label}
-                  onChange={(e) => setButtonOption((prev) => ({ ...prev, label: e.target.value }))}
+                  id='label-text'
+                  value={labelOption.text}
+                  onChange={(e) => setLabelOption((prev) => ({ ...prev, text: e.target.value }))}
                   maxLength={255}
                   autoComplete='off'
                 />
-                <Label htmlFor='button-href'>URL</Label>
+                <Label htmlFor='label-id'>ID</Label>
                 <Input
-                  id='button-label'
-                  value={buttonOption.url}
-                  onChange={(e) => setButtonOption((prev) => ({ ...prev, url: e.target.value }))}
+                  id='label-id'
+                  value={labelOption.id}
+                  onChange={(e) => setLabelOption((prev) => ({ ...prev, id: e.target.value }))}
                   maxLength={255}
                   autoComplete='off'
-                  placeholder='e.g. http://www.google.com'
                 />
-                <div className='flex items-center'>
-                  <Checkbox
-                    id='button-tap'
-                    size='sm'
-                    isSelected={isNewTap}
-                    onValueChange={setIsNewTap}>
-                    Open in new tap
-                  </Checkbox>
-                </div>
                 <Divider />
                 <div
                   onClick={handleDeleteElement}

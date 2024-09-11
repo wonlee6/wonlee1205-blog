@@ -17,7 +17,7 @@ export const ContainerDefaultStyles: React.CSSProperties = {
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  gap: '1rem',
+  gap: '0.25rem',
   width: '100%',
   minHeight: '6rem',
   paddingLeft: '1rem',
@@ -35,12 +35,23 @@ export const YouTubeDefaultStyles: React.CSSProperties = {
   alignItems: 'center'
 }
 
+export const LabelDefaultStyles: React.CSSProperties = {
+  display: 'block',
+  width: '100%',
+  marginBottom: '4px',
+  textAlign: 'left'
+}
+
 export function getDefaultStyleByComponentType(componentName: ComponentName) {
   switch (componentName) {
     case 'Flex':
       return { ...ContainerDefaultStyles }
     case 'Text':
       return { ...InputDefaultStyles }
+    case 'Label':
+      return {
+        ...LabelDefaultStyles
+      }
     default:
       return {}
   }

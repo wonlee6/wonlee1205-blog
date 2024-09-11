@@ -1,10 +1,17 @@
 import CryptoJS from 'crypto-js'
 import { v4 } from 'uuid'
 
-import { ContainerDefaultStyles, InputDefaultStyles, YouTubeDefaultStyles } from '@/lib/constants'
+import {
+  ContainerDefaultStyles,
+  InputDefaultStyles,
+  LabelDefaultStyles,
+  YouTubeDefaultStyles
+} from '@/lib/constants'
 import { ComponentName, EditorElement, ElementType } from '@/model/web-builder'
 
-export function isElementType(content: EditorElement[] | ElementType): content is ElementType {
+export function isElementType(
+  content: EditorElement[] | Partial<ElementType>
+): content is Partial<ElementType> {
   return typeof content !== 'undefined' && !Array.isArray(content)
 }
 
@@ -20,17 +27,17 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
       }
     case 'Label':
       return {
-        content: { innerText: 'Name' },
+        content: { innerText: 'Name', id: '' },
         id: v4(),
         name: 'Label',
         styles: {
-          ...InputDefaultStyles
+          ...LabelDefaultStyles
         },
         group: 'Element'
       }
     case 'Text':
       return {
-        content: { innerText: 'Text Element' },
+        content: { innerText: 'Text Element', id: '', maxLength: 2000 },
         id: v4(),
         name: 'Text',
         styles: {
@@ -49,7 +56,11 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
     case 'YouTube':
       return {
         content: {
-          url: ''
+          url: '',
+          mute: false,
+          loop: false,
+          autoplay: false,
+          showControls: true
         },
         id: v4(),
         name: 'YouTube',

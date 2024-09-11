@@ -24,7 +24,9 @@ const ComponentList = {
 }
 
 export default function EditorSideBar() {
-  const [onUploadImage] = useEditorStore(useShallow((state) => [state.onUploadImage]))
+  const [liveMode, onUploadImage] = useEditorStore(
+    useShallow((state) => [state.liveMode, state.onUploadImage])
+  )
 
   const [selectedTab, setSelectedTab] = useState<SideTab>('styles')
 
@@ -68,18 +70,22 @@ export default function EditorSideBar() {
   return (
     <>
       <m.aside
-        initial={{ x: 300 }}
-        animate={{ x: 0 }}
+        initial={{ x: 400 }}
+        animate={{
+          x: liveMode ? 400 : 0,
+          width: liveMode ? 0 : 400
+        }}
         transition={{
-          type: 'spring'
+          type: 'spring',
+          damping: 17
         }}
         layout
-        className='sticky right-0 top-0 h-auto w-[370px] text-clip border-t'>
+        className='sticky right-0 top-0 h-auto overflow-x-hidden text-clip border-t'>
         <nav className='absolute right-0 top-0 z-[1] flex h-full w-[75px] flex-col items-center justify-normal gap-4 overflow-auto border-l border-default-300 bg-[#f6f7f9] pb-6 pt-2'>
           <div
+            onKeyDown={(e) => handleSelectTabByKeyboard(e, 'styles')}
             className='group flex cursor-pointer flex-col items-center justify-center font-medium'
             onClick={() => handleSelectTab('styles')}
-            onKeyDown={(e) => handleSelectTabByKeyboard(e, 'styles')}
             tabIndex={0}
             role='button'
             aria-label='Styles Tab'>
@@ -129,7 +135,7 @@ export default function EditorSideBar() {
           </div>
         </nav>
 
-        <div className='grid h-full w-[295px] grid-cols-1 grid-rows-1 border-l bg-[#f6f7f9] py-1'>
+        <div className='grid h-full w-[325px] grid-cols-1 grid-rows-1 border-l bg-[#f6f7f9] py-1'>
           <div className='flex-1 overflow-y-auto px-1 pb-1 scrollbar-hide'>
             {ComponentList[selectedTab]}
           </div>

@@ -15,16 +15,23 @@ import { useEditorStore } from '@/providers/user-store-provider'
 export default function Container(props: RecursiveComponent) {
   const { id, name, styles, group, content, index, parentId } = props
 
-  const [selectedElement, onAddElement, onSelectElement, onDeleteElement, onDragItemOrder] =
-    useEditorStore(
-      useShallow((state) => [
-        state.selectedElement,
-        state.onAddElement,
-        state.onSelectElement,
-        state.onDeleteElement,
-        state.onDragItemOrder
-      ])
-    )
+  const [
+    liveMode,
+    selectedElement,
+    onAddElement,
+    onSelectElement,
+    onDeleteElement,
+    onDragItemOrder
+  ] = useEditorStore(
+    useShallow((state) => [
+      state.liveMode,
+      state.selectedElement,
+      state.onAddElement,
+      state.onSelectElement,
+      state.onDeleteElement,
+      state.onDragItemOrder
+    ])
+  )
 
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -96,36 +103,38 @@ export default function Container(props: RecursiveComponent) {
       role='button'
       tabIndex={0}
       className={cn('relative border border-default-400 p-2', {
-        'border-dashed': selectedElement.id === id,
-        'border-primary-500 outline-none': selectedElement.id === id
+        'border-dashed': selectedElement.id === id && !liveMode,
+        'border-primary-500 outline-none': selectedElement.id === id && !liveMode,
+        'border-none': liveMode,
+        'cursor-default': liveMode
       })}
       style={styles}>
-      {selectedElement.id === id && (
-        <Badge
-          className={cn(
-            'absolute left-0 cursor-pointer rounded-none bg-primary-500 hover:bg-primary-400',
-            isFirstElementInBody ? 'top-0 rounded-b-lg' : '-top-6 rounded-t-lg'
-          )}
-          variant='default'>
-          {name}
-        </Badge>
-      )}
-
       {(content as EditorElement[]).map((item, index) => (
         <Recursive key={item.id} index={index} {...item} parentId={id} />
       ))}
 
-      {selectedElement.id === id && (
-        <Badge
-          onClick={handleDeleteElement}
-          className={cn(
-            'absolute right-0 z-20 flex cursor-pointer gap-1 rounded-none',
-            isFirstElementInBody ? 'top-0 rounded-b-lg' : '-top-6 rounded-t-lg'
-          )}
-          variant='destructive'>
-          Delete
-          <TrashIcon size={16} />
-        </Badge>
+      {!liveMode && selectedElement.id === id && (
+        <>
+          <Badge
+            className={cn(
+              'absolute left-0 cursor-pointer rounded-none bg-primary-500 hover:bg-primary-400',
+              isFirstElementInBody ? 'top-0 rounded-b-lg' : '-top-6 rounded-t-lg'
+            )}
+            variant='default'>
+            {name}
+          </Badge>
+
+          <Badge
+            onClick={handleDeleteElement}
+            className={cn(
+              'absolute right-0 z-20 flex cursor-pointer gap-1 rounded-none',
+              isFirstElementInBody ? 'top-0 rounded-b-lg' : '-top-6 rounded-t-lg'
+            )}
+            variant='destructive'>
+            Delete
+            <TrashIcon size={16} />
+          </Badge>
+        </>
       )}
     </div>
   )

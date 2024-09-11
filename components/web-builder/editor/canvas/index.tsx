@@ -1,6 +1,6 @@
 'use client'
 
-import { memo } from 'react'
+import { memo, useEffect } from 'react'
 
 import { m } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
@@ -72,19 +72,20 @@ const Canvas = memo((props: RecursiveComponent) => {
 Canvas.displayName = 'Canvas'
 
 const EditorCanvas = () => {
-  const [elements, selectedElement, onDeleteElement] = useEditorStore(
-    useShallow((state) => [state.elements, state.selectedElement, state.onDeleteElement])
+  const [liveMode, elements] = useEditorStore(
+    useShallow((state) => [state.liveMode, state.elements])
   )
 
   return (
     <m.section
       layout
-      initial={{ y: 1000 }}
-      animate={{ y: 0 }}
-      transition={{
-        ease: 'linear'
+      initial={{ x: 0, width: '100%', height: '100%' }}
+      animate={{
+        x: 0,
+        width: liveMode ? '100%' : 'auto',
+        height: liveMode ? '100%' : 'auto'
       }}
-      className='relative h-full flex-1 border-r border-t border-default-300 bg-zinc-800/10 p-1'>
+      className={cn('h-full flex-1 border-r border-t border-default-300 bg-[#f6f7f9] p-1')}>
       {elements.map((item, index) => (
         <Canvas key={item.id} {...item} index={index} parentId={item.id} />
       ))}

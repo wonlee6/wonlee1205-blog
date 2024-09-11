@@ -12,6 +12,7 @@ import {
   Listbox,
   ListboxItem,
   ListboxSection,
+  Spinner,
   useDisclosure
 } from '@nextui-org/react'
 import { Wallpaper, Settings } from 'lucide-react'
@@ -38,7 +39,7 @@ export default function ProjectRoot(props: Props) {
   )
 
   // const [funnelPageList, setFunnelPageList] = useState<FunnelPage[]>([])
-
+  const [isLoading, setIsLoading] = useState(true)
   const [modalType, setModalType] = useState<'add' | 'edit'>('add')
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -120,9 +121,19 @@ export default function ProjectRoot(props: Props) {
         setProjectDataList(decryptData as ProjectData[])
       } catch (error) {
         console.error
+      } finally {
+        setIsLoading(false)
       }
     })()
   }, [userId])
+
+  if (isLoading) {
+    return (
+      <div className='flex w-full items-center justify-center'>
+        <Spinner size='lg' />
+      </div>
+    )
+  }
 
   return (
     <>

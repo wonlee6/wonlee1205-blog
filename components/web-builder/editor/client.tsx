@@ -9,7 +9,7 @@ export default function EditorClient() {
     <LazyMotion features={domAnimation}>
       <Editor>
         <Editor.Toolbox />
-        <div className='flex w-full' style={{ height: '96%' }}>
+        <div className='relative flex w-full' style={{ height: '96%' }}>
           <Editor.Canvas></Editor.Canvas>
           <Editor.SideBar></Editor.SideBar>
         </div>

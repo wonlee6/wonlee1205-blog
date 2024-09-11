@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useEffect, useState } from 'react'
+import { memo } from 'react'
 
 import { Button, Tooltip } from '@nextui-org/react'
 import { m } from 'framer-motion'
@@ -11,7 +11,13 @@ import { useShallow } from 'zustand/react/shallow'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 function EditorToolbox() {
-  const [device, setDevice] = useEditorStore(useShallow((state) => [state.device, state.setDevice]))
+  const [device, setDevice, setLiveMode] = useEditorStore(
+    useShallow((state) => [state.device, state.setDevice, state.setLiveMode])
+  )
+
+  const handleLiveMode = () => {
+    setLiveMode()
+  }
 
   const handleSave = () => {
     alert('진행 중에 있습니다...')
@@ -69,7 +75,7 @@ function EditorToolbox() {
         </div>
         <div className='flex items-center gap-4'>
           <Tooltip content='Play'>
-            <Button isIconOnly variant='light' size='sm' onClick={handleSave}>
+            <Button isIconOnly variant='light' size='sm' onClick={handleLiveMode}>
               <Play />
             </Button>
           </Tooltip>
