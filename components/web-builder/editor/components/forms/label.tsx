@@ -1,14 +1,14 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import React, { useState } from 'react'
 
-import SettingPopover from './setting-popover'
+import SettingPopover from '../setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function Text(props: RecursiveComponent<'Text'>) {
+export default function LabelElement(props: RecursiveComponent<'Label'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
   const {
@@ -20,8 +20,6 @@ export default function Text(props: RecursiveComponent<'Text'>) {
     onUpdateContentInElement
   } = useEditorStore((state) => state)
 
-  const inputRef = useRef<HTMLInputElement | null>(null)
-
   const handleSelectElement = () => {
     onSelectElement({
       id,
@@ -32,13 +30,13 @@ export default function Text(props: RecursiveComponent<'Text'>) {
     })
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLLabelElement>) => {
     e.stopPropagation()
 
     handleSelectElement()
   }
 
-  const handleFocus = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleFocus = (e: React.FormEvent<HTMLLabelElement>) => {
     e.stopPropagation()
 
     handleSelectElement()
@@ -46,8 +44,16 @@ export default function Text(props: RecursiveComponent<'Text'>) {
 
   const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
-    e.stopPropagation()
+
     onDeleteElement(id)
+  }
+
+  const handleDeleteKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Delete') {
+      e.preventDefault()
+      e.stopPropagation()
+      onDeleteElement(id)
+    }
   }
 
   const handleDragStart = (e: React.DragEvent) => {
@@ -67,16 +73,16 @@ export default function Text(props: RecursiveComponent<'Text'>) {
     onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
   }
 
-  const [textOption, setTextOption] = useState<{ id: string; maxLength: number }>({
-    id: content?.id ?? '',
-    maxLength: content?.maxLength ?? 2000
+  const [labelOption, setLabelOption] = useState<{ text: string; id: string | null }>({
+    text: content.text,
+    id: content.id
   })
 
-  const handleUpdateTextValue = (open: boolean) => {
+  const handleUpdateLabelValue = (open: boolean) => {
     if (!open) {
       onUpdateContentInElement({
-        maxLength: textOption.maxLength,
-        ...(textOption.id !== '' && { id: textOption.id })
+        innerText: labelOption.text,
+        ...(labelOption.id !== '' && { id: labelOption.id })
       })
     }
   }
@@ -92,47 +98,46 @@ export default function Text(props: RecursiveComponent<'Text'>) {
 
   return (
     <div className='relative w-full'>
-      <Input
-        ref={inputRef}
-        id={textOption.id ? textOption.id : undefined}
+      <Label
+        htmlFor={liveMode && labelOption.id ? labelOption.id : undefined}
         onClick={handleClick}
         onFocus={handleFocus}
-        aria-label={content.innerText}
-        placeholder={content.innerText}
-        className={'relative w-full rounded-sm border-default-300'}
+        className={liveMode ? '' : 'border'}
         style={styles}
         tabIndex={0}
+        aria-label={labelOption.text}
         draggable
-        onDragOver={(e) => e.preventDefault()}
         onDragStart={handleDragStart}
+        onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
-        maxLength={textOption.maxLength}
-      />
+        onKeyDown={handleDeleteKeyDown}>
+        {labelOption.text}
+      </Label>
       {!liveMode ? (
-        <SettingPopover onOpenChange={handleUpdateTextValue}>
+        <SettingPopover onOpenChange={handleUpdateLabelValue}>
           <SettingPopover.Trigger
             isShowBadge={selectedElement.id === id}
             name={name}
             isFirstElementInBody={isFirstElementInBody}
           />
           <SettingPopover.Content
-            title='Text'
+            title='Label'
             onDeleteElement={handleDeleteElement}
             onDeleteElementByKeyboard={handleDeleteElementByKeyboard}>
-            <Label htmlFor='text-id'>ID</Label>
+            <Label htmlFor='label-text'>Text</Label>
             <Input
-              id='text-id'
-              value={textOption.id}
-              onChange={(e) => setTextOption((prev) => ({ ...prev, id: e.target.value }))}
+              id='label-text'
+              value={labelOption.text}
+              onChange={(e) => setLabelOption((prev) => ({ ...prev, text: e.target.value }))}
               maxLength={255}
               autoComplete='off'
             />
-            <Label htmlFor='text-maxLength'>Max Length</Label>
+            <Label htmlFor='label-id'>ID</Label>
             <Input
-              id='text-maxLength'
-              type='number'
-              value={textOption.maxLength}
-              onChange={(e) => setTextOption((prev) => ({ ...prev, maxLength: +e.target.value }))}
+              id='label-id'
+              value={labelOption.id ? labelOption.id : ''}
+              onChange={(e) => setLabelOption((prev) => ({ ...prev, id: e.target.value }))}
+              maxLength={255}
               autoComplete='off'
             />
           </SettingPopover.Content>

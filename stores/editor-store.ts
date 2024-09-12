@@ -1,11 +1,11 @@
 import { createStore } from 'zustand/vanilla'
 
 import { getDefaultStyleByComponentType, isEditorElementArray } from '@/helper/editor.helper'
-import { EditorElement } from '@/model/web-builder'
+import { ComponentName, EditorElement } from '@/model/web-builder'
 
 type EditorState = {
   device: 'Desktop' | 'Tablet' | 'Mobile'
-  elements: EditorElement<'Body'>[]
+  elements: EditorElement[]
   selectedElement: EditorElement
   previewMode: boolean
   liveMode: boolean
@@ -16,7 +16,7 @@ type EditorState = {
 type EditorActions = {
   setDevice: (device: 'Desktop' | 'Tablet' | 'Mobile') => void
   setLiveMode: () => void
-  onAddElement: (id: string, elementDetails: EditorElement) => void
+  onAddElement: (id: string, elementDetails: EditorElement<ComponentName>) => void
   onSelectElement: (element: EditorElement) => void
   onDeleteElement: (id: string) => void
   onUpdateContentInElement: <T>(content: T) => void
@@ -58,7 +58,7 @@ export const createEditorStore = () => {
     ...initialState,
     setDevice: (device: 'Desktop' | 'Tablet' | 'Mobile') => set(() => ({ device })),
     setLiveMode: () => set((state) => ({ liveMode: !state.liveMode })),
-    onAddElement: (id: string, elementDetails: EditorElement) =>
+    onAddElement: (id: string, elementDetails: EditorElement<ComponentName>) =>
       set((state) => ({
         elements: addElement(state.elements, id, elementDetails)
       })),
@@ -146,7 +146,7 @@ export const createEditorStore = () => {
 const addElement = (
   editorArray: EditorElement[],
   id: string,
-  elementDetails: EditorElement
+  elementDetails: EditorElement<ComponentName>
 ): EditorElement[] => {
   return editorArray.map((item) => {
     if (item.id === id && Array.isArray(item.content)) {

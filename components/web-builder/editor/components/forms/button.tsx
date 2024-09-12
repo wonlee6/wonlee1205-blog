@@ -1,14 +1,17 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
-import SettingPopover from './setting-popover'
+import { Checkbox } from '@nextui-org/react'
+
+import SettingPopover from '../setting-popover'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function LabelElement(props: RecursiveComponent<'Label'>) {
+export default function ButtonElement(props: RecursiveComponent<'Button'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
   const {
@@ -20,6 +23,8 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
     onUpdateContentInElement
   } = useEditorStore((state) => state)
 
+  const buttonRef = useRef<HTMLButtonElement | null>(null)
+
   const handleSelectElement = () => {
     onSelectElement({
       id,
@@ -30,13 +35,13 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
     })
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
 
     handleSelectElement()
   }
 
-  const handleFocus = (e: React.FormEvent<HTMLLabelElement>) => {
+  const handleFocus = (e: React.FormEvent<HTMLButtonElement>) => {
     e.stopPropagation()
 
     handleSelectElement()
@@ -73,16 +78,18 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
     onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
   }
 
-  const [labelOption, setLabelOption] = useState<{ text: string; id: string }>({
-    text: content.innerText ?? '',
-    id: content.id ?? ''
+  const [buttonOption, setButtonOption] = useState<{ label: string; url: string }>({
+    label: content.innerText ?? '',
+    url: ''
   })
+  const [isNewTap, setIsNewTap] = useState(false)
 
-  const handleUpdateLabelValue = (open: boolean) => {
+  const handleButtonLabelValue = (open: boolean) => {
     if (!open) {
       onUpdateContentInElement({
-        innerText: labelOption.text,
-        ...(labelOption.id !== '' && { id: labelOption.id })
+        innerText: buttonOption.label,
+        ...(buttonOption.url !== '' && { url: buttonOption.url }),
+        ...(isNewTap && { isNewTap })
       })
     }
   }
@@ -97,49 +104,54 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative w-full'>
-      <Label
-        htmlFor={liveMode && labelOption.id ? labelOption.id : undefined}
+    <div className='relative w-min'>
+      <Button
+        ref={buttonRef}
         onClick={handleClick}
         onFocus={handleFocus}
-        className={liveMode ? '' : 'border'}
         style={styles}
         tabIndex={0}
-        aria-label={labelOption.text}
+        aria-label={buttonOption.label}
         draggable
         onDragStart={handleDragStart}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
         onKeyDown={handleDeleteKeyDown}>
-        {labelOption.text}
-      </Label>
+        {buttonOption.label}
+      </Button>
       {!liveMode ? (
-        <SettingPopover onOpenChange={handleUpdateLabelValue}>
+        <SettingPopover onOpenChange={handleButtonLabelValue}>
           <SettingPopover.Trigger
             isShowBadge={selectedElement.id === id}
             name={name}
             isFirstElementInBody={isFirstElementInBody}
           />
           <SettingPopover.Content
-            title='Label'
+            title='Button'
             onDeleteElement={handleDeleteElement}
             onDeleteElementByKeyboard={handleDeleteElementByKeyboard}>
-            <Label htmlFor='label-text'>Text</Label>
+            <Label htmlFor='button-label'>Label</Label>
             <Input
-              id='label-text'
-              value={labelOption.text}
-              onChange={(e) => setLabelOption((prev) => ({ ...prev, text: e.target.value }))}
+              id='button-label'
+              value={buttonOption.label}
+              onChange={(e) => setButtonOption((prev) => ({ ...prev, label: e.target.value }))}
               maxLength={255}
               autoComplete='off'
             />
-            <Label htmlFor='label-id'>ID</Label>
+            <Label htmlFor='button-href'>URL</Label>
             <Input
-              id='label-id'
-              value={labelOption.id}
-              onChange={(e) => setLabelOption((prev) => ({ ...prev, id: e.target.value }))}
+              id='button-label'
+              value={buttonOption.url}
+              onChange={(e) => setButtonOption((prev) => ({ ...prev, url: e.target.value }))}
               maxLength={255}
               autoComplete='off'
+              placeholder='e.g. http://www.google.com'
             />
+            <div className='flex items-center'>
+              <Checkbox id='button-tap' size='sm' isSelected={isNewTap} onValueChange={setIsNewTap}>
+                Open in new tap
+              </Checkbox>
+            </div>
           </SettingPopover.Content>
         </SettingPopover>
       ) : null}

@@ -1,17 +1,14 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
-import { Checkbox } from '@nextui-org/react'
-
-import SettingPopover from './setting-popover'
-import { Button } from '@/components/ui/button'
+import SettingPopover from '../setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function ButtonElement(props: RecursiveComponent<'Button'>) {
+export default function Text(props: RecursiveComponent<'Text'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
   const {
@@ -23,7 +20,7 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
     onUpdateContentInElement
   } = useEditorStore((state) => state)
 
-  const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleSelectElement = () => {
     onSelectElement({
@@ -35,13 +32,13 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
     })
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
 
     handleSelectElement()
   }
 
-  const handleFocus = (e: React.FormEvent<HTMLButtonElement>) => {
+  const handleFocus = (e: React.FormEvent<HTMLInputElement>) => {
     e.stopPropagation()
 
     handleSelectElement()
@@ -49,16 +46,8 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
 
   const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
-
+    e.stopPropagation()
     onDeleteElement(id)
-  }
-
-  const handleDeleteKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Delete') {
-      e.preventDefault()
-      e.stopPropagation()
-      onDeleteElement(id)
-    }
   }
 
   const handleDragStart = (e: React.DragEvent) => {
@@ -78,18 +67,16 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
     onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
   }
 
-  const [buttonOption, setButtonOption] = useState<{ label: string; url: string }>({
-    label: content.innerText ?? '',
-    url: ''
+  const [textOption, setTextOption] = useState<{ id: string; maxLength: number }>({
+    id: content.id,
+    maxLength: content.maxLength
   })
-  const [isNewTap, setIsNewTap] = useState(false)
 
-  const handleButtonLabelValue = (open: boolean) => {
+  const handleUpdateTextValue = (open: boolean) => {
     if (!open) {
       onUpdateContentInElement({
-        innerText: buttonOption.label,
-        ...(buttonOption.url !== '' && { url: buttonOption.url }),
-        ...(isNewTap && { isNewTap })
+        maxLength: textOption.maxLength,
+        ...(textOption.id !== '' && { id: textOption.id })
       })
     }
   }
@@ -104,54 +91,50 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative w-min'>
-      <Button
-        ref={buttonRef}
+    <div className='relative w-full'>
+      <Input
+        ref={inputRef}
+        id={textOption.id ? textOption.id : undefined}
         onClick={handleClick}
         onFocus={handleFocus}
+        aria-label={content.innerText}
+        placeholder={content.innerText}
+        className={'relative w-full rounded-sm border-default-300'}
         style={styles}
         tabIndex={0}
-        aria-label={buttonOption.label}
         draggable
-        onDragStart={handleDragStart}
         onDragOver={(e) => e.preventDefault()}
+        onDragStart={handleDragStart}
         onDrop={handleDrop}
-        onKeyDown={handleDeleteKeyDown}>
-        {buttonOption.label}
-      </Button>
+        maxLength={textOption.maxLength}
+      />
       {!liveMode ? (
-        <SettingPopover onOpenChange={handleButtonLabelValue}>
+        <SettingPopover onOpenChange={handleUpdateTextValue}>
           <SettingPopover.Trigger
             isShowBadge={selectedElement.id === id}
             name={name}
             isFirstElementInBody={isFirstElementInBody}
           />
           <SettingPopover.Content
-            title='Button'
+            title='Text'
             onDeleteElement={handleDeleteElement}
             onDeleteElementByKeyboard={handleDeleteElementByKeyboard}>
-            <Label htmlFor='button-label'>Label</Label>
+            <Label htmlFor='text-id'>ID</Label>
             <Input
-              id='button-label'
-              value={buttonOption.label}
-              onChange={(e) => setButtonOption((prev) => ({ ...prev, label: e.target.value }))}
+              id='text-id'
+              value={textOption.id}
+              onChange={(e) => setTextOption((prev) => ({ ...prev, id: e.target.value }))}
               maxLength={255}
               autoComplete='off'
             />
-            <Label htmlFor='button-href'>URL</Label>
+            <Label htmlFor='text-maxLength'>Max Length</Label>
             <Input
-              id='button-label'
-              value={buttonOption.url}
-              onChange={(e) => setButtonOption((prev) => ({ ...prev, url: e.target.value }))}
-              maxLength={255}
+              id='text-maxLength'
+              type='number'
+              value={textOption.maxLength}
+              onChange={(e) => setTextOption((prev) => ({ ...prev, maxLength: +e.target.value }))}
               autoComplete='off'
-              placeholder='e.g. http://www.google.com'
             />
-            <div className='flex items-center'>
-              <Checkbox id='button-tap' size='sm' isSelected={isNewTap} onValueChange={setIsNewTap}>
-                Open in new tap
-              </Checkbox>
-            </div>
           </SettingPopover.Content>
         </SettingPopover>
       ) : null}

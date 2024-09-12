@@ -1,14 +1,12 @@
 'use client'
 
-import { memo, useEffect } from 'react'
-
 import { m } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
 
 import Recursive from './recursive'
 import { addElementByType } from '@/helper/editor.helper'
 import { cn } from '@/lib/utils'
-import { ComponentName, RecursiveComponent } from '@/model/web-builder'
+import { ComponentName, EditorElement, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 const Canvas = (props: RecursiveComponent<'Body'>) => {
@@ -86,7 +84,7 @@ const EditorCanvas = () => {
         height: liveMode ? '100%' : 'auto'
       }}
       className={cn('h-full flex-1 border-r border-t border-default-300 bg-[#f6f7f9] p-1')}>
-      {elements.map((item, index) => (
+      {(elements as EditorElement<'Body'>[]).map((item, index) => (
         <Canvas key={item.id} {...item} index={index} parentId={item.id} />
       ))}
     </m.section>

@@ -97,8 +97,9 @@ type ButtonElement = {
 }
 
 type TextElement = {
+  innerText: string
   id: string
-  maxLength?: number
+  maxLength: number
 }
 
 type YouTubeElement = {
@@ -109,8 +110,23 @@ type YouTubeElement = {
   showControls: boolean
 }
 
-export type AllElementType = Partial<HeadingElement & ButtonElement & TextElement & YouTubeElement>
-type NonLayoutComponentName = Exclude<ComponentName, 'Flex' | 'Body'>
+type LabelElement = {
+  text: string
+  id: string
+}
+
+type ElementMapping = {
+  Heading: HeadingElement
+  Button: ButtonElement
+  Text: TextElement
+  YouTube: YouTubeElement
+  Label: LabelElement
+}
+
+export type AllElementType<T extends NonLayoutComponentName> = T extends keyof ElementMapping
+  ? ElementMapping[T]
+  : never
+export type NonLayoutComponentName = Exclude<ComponentName, 'Flex' | 'Body'>
 
 export type EditorElement<T extends ComponentName = ComponentName> = {
   id: string
@@ -118,7 +134,7 @@ export type EditorElement<T extends ComponentName = ComponentName> = {
   customStyles?: React.CSSProperties | undefined
   name: ComponentName
   group: ComponentGroup
-  content: T extends NonLayoutComponentName ? AllElementType : EditorElement[]
+  content: T extends NonLayoutComponentName ? AllElementType<T> : EditorElement[]
 }
 
 export type RecursiveComponent<T extends ComponentName = ComponentName> = EditorElement<T> & {

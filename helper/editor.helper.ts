@@ -12,11 +12,12 @@ import {
   ComponentName,
   EditorElement,
   AllElementType,
-  RecursiveComponent
+  RecursiveComponent,
+  NonLayoutComponentName
 } from '@/model/web-builder'
 
 export function isEditorElementArray(
-  content: AllElementType | EditorElement<ComponentName>[]
+  content: AllElementType<NonLayoutComponentName> | EditorElement<ComponentName>[]
 ): content is EditorElement<ComponentName>[] {
   return typeof content !== 'undefined' && Array.isArray(content)
 }
@@ -42,7 +43,7 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
     case 'Heading':
       return {
         content: {
-          innerText: 'Heading',
+          text: 'Heading',
           heading: 1
         },
         id: v4(),
@@ -52,9 +53,10 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         },
         group: 'Typography'
       }
+    // Forms
     case 'Label':
       return {
-        content: { innerText: 'Name', id: '' },
+        content: { text: 'Name', id: '' },
         id: v4(),
         name: 'Label',
         styles: {
@@ -74,12 +76,13 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
       }
     case 'Button':
       return {
-        content: { innerText: 'Button Text' },
+        content: { innerText: 'Button Text', href: '' },
         id: v4(),
         name: 'Button',
         styles: {},
         group: 'Forms'
       }
+    // Media
     case 'YouTube':
       return {
         content: {

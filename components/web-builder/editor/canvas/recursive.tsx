@@ -1,9 +1,9 @@
-import ButtonElement from '../components/button'
-import Container from '../components/container'
-import LabelElement from '../components/label'
-import Text from '../components/text'
+import ButtonElement from '../components/forms/button'
+import LabelElement from '../components/forms/label'
+import Text from '../components/forms/text'
+import YouTube from '../components/media/youtube'
+import Flex from '../components/structure/flex'
 import Heading from '../components/typography/heading'
-import YouTube from '../components/youtube'
 import { hasArrayContent } from '@/helper/editor.helper'
 import { RecursiveComponent } from '@/model/web-builder'
 
@@ -13,7 +13,7 @@ export default function Recursive(props: RecursiveComponent) {
   if (hasArrayContent(props)) {
     switch (name) {
       case 'Flex':
-        return <Container {...props} />
+        return <Flex {...props} />
       default:
         return null
     }

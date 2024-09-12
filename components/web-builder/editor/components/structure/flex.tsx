@@ -5,14 +5,14 @@ import React, { useRef } from 'react'
 import { TrashIcon } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 
-import Recursive from '../canvas/recursive'
+import Recursive from '../../canvas/recursive'
 import { Badge } from '@/components/ui/badge'
 import { addElementByType } from '@/helper/editor.helper'
 import { cn } from '@/lib/utils'
-import { ComponentName, EditorElement, RecursiveComponent } from '@/model/web-builder'
+import { ComponentName, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function Container(props: RecursiveComponent<'Flex'>) {
+export default function Flex(props: RecursiveComponent<'Flex'>) {
   const { id, name, styles, group, content, index, parentId } = props
 
   const [
@@ -109,7 +109,7 @@ export default function Container(props: RecursiveComponent<'Flex'>) {
         'cursor-default': liveMode
       })}
       style={styles}>
-      {(content as EditorElement[]).map((item, index) => (
+      {content.map((item, index) => (
         <Recursive key={item.id} index={index} {...item} parentId={id} />
       ))}
 
