@@ -32,13 +32,15 @@
 
 ## Web Builder
 
-> 순서 Auth > Project > Canvas
+> Drag and Drop 으로 쉽게 웹 페이지 만들기
+
+<!-- > 순서 Auth > Project > Canvas
 
 [![2024-09-01-2-34-23.png](https://i.postimg.cc/tgqKVKjC/2024-09-01-2-34-23.png)](https://postimg.cc/21tcsXyP)
 
 #### 회원 가입 및 로그인 화면
 
-Session 및 데이터를 `Jose`, `bcrypt` 통해 암호화 처리하였습니다.
+Session 및 데이터를 `Jose`, `bcrypt` 통해 암호화 처리
 
 [![2024-09-01-2-46-54.png](https://i.postimg.cc/prfCCdQN/2024-09-01-2-46-54.png)](https://postimg.cc/RJ0wV4bG)
 
@@ -48,7 +50,7 @@ Session 및 데이터를 `Jose`, `bcrypt` 통해 암호화 처리하였습니다
 
 톱니바퀴를 누르게 되면 선택한 Project를 관리하는 모달 노출
 
-> 처음 설계당시 Landing Page를 관리하는 화면으로 생각하였습니다. 현재 간단한 CRUD만 가능하며, 추후 수정 예정입니다.
+> 처음 설계당시 Landing Page를 관리하는 화면으로 설계. 현재 간단한 CRUD만 가능하며, 추후 수정 예정
 
 `Go to Page` 버튼을 누르게 되면 화면을 수정할 수 있는 페이지로 이동합니다.
 
@@ -66,7 +68,7 @@ Supabase에 image 등록 후 Background image 삽입
 
 [![2024-09-01-3-01-51.png](https://i.postimg.cc/xjp1jPLz/2024-09-01-3-01-51.png)](https://postimg.cc/146QJwCm)
 
-전체 Element들을 Layers Tab에서 Tree로 보여줌
+전체 Element들을 Layers Tab에서 Tree로 보여줌 -->
 
 기술 스택
 
