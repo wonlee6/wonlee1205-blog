@@ -2,15 +2,12 @@
 
 import React, { useRef, useState } from 'react'
 
-import { Checkbox, Divider } from '@nextui-org/react'
-import { Settings, Trash2Icon } from 'lucide-react'
+import { Checkbox } from '@nextui-org/react'
 
-import { Badge } from '@/components/ui/badge'
+import SettingPopover from './setting-popover'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
 import { ElementType, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
@@ -123,73 +120,40 @@ export default function ButtonElement(props: RecursiveComponent) {
         {(content as ElementType).innerText}
       </Button>
       {!liveMode ? (
-        <Popover modal onOpenChange={handleButtonLabelValue}>
-          <PopoverTrigger
-            onClick={(e) => e.stopPropagation()}
-            className={cn(
-              'absolute z-10',
-              isFirstElementInBody ? 'bottom-0 left-1' : '-top-6 left-1'
-            )}>
-            {selectedElement.id === id && (
-              <Badge
-                className={cn(
-                  'cursor-pointer gap-2 rounded-none bg-primary-500 hover:bg-primary-400',
-                  isFirstElementInBody ? 'translate-y-full rounded-b-lg' : 'rounded-t-lg'
-                )}
-                variant='default'>
-                {name}
-                <Settings size={15} />
-              </Badge>
-            )}
-          </PopoverTrigger>
-          <PopoverContent align='start' sideOffset={0} onClick={(e) => e.stopPropagation()}>
-            <div className='grid gap-4'>
-              <div className='space-y-2'>
-                <h4 className='font-medium leading-none'>Button Setting</h4>
-              </div>
-              <Divider />
-              <div className='grid gap-2'>
-                <Label htmlFor='button-label'>Label</Label>
-                <Input
-                  id='button-label'
-                  value={buttonOption.label}
-                  onChange={(e) => setButtonOption((prev) => ({ ...prev, label: e.target.value }))}
-                  maxLength={255}
-                  autoComplete='off'
-                />
-                <Label htmlFor='button-href'>URL</Label>
-                <Input
-                  id='button-label'
-                  value={buttonOption.url}
-                  onChange={(e) => setButtonOption((prev) => ({ ...prev, url: e.target.value }))}
-                  maxLength={255}
-                  autoComplete='off'
-                  placeholder='e.g. http://www.google.com'
-                />
-                <div className='flex items-center'>
-                  <Checkbox
-                    id='button-tap'
-                    size='sm'
-                    isSelected={isNewTap}
-                    onValueChange={setIsNewTap}>
-                    Open in new tap
-                  </Checkbox>
-                </div>
-                <Divider />
-                <div
-                  onClick={handleDeleteElement}
-                  aria-label='Delete Button'
-                  onKeyDown={handleDeleteElementByKeyboard}
-                  role='button'
-                  tabIndex={0}
-                  className='flex cursor-pointer items-center gap-2 rounded-md p-1 text-danger-500 transition-all hover:bg-danger-500 hover:text-white'>
-                  <Trash2Icon size={15} />
-                  <span>Delete Button</span>
-                </div>
-              </div>
+        <SettingPopover onOpenChange={handleButtonLabelValue}>
+          <SettingPopover.Trigger
+            isShowBadge={selectedElement.id === id}
+            name={name}
+            isFirstElementInBody={isFirstElementInBody}
+          />
+          <SettingPopover.Content
+            title='Button'
+            onDeleteElement={handleDeleteElement}
+            onDeleteElementByKeyboard={handleDeleteElementByKeyboard}>
+            <Label htmlFor='button-label'>Label</Label>
+            <Input
+              id='button-label'
+              value={buttonOption.label}
+              onChange={(e) => setButtonOption((prev) => ({ ...prev, label: e.target.value }))}
+              maxLength={255}
+              autoComplete='off'
+            />
+            <Label htmlFor='button-href'>URL</Label>
+            <Input
+              id='button-label'
+              value={buttonOption.url}
+              onChange={(e) => setButtonOption((prev) => ({ ...prev, url: e.target.value }))}
+              maxLength={255}
+              autoComplete='off'
+              placeholder='e.g. http://www.google.com'
+            />
+            <div className='flex items-center'>
+              <Checkbox id='button-tap' size='sm' isSelected={isNewTap} onValueChange={setIsNewTap}>
+                Open in new tap
+              </Checkbox>
             </div>
-          </PopoverContent>
-        </Popover>
+          </SettingPopover.Content>
+        </SettingPopover>
       ) : null}
     </div>
   )
