@@ -15,7 +15,8 @@ function TypographyStyle({ selectedStyles }: { selectedStyles: React.CSSProperti
     fontWeight: selectedStyles['fontWeight'] ?? '',
     fontFamily: selectedStyles['fontFamily'] ?? '',
     paddingLeft: selectedStyles['paddingLeft'] ?? '',
-    color: selectedStyles['color'] ?? '#000000'
+    color: selectedStyles['color'] ?? '#000000',
+    lineHeight: selectedStyles['lineHeight'] ?? ''
   })
 
   const handleTextAlign = (align: string) => {
@@ -117,7 +118,7 @@ function TypographyStyle({ selectedStyles }: { selectedStyles: React.CSSProperti
           name='fontWeight'
           label='Font Weight'
           labelPlacement='outside'
-          selectedKeys={[form.fontWeight]}
+          selectedKeys={[String(form.fontWeight)]}
           onChange={handleSelectionChange}>
           {fontWeightOptions.map((fontWeight) => (
             <SelectItem key={fontWeight.key}>{fontWeight.label}</SelectItem>
@@ -133,6 +134,15 @@ function TypographyStyle({ selectedStyles }: { selectedStyles: React.CSSProperti
             <SelectItem key={fontFamily.key}>{fontFamily.label}</SelectItem>
           ))}
         </Select>
+        <Input
+          value={String(form.lineHeight)}
+          radius='sm'
+          name='lineHeight'
+          onChange={handleInputValue}
+          autoComplete='off'
+          label='line-Height'
+          labelPlacement='outside'
+        />
 
         <Divider className='mx-auto my-1 w-1/2' />
 

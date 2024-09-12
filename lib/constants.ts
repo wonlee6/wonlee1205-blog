@@ -41,9 +41,9 @@ export const LabelDefaultStyles: React.CSSProperties = {
 }
 
 export const HeadingDefaultStyles: React.CSSProperties = {
-  marginTop: 20,
-  marginBottom: 10,
-  fontWeight: 700,
-  fontSize: '38px',
-  height: '44px'
+  marginTop: '1.25rem',
+  marginBottom: '0.5rem',
+  fontWeight: 'bold',
+  fontSize: '3rem',
+  lineHeight: 1
 }

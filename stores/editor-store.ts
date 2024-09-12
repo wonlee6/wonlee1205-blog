@@ -20,7 +20,7 @@ type EditorActions = {
   onSelectElement: (element: EditorElement) => void
   onDeleteElement: (id: string) => void
   onUpdateContentInElement: <T>(content: T) => void
-  onUpdateElementStyle: (name: string, value: string | number, custom?: boolean) => void
+  onUpdateElementStyle: (style: object, custom?: boolean) => void
   onDeleteCustomCss: (property: string) => void
   onDragItemOrder: (parentId: string, sourceIndex: number, destinationIndex: number) => void
   onUploadImage: (images: Array<{ path: string }>, url?: string) => void
@@ -87,30 +87,27 @@ export const createEditorStore = () => {
       set((state) => ({
         elements: updateContentInElement(state.elements, state.selectedElement.id, content)
       })),
-    onUpdateElementStyle: (name: string, value: string | number, custom = false) =>
+    onUpdateElementStyle: (style: object, custom = false) =>
       set((state) => {
-        const styleObject = {
-          [name]: value
-        }
         return {
           ...state,
           selectedElement: {
             ...state.selectedElement,
             styles: {
               ...state.selectedElement.styles,
-              ...styleObject
+              ...style
             },
             ...(custom && {
               customStyles: {
                 ...state.selectedElement.customStyles,
-                ...styleObject
+                ...style
               }
             })
           },
           elements: updateElementStyle(
             state.elements,
             state.selectedElement.id,
-            { ...styleObject },
+            { ...style },
             custom
           )
         }

@@ -7,21 +7,23 @@ export default function useUpdateElement() {
 
   const handleInputUpdateElement = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      onUpdateElementStyle(e.target.name, e.target.value)
+      onUpdateElementStyle({
+        [e.target.name]: e.target.value
+      })
     },
     [onUpdateElementStyle]
   )
 
   const handleBtnUpdateElement = useCallback(
     (name: string, value: string, custom = false) => {
-      onUpdateElementStyle(name, value, custom)
+      onUpdateElementStyle({ [name]: value }, custom)
     },
     [onUpdateElementStyle]
   )
 
   const handleSliderUpdateElement = useCallback(
     (name: string, value: number | string) => {
-      onUpdateElementStyle(name, value)
+      onUpdateElementStyle({ [name]: value })
     },
     [onUpdateElementStyle]
   )
