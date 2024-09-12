@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils'
 import { ComponentName, EditorElement, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function Container(props: RecursiveComponent) {
+export default function Container(props: RecursiveComponent<'Flex'>) {
   const { id, name, styles, group, content, index, parentId } = props
 
   const [

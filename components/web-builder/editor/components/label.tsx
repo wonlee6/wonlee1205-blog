@@ -5,10 +5,10 @@ import React, { useState } from 'react'
 import SettingPopover from './setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ElementType, RecursiveComponent } from '@/model/web-builder'
+import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function LabelElement(props: RecursiveComponent) {
+export default function LabelElement(props: RecursiveComponent<'Label'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
   const {
@@ -74,8 +74,8 @@ export default function LabelElement(props: RecursiveComponent) {
   }
 
   const [labelOption, setLabelOption] = useState<{ text: string; id: string }>({
-    text: (content as ElementType).innerText ?? '',
-    id: (content as ElementType).id ?? ''
+    text: content.innerText ?? '',
+    id: content.id ?? ''
   })
 
   const handleUpdateLabelValue = (open: boolean) => {
@@ -105,13 +105,13 @@ export default function LabelElement(props: RecursiveComponent) {
         className={liveMode ? '' : 'border'}
         style={styles}
         tabIndex={0}
-        aria-label={(content as ElementType).innerText}
+        aria-label={labelOption.text}
         draggable
         onDragStart={handleDragStart}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
         onKeyDown={handleDeleteKeyDown}>
-        {(content as ElementType).innerText}
+        {labelOption.text}
       </Label>
       {!liveMode ? (
         <SettingPopover onOpenChange={handleUpdateLabelValue}>

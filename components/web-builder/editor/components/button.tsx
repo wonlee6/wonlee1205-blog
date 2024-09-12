@@ -8,10 +8,10 @@ import SettingPopover from './setting-popover'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ElementType, RecursiveComponent } from '@/model/web-builder'
+import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function ButtonElement(props: RecursiveComponent) {
+export default function ButtonElement(props: RecursiveComponent<'Button'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
   const {
@@ -79,7 +79,7 @@ export default function ButtonElement(props: RecursiveComponent) {
   }
 
   const [buttonOption, setButtonOption] = useState<{ label: string; url: string }>({
-    label: (content as ElementType).innerText ?? '',
+    label: content.innerText ?? '',
     url: ''
   })
   const [isNewTap, setIsNewTap] = useState(false)
@@ -111,13 +111,13 @@ export default function ButtonElement(props: RecursiveComponent) {
         onFocus={handleFocus}
         style={styles}
         tabIndex={0}
-        aria-label={(content as ElementType).innerText}
+        aria-label={buttonOption.label}
         draggable
         onDragStart={handleDragStart}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
         onKeyDown={handleDeleteKeyDown}>
-        {(content as ElementType).innerText}
+        {buttonOption.label}
       </Button>
       {!liveMode ? (
         <SettingPopover onOpenChange={handleButtonLabelValue}>

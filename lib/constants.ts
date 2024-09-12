@@ -1,5 +1,3 @@
-import { ComponentName } from '@/model/web-builder'
-
 export const defaultStyles: React.CSSProperties = {
   backgroundPosition: 'center',
   objectFit: 'cover',
@@ -42,17 +40,10 @@ export const LabelDefaultStyles: React.CSSProperties = {
   textAlign: 'left'
 }
 
-export function getDefaultStyleByComponentType(componentName: ComponentName) {
-  switch (componentName) {
-    case 'Flex':
-      return { ...ContainerDefaultStyles }
-    case 'Text':
-      return { ...InputDefaultStyles }
-    case 'Label':
-      return {
-        ...LabelDefaultStyles
-      }
-    default:
-      return {}
-  }
+export const HeadingDefaultStyles: React.CSSProperties = {
+  marginTop: 20,
+  marginBottom: 10,
+  fontWeight: 700,
+  fontSize: '38px',
+  height: '44px'
 }

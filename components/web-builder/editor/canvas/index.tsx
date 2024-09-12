@@ -8,10 +8,10 @@ import { useShallow } from 'zustand/react/shallow'
 import Recursive from './recursive'
 import { addElementByType } from '@/helper/editor.helper'
 import { cn } from '@/lib/utils'
-import { ComponentName, EditorElement, RecursiveComponent } from '@/model/web-builder'
+import { ComponentName, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-const Canvas = memo((props: RecursiveComponent) => {
+const Canvas = (props: RecursiveComponent<'Body'>) => {
   const { id, content } = props
 
   const [device, onAddElement, onSelectElement] = useEditorStore(
@@ -22,7 +22,7 @@ const Canvas = memo((props: RecursiveComponent) => {
     e.stopPropagation()
 
     const dragItem = e.dataTransfer.getData('text')
-
+    console.log('dragItem', dragItem)
     if (isNaN(Number(dragItem))) {
       const value = addElementByType(dragItem as ComponentName)
       if (typeof value !== 'undefined') {
@@ -61,13 +61,13 @@ const Canvas = memo((props: RecursiveComponent) => {
           'relative mx-auto h-full overflow-auto rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
           deviceSize[device]
         )}>
-        {(content as EditorElement[]).map((i, index) => (
+        {content.map((i, index) => (
           <Recursive key={i.id} {...i} index={index} parentId={id} />
         ))}
       </div>
     </>
   )
-})
+}
 
 Canvas.displayName = 'Canvas'
 

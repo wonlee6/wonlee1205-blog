@@ -5,10 +5,10 @@ import { useRef, useState } from 'react'
 import SettingPopover from './setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ElementType, RecursiveComponent } from '@/model/web-builder'
+import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function Text(props: RecursiveComponent) {
+export default function Text(props: RecursiveComponent<'Text'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
   const {
@@ -68,8 +68,8 @@ export default function Text(props: RecursiveComponent) {
   }
 
   const [textOption, setTextOption] = useState<{ id: string; maxLength: number }>({
-    id: (content as ElementType).id,
-    maxLength: (content as ElementType).maxLength
+    id: content?.id ?? '',
+    maxLength: content?.maxLength ?? 2000
   })
 
   const handleUpdateTextValue = (open: boolean) => {
@@ -97,8 +97,8 @@ export default function Text(props: RecursiveComponent) {
         id={textOption.id ? textOption.id : undefined}
         onClick={handleClick}
         onFocus={handleFocus}
-        aria-label={(content as ElementType).innerText}
-        placeholder={(content as ElementType).innerText}
+        aria-label={content.innerText}
+        placeholder={content.innerText}
         className={'relative w-full rounded-sm border-default-300'}
         style={styles}
         tabIndex={0}

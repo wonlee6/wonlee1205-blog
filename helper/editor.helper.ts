@@ -3,27 +3,54 @@ import { v4 } from 'uuid'
 
 import {
   ContainerDefaultStyles,
+  HeadingDefaultStyles,
   InputDefaultStyles,
   LabelDefaultStyles,
   YouTubeDefaultStyles
 } from '@/lib/constants'
-import { ComponentName, EditorElement, ElementType } from '@/model/web-builder'
+import {
+  ComponentName,
+  EditorElement,
+  AllElementType,
+  RecursiveComponent
+} from '@/model/web-builder'
 
-export function isElementType(
-  content: EditorElement[] | Partial<ElementType>
-): content is Partial<ElementType> {
-  return typeof content !== 'undefined' && !Array.isArray(content)
+export function isEditorElementArray(
+  content: AllElementType | EditorElement<ComponentName>[]
+): content is EditorElement<ComponentName>[] {
+  return typeof content !== 'undefined' && Array.isArray(content)
+}
+
+export function hasArrayContent(
+  component: RecursiveComponent
+): component is RecursiveComponent<'Flex' | 'Body'> {
+  return Array.isArray(component.content)
 }
 
 export function addElementByType(componentName: ComponentName): EditorElement | undefined {
   switch (componentName) {
+    // Structure
     case 'Flex':
       return {
         content: [],
         id: v4(),
         name: 'Flex',
         styles: { ...ContainerDefaultStyles },
-        group: 'Layout'
+        group: 'Structure'
+      }
+    // Typography
+    case 'Heading':
+      return {
+        content: {
+          innerText: 'Heading',
+          heading: 1
+        },
+        id: v4(),
+        name: 'Heading',
+        styles: {
+          ...HeadingDefaultStyles
+        },
+        group: 'Typography'
       }
     case 'Label':
       return {
@@ -33,7 +60,7 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         styles: {
           ...LabelDefaultStyles
         },
-        group: 'Element'
+        group: 'Forms'
       }
     case 'Text':
       return {
@@ -43,7 +70,7 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         styles: {
           ...InputDefaultStyles
         },
-        group: 'Element'
+        group: 'Forms'
       }
     case 'Button':
       return {
@@ -51,7 +78,7 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         id: v4(),
         name: 'Button',
         styles: {},
-        group: 'Element'
+        group: 'Forms'
       }
     case 'YouTube':
       return {
@@ -67,10 +94,29 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         styles: {
           ...YouTubeDefaultStyles
         },
-        group: 'Element'
+        group: 'Media'
       }
     default:
       return undefined
+  }
+}
+
+export function getDefaultStyleByComponentType(componentName: ComponentName) {
+  switch (componentName) {
+    case 'Flex':
+      return { ...ContainerDefaultStyles }
+    case 'Text':
+      return { ...InputDefaultStyles }
+    case 'Label':
+      return {
+        ...LabelDefaultStyles
+      }
+    case 'Heading':
+      return {
+        ...HeadingDefaultStyles
+      }
+    default:
+      return {}
   }
 }
 

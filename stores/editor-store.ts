@@ -1,12 +1,11 @@
 import { createStore } from 'zustand/vanilla'
 
-import { isElementType } from '@/helper/editor.helper'
-import { getDefaultStyleByComponentType } from '@/lib/constants'
+import { getDefaultStyleByComponentType, isEditorElementArray } from '@/helper/editor.helper'
 import { EditorElement } from '@/model/web-builder'
 
 type EditorState = {
   device: 'Desktop' | 'Tablet' | 'Mobile'
-  elements: EditorElement[]
+  elements: EditorElement<'Body'>[]
   selectedElement: EditorElement
   previewMode: boolean
   liveMode: boolean
@@ -167,7 +166,7 @@ const addElement = (
 
 const deleteElement = (editorArray: EditorElement[], id: string): EditorElement[] => {
   return editorArray.map((item) => {
-    if (!isElementType(item.content)) {
+    if (isEditorElementArray(item.content)) {
       const existElement = item.content.some((i) => i.id === id)
       if (existElement) {
         return {
@@ -190,7 +189,7 @@ const updateContentInElement = <T>(
   contents: T
 ): EditorElement[] => {
   return editorArray.map((item) => {
-    if (!isElementType(item.content)) {
+    if (isEditorElementArray(item.content)) {
       return {
         ...item,
         content: updateContentInElement(item.content, id, contents)

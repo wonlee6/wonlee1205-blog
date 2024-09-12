@@ -65,13 +65,37 @@ const StorageSchema = z.object({
 
 export type StorageSchemaModel = z.infer<typeof StorageSchema>
 
-export type ComponentName = 'Body' | 'Flex' | 'Label' | 'Text' | 'Button' | 'YouTube' | null
-export type ComponentGroup = 'Body' | 'Layout' | 'Element' | null
+export type ComponentName =
+  | 'Body'
+  // Structure
+  | 'Flex'
+  // Typography
+  | 'Heading'
+  | 'Paragraph'
+  | 'Text Link'
+  | 'Block Quote'
+  // Forms
+  | 'Label'
+  | 'Text'
+  | 'Text Area'
+  | 'Button'
+  // Media
+  | 'Image'
+  | 'YouTube'
+  | null
+
+export type ComponentGroup = 'Body' | 'Structure' | 'Typography' | 'Forms' | 'Media' | null
+
+type HeadingElement = {
+  text: string
+  heading: number
+}
 
 type ButtonElement = {
   href: string
   innerText: string
 }
+
 type TextElement = {
   id: string
   maxLength?: number
@@ -85,20 +109,19 @@ type YouTubeElement = {
   showControls: boolean
 }
 
-type AllElementType = keyof ButtonElement | keyof TextElement | keyof YouTubeElement
+export type AllElementType = Partial<HeadingElement & ButtonElement & TextElement & YouTubeElement>
+type NonLayoutComponentName = Exclude<ComponentName, 'Flex' | 'Body'>
 
-export type ElementType = Record<AllElementType, any>
-
-export type EditorElement = {
+export type EditorElement<T extends ComponentName = ComponentName> = {
   id: string
   styles: React.CSSProperties
   customStyles?: React.CSSProperties | undefined
   name: ComponentName
   group: ComponentGroup
-  content: EditorElement[] | Partial<ElementType>
+  content: T extends NonLayoutComponentName ? AllElementType : EditorElement[]
 }
 
-export type RecursiveComponent = EditorElement & {
+export type RecursiveComponent<T extends ComponentName = ComponentName> = EditorElement<T> & {
   index: number
   parentId: string
 }

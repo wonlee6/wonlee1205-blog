@@ -17,10 +17,10 @@ export default function StylesTab() {
     useShallow((state) => [state.selectedElement, state.uploadImages])
   )
 
-  const isLayout = selectedElement.group !== 'Layout'
+  const isLayout = selectedElement.group !== 'Structure'
 
   const selectedStyles = useMemo(() => selectedElement.styles, [selectedElement])
-  const hasSelectedItem = selectedElement.id !== '' && selectedElement.group === 'Layout'
+  const hasSelectedItem = selectedElement.id !== '' && selectedElement.group === 'Structure'
 
   const isSelectedItem = selectedElement.id === ''
 

@@ -5,9 +5,9 @@ import React, { memo } from 'react'
 import { FolderRoot, SquareDashedMousePointer, SquareMousePointer } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 
-import { isElementType } from '@/helper/editor.helper'
+import { isEditorElementArray } from '@/helper/editor.helper'
 import { cn } from '@/lib/utils'
-import { ComponentGroup, EditorElement } from '@/model/web-builder'
+import { EditorElement } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function LayersTab() {
@@ -29,7 +29,7 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
     useShallow((state) => [state.selectedElement, state.onSelectElement])
   )
 
-  if (isElementType(content)) {
+  if (!isEditorElementArray(content)) {
     return (
       <>
         <div
@@ -63,7 +63,7 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
         onKeyDown={() => {}}
         tabIndex={0}
         style={{ paddingLeft: id === '___body' ? '0.5rem' : `${depth}rem` }}>
-        {group ? LayerIcon[group as Exclude<ComponentGroup, 'Element' | null>] : null}
+        {group ? LayerIcon[group as 'Body' | 'Structure'] : null}
         {name}
       </div>
 
@@ -74,7 +74,7 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
   )
 }
 
-const LayerIcon = {
+const LayerIcon: Record<'Body' | 'Structure', JSX.Element> = {
   Body: <FolderRoot />,
-  Layout: <SquareDashedMousePointer />
+  Structure: <SquareDashedMousePointer />
 }

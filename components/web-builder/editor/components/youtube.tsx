@@ -13,11 +13,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-import { ElementType, RecursiveComponent } from '@/model/web-builder'
+import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 import youtubeErrorImg from '@/public/images/youtube-error.webp'
 
-export default function YouTube(props: RecursiveComponent) {
+export default function YouTube(props: RecursiveComponent<'YouTube'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
   const { liveMode, selectedElement, onSelectElement, onDeleteElement, onUpdateContentInElement } =
@@ -25,13 +25,11 @@ export default function YouTube(props: RecursiveComponent) {
 
   const URLRef = useRef<HTMLInputElement | null>(null)
 
-  const [url, setURL] = useState((content as ElementType).url)
-  const [isMute, setIsMute] = useState((content as ElementType).mute)
-  const [isAutoplay, setIsAutoplay] = useState((content as ElementType).autoplay)
-  const [isLoop, setIsLoop] = useState((content as ElementType).loop)
-  const [showPlayerControls, setShowPlayerControls] = useState(
-    (content as ElementType).showControls
-  )
+  const [url, setURL] = useState(content.url)
+  const [isMute, setIsMute] = useState(content.mute)
+  const [isAutoplay, setIsAutoplay] = useState(content.autoplay)
+  const [isLoop, setIsLoop] = useState(content.loop)
+  const [showPlayerControls, setShowPlayerControls] = useState(content.showControls)
 
   const [showEdit, setShowEdit] = useState(true)
 

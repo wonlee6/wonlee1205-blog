@@ -52,7 +52,7 @@ function FlexBoxStyle({
     inputDebounce(e)
   }
 
-  const isDisable = componentGroup !== 'Layout'
+  const isDisable = componentGroup !== 'Structure'
 
   return (
     <>
