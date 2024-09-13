@@ -122,7 +122,7 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
       {!liveMode ? (
         <SettingPopover onOpenChange={handleButtonLabelValue}>
           <SettingPopover.Trigger
-            isShowBadge={selectedElement.id === id}
+            isShowBadge={selectedElement.id === id && !liveMode}
             name={name}
             isFirstElementInBody={isFirstElementInBody}
           />

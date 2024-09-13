@@ -111,7 +111,7 @@ export default function Text(props: RecursiveComponent<'Text'>) {
       {!liveMode ? (
         <SettingPopover onOpenChange={handleUpdateTextValue}>
           <SettingPopover.Trigger
-            isShowBadge={selectedElement.id === id}
+            isShowBadge={selectedElement.id === id && !liveMode}
             name={name}
             isFirstElementInBody={isFirstElementInBody}
           />

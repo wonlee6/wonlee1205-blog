@@ -2,11 +2,10 @@
 
 import React, { useState } from 'react'
 
-import { Radio, RadioGroup } from '@nextui-org/react'
-
 import SettingPopover from '../setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { RadioGroupItem, RadioGroup } from '@/components/ui/radio-group'
 import { HeadingDefaultStyles } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { RecursiveComponent } from '@/model/web-builder'
@@ -26,7 +25,6 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
   } = useEditorStore((state) => state)
 
   const [headingText, setHeadingText] = useState(content.text)
-  const [selectedHeading, setSelectedHading] = useState(String(content.heading))
 
   const handleSelectElement = () => {
     onSelectElement({
@@ -47,8 +45,8 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
   const handleHeadingValue = (open: boolean) => {
     if (!open) {
       onUpdateContentInElement({
-        text: headingText,
-        heading: Number(selectedHeading)
+        ...content,
+        text: headingText
       })
     }
   }
@@ -85,7 +83,6 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
   }
 
   const handleSelectHeading = (value: string) => {
-    setSelectedHading(value)
     let headingStyle = null
     switch (value) {
       case '1':
@@ -172,7 +169,7 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
       {headingCompo}
       <SettingPopover onOpenChange={handleHeadingValue}>
         <SettingPopover.Trigger
-          isShowBadge={selectedElement.id === id}
+          isShowBadge={selectedElement.id === id && !liveMode}
           name={name}
           isFirstElementInBody={isFirstElementInBody}
         />
@@ -181,16 +178,29 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
           onDeleteElement={handleDeleteElement}
           onDeleteElementByKeyboard={handleDeleteByKeyDown}>
           <RadioGroup
-            label='Select Heading'
-            orientation='horizontal'
-            size='sm'
-            value={selectedHeading}
+            defaultValue={String(content.heading)}
+            className='flex flex-row'
             onValueChange={handleSelectHeading}>
-            <Radio value='1'>h1</Radio>
-            <Radio value='2'>h2</Radio>
-            <Radio value='3'>h3</Radio>
-            <Radio value='4'>h4</Radio>
-            <Radio value='5'>h5</Radio>
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='1' id='heading-h1' />
+              <Label htmlFor='heading-h1'>h1</Label>
+            </div>
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='2' id='heading-h2' />
+              <Label htmlFor='heading-h2'>h2</Label>
+            </div>
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='3' id='heading-h3' />
+              <Label htmlFor='heading-h3'>h3</Label>
+            </div>
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='4' id='heading-h4' />
+              <Label htmlFor='heading-h4'>h4</Label>
+            </div>
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='5' id='heading-h5' />
+              <Label htmlFor='heading-h5'>h5</Label>
+            </div>
           </RadioGroup>
           <Label htmlFor='label-text' className='mt-2 text-xs'>
             Text

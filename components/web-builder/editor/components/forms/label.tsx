@@ -116,7 +116,7 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
       {!liveMode ? (
         <SettingPopover onOpenChange={handleUpdateLabelValue}>
           <SettingPopover.Trigger
-            isShowBadge={selectedElement.id === id}
+            isShowBadge={selectedElement.id === id && !liveMode}
             name={name}
             isFirstElementInBody={isFirstElementInBody}
           />
