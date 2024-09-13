@@ -69,7 +69,7 @@ export default function ComponentsTab() {
                 <div
                   className='cursor-grab rounded-lg p-1 transition-all group-hover:bg-default-200'
                   draggable
-                  onDragStart={(e) => handleDragStart(e, item.name)}>
+                  onDragStart={(e) => handleDragStart(e, item.value)}>
                   {item.icon}
                 </div>
                 <span className='cursor-default select-none whitespace-nowrap'>{item.name}</span>
@@ -91,7 +91,7 @@ export default function ComponentsTab() {
                 <div
                   className='cursor-grab rounded-lg p-1 transition-all group-hover:bg-default-200'
                   draggable
-                  onDragStart={(e) => handleDragStart(e, item.name)}>
+                  onDragStart={(e) => handleDragStart(e, item.value)}>
                   {item.icon}
                 </div>
                 <span className='cursor-default select-none whitespace-nowrap'>{item.name}</span>
@@ -113,7 +113,7 @@ export default function ComponentsTab() {
                 <div
                   className='cursor-grab rounded-lg p-1 transition-all group-hover:bg-default-200'
                   draggable
-                  onDragStart={(e) => handleDragStart(e, item.name)}>
+                  onDragStart={(e) => handleDragStart(e, item.value)}>
                   {item.icon}
                 </div>
                 <span className='cursor-default select-none whitespace-nowrap'>{item.name}</span>
@@ -129,20 +129,20 @@ export default function ComponentsTab() {
 const structureList = [{ name: 'Flex', icon: <BoxSelect size={40} /> }]
 
 const typographyList = [
-  { name: 'Heading', icon: <HeadingIcon size={40} /> },
-  { name: 'Paragraph', icon: <PilcrowIcon size={40} /> },
-  { name: 'Text Link', icon: <LinkIcon size={40} /> },
-  { name: 'Block Quote', icon: <TextQuoteIcon size={40} /> }
+  { name: 'Heading', value: 'Heading', icon: <HeadingIcon size={40} /> },
+  { name: 'Paragraph', value: 'Paragraph', icon: <PilcrowIcon size={40} /> },
+  { name: 'Text Link', value: 'TextLink', icon: <LinkIcon size={40} /> },
+  { name: 'Block Quote', value: 'BlockQuote', icon: <TextQuoteIcon size={40} /> }
 ]
 
 const formList = [
-  { name: 'Label', icon: <TagIcon size={40} /> },
-  { name: 'Text', icon: <TypeIcon size={40} /> },
-  { name: 'Text Area', icon: <LetterTextIcon size={40} /> },
-  { name: 'Button', icon: <CircleArrowLeftIcon size={40} /> }
+  { name: 'Label', value: 'Label', icon: <TagIcon size={40} /> },
+  { name: 'Text', value: 'Text', icon: <TypeIcon size={40} /> },
+  { name: 'Text Area', value: 'TextArea', icon: <LetterTextIcon size={40} /> },
+  { name: 'Button', value: 'Button', icon: <CircleArrowLeftIcon size={40} /> }
 ]
 
 const mediaList = [
-  { name: 'Image', icon: <ImageIcon size={40} /> },
-  { name: 'YouTube', icon: <YoutubeIcon size={40} /> }
+  { name: 'Image', value: 'Image', icon: <ImageIcon size={40} /> },
+  { name: 'YouTube', value: 'YouTube', icon: <YoutubeIcon size={40} /> }
 ]

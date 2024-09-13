@@ -34,6 +34,8 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
   const [showEdit, setShowEdit] = useState(true)
 
   const handleClick = (e: React.FormEvent<HTMLFormElement | HTMLDivElement>) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     onSelectElement({
@@ -66,7 +68,7 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative'>
+    <div className='relative' aria-hidden>
       {showEdit ? (
         <>
           {liveMode ? (

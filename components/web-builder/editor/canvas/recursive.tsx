@@ -3,23 +3,18 @@ import LabelElement from '../components/forms/label'
 import Text from '../components/forms/text'
 import YouTube from '../components/media/youtube'
 import Flex from '../components/structure/flex'
+import BlockQuote from '../components/typography/block-quote'
 import Heading from '../components/typography/heading'
-import { hasArrayContent } from '@/helper/editor.helper'
+import Paragraph from '../components/typography/paragraph'
+import TextLink from '../components/typography/text-link'
 import { RecursiveComponent } from '@/model/web-builder'
 
 export default function Recursive(props: RecursiveComponent) {
   const { name } = props
 
-  if (hasArrayContent(props)) {
-    switch (name) {
-      case 'Flex':
-        return <Flex {...props} />
-      default:
-        return null
-    }
-  }
-
   switch (name) {
+    case 'Flex':
+      return <Flex {...(props as RecursiveComponent<'Flex'>)} />
     case 'Text':
       return <Text {...(props as RecursiveComponent<'Text'>)} />
     case 'Button':
@@ -30,6 +25,12 @@ export default function Recursive(props: RecursiveComponent) {
       return <LabelElement {...(props as RecursiveComponent<'Label'>)} />
     case 'Heading':
       return <Heading {...(props as RecursiveComponent<'Heading'>)} />
+    case 'Paragraph':
+      return <Paragraph {...(props as RecursiveComponent<'Paragraph'>)} />
+    case 'TextLink':
+      return <TextLink {...(props as RecursiveComponent<'TextLink'>)} />
+    case 'BlockQuote':
+      return <BlockQuote {...(props as RecursiveComponent<'BlockQuote'>)} />
     default:
       return null
   }

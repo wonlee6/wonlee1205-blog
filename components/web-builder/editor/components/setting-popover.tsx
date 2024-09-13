@@ -10,12 +10,18 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
 import { cn } from '@/lib/utils'
 
 type TriggerProps = {
+  name: string
   isFirstElementInBody: boolean
   isShowBadge: boolean
-  name: string | null
+  isShowBadgeIcon?: boolean
 }
 
-function Trigger({ isFirstElementInBody, isShowBadge, name }: TriggerProps) {
+function Trigger({
+  isFirstElementInBody,
+  isShowBadge,
+  name,
+  isShowBadgeIcon = true
+}: TriggerProps) {
   return (
     <PopoverTrigger
       onClick={(e) => e.stopPropagation()}
@@ -28,7 +34,7 @@ function Trigger({ isFirstElementInBody, isShowBadge, name }: TriggerProps) {
           )}
           variant='default'>
           {name || 'Empty Name'}
-          <SettingsIcon size={15} />
+          {isShowBadgeIcon && <SettingsIcon size={15} />}
         </Badge>
       ) : null}
     </PopoverTrigger>
@@ -72,7 +78,7 @@ function Content({
 }
 
 type Props = {
-  onOpenChange: (open: boolean) => void
+  onOpenChange?: (open: boolean) => void
 }
 
 function SettingPopover(props: React.PropsWithChildren<Props>) {

@@ -31,24 +31,32 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
   }
 
   const handleClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     handleSelectElement()
   }
 
   const handleFocus = (e: React.FormEvent<HTMLLabelElement>) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     handleSelectElement()
   }
 
   const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (liveMode) return
+
     e.preventDefault()
 
     onDeleteElement(id)
   }
 
   const handleDeleteKeyDown = (e: React.KeyboardEvent) => {
+    if (liveMode) return
+
     if (e.key === 'Delete') {
       e.preventDefault()
       e.stopPropagation()
@@ -57,6 +65,8 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
   }
 
   const handleDragStart = (e: React.DragEvent) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     e.dataTransfer.clearData()
@@ -66,6 +76,8 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
   }
 
   const handleDrop = (e: React.DragEvent) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     const sourceIndex = e.dataTransfer.getData('text')
@@ -97,7 +109,7 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative w-full'>
+    <div className='relative w-full' aria-hidden>
       <Label
         htmlFor={liveMode && labelOption.id ? labelOption.id : undefined}
         onClick={handleClick}
@@ -117,7 +129,7 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
         <SettingPopover onOpenChange={handleUpdateLabelValue}>
           <SettingPopover.Trigger
             isShowBadge={selectedElement.id === id && !liveMode}
-            name={name}
+            name='Label'
             isFirstElementInBody={isFirstElementInBody}
           />
           <SettingPopover.Content

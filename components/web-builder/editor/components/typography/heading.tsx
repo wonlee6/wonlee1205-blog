@@ -37,6 +37,7 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
   }
 
   const handleClick = (e: React.MouseEvent<HTMLHeadingElement>) => {
+    if (liveMode) return
     e.stopPropagation()
 
     handleSelectElement()
@@ -58,6 +59,8 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
   }
 
   const handleDeleteByKeyDown = (e: React.KeyboardEvent) => {
+    if (liveMode) return
+
     if (e.key === 'Delete') {
       e.preventDefault()
       e.stopPropagation()
@@ -66,6 +69,8 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
   }
 
   const handleDragStart = (e: React.DragEvent) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     e.dataTransfer.clearData()
@@ -75,6 +80,8 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
   }
 
   const handleDrop = (e: React.DragEvent) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     const sourceIndex = e.dataTransfer.getData('text')
@@ -165,12 +172,13 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
       })}
       onDragStart={handleDragStart}
       onDragOver={(e) => e.preventDefault()}
-      onDrop={handleDrop}>
+      onDrop={handleDrop}
+      aria-hidden>
       {headingCompo}
       <SettingPopover onOpenChange={handleHeadingValue}>
         <SettingPopover.Trigger
           isShowBadge={selectedElement.id === id && !liveMode}
-          name={name}
+          name='Heading'
           isFirstElementInBody={isFirstElementInBody}
         />
         <SettingPopover.Content

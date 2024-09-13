@@ -47,3 +47,21 @@ export const HeadingDefaultStyles: React.CSSProperties = {
   fontSize: '3rem',
   lineHeight: 1
 }
+
+export const ParagraphDefaultStyles: React.CSSProperties = {
+  marginBottom: '0.5rem'
+}
+
+export const TextLinkDefaultStyles: React.CSSProperties = {
+  textDecorationLine: 'underline',
+  textUnderlineOffset: '4px',
+  fontWeight: '500'
+}
+
+export const BlockQuoteDefaultStyles: React.CSSProperties = {
+  paddingLeft: '1.5rem',
+  // borderLeftWidth: '2px',
+  marginTop: '1.5rem',
+  fontFamily: 'italic',
+  whiteSpace: 'pre-wrap'
+}

@@ -40,6 +40,8 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
   }
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     e.dataTransfer.clearData()
@@ -49,6 +51,8 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
   }
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     const dragItem = e.dataTransfer.getData('text')
@@ -71,6 +75,8 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
   }
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (liveMode) return
+
     e.stopPropagation()
     onSelectElement({
       id,
@@ -82,6 +88,8 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (liveMode) return
+
     if (e.key === 'Delete') {
       e.preventDefault()
       e.stopPropagation()

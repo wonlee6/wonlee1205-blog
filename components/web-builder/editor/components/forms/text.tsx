@@ -22,6 +22,11 @@ export default function Text(props: RecursiveComponent<'Text'>) {
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
+  const [textOption, setTextOption] = useState<{ id: string; maxLength: number }>({
+    id: content.id,
+    maxLength: content.maxLength
+  })
+
   const handleSelectElement = () => {
     onSelectElement({
       id,
@@ -33,24 +38,28 @@ export default function Text(props: RecursiveComponent<'Text'>) {
   }
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (liveMode) return
     e.stopPropagation()
 
     handleSelectElement()
   }
 
   const handleFocus = (e: React.FormEvent<HTMLInputElement>) => {
+    if (liveMode) return
     e.stopPropagation()
 
     handleSelectElement()
   }
 
   const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault()
+    if (liveMode) return
     e.stopPropagation()
     onDeleteElement(id)
   }
 
   const handleDragStart = (e: React.DragEvent) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     e.dataTransfer.clearData()
@@ -60,17 +69,14 @@ export default function Text(props: RecursiveComponent<'Text'>) {
   }
 
   const handleDrop = (e: React.DragEvent) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     const sourceIndex = e.dataTransfer.getData('text')
     const destinationIndex = index
     onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
   }
-
-  const [textOption, setTextOption] = useState<{ id: string; maxLength: number }>({
-    id: content.id,
-    maxLength: content.maxLength
-  })
 
   const handleUpdateTextValue = (open: boolean) => {
     if (!open) {
@@ -91,7 +97,7 @@ export default function Text(props: RecursiveComponent<'Text'>) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative w-full'>
+    <div className='relative w-full' aria-hidden>
       <Input
         ref={inputRef}
         id={textOption.id ? textOption.id : undefined}
@@ -112,7 +118,7 @@ export default function Text(props: RecursiveComponent<'Text'>) {
         <SettingPopover onOpenChange={handleUpdateTextValue}>
           <SettingPopover.Trigger
             isShowBadge={selectedElement.id === id && !liveMode}
-            name={name}
+            name='Text'
             isFirstElementInBody={isFirstElementInBody}
           />
           <SettingPopover.Content

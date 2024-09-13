@@ -72,36 +72,42 @@ export type ComponentName =
   // Typography
   | 'Heading'
   | 'Paragraph'
-  | 'Text Link'
-  | 'Block Quote'
+  | 'TextLink'
+  | 'BlockQuote'
   // Forms
   | 'Label'
   | 'Text'
-  | 'Text Area'
+  | 'TextArea'
   | 'Button'
   // Media
   | 'Image'
   | 'YouTube'
   | null
 
-export type ComponentGroup = 'Body' | 'Structure' | 'Typography' | 'Forms' | 'Media' | null
-
 type HeadingElement = {
   text: string
   heading: number
 }
-
+type ParagraphElement = {
+  text: string
+}
+type TextLinkElement = {
+  text: string
+  href: string
+  prefetch: undefined | boolean
+}
+type BlockQuoteElement = {
+  text: string
+}
 type ButtonElement = {
   href: string
   innerText: string
 }
-
 type TextElement = {
   innerText: string
   id: string
   maxLength: number
 }
-
 type YouTubeElement = {
   url: string
   mute: boolean
@@ -109,7 +115,6 @@ type YouTubeElement = {
   autoplay: boolean
   showControls: boolean
 }
-
 type LabelElement = {
   text: string
   id: string
@@ -121,8 +126,12 @@ type ElementMapping = {
   Text: TextElement
   YouTube: YouTubeElement
   Label: LabelElement
+  Paragraph: ParagraphElement
+  TextLink: TextLinkElement
+  BlockQuote: BlockQuoteElement
 }
 
+export type ComponentGroup = 'Body' | 'Structure' | 'Typography' | 'Forms' | 'Media' | null
 export type AllElementType<T extends NonLayoutComponentName> = T extends keyof ElementMapping
   ? ElementMapping[T]
   : never

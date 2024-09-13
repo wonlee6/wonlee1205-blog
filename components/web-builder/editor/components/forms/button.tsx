@@ -36,24 +36,32 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
   }
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     handleSelectElement()
   }
 
   const handleFocus = (e: React.FormEvent<HTMLButtonElement>) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     handleSelectElement()
   }
 
   const handleDeleteElement = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (liveMode) return
+
     e.preventDefault()
 
     onDeleteElement(id)
   }
 
   const handleDeleteKeyDown = (e: React.KeyboardEvent) => {
+    if (liveMode) return
+
     if (e.key === 'Delete') {
       e.preventDefault()
       e.stopPropagation()
@@ -62,6 +70,8 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
   }
 
   const handleDragStart = (e: React.DragEvent) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     e.dataTransfer.clearData()
@@ -71,6 +81,8 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
   }
 
   const handleDrop = (e: React.DragEvent) => {
+    if (liveMode) return
+
     e.stopPropagation()
 
     const sourceIndex = e.dataTransfer.getData('text')
@@ -123,7 +135,7 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
         <SettingPopover onOpenChange={handleButtonLabelValue}>
           <SettingPopover.Trigger
             isShowBadge={selectedElement.id === id && !liveMode}
-            name={name}
+            name='Button'
             isFirstElementInBody={isFirstElementInBody}
           />
           <SettingPopover.Content

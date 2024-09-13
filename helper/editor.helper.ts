@@ -2,10 +2,13 @@ import CryptoJS from 'crypto-js'
 import { v4 } from 'uuid'
 
 import {
+  BlockQuoteDefaultStyles,
   ContainerDefaultStyles,
   HeadingDefaultStyles,
   InputDefaultStyles,
   LabelDefaultStyles,
+  ParagraphDefaultStyles,
+  TextLinkDefaultStyles,
   YouTubeDefaultStyles
 } from '@/lib/constants'
 import {
@@ -50,6 +53,44 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         name: 'Heading',
         styles: {
           ...HeadingDefaultStyles
+        },
+        group: 'Typography'
+      }
+    case 'Paragraph':
+      return {
+        content: {
+          text: defaultParagraphText
+        },
+        id: v4(),
+        name: 'Paragraph',
+        styles: {
+          ...ParagraphDefaultStyles
+        },
+        group: 'Typography'
+      }
+    case 'TextLink':
+      return {
+        content: {
+          text: 'Text Link in Typography',
+          href: '',
+          prefetch: undefined
+        },
+        id: v4(),
+        name: 'TextLink',
+        styles: {
+          ...TextLinkDefaultStyles
+        },
+        group: 'Typography'
+      }
+    case 'BlockQuote':
+      return {
+        content: {
+          text: 'Various countries around the globe have governmental policies regarding web accessibility as well. Most well known of these are Section 508 in the US and Web Accessibility Directive of the European Union.'
+        },
+        id: v4(),
+        name: 'BlockQuote',
+        styles: {
+          ...BlockQuoteDefaultStyles
         },
         group: 'Typography'
       }
@@ -133,3 +174,6 @@ export function decryptFormData<T>(encryptedData: string): T {
   const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey)
   return JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
 }
+
+const defaultParagraphText =
+  '삶은 때로 우리를 예상치 못한 방향으로 이끌지만, 중요한 것은 그 과정에서 무엇을 배우고, 어떻게 성장하느냐에 달려 있습니다. 실패는 끝이 아닌 또 다른 시작이며, 성공은 우리가 걸어온 길을 되돌아볼 기회일 뿐입니다. 아무리 어려운 상황이라도 포기하지 않고 한 걸음씩 나아가다 보면, 어느새 목표에 가까워져 있는 자신을 발견하게 될 것입니다. 결국, 우리의 의지와 끈기가 모든 것을 결정합니다. 오늘 내딛는 작은 발걸음이 미래의 큰 변화를 가져올 수 있음을 기억하세요.'
