@@ -1,6 +1,10 @@
+'use client'
+
 import ButtonElement from '../components/forms/button'
 import LabelElement from '../components/forms/label'
 import Text from '../components/forms/text'
+import TextAreaElement from '../components/forms/text-area'
+import ImageElement from '../components/media/image-element'
 import YouTube from '../components/media/youtube'
 import Flex from '../components/structure/flex'
 import BlockQuote from '../components/typography/block-quote'
@@ -17,10 +21,14 @@ export default function Recursive(props: RecursiveComponent) {
       return <Flex {...(props as RecursiveComponent<'Flex'>)} />
     case 'Text':
       return <Text {...(props as RecursiveComponent<'Text'>)} />
+    case 'TextArea':
+      return <TextAreaElement {...(props as RecursiveComponent<'TextArea'>)} />
     case 'Button':
       return <ButtonElement {...(props as RecursiveComponent<'Button'>)} />
     case 'YouTube':
       return <YouTube {...(props as RecursiveComponent<'YouTube'>)} />
+    case 'Image':
+      return <ImageElement {...(props as RecursiveComponent<'Image'>)} />
     case 'Label':
       return <LabelElement {...(props as RecursiveComponent<'Label'>)} />
     case 'Heading':

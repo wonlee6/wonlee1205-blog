@@ -58,10 +58,21 @@ export const TextLinkDefaultStyles: React.CSSProperties = {
   fontWeight: '500'
 }
 
+export const TextAreaDefaultStyles: React.CSSProperties = {
+  textAlign: 'left'
+}
+
 export const BlockQuoteDefaultStyles: React.CSSProperties = {
   paddingLeft: '1.5rem',
   // borderLeftWidth: '2px',
   marginTop: '1.5rem',
   fontFamily: 'italic',
   whiteSpace: 'pre-wrap'
+}
+
+export const ImageDefaultStyles: React.CSSProperties = {
+  backgroundPosition: 'center',
+  objectFit: 'cover',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover'
 }

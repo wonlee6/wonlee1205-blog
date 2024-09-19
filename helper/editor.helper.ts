@@ -5,6 +5,7 @@ import {
   BlockQuoteDefaultStyles,
   ContainerDefaultStyles,
   HeadingDefaultStyles,
+  ImageDefaultStyles,
   InputDefaultStyles,
   LabelDefaultStyles,
   ParagraphDefaultStyles,
@@ -115,6 +116,16 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         },
         group: 'Forms'
       }
+    case 'TextArea':
+      return {
+        content: { innerText: 'Text Area Element', id: '', maxLength: 2000 },
+        id: v4(),
+        name: 'TextArea',
+        styles: {
+          ...InputDefaultStyles
+        },
+        group: 'Forms'
+      }
     case 'Button':
       return {
         content: { innerText: 'Button Text', href: '' },
@@ -137,6 +148,22 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         name: 'YouTube',
         styles: {
           ...YouTubeDefaultStyles
+        },
+        group: 'Media'
+      }
+    case 'Image':
+      return {
+        content: {
+          src: '',
+          alt: '',
+          width: 300,
+          height: 400
+          // ratio: 16 / 9
+        },
+        id: v4(),
+        name: 'Image',
+        styles: {
+          ...ImageDefaultStyles
         },
         group: 'Media'
       }

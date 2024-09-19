@@ -108,6 +108,11 @@ type TextElement = {
   id: string
   maxLength: number
 }
+
+type LabelElement = {
+  text: string
+  id: string
+}
 type YouTubeElement = {
   url: string
   mute: boolean
@@ -115,20 +120,25 @@ type YouTubeElement = {
   autoplay: boolean
   showControls: boolean
 }
-type LabelElement = {
-  text: string
-  id: string
+type ImageElement = {
+  src: string
+  alt: string
+  // ratio: number
+  width: number
+  height: number
 }
 
 type ElementMapping = {
   Heading: HeadingElement
   Button: ButtonElement
   Text: TextElement
+  TextArea: TextElement
   YouTube: YouTubeElement
   Label: LabelElement
   Paragraph: ParagraphElement
   TextLink: TextLinkElement
   BlockQuote: BlockQuoteElement
+  Image: ImageElement
 }
 
 export type ComponentGroup = 'Body' | 'Structure' | 'Typography' | 'Forms' | 'Media' | null
