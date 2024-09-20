@@ -1,12 +1,18 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 
-import { Divider, Input, useDisclosure } from '@nextui-org/react'
-import Image from 'next/image'
+import {
+  Input,
+  useDisclosure,
+  Image,
+  Select,
+  SelectItem,
+  Checkbox,
+  Tooltip
+} from '@nextui-org/react'
 
 import ImageListModal from '../../common/image-list-modal'
-// import SettingPopover from '../setting-popover'
 import SettingPopover2 from '../setting-popover2'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -27,18 +33,7 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
     onUpdateContentInElement
   } = useEditorStore((state) => state)
 
-  const URLRef = useRef<HTMLInputElement | null>(null)
-
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
-  const [imageOption, setImageOption] = useState({
-    src: content.src,
-    alt: content.alt,
-    // radio: content.ratio,
-    width: content.width,
-    height: content.height
-  })
-  const [showEdit, setShowEdit] = useState(true)
 
   const handleClick = (e: React.FormEvent<HTMLFormElement | HTMLDivElement>) => {
     if (liveMode) return
@@ -53,25 +48,12 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
       content
     })
   }
-  useEffect(() => console.log('imageOption', imageOption), [imageOption])
 
   const handleSelectImage = (src: string, alt: string) => {
-    if (!src) {
+    if (!src || !alt) {
       return
     }
-    // onUpdateContentInElement({ src:  })
-    setShowEdit(false)
-    setImageOption((prev) => ({ ...prev, src, alt }))
-  }
-
-  const handleSaveImage = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (!imageOption.src) {
-      URLRef.current?.focus()
-      return
-    }
-    setShowEdit(false)
-    // onUpdateContentInElement({ url })
+    onUpdateContentInElement({ ...content, src, alt })
   }
 
   const handleDeleteElement = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -79,23 +61,23 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
     onDeleteElement(id)
   }
 
-  const [isError, setIsError] = useState(false)
-
-  const handleButtonLabelValue = (open: boolean) => {
-    if (!open) {
-      // onUpdateContentInElement({
-      //   innerText: buttonOption.label,
-      //   ...(buttonOption.url !== '' && { url: buttonOption.url }),
-      //   ...(isNewTap && { isNewTap })
-      // })
-    }
-  }
-
   const handleDeleteElementByKeyboard = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault()
+      e.stopPropagation()
       onDeleteElement(id)
     }
+  }
+
+  const [triggerKey, setTriggerKey] = useState(0)
+
+  const handleChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTriggerKey((prev) => prev + 1)
+    onUpdateContentInElement({ ...content, [e.target.name]: +e.target.value })
+  }
+
+  const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onUpdateContentInElement({ ...content, [e.target.name]: e.target.value })
   }
 
   const isFirstElementInBody = index === 0 && parentId === '___body'
@@ -103,28 +85,39 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
   return (
     <div
       className={cn(
-        'relative',
-        liveMode ? 'p-0' : 'min-h-[250px] cursor-pointer rounded-sm border p-1',
+        'relative inline-flex w-max',
+        liveMode ? 'p-0' : 'min-h-[200px] cursor-pointer rounded-sm border p-1',
         {
-          'border-dashed': selectedElement.id === id,
-          'border-primary-500 outline-none': selectedElement.id === id
+          'border-dashed': selectedElement.id === id && !liveMode,
+          'border-primary-500 outline-none': selectedElement.id === id && !liveMode
         }
       )}
       onClick={handleClick}
-      role='img'
-      onKeyDown={() => {}}>
+      role='button'
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Delete') {
+          e.preventDefault()
+          e.stopPropagation()
+          onDeleteElement(id)
+        }
+      }}>
       <Image
-        // src={`${imageOption.src}/${imageOption.alt}`}
-        src={ImageErrorImg.src}
-        alt={imageOption.alt}
-        width={imageOption.width}
-        height={imageOption.height}
-        loading='lazy'
-        // fallbackSrc={ImageErrorImg.src}
+        key={String(triggerKey)}
+        src={content.src ? `${content.src}/${content.alt}` : ImageErrorImg.src}
+        alt={content.alt}
+        width={content.width}
+        height={content.height}
+        loading='eager'
+        isBlurred={content.blur}
+        isZoomed={content.zoom}
+        shadow={content.shadow}
+        radius={content.radius}
+        isLoading={!content.src}
         style={styles}
       />
       {!liveMode ? (
-        <SettingPopover2 onOpenChange={handleButtonLabelValue}>
+        <SettingPopover2>
           <SettingPopover2.Trigger
             isShowBadge={selectedElement.id === id && !liveMode}
             name='Image'
@@ -137,23 +130,74 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
             <Button onClick={onOpen}>Select Image</Button>
             <div className='flex gap-3'>
               <Input
-                // value={labelOption.text}
-                // onChange={(e) => setLabelOption((prev) => ({ ...prev, text: e.target.value }))}
-                type='number'
+                name='width'
+                value={String(content.width)}
+                onChange={handleChangeInputValue}
                 label='width'
                 radius='sm'
                 labelPlacement='outside'
+                placeholder='e.g. 300'
                 autoComplete='off'
               />
               <Input
-                // value={labelOption.text}
-                // onChange={(e) => setLabelOption((prev) => ({ ...prev, text: e.target.value }))}
-                type='number'
+                name='height'
+                value={String(content.height)}
+                onChange={handleChangeInputValue}
                 radius='sm'
                 label='height'
                 labelPlacement='outside'
+                placeholder='e.g. 300'
                 autoComplete='off'
               />
+            </div>
+            <Select
+              name='radius'
+              label='Radius'
+              variant='bordered'
+              placeholder='Select a radius'
+              selectedKeys={[content.radius] as Iterable<string | number>}
+              className='max-w-xs'
+              onChange={handleSelectionChange}>
+              {radiusOption.map((radius) => (
+                <SelectItem key={radius.value}>{radius.name}</SelectItem>
+              ))}
+            </Select>
+            <Select
+              name='shadow'
+              label='Shadow'
+              variant='bordered'
+              placeholder='Select a shadow'
+              selectedKeys={[content.shadow] as Iterable<string | number>}
+              className='max-w-xs'
+              onChange={handleSelectionChange}>
+              {shadowOption.map((shadow) => (
+                <SelectItem key={shadow.value}>{shadow.name}</SelectItem>
+              ))}
+            </Select>
+            <div className='flex gap-4'>
+              <Tooltip
+                content='Whether the image should have a duplicated blurred image at the background.'
+                placement='bottom-start'>
+                <Checkbox
+                  isSelected={content.blur}
+                  onValueChange={(isSelected) =>
+                    onUpdateContentInElement({ ...content, blur: isSelected })
+                  }>
+                  Blur
+                </Checkbox>
+              </Tooltip>
+
+              <Tooltip
+                content='Whether the image should be zoomed when hovered.'
+                placement='bottom-start'>
+                <Checkbox
+                  isSelected={content.zoom}
+                  onValueChange={(isSelected) =>
+                    onUpdateContentInElement({ ...content, zoom: isSelected })
+                  }>
+                  Zoom
+                </Checkbox>
+              </Tooltip>
             </div>
           </SettingPopover2.Content>
         </SettingPopover2>
@@ -169,3 +213,19 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
     </div>
   )
 }
+
+const radiusOption = [
+  { name: 'none', value: 'none' },
+  { name: 'small', value: 'sm' },
+  { name: 'medium', value: 'md' },
+  { name: 'large', value: 'lg' },
+  { name: 'XLarge', value: 'xl' },
+  { name: 'full', value: 'full' }
+]
+
+const shadowOption = [
+  { name: 'none', value: 'none' },
+  { name: 'small', value: 'sm' },
+  { name: 'medium', value: 'md' },
+  { name: 'large', value: 'lg' }
+]

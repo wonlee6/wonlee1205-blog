@@ -71,8 +71,5 @@ export const BlockQuoteDefaultStyles: React.CSSProperties = {
 }
 
 export const ImageDefaultStyles: React.CSSProperties = {
-  backgroundPosition: 'center',
-  objectFit: 'cover',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover'
+  objectFit: 'cover'
 }

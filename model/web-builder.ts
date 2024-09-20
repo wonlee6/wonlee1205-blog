@@ -123,9 +123,12 @@ type YouTubeElement = {
 type ImageElement = {
   src: string
   alt: string
-  // ratio: number
   width: number
   height: number
+  blur: boolean
+  zoom: boolean
+  radius: 'none' | 'sm' | 'md' | 'lg' | 'full' | undefined
+  shadow: 'none' | 'sm' | 'md' | 'lg' | undefined
 }
 
 type ElementMapping = {

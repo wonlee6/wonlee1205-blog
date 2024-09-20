@@ -156,9 +156,12 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         content: {
           src: '',
           alt: '',
-          width: 300,
-          height: 400
-          // ratio: 16 / 9
+          width: 400,
+          height: 300,
+          radius: 'lg',
+          shadow: 'none',
+          blur: false,
+          zoom: false
         },
         id: v4(),
         name: 'Image',

@@ -20,7 +20,7 @@ const Canvas = (props: RecursiveComponent<'Body'>) => {
     e.stopPropagation()
 
     const dragItem = e.dataTransfer.getData('text')
-    console.log('dragItem', dragItem)
+    // console.log('dragItem', dragItem)
     if (isNaN(Number(dragItem))) {
       const value = addElementByType(dragItem as ComponentName)
       if (typeof value !== 'undefined') {
@@ -51,12 +51,11 @@ const Canvas = (props: RecursiveComponent<'Body'>) => {
     <>
       <div
         id={id}
-        // onKeyDown={() => {}}
         // onClick={handleClickBody}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         className={cn(
-          'relative mx-auto h-full overflow-auto rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
+          'relative mx-auto flex h-full flex-col overflow-auto rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 scrollbar-hide dark:bg-zinc-900',
           deviceSize[device]
         )}>
         {content.map((i, index) => (
