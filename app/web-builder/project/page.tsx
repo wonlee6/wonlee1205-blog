@@ -11,7 +11,7 @@ import { getUserSession } from '@/lib/session'
 // const supabase = createClient()
 
 export default async function WebBuilderProjectPage() {
-  noStore()
+  // noStore()
 
   const session = await getUserSession()
 

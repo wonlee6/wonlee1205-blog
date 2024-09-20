@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers'
+import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
@@ -8,27 +8,27 @@ import { sleep } from '@/lib/utils'
 
 export default async function WebBuilderEditorPage({ params }: { params: { slug: string } }) {
   if (!params.slug) {
-    redirect('./auth')
+    revalidatePath('/', 'layout')
+    redirect(`/web-builder/sign-in`)
   }
 
   await sleep(1000)
 
-  // const cookieStore = cookies()
-  // const supabase = createClient(cookieStore)
+  const {
+    data: { contents },
+    error
+  } = await createClient().from('project').select().eq('id', params.slug).single()
 
-  // const response = await createClient().from('project').select().eq('id', params.slug)
+  if (error) {
+    return (
+      <div className='flex w-full flex-col items-center justify-center gap-4'>
+        <h1 className='text-5xl font-bold'>Server Error</h1>
+        <Link className='rounded-md bg-red-300 p-4 hover:bg-red-500' href='/web-builder/sign-in'>
+          Return Sign In Page
+        </Link>
+      </div>
+    )
+  }
 
-  // if (response.error) {
-  //   return (
-  //     <div className='flex w-full flex-col items-center justify-center gap-4'>
-  //       <h1 className='text-5xl font-bold'>Server Error</h1>
-  //       <Link className='rounded-md bg-red-300 p-4 hover:bg-red-500' href='/web-builder/sign-in'>
-  //         Return Sign In Page
-  //       </Link>
-  //     </div>
-  //   )
-  // }
-
-  // return <EditorClient data={response.data} />
-  return <EditorClient />
+  return <EditorClient data={contents} />
 }
