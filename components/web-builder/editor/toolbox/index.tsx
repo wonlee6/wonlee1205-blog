@@ -8,19 +8,33 @@ import { DoorOpen, Monitor, Play, Smartphone, TabletSmartphone } from 'lucide-re
 import Link from 'next/link'
 import { useShallow } from 'zustand/react/shallow'
 
+import { useToast } from '@/components/ui/use-toast'
+import { encryptFormData } from '@/helper/editor.helper'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 function EditorToolbox() {
-  const [device, setDevice, setLiveMode] = useEditorStore(
-    useShallow((state) => [state.device, state.setDevice, state.setLiveMode])
+  const [device, elements, setDevice, setLiveMode] = useEditorStore(
+    useShallow((state) => [state.device, state.elements, state.setDevice, state.setLiveMode])
   )
+
+  const { toast } = useToast()
 
   const handleLiveMode = () => {
     setLiveMode()
   }
 
-  const handleSave = () => {
-    alert('진행 중에 있습니다...')
+  const handleSave = async () => {
+    const encryptedData = encryptFormData(JSON.stringify(elements))
+
+    const response = await fetch('/api/web-builder/page', {
+      method: 'PATCH',
+      body: JSON.stringify({ data: encryptedData })
+    })
+
+    toast({
+      variant: 'default',
+      title: response.statusText
+    })
   }
 
   return (
