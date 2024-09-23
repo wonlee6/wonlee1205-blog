@@ -70,7 +70,7 @@ export default function EditorSideBar() {
   return (
     <>
       <m.aside
-        initial={{ x: 400 }}
+        initial={{ x: 400, width: 400 }}
         animate={{
           x: liveMode ? 400 : 0,
           width: liveMode ? 0 : 400
@@ -135,8 +135,8 @@ export default function EditorSideBar() {
           </div>
         </nav>
 
-        <div className='grid h-full w-[325px] grid-cols-1 grid-rows-1 border-l bg-[#f6f7f9] py-1'>
-          <div className='flex-1 overflow-y-auto px-1 pb-1 scrollbar-hide'>
+        <div className='grid h-full w-[325px] grid-cols-1 grid-rows-1 border-l bg-[#f6f7f9] py-2'>
+          <div className='flex-1 overflow-y-auto px-2 pb-1 scrollbar-hide'>
             {ComponentList[selectedTab]}
           </div>
         </div>

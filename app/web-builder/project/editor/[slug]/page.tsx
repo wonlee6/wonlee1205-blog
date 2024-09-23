@@ -12,12 +12,12 @@ export default async function WebBuilderEditorPage({ params }: { params: { slug:
     redirect(`/web-builder/sign-in`)
   }
 
-  await sleep(1000)
-
   const {
     data: { contents },
     error
   } = await createClient().from('project').select().eq('id', params.slug).single()
+
+  await sleep(1000)
 
   if (error) {
     return (

@@ -38,7 +38,10 @@ export default function StorageTab() {
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
-  const [modalImg, setModalImg] = useState<string>()
+  const [modalImg, setModalImg] = useState({
+    src: '',
+    title: ''
+  })
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
@@ -83,7 +86,10 @@ export default function StorageTab() {
   }
 
   const handleSetModalImg = (img: string) => {
-    setModalImg(img)
+    setModalImg({
+      src: img,
+      title: files!.name
+    })
   }
 
   const handleDeleteImage = async (e: React.MouseEvent<HTMLOrSVGElement>, path: string) => {
@@ -154,8 +160,8 @@ export default function StorageTab() {
             radius='sm'
             onError={() => setPreviewImage(errorImg.src)}
             onClick={() => {
-              onOpen()
               handleSetModalImg(previewImage as string)
+              onOpen()
             }}
             isLoading={isLoading}
             classNames={{ wrapper: 'm-2 w-full cursor-pointer' }}
@@ -174,9 +180,9 @@ export default function StorageTab() {
           {uploadedImages.map((item, index) => {
             return (
               <div
-                className='group flex min-h-[70px] cursor-pointer items-center gap-4 rounded-md shadow-md'
+                className='group flex min-h-[70px] cursor-pointer items-center gap-4 rounded-md bg-white shadow-md'
                 onClick={() => {
-                  setModalImg(`${storageUrl}/${item.path}`)
+                  setModalImg({ src: `${storageUrl}/${item.path}`, title: item.path })
                   onOpen()
                 }}
                 tabIndex={0}
@@ -187,7 +193,7 @@ export default function StorageTab() {
                   src={`${storageUrl}/${item.path}`}
                   alt={item.path}
                   width={100}
-                  fallbackSrc={errorImg.src}
+                  // fallbackSrc={errorImg.src}
                   isBlurred
                   radius='sm'
                   className='transition-all hover:scale-105'
@@ -218,20 +224,26 @@ export default function StorageTab() {
           })}
         </div>
       </div>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='5xl' backdrop='blur'>
+      <Modal
+        isOpen={isOpen}
+        className='h-[80vh] w-[80vw]'
+        onOpenChange={onOpenChange}
+        backdrop='blur'>
         <ModalContent>
           {() => (
             <>
-              <ModalHeader></ModalHeader>
-              <ModalBody className='size-full'>
+              <ModalHeader>{modalImg.title}</ModalHeader>
+              <ModalBody>
                 <Image
-                  src={modalImg}
-                  alt={'previewImage'}
+                  src={modalImg.src}
+                  alt={modalImg.title}
                   radius='sm'
                   onError={() => setPreviewImage(errorImg.src)}
-                  className='w-[60vw]'
-                  classNames={{ wrapper: 'm-2 size-full' }}
+                  className='size-full'
+                  removeWrapper
+                  classNames={{ wrapper: 'size-full' }}
                 />
+                <ModalBody></ModalBody>
               </ModalBody>
             </>
           )}

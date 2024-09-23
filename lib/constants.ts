@@ -17,7 +17,6 @@ export const ContainerDefaultStyles: React.CSSProperties = {
   alignItems: 'center',
   gap: '0.25rem',
   width: '100%',
-  minHeight: '6rem',
   paddingLeft: '1rem',
   paddingRight: '1rem',
   paddingTop: '1rem',

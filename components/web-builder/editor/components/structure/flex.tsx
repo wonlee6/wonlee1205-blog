@@ -116,7 +116,10 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
         'border-none': liveMode,
         'cursor-default': liveMode
       })}
-      style={styles}>
+      style={{
+        ...styles,
+        minHeight: content.length > 0 ? undefined : '6rem'
+      }}>
       {content.map((item, index) => (
         <Recursive key={item.id} index={index} {...item} parentId={id} />
       ))}
@@ -125,7 +128,7 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
         <>
           <Badge
             className={cn(
-              'absolute left-0 cursor-pointer rounded-none bg-primary-500 hover:bg-primary-400',
+              'absolute left-0 z-20 cursor-pointer rounded-none bg-primary-500 hover:bg-primary-400',
               isFirstElementInBody ? 'top-0 rounded-b-lg' : '-top-6 rounded-t-lg'
             )}
             variant='default'>

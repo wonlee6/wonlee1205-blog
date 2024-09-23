@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { Checkbox, Divider } from '@nextui-org/react'
 import { Settings, Trash2Icon } from 'lucide-react'
@@ -66,6 +66,13 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
   const [isError, setIsError] = useState(false)
 
   const isFirstElementInBody = index === 0 && parentId === '___body'
+
+  useEffect(() => {
+    if (content.url !== '') {
+      setShowEdit(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className='relative' aria-hidden>
@@ -167,7 +174,7 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
         <>
           <Badge
             className={cn(
-              'absolute left-0 cursor-pointer gap-2 rounded-none bg-primary-500 hover:bg-primary-400',
+              'absolute left-0 z-30 cursor-pointer gap-2 rounded-none bg-primary-500 hover:bg-primary-400',
               isFirstElementInBody
                 ? 'bottom-0 translate-y-full rounded-b-lg'
                 : '-top-6 rounded-t-lg'
