@@ -13,7 +13,7 @@ export default async function WebBuilderEditorPage({ params }: { params: { slug:
   }
 
   const {
-    data: { contents },
+    data: { contents, projectName, description },
     error
   } = await createClient().from('project').select().eq('id', params.slug).single()
 
@@ -30,5 +30,5 @@ export default async function WebBuilderEditorPage({ params }: { params: { slug:
     )
   }
 
-  return <EditorClient data={contents} />
+  return <EditorClient data={contents} projectName={projectName} description={description} />
 }

@@ -9,7 +9,15 @@ import Editor from './index'
 import { EditorElement } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function EditorClient({ data }: { data: EditorElement[] }) {
+export default function EditorClient({
+  data,
+  projectName,
+  description
+}: {
+  data: EditorElement[]
+  projectName: string
+  description: string
+}) {
   const [onInitElement] = useEditorStore(useShallow((state) => [state.onInitElement]))
 
   const isMounted = useRef(false)
@@ -24,7 +32,7 @@ export default function EditorClient({ data }: { data: EditorElement[] }) {
   return (
     <LazyMotion features={domAnimation}>
       <Editor>
-        <Editor.Toolbox />
+        <Editor.Toolbox projectName={projectName} description={description} />
         <div className='relative flex w-full' style={{ height: '96%' }}>
           <Editor.Canvas></Editor.Canvas>
           <Editor.SideBar></Editor.SideBar>

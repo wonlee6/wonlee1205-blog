@@ -4,7 +4,7 @@ import { memo } from 'react'
 
 import { Button, Tooltip } from '@nextui-org/react'
 import { m } from 'framer-motion'
-import { DoorOpen, Monitor, Play, Smartphone, TabletSmartphone } from 'lucide-react'
+import { DoorOpen, InfoIcon, Monitor, Play, Smartphone, TabletSmartphone } from 'lucide-react'
 import Link from 'next/link'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -12,7 +12,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { encryptFormData } from '@/helper/editor.helper'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-function EditorToolbox() {
+function EditorToolbox({ projectName, description }: { projectName: string; description: string }) {
   const [device, elements, setDevice, setLiveMode] = useEditorStore(
     useShallow((state) => [state.device, state.elements, state.setDevice, state.setLiveMode])
   )
@@ -53,7 +53,10 @@ function EditorToolbox() {
               </Button>
             </Link>
           </div>
-          <h2 className='text-base'>HomePage</h2>
+          <h2 className='select-none text-base'>{projectName}</h2>
+          <Tooltip content={description} showArrow>
+            <InfoIcon className='cursor-pointer' size={18} />
+          </Tooltip>
         </div>
         <div className='flex items-center gap-4'>
           <Tooltip content='Desktop'>
@@ -88,7 +91,7 @@ function EditorToolbox() {
           </Tooltip>
         </div>
         <div className='flex items-center gap-4'>
-          <Tooltip content='Play'>
+          <Tooltip showArrow content='Live Mode'>
             <Button isIconOnly variant='light' size='sm' onClick={handleLiveMode}>
               <Play />
             </Button>
