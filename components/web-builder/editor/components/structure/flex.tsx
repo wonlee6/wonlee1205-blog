@@ -8,6 +8,7 @@ import { useShallow } from 'zustand/react/shallow'
 import Recursive from '../../canvas/recursive'
 import { Badge } from '@/components/ui/badge'
 import { addElementByType } from '@/helper/editor.helper'
+import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
 import { ComponentName, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
@@ -32,6 +33,7 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
       state.onDragItemOrder
     ])
   )
+  const { onDragStartInElement } = useDragAndDrop(index, parentId)
 
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -39,20 +41,8 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
     e.preventDefault()
   }
 
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-    if (liveMode) return
-
-    e.stopPropagation()
-
-    e.dataTransfer.clearData()
-    e.dataTransfer.setData('text/plain', String(index))
-    e.dataTransfer.effectAllowed = 'all'
-    e.dataTransfer.dropEffect = 'copy'
-  }
-
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     if (liveMode) return
-
     e.stopPropagation()
 
     const dragItem = e.dataTransfer.getData('text')
@@ -104,7 +94,7 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
       ref={containerRef}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
-      onDragStart={handleDragStart}
+      onDragStart={onDragStartInElement}
       draggable
       onClick={handleClick}
       onKeyDown={handleKeyDown}

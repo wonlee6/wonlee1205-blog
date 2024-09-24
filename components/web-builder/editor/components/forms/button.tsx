@@ -8,20 +8,17 @@ import SettingPopover from '../setting-popover'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function ButtonElement(props: RecursiveComponent<'Button'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
-  const {
-    liveMode,
-    selectedElement,
-    onSelectElement,
-    onDragItemOrder,
-    onDeleteElement,
-    onUpdateContentInElement
-  } = useEditorStore((state) => state)
+  const { liveMode, selectedElement, onSelectElement, onDeleteElement, onUpdateContentInElement } =
+    useEditorStore((state) => state)
+
+  const { onDragStartInElement, onDropInElement } = useDragAndDrop(index, parentId)
 
   const buttonRef = useRef<HTMLButtonElement | null>(null)
 
@@ -69,27 +66,6 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
     }
   }
 
-  const handleDragStart = (e: React.DragEvent) => {
-    if (liveMode) return
-
-    e.stopPropagation()
-
-    e.dataTransfer.clearData()
-    e.dataTransfer.setData('text/plain', String(index))
-    e.dataTransfer.effectAllowed = 'all'
-    e.dataTransfer.dropEffect = 'copy'
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    if (liveMode) return
-
-    e.stopPropagation()
-
-    const sourceIndex = e.dataTransfer.getData('text')
-    const destinationIndex = index
-    onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
-  }
-
   const [buttonOption, setButtonOption] = useState<{ label: string; url: string }>({
     label: content.innerText ?? '',
     url: ''
@@ -125,9 +101,9 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
         tabIndex={0}
         aria-label={buttonOption.label}
         draggable
-        onDragStart={handleDragStart}
+        onDragStart={onDragStartInElement}
+        onDrop={onDropInElement}
         onDragOver={(e) => e.preventDefault()}
-        onDrop={handleDrop}
         onKeyDown={handleDeleteKeyDown}>
         {buttonOption.label}
       </Button>

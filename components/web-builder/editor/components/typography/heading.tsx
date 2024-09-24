@@ -6,6 +6,7 @@ import SettingPopover from '../setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroupItem, RadioGroup } from '@/components/ui/radio-group'
+import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { HeadingDefaultStyles } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { RecursiveComponent } from '@/model/web-builder'
@@ -18,11 +19,12 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
     liveMode,
     selectedElement,
     onSelectElement,
-    onDragItemOrder,
     onDeleteElement,
     onUpdateContentInElement,
     onUpdateElementStyle
   } = useEditorStore((state) => state)
+
+  const { onDragStartInElement, onDropInElement } = useDragAndDrop(index, parentId)
 
   const [headingText, setHeadingText] = useState(content.text)
 
@@ -66,27 +68,6 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
       e.stopPropagation()
       onDeleteElement(id)
     }
-  }
-
-  const handleDragStart = (e: React.DragEvent) => {
-    if (liveMode) return
-
-    e.stopPropagation()
-
-    e.dataTransfer.clearData()
-    e.dataTransfer.setData('text/plain', String(index))
-    e.dataTransfer.effectAllowed = 'all'
-    e.dataTransfer.dropEffect = 'copy'
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    if (liveMode) return
-
-    e.stopPropagation()
-
-    const sourceIndex = e.dataTransfer.getData('text')
-    const destinationIndex = index
-    onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
   }
 
   const handleSelectHeading = (value: string) => {
@@ -170,10 +151,10 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
         'border-none': liveMode,
         'cursor-default': liveMode
       })}
-      onDragStart={handleDragStart}
+      onDragStart={onDragStartInElement}
       onDragOver={(e) => e.preventDefault()}
-      onDrop={handleDrop}
-      aria-hidden>
+      onDrop={onDropInElement}
+      draggable>
       {headingCompo}
       <SettingPopover onOpenChange={handleHeadingValue}>
         <SettingPopover.Trigger

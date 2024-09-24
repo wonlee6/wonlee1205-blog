@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
@@ -22,6 +23,8 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
 
   const { liveMode, selectedElement, onSelectElement, onDeleteElement, onUpdateContentInElement } =
     useEditorStore((state) => state)
+
+  const { onDragStartInElement, onDropInElement } = useDragAndDrop(index, parentId)
 
   const URLRef = useRef<HTMLInputElement | null>(null)
 
@@ -75,7 +78,12 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
   }, [])
 
   return (
-    <div className='relative'>
+    <div
+      className='relative'
+      onDragStart={onDragStartInElement}
+      onDrop={onDropInElement}
+      onDragOver={(e) => e.preventDefault()}
+      draggable>
       {showEdit ? (
         <>
           {liveMode ? (

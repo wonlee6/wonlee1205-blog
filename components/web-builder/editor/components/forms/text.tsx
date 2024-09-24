@@ -5,20 +5,17 @@ import { useRef, useState } from 'react'
 import SettingPopover from '../setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function Text(props: RecursiveComponent<'Text'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
-  const {
-    liveMode,
-    selectedElement,
-    onSelectElement,
-    onDragItemOrder,
-    onDeleteElement,
-    onUpdateContentInElement
-  } = useEditorStore((state) => state)
+  const { liveMode, selectedElement, onSelectElement, onDeleteElement, onUpdateContentInElement } =
+    useEditorStore((state) => state)
+
+  const { onDragStartInElement, onDropInElement } = useDragAndDrop(index, parentId)
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -57,27 +54,6 @@ export default function Text(props: RecursiveComponent<'Text'>) {
     onDeleteElement(id)
   }
 
-  const handleDragStart = (e: React.DragEvent) => {
-    if (liveMode) return
-
-    e.stopPropagation()
-
-    e.dataTransfer.clearData()
-    e.dataTransfer.setData('text/plain', String(index))
-    e.dataTransfer.effectAllowed = 'all'
-    e.dataTransfer.dropEffect = 'copy'
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    if (liveMode) return
-
-    e.stopPropagation()
-
-    const sourceIndex = e.dataTransfer.getData('text')
-    const destinationIndex = index
-    onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
-  }
-
   const handleUpdateTextValue = (open: boolean) => {
     if (!open) {
       onUpdateContentInElement({
@@ -105,13 +81,13 @@ export default function Text(props: RecursiveComponent<'Text'>) {
         onFocus={handleFocus}
         aria-label={content.innerText}
         placeholder={content.innerText}
-        className={'relative w-full rounded-sm border-default-300'}
+        className={'w-full rounded-sm border-default-300'}
         style={styles}
         tabIndex={0}
         draggable
         onDragOver={(e) => e.preventDefault()}
-        onDragStart={handleDragStart}
-        onDrop={handleDrop}
+        onDragStart={onDragStartInElement}
+        onDrop={onDropInElement}
         maxLength={textOption.maxLength}
       />
       {!liveMode ? (

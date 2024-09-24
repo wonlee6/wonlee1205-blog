@@ -3,6 +3,7 @@
 import React from 'react'
 
 import SettingPopover from '../setting-popover'
+import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
@@ -10,8 +11,11 @@ import { useEditorStore } from '@/providers/user-store-provider'
 export default function Paragraph(props: RecursiveComponent<'Paragraph'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
-  const { liveMode, selectedElement, onSelectElement, onDragItemOrder, onDeleteElement } =
-    useEditorStore((state) => state)
+  const { liveMode, selectedElement, onSelectElement, onDeleteElement } = useEditorStore(
+    (state) => state
+  )
+
+  const { onDragStartInElement, onDropInElement } = useDragAndDrop(index, parentId)
 
   const handleSelectElement = () => {
     onSelectElement({
@@ -41,25 +45,6 @@ export default function Paragraph(props: RecursiveComponent<'Paragraph'>) {
     }
   }
 
-  const handleDragStart = (e: React.DragEvent) => {
-    if (liveMode) return
-    e.stopPropagation()
-
-    e.dataTransfer.clearData()
-    e.dataTransfer.setData('text/plain', String(index))
-    e.dataTransfer.effectAllowed = 'all'
-    e.dataTransfer.dropEffect = 'copy'
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    if (liveMode) return
-    e.stopPropagation()
-
-    const sourceIndex = e.dataTransfer.getData('text')
-    const destinationIndex = index
-    onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
-  }
-
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
@@ -71,9 +56,10 @@ export default function Paragraph(props: RecursiveComponent<'Paragraph'>) {
       })}
       onClick={handleClick}
       onKeyDown={handleDeleteByKeyDown}
-      onDragStart={handleDragStart}
+      onDragStart={onDragStartInElement}
       onDragOver={(e) => e.preventDefault()}
-      onDrop={handleDrop}
+      onDrop={onDropInElement}
+      draggable
       style={styles}>
       {content.text}
       <SettingPopover>

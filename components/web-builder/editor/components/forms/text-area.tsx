@@ -6,20 +6,17 @@ import SettingPopover from '../setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function TextAreaElement(props: RecursiveComponent<'TextArea'>) {
   const { content, name, id, styles, group, index, parentId } = props
 
-  const {
-    liveMode,
-    selectedElement,
-    onSelectElement,
-    onDragItemOrder,
-    onDeleteElement,
-    onUpdateContentInElement
-  } = useEditorStore((state) => state)
+  const { liveMode, selectedElement, onSelectElement, onDeleteElement, onUpdateContentInElement } =
+    useEditorStore((state) => state)
+
+  const { onDragStartInElement, onDropInElement } = useDragAndDrop(index, parentId)
 
   const [textAreaOption, setTextAreaOption] = useState<{ id: string; maxLength: number }>({
     id: content.id,
@@ -56,27 +53,6 @@ export default function TextAreaElement(props: RecursiveComponent<'TextArea'>) {
     onDeleteElement(id)
   }
 
-  const handleDragStart = (e: React.DragEvent) => {
-    if (liveMode) return
-
-    e.stopPropagation()
-
-    e.dataTransfer.clearData()
-    e.dataTransfer.setData('text/plain', String(index))
-    e.dataTransfer.effectAllowed = 'all'
-    e.dataTransfer.dropEffect = 'copy'
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    if (liveMode) return
-
-    e.stopPropagation()
-
-    const sourceIndex = e.dataTransfer.getData('text')
-    const destinationIndex = index
-    onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
-  }
-
   const handleUpdateTextValue = (open: boolean) => {
     if (!open) {
       onUpdateContentInElement({
@@ -108,8 +84,8 @@ export default function TextAreaElement(props: RecursiveComponent<'TextArea'>) {
         tabIndex={0}
         draggable
         onDragOver={(e) => e.preventDefault()}
-        onDragStart={handleDragStart}
-        onDrop={handleDrop}
+        onDragStart={onDragStartInElement}
+        onDrop={onDropInElement}
         maxLength={textAreaOption.maxLength}
       />
       {!liveMode ? (

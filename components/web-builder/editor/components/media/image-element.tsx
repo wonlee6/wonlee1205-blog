@@ -15,6 +15,7 @@ import {
 import ImageListModal from '../../common/image-list-modal'
 import SettingPopover2 from '../setting-popover2'
 import { Button } from '@/components/ui/button'
+import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
@@ -32,6 +33,8 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
     onDeleteElement,
     onUpdateContentInElement
   } = useEditorStore((state) => state)
+
+  const { onDragStartInElement, onDropInElement } = useDragAndDrop(index, parentId)
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -115,6 +118,10 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
         radius={content.radius}
         isLoading={!content.src}
         style={styles}
+        draggable
+        onDragStart={onDragStartInElement}
+        onDrop={onDropInElement}
+        onDragOver={(e) => e.preventDefault()}
       />
       {!liveMode ? (
         <SettingPopover2>
