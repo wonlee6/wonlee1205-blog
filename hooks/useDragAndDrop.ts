@@ -1,7 +1,9 @@
+import { addElementByType } from '@/helper/editor.helper'
+import { ComponentName } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 const useDragAndDrop = (index: number, parentId: string) => {
-  const { liveMode, onDragItemOrder } = useEditorStore((state) => state)
+  const { liveMode, onAddElement, onDragItemOrder } = useEditorStore((state) => state)
 
   const onDragStartInElement = (e: React.DragEvent) => {
     if (liveMode) return
@@ -14,12 +16,20 @@ const useDragAndDrop = (index: number, parentId: string) => {
   }
 
   const onDropInElement = (e: React.DragEvent) => {
-    if (liveMode) return
     e.stopPropagation()
+    if (liveMode) return
 
     const sourceIndex = e.dataTransfer.getData('text')
-    const destinationIndex = index
-    onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
+
+    if (!isNaN(Number(sourceIndex))) {
+      const destinationIndex = index
+      onDragItemOrder(parentId, Number(sourceIndex), Number(destinationIndex))
+      return
+    }
+    const value = addElementByType(sourceIndex as ComponentName)
+    if (typeof value !== 'undefined') {
+      onAddElement(parentId, value, index + 1)
+    }
   }
 
   return {

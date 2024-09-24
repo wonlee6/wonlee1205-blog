@@ -20,7 +20,7 @@ const Canvas = (props: RecursiveComponent<'Body'>) => {
     e.stopPropagation()
 
     const dragItem = e.dataTransfer.getData('text')
-    // console.log('dragItem', dragItem)
+
     if (isNaN(Number(dragItem))) {
       const value = addElementByType(dragItem as ComponentName)
       if (typeof value !== 'undefined') {

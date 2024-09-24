@@ -17,7 +17,7 @@ type EditorActions = {
   setDevice: (device: 'Desktop' | 'Tablet' | 'Mobile') => void
   setLiveMode: () => void
   onInitElement: (elements: EditorElement[]) => void
-  onAddElement: (id: string, elementDetails: EditorElement<ComponentName>) => void
+  onAddElement: (id: string, elementDetails: EditorElement<ComponentName>, index?: number) => void
   onSelectElement: (element: EditorElement) => void
   onDeleteElement: (id: string) => void
   onUpdateContentInElement: <T>(content: T) => void
@@ -60,9 +60,9 @@ export const createEditorStore = () => {
     setDevice: (device: 'Desktop' | 'Tablet' | 'Mobile') => set(() => ({ device })),
     setLiveMode: () => set((state) => ({ liveMode: !state.liveMode })),
     onInitElement: (elements: EditorElement[]) => set(() => ({ elements: elements })),
-    onAddElement: (id: string, elementDetails: EditorElement<ComponentName>) =>
+    onAddElement: (id: string, elementDetails: EditorElement<ComponentName>, index?: number) =>
       set((state) => ({
-        elements: addElement(state.elements, id, elementDetails)
+        elements: addElement(state.elements, id, elementDetails, index)
       })),
     onDeleteElement: (id: string) =>
       set((state) => ({
@@ -145,10 +145,17 @@ export const createEditorStore = () => {
 const addElement = (
   editorArray: EditorElement[],
   id: string,
-  elementDetails: EditorElement<ComponentName>
+  elementDetails: EditorElement<ComponentName>,
+  index?: number
 ): EditorElement[] => {
   return editorArray.map((item) => {
     if (item.id === id && Array.isArray(item.content)) {
+      if (index) {
+        return {
+          ...item,
+          content: [...item.content.slice(0, index), elementDetails, ...item.content.slice(index)]
+        }
+      }
       return {
         ...item,
         content: [...item.content, elementDetails]
