@@ -97,7 +97,7 @@ export default function Text(props: RecursiveComponent<'Text'>) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative w-full' aria-hidden>
+    <div className='relative w-full'>
       <Input
         ref={inputRef}
         id={textOption.id ? textOption.id : undefined}

@@ -96,7 +96,7 @@ export default function TextAreaElement(props: RecursiveComponent<'TextArea'>) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative w-full' aria-hidden>
+    <div className='relative w-full'>
       <Textarea
         id={textAreaOption.id}
         onClick={handleClick}

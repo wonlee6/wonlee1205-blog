@@ -109,7 +109,7 @@ export default function LabelElement(props: RecursiveComponent<'Label'>) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative w-full' aria-hidden>
+    <div className='relative w-full'>
       <Label
         htmlFor={liveMode && labelOption.id ? labelOption.id : undefined}
         onClick={handleClick}

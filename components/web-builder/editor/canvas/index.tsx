@@ -55,7 +55,7 @@ const Canvas = (props: RecursiveComponent<'Body'>) => {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         className={cn(
-          'relative mx-auto flex h-full flex-col overflow-visible rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
+          'relative mx-auto h-auto rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
           deviceSize[device]
         )}>
         {content.map((i, index) => (
@@ -69,21 +69,17 @@ const Canvas = (props: RecursiveComponent<'Body'>) => {
 Canvas.displayName = 'Canvas'
 
 const EditorCanvas = () => {
-  const [liveMode, elements] = useEditorStore(
-    useShallow((state) => [state.liveMode, state.elements])
-  )
+  const [elements] = useEditorStore(useShallow((state) => [state.elements]))
 
   return (
     <m.section
       layout
-      initial={{ x: 0, width: '100%', height: '100%' }}
+      initial={{ x: 0 }}
       animate={{
-        x: 0,
-        width: liveMode ? '100%' : 'auto',
-        height: liveMode ? '100%' : 'auto'
+        x: 0
       }}
       className={
-        'h-full flex-1 overflow-y-auto border-r border-t border-default-300 bg-[#f6f7f9] p-2 scrollbar-hide'
+        'size-full flex-1 overflow-y-auto border-r border-t border-default-300 bg-[#f6f7f9] p-2 scrollbar-hide'
       }>
       {(elements as EditorElement<'Body'>[]).map((item, index) => (
         <Canvas key={item.id} {...item} index={index} parentId={item.id} />

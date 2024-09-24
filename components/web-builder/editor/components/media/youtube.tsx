@@ -75,7 +75,7 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
   }, [])
 
   return (
-    <div className='relative' aria-hidden>
+    <div className='relative'>
       {showEdit ? (
         <>
           {liveMode ? (
@@ -84,7 +84,7 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
                 className='m-auto'
                 src={youtubeErrorImg}
                 alt='youtube error'
-                loading='lazy'
+                loading='eager'
                 width={500}
                 style={{ objectFit: 'cover' }}
               />
@@ -131,7 +131,7 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
         </>
       ) : (
         <AspectRatio
-          className={cn('relative', liveMode ? 'p-0' : 'cursor-pointer rounded-sm border p-1', {
+          className={cn('relative', liveMode ? 'p-0' : 'cursor-pointer rounded-sm border p-4', {
             'border-dashed': selectedElement.id === id,
             'border-primary-500 outline-none': selectedElement.id === id
           })}
@@ -188,7 +188,7 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
           <Badge
             onClick={handleDeleteElement}
             className={cn(
-              'absolute right-0 cursor-pointer gap-1 rounded-none',
+              'absolute right-0 z-30 cursor-pointer gap-1 rounded-none',
               isFirstElementInBody
                 ? 'bottom-0 translate-y-full rounded-b-lg'
                 : '-top-6 rounded-t-lg'
