@@ -1,6 +1,6 @@
 // import { createClient } from '@/lib/supabase/client'
 import { revalidatePath } from 'next/cache'
-import { unstable_noStore as noStore } from 'next/cache'
+// import { unstable_noStore as noStore } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 import ProjectRoot from '@/components/web-builder'
@@ -21,7 +21,6 @@ export default async function WebBuilderProjectPage() {
   }
 
   // const { data, error } = await getProjectData(userId)
-  // console.log('시발-----------------------------', data)
 
   // if (error) {
   //   return <div>Error</div>
