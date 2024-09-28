@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
+import { m } from 'framer-motion'
 import { DatabaseIcon, LayersIcon, PackagePlusIcon, PaintbrushIcon } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -67,7 +68,13 @@ export default function EditorSideBar() {
   }, [])
 
   return (
-    <aside className='sticky right-0 top-0 h-auto w-[400px] overflow-x-hidden text-clip border-t'>
+    <m.aside
+      animate={{
+        x: liveMode ? 400 : 0,
+        width: liveMode ? 0 : 400
+      }}
+      layout
+      className='sticky right-0 top-0 h-auto w-[400px] overflow-x-hidden text-clip border-t'>
       <nav className='absolute right-0 top-0 z-[1] flex h-full w-[75px] flex-col items-center justify-normal gap-4 overflow-auto border-l border-default-300 bg-[#f6f7f9] pb-6 pt-2'>
         <div
           onKeyDown={(e) => handleSelectTabByKeyboard(e, 'styles')}
@@ -127,6 +134,6 @@ export default function EditorSideBar() {
           {ComponentList[selectedTab]}
         </div>
       </div>
-    </aside>
+    </m.aside>
   )
 }

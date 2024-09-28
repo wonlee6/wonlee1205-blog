@@ -4,7 +4,15 @@ import { memo, useState } from 'react'
 
 import { Button, Tooltip } from '@nextui-org/react'
 import { m } from 'framer-motion'
-import { DoorOpen, InfoIcon, Monitor, Play, Smartphone, TabletSmartphone } from 'lucide-react'
+import {
+  DoorOpen,
+  InfoIcon,
+  Monitor,
+  PauseIcon,
+  PlayIcon,
+  Smartphone,
+  TabletSmartphone
+} from 'lucide-react'
 import Link from 'next/link'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -13,8 +21,14 @@ import { encryptFormData } from '@/helper/editor.helper'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 function EditorToolbox({ projectName, description }: { projectName: string; description: string }) {
-  const [device, elements, setDevice, setLiveMode] = useEditorStore(
-    useShallow((state) => [state.device, state.elements, state.setDevice, state.setLiveMode])
+  const [liveMode, device, elements, setDevice, setLiveMode] = useEditorStore(
+    useShallow((state) => [
+      state.liveMode,
+      state.device,
+      state.elements,
+      state.setDevice,
+      state.setLiveMode
+    ])
   )
   const [saveLoading, setSaveLoading] = useState(false)
 
@@ -96,7 +110,7 @@ function EditorToolbox({ projectName, description }: { projectName: string; desc
         <div className='flex items-center gap-4'>
           <Tooltip showArrow content='Live Mode'>
             <Button isIconOnly variant='light' size='sm' onClick={handleLiveMode}>
-              <Play />
+              {liveMode ? <PauseIcon /> : <PlayIcon />}
             </Button>
           </Tooltip>
 
