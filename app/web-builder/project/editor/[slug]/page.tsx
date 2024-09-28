@@ -11,7 +11,6 @@ export default async function WebBuilderEditorPage({ params }: { params: { slug:
     revalidatePath('/', 'layout')
     redirect(`/web-builder/sign-in`)
   }
-
   const {
     data: { contents, projectName, description },
     error

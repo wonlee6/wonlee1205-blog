@@ -1,6 +1,5 @@
 'use client'
 
-import { m } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
 
 import Recursive from './recursive'
@@ -55,7 +54,7 @@ const Canvas = (props: RecursiveComponent<'Body'>) => {
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         className={cn(
-          'relative mx-auto h-auto rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
+          'relative mx-auto max-h-max min-h-full rounded border border-foreground-300 bg-white p-1 shadow-md transition-all duration-500 dark:bg-zinc-900',
           deviceSize[device]
         )}>
         {content.map((i, index) => (
@@ -72,19 +71,14 @@ const EditorCanvas = () => {
   const [elements] = useEditorStore(useShallow((state) => [state.elements]))
 
   return (
-    <m.section
-      layout
-      initial={{ x: 0 }}
-      animate={{
-        x: 0
-      }}
+    <section
       className={
         'size-full flex-1 overflow-y-auto border-r border-t border-default-300 bg-[#f6f7f9] p-2 scrollbar-hide'
       }>
       {(elements as EditorElement<'Body'>[]).map((item, index) => (
         <Canvas key={item.id} {...item} index={index} parentId={item.id} />
       ))}
-    </m.section>
+    </section>
   )
 }
 

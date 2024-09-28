@@ -9,12 +9,12 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
-  ModalHeader
+  ModalHeader,
+  Textarea
 } from '@nextui-org/react'
 import { z } from 'zod'
 
 import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
-import { sleep } from '@/lib/utils'
 import { ProjectData, ProjectFormSchema, ProjectFormSchemaModel } from '@/model/web-builder'
 
 type Props = {
@@ -31,7 +31,7 @@ export default function ProjectEditModal(props: Props) {
   const { isOpen, onOpenChange, selectedItem, onSave, onDelete, modalType, userId } = props
 
   const nameRef = useRef<HTMLInputElement | null>(null)
-  const descriptionRef = useRef<HTMLInputElement | null>(null)
+  const descriptionRef = useRef<HTMLTextAreaElement | null>(null)
 
   const [form, setForm] = useState<ProjectFormSchemaModel>({
     user_id: userId,
@@ -148,9 +148,11 @@ export default function ProjectEditModal(props: Props) {
                   label='Project Name'
                   placeholder='Enter your project name'
                   variant='bordered'
+                  title={form.projectName}
                   color='primary'
+                  maxLength={100}
                 />
-                <Input
+                <Textarea
                   ref={descriptionRef}
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
@@ -158,12 +160,19 @@ export default function ProjectEditModal(props: Props) {
                   placeholder='Enter your description'
                   variant='bordered'
                   color='primary'
+                  title={form.description}
+                  maxLength={1000}
+                  disableAnimation
+                  disableAutosize
+                  classNames={{
+                    input: 'resize-y min-h-[40px]'
+                  }}
                 />
               </ModalBody>
               <ModalFooter>
                 {modalType === 'edit' && (
                   <Button
-                    variant='ghost'
+                    variant='light'
                     color='danger'
                     aria-label='delete project'
                     onClick={handleDeleteProject}
@@ -174,7 +183,7 @@ export default function ProjectEditModal(props: Props) {
                 <Button color='primary' type='submit' isLoading={isLoading}>
                   Save
                 </Button>
-                <Button color='danger' variant='light' onPress={onClose}>
+                <Button color='default' variant='shadow' onPress={onClose}>
                   Close
                 </Button>
               </ModalFooter>

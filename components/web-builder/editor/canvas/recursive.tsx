@@ -1,5 +1,3 @@
-'use client'
-
 import ButtonElement from '../components/forms/button'
 import LabelElement from '../components/forms/label'
 import Text from '../components/forms/text'

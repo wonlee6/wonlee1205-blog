@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
+import { m } from 'framer-motion'
 import { LazyMotion, domAnimation } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -33,10 +34,21 @@ export default function EditorClient({
     <LazyMotion features={domAnimation}>
       <Editor>
         <Editor.Toolbox projectName={projectName} description={description} />
-        <div className='relative flex w-full' style={{ height: '96%' }}>
+        <m.div
+          initial={{ x: 10000 }}
+          animate={{
+            x: 0
+          }}
+          transition={{
+            type: 'spring',
+            stiffness: 35
+          }}
+          layout
+          className='relative flex w-full overflow-hidden'
+          style={{ height: '96%' }}>
           <Editor.Canvas></Editor.Canvas>
           <Editor.SideBar></Editor.SideBar>
-        </div>
+        </m.div>
       </Editor>
     </LazyMotion>
   )

@@ -1,13 +1,9 @@
 import { UserStoreProvider } from '@/providers/user-store-provider'
 
-export default function WebBuilderRootLayout({
+export default function EditorLayout({
   children // will be a page or nested layout
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return (
-    <>
-      <UserStoreProvider>{children}</UserStoreProvider>
-    </>
-  )
+  return <UserStoreProvider>{children}</UserStoreProvider>
 }

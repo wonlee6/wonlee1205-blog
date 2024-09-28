@@ -1,6 +1,6 @@
 'use client'
 
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 import { Button, Tooltip } from '@nextui-org/react'
 import { m } from 'framer-motion'
@@ -16,6 +16,7 @@ function EditorToolbox({ projectName, description }: { projectName: string; desc
   const [device, elements, setDevice, setLiveMode] = useEditorStore(
     useShallow((state) => [state.device, state.elements, state.setDevice, state.setLiveMode])
   )
+  const [saveLoading, setSaveLoading] = useState(false)
 
   const { toast } = useToast()
 
@@ -24,6 +25,7 @@ function EditorToolbox({ projectName, description }: { projectName: string; desc
   }
 
   const handleSave = async () => {
+    setSaveLoading(true)
     const encryptedData = encryptFormData(JSON.stringify(elements))
 
     const response = await fetch('/api/web-builder/page', {
@@ -35,6 +37,7 @@ function EditorToolbox({ projectName, description }: { projectName: string; desc
       variant: 'default',
       title: response.statusText
     })
+    setSaveLoading(false)
   }
 
   return (
@@ -97,7 +100,12 @@ function EditorToolbox({ projectName, description }: { projectName: string; desc
             </Button>
           </Tooltip>
 
-          <Button variant='shadow' color='primary' size='sm' onClick={handleSave}>
+          <Button
+            variant='shadow'
+            color='primary'
+            size='sm'
+            onClick={handleSave}
+            isLoading={saveLoading}>
             Save
           </Button>
         </div>
