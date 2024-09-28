@@ -146,7 +146,7 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
 
   return (
     <div
-      className={cn('relative w-full', {
+      className={cn('relative w-full', !liveMode && 'hover:ring-1 hover:ring-primary-200', {
         'border border-dashed border-primary-500': selectedElement.id === id && !liveMode,
         'border-none': liveMode,
         'cursor-default': liveMode

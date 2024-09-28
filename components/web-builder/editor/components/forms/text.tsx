@@ -6,6 +6,7 @@ import SettingPopover from '../setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
+import { cn } from '@/lib/utils'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
@@ -73,7 +74,7 @@ export default function Text(props: RecursiveComponent<'Text'>) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative w-full'>
+    <div className={cn('relative w-full', !liveMode && 'hover:ring-1 hover:ring-primary-200')}>
       <Input
         ref={inputRef}
         id={textOption.id ? textOption.id : undefined}

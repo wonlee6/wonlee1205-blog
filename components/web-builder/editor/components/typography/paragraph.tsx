@@ -49,7 +49,7 @@ export default function Paragraph(props: RecursiveComponent<'Paragraph'>) {
 
   return (
     <p
-      className={cn('relative w-full', {
+      className={cn('relative w-full', !liveMode && 'hover:ring-1 hover:ring-primary-200', {
         'border border-dashed border-primary-500': selectedElement.id === id && !liveMode,
         'border-none': liveMode,
         'cursor-default': liveMode

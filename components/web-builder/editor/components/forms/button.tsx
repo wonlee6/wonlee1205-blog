@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
+import { cn } from '@/lib/utils'
 import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
@@ -92,7 +93,7 @@ export default function ButtonElement(props: RecursiveComponent<'Button'>) {
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
   return (
-    <div className='relative w-min'>
+    <div className={cn('relative w-min', !liveMode && 'hover:ring-1 hover:ring-primary-200')}>
       <Button
         ref={buttonRef}
         onClick={handleClick}

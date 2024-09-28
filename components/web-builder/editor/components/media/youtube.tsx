@@ -79,7 +79,7 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
 
   return (
     <div
-      className='relative'
+      className={cn('relative', !liveMode && 'hover:ring-1 hover:ring-primary-200')}
       onDragStart={onDragStartInElement}
       onDrop={onDropInElement}
       onDragOver={(e) => e.preventDefault()}

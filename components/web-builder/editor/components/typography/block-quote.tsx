@@ -66,11 +66,15 @@ export default function BlockQuote(props: RecursiveComponent<'BlockQuote'>) {
 
   return (
     <blockquote
-      className={cn('relative inline-block w-full border-l-8', {
-        'border-y border-r border-y-primary-500 border-r-primary-500':
-          selectedElement.id === id && !liveMode,
-        'cursor-default': liveMode
-      })}
+      className={cn(
+        'relative inline-block w-full border-l-8',
+        !liveMode && 'hover:ring-1 hover:ring-primary-200',
+        {
+          'border-y border-r border-y-primary-500 border-r-primary-500':
+            selectedElement.id === id && !liveMode,
+          'cursor-default': liveMode
+        }
+      )}
       onClick={handleClick}
       onKeyDown={handleDeleteByKeyDown}
       onDragStart={onDragStartInElement}

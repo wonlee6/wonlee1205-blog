@@ -79,7 +79,7 @@ export default function TextLink(props: RecursiveComponent<'TextLink'>) {
 
   return (
     <div
-      className={cn('relative inline-block', {
+      className={cn('relative inline-block', !liveMode && 'hover:ring-1 hover:ring-primary-200', {
         'border border-dashed border-primary-500': selectedElement.id === id && !liveMode,
         'border-none': liveMode,
         'cursor-default': liveMode

@@ -100,12 +100,16 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
       onKeyDown={handleKeyDown}
       role='button'
       tabIndex={0}
-      className={cn('relative border border-default-400 p-2', {
-        'border-dashed': selectedElement.id === id && !liveMode,
-        'border-primary-500 outline-none': selectedElement.id === id && !liveMode,
-        'border-none': liveMode,
-        'cursor-default': liveMode
-      })}
+      className={cn(
+        'relative border border-default-400 p-2',
+        !liveMode && 'hover:ring-1 hover:ring-primary-200',
+        {
+          'border-dashed': selectedElement.id === id && !liveMode,
+          'border-primary-500 outline-none': selectedElement.id === id && !liveMode,
+          'border-none': liveMode,
+          'cursor-default': liveMode
+        }
+      )}
       style={{
         ...styles,
         minHeight: content.length > 0 ? undefined : '6rem'

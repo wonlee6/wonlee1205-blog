@@ -89,7 +89,9 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
     <div
       className={cn(
         'relative inline-flex w-max',
-        liveMode ? 'p-0' : 'cursor-pointer rounded-sm border p-1',
+        liveMode
+          ? 'p-0'
+          : 'cursor-pointer rounded-sm border p-1 hover:ring-1 hover:ring-primary-200',
         {
           'border-dashed': selectedElement.id === id && !liveMode,
           'border-primary-500 outline-none': selectedElement.id === id && !liveMode
