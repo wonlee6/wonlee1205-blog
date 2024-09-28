@@ -1,8 +1,21 @@
 'use client'
 
-import React, { memo } from 'react'
+import React from 'react'
 
-import { FolderRoot, SquareDashedMousePointer, SquareMousePointer } from 'lucide-react'
+import {
+  BoxSelectIcon,
+  CircleArrowLeftIcon,
+  FolderRootIcon,
+  HeadingIcon,
+  ImageIcon,
+  LetterTextIcon,
+  LinkIcon,
+  PilcrowIcon,
+  TagIcon,
+  TextQuoteIcon,
+  TypeIcon,
+  YoutubeIcon
+} from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { isEditorElementArray } from '@/helper/editor.helper'
@@ -43,7 +56,7 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
           tabIndex={0}
           onClick={() => onSelectElement({ id, name, content, group, styles })}
           style={{ paddingLeft: `${depth}rem` }}>
-          <SquareMousePointer />
+          {ElementIcon[name as any]}
           {name}
         </div>
       </>
@@ -63,7 +76,7 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
         onKeyDown={() => {}}
         tabIndex={0}
         style={{ paddingLeft: id === '___body' ? '0.5rem' : `${depth}rem` }}>
-        {group ? LayerIcon[group as 'Body' | 'Structure'] : null}
+        {group ? ContainerIcon[group as 'Body' | 'Structure'] : null}
         {name}
       </div>
 
@@ -74,7 +87,20 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
   )
 }
 
-const LayerIcon: Record<'Body' | 'Structure', JSX.Element> = {
-  Body: <FolderRoot />,
-  Structure: <SquareDashedMousePointer />
+const ContainerIcon: Record<'Body' | 'Structure', JSX.Element> = {
+  Body: <FolderRootIcon />,
+  Structure: <BoxSelectIcon />
+}
+
+const ElementIcon: Record<any, JSX.Element> = {
+  Heading: <HeadingIcon />,
+  Paragraph: <PilcrowIcon />,
+  TextLink: <LinkIcon />,
+  BlockQuote: <TextQuoteIcon />,
+  Label: <TagIcon />,
+  Text: <TypeIcon />,
+  TextArea: <LetterTextIcon />,
+  Button: <CircleArrowLeftIcon />,
+  Image: <ImageIcon />,
+  YouTube: <YoutubeIcon />
 }
