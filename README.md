@@ -33,19 +33,32 @@
   - Prettier
 
 ## Web Builder
-
-> Drag and Drop 으로 쉽게 웹 디자인
+> Drag and Drop 으로 웹 디자인을 쉽게!
 
 ### Login
 ![image](https://github.com/user-attachments/assets/c37c073f-27f5-46f4-a05e-5dec21f09b19)
-supabase - email 통한 회원 관리를 하려 했지만 유료 기능이기에 아이디와 암호화된 비밀번호로 테이블에 저장
+- supabase - email 통한 회원 관리 기능을 사용하려 했지만 유료 기능이기에 아이디와 암호화된 비밀번호로 테이블에 저장
 
 ### Project
 ![image](https://github.com/user-attachments/assets/1bac84f9-b8d7-47ab-a2d8-fde59e521b46)
 Landing page를 저장하는 목적으로 crud 구현
 
 ### Editor
+![image](https://github.com/user-attachments/assets/c91c4cb5-8b3a-4281-917c-fc7641a8303e)
+앞서 `Go to Page` 버튼을 통해 들어오게 되면 처음마주하는 화면
 
+#### Toolbox
+![image](https://github.com/user-attachments/assets/9a2570d2-5710-4c49-b3cb-9f4fb7483876)
+- 왼쪽부터 선택한 프로젝트 이름, 설명
+- 가운데: Desktop, tablet, mobile 사이즈로 변경하는 버튼
+- 오른쪽 Preview Mode를 활성화 하는 버튼과 디자인한 에디터를 서버에 저장하는 save 버튼
+
+#### Canvas
+![image](https://github.com/user-attachments/assets/ece90f7b-5331-4dcb-9990-88f0f1fde66e)
+- 오른쪽 aside에서 컴포넌트를 드래그 앤 드랍을 이용하여 왼쪽 캔버스로 이동시켜 컴포넌트를 추가
+
+![image](https://github.com/user-attachments/assets/2692b6ea-6e6e-49e3-bdcb-4db4996a143d)
+- style tab에서 선택한 컴포넌트를 height: 500px, margin: 10px 스타일링
 
 기술 스택
 
