@@ -62,6 +62,7 @@ export type StorageSchemaModel = z.infer<typeof StorageSchema>
 export type ComponentName =
   | 'Body'
   // Structure
+  | 'Block'
   | 'Flex'
   // Typography
   | 'Heading'
@@ -142,7 +143,7 @@ export type ComponentGroup = 'Body' | 'Structure' | 'Typography' | 'Forms' | 'Me
 export type AllElementType<T extends NonLayoutComponentName> = T extends keyof ElementMapping
   ? ElementMapping[T]
   : never
-export type NonLayoutComponentName = Exclude<ComponentName, 'Flex' | 'Body'>
+export type NonLayoutComponentName = Exclude<ComponentName, 'Body' | 'Block' | 'Flex'>
 
 export type EditorElement<T extends ComponentName = ComponentName> = {
   id: string

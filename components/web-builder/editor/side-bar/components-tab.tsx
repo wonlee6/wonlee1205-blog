@@ -4,12 +4,13 @@ import React from 'react'
 
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import {
-  BoxSelect,
+  BoxIcon,
   CircleArrowLeftIcon,
   HeadingIcon,
   ImageIcon,
   LetterTextIcon,
   LinkIcon,
+  PackageIcon,
   PilcrowIcon,
   TagIcon,
   TextQuoteIcon,
@@ -126,7 +127,10 @@ export default function ComponentsTab() {
   )
 }
 
-const structureList = [{ name: 'Flex', icon: <BoxSelect size={40} /> }]
+const structureList = [
+  { name: 'Block', icon: <BoxIcon size={40} /> },
+  { name: 'Flex', icon: <PackageIcon size={40} /> }
+]
 
 const typographyList = [
   { name: 'Heading', value: 'Heading', icon: <HeadingIcon size={40} /> },

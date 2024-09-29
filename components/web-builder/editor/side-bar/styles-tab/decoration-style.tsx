@@ -200,8 +200,8 @@ function DecorationsStyle({ selectedStyles, uploadImages, hasSelectedItem }: Dec
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         shadow='md'
-        backdrop='blur'
-        className='max-h-[80vh] overflow-y-auto'
+        backdrop='opaque'
+        className='max-h-[70vh] overflow-y-auto'
         size='xl'>
         <ModalContent>
           {(onClose) => (
@@ -256,7 +256,7 @@ function DecorationsStyle({ selectedStyles, uploadImages, hasSelectedItem }: Dec
                 </Button>
                 {form.backgroundImage && (
                   <Button color='danger' variant='light' onPress={handleImageDelete}>
-                    Delete
+                    Clear
                   </Button>
                 )}
               </ModalFooter>

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 import {
   Input,
@@ -22,7 +22,7 @@ import { useEditorStore } from '@/providers/user-store-provider'
 import ImageErrorImg from '@/public/images/nope-not-here.webp'
 
 export default function ImageElement(props: RecursiveComponent<'Image'>) {
-  const { content, name, id, styles, group, index, parentId } = props
+  const { content, name, id, styles, group, customStyles, index, parentId } = props
 
   const {
     liveMode,
@@ -48,7 +48,8 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
       name,
       group,
       styles,
-      content
+      content,
+      customStyles
     })
   }
 
@@ -85,8 +86,11 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
 
   const isFirstElementInBody = index === 0 && parentId === '___body'
 
+  const divRef = useRef<HTMLDivElement>(null)
+
   return (
     <div
+      ref={divRef}
       className={cn(
         'relative inline-flex w-max',
         liveMode
@@ -126,7 +130,7 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
         onDragOver={(e) => e.preventDefault()}
       />
       {!liveMode ? (
-        <SettingPopover2>
+        <SettingPopover2 element={divRef.current!}>
           <SettingPopover2.Trigger
             isShowBadge={selectedElement.id === id && !liveMode}
             name='Image'
@@ -212,13 +216,17 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
         </SettingPopover2>
       ) : null}
 
-      <ImageListModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        storageUrl={storageUrl}
-        uploadImages={uploadImages}
-        onSelectImage={handleSelectImage}
-      />
+      {isOpen && (
+        <ImageListModal
+          isOpen={isOpen}
+          src={content.src}
+          alt={content.alt}
+          onOpenChange={onOpenChange}
+          storageUrl={storageUrl}
+          uploadImages={uploadImages}
+          onSelectImage={handleSelectImage}
+        />
+      )}
     </div>
   )
 }

@@ -79,6 +79,7 @@ function Content({
 type Props = {
   onOpenChange?: (open: boolean) => void
   children: React.ReactNode[]
+  element: Element | undefined
 }
 
 function SettingPopover2(props: Props) {
@@ -87,6 +88,8 @@ function SettingPopover2(props: Props) {
       classNames={{
         trigger: 'data-[hover=true]:opacity-100 aria-[expanded=true]:opacity-100'
       }}
+      shouldCloseOnInteractOutside={() => true}
+      portalContainer={props.element}
       onOpenChange={props.onOpenChange}
       // containerPadding={52}
       // crossOffset={1}

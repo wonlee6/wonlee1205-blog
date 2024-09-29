@@ -82,7 +82,8 @@ export const createEditorStore = () => {
           name: element.name,
           styles: element.styles,
           group: element.group,
-          content: element.content
+          content: element.content,
+          ...(element.customStyles && { customStyles: element.customStyles })
         }
       })),
     onUpdateContentInElement: <T>(content: T) =>
@@ -114,21 +115,24 @@ export const createEditorStore = () => {
           )
         }
       }),
-    onDeleteCustomCss: (property: string) =>
+    onDeleteCustomCss: (propertyName: string) =>
       set((state) => {
+        console.log(propertyName)
         return {
           ...state,
           selectedElement: {
             ...state.selectedElement,
             customStyles: {
-              [property]: undefined
+              ...state.selectedElement.customStyles,
+              [propertyName]: undefined
             },
             styles: {
               ...state.selectedElement.styles,
+              [propertyName]: undefined,
               ...getDefaultStyleByComponentType(state.selectedElement.name)
             }
           },
-          elements: deleteCustomCssInElement(state.elements, state.selectedElement.id, property)
+          elements: deleteCustomCssInElement(state.elements, state.selectedElement.id, propertyName)
         }
       }),
     onDragItemOrder: (parentId: string, sourceIndex: number, destinationIndex: number) =>
@@ -248,24 +252,26 @@ const updateElementStyle = (
 const deleteCustomCssInElement = (
   editorArray: EditorElement[],
   id: string,
-  property: string
+  propertyName: string
 ): EditorElement[] => {
   return editorArray.map((item) => {
     if (item.id === id) {
       return {
         ...item,
         customStyles: {
-          [property]: undefined
+          ...item.customStyles,
+          [propertyName]: undefined
         },
         styles: {
           ...item.styles,
+          [propertyName]: undefined,
           ...getDefaultStyleByComponentType(item.name)
         }
       }
     } else if (Array.isArray(item.content)) {
       return {
         ...item,
-        content: deleteCustomCssInElement(item.content, id, property)
+        content: deleteCustomCssInElement(item.content, id, propertyName)
       }
     }
     return item

@@ -36,7 +36,7 @@ export default function LayersTab() {
 }
 
 function LayersRecursive(props: EditorElement & { depth?: number }) {
-  const { id, name, content, group, styles, depth = 1 } = props
+  const { id, name, content, group, styles, customStyles, depth = 1 } = props
 
   const [selectedElement, onSelectElement] = useEditorStore(
     useShallow((state) => [state.selectedElement, state.onSelectElement])
@@ -54,7 +54,7 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
           aria-selected={selectedElement.id === id}
           onKeyDown={() => {}}
           tabIndex={0}
-          onClick={() => onSelectElement({ id, name, content, group, styles })}
+          onClick={() => onSelectElement({ id, name, content, group, styles, customStyles })}
           style={{ paddingLeft: `${depth}rem` }}>
           {ElementIcon[name as any]}
           {name}
@@ -70,7 +70,7 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
           'flex cursor-pointer gap-2 rounded-md p-1 hover:bg-default-100',
           selectedElement.id === id ? 'bg-default-100' : ''
         )}
-        onClick={() => onSelectElement({ id, name, content, group, styles })}
+        onClick={() => onSelectElement({ id, name, content, group, styles, customStyles })}
         role='treeitem'
         aria-selected={selectedElement.id === id}
         onKeyDown={() => {}}

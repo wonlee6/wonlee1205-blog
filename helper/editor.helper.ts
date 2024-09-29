@@ -2,13 +2,15 @@ import CryptoJS from 'crypto-js'
 import { v4 } from 'uuid'
 
 import {
+  BlockDefaultStyles,
   BlockQuoteDefaultStyles,
-  ContainerDefaultStyles,
+  FlexDefaultStyles,
   HeadingDefaultStyles,
   ImageDefaultStyles,
   InputDefaultStyles,
   LabelDefaultStyles,
   ParagraphDefaultStyles,
+  TextAreaDefaultStyles,
   TextLinkDefaultStyles,
   YouTubeDefaultStyles
 } from '@/lib/constants'
@@ -35,12 +37,20 @@ export function hasArrayContent(
 export function addElementByType(componentName: ComponentName): EditorElement | undefined {
   switch (componentName) {
     // Structure
+    case 'Block':
+      return {
+        content: [],
+        id: v4(),
+        name: 'Block',
+        styles: { ...BlockDefaultStyles },
+        group: 'Structure'
+      }
     case 'Flex':
       return {
         content: [],
         id: v4(),
         name: 'Flex',
-        styles: { ...ContainerDefaultStyles },
+        styles: { ...FlexDefaultStyles },
         group: 'Structure'
       }
     // Typography
@@ -122,7 +132,7 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
         id: v4(),
         name: 'TextArea',
         styles: {
-          ...InputDefaultStyles
+          ...TextAreaDefaultStyles
         },
         group: 'Forms'
       }
@@ -177,10 +187,36 @@ export function addElementByType(componentName: ComponentName): EditorElement | 
 
 export function getDefaultStyleByComponentType(componentName: ComponentName) {
   switch (componentName) {
+    case 'Block':
+      return { ...BlockDefaultStyles }
     case 'Flex':
-      return { ...ContainerDefaultStyles }
+      return { ...FlexDefaultStyles }
+    case 'BlockQuote':
+      return {
+        ...BlockQuoteDefaultStyles
+      }
+    case 'Paragraph':
+      return {
+        ...ParagraphDefaultStyles
+      }
+    case 'Image':
+      return {
+        ...ImageDefaultStyles
+      }
+    case 'TextArea':
+      return {
+        ...TextAreaDefaultStyles
+      }
     case 'Text':
       return { ...InputDefaultStyles }
+    case 'TextLink':
+      return {
+        ...TextLinkDefaultStyles
+      }
+    case 'YouTube':
+      return {
+        ...YouTubeDefaultStyles
+      }
     case 'Label':
       return {
         ...LabelDefaultStyles

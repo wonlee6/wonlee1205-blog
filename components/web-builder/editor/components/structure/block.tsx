@@ -13,8 +13,8 @@ import { cn } from '@/lib/utils'
 import { ComponentName, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
-export default function Flex(props: RecursiveComponent<'Flex'>) {
-  const { id, name, styles, group, content, customStyles, index, parentId } = props
+export default function Block(props: RecursiveComponent<'Block'>) {
+  const { id, name, styles, group, content, index, parentId, customStyles } = props
 
   const [
     liveMode,
@@ -66,7 +66,6 @@ export default function Flex(props: RecursiveComponent<'Flex'>) {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (liveMode) return
-
     e.stopPropagation()
     onSelectElement({
       id,

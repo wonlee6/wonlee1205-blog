@@ -84,7 +84,9 @@ export default function EditorSideBar() {
           role='button'
           aria-label='Styles Tab'>
           <div className='rounded-lg p-2 group-hover:bg-default-200'>
-            <PaintbrushIcon className='text-default-600' />
+            <PaintbrushIcon
+              className={selectedTab === 'styles' ? 'text-primary-500' : 'text-default-600'}
+            />
           </div>
           <span className='text-xs text-foreground-400'>Styles</span>
         </div>
@@ -97,7 +99,9 @@ export default function EditorSideBar() {
           role='button'
           aria-label='Component Tab'>
           <div className='rounded-lg p-2 group-hover:bg-default-200'>
-            <PackagePlusIcon className='text-default-600' />
+            <PackagePlusIcon
+              className={selectedTab === 'component' ? 'text-primary-500' : 'text-default-600'}
+            />
           </div>
           <span className='text-xs text-foreground-400'>Component</span>
         </div>
@@ -110,7 +114,9 @@ export default function EditorSideBar() {
           role='button'
           aria-label='Layer Tab'>
           <div className='rounded-lg p-2 group-hover:bg-default-200'>
-            <LayersIcon className='text-default-600' />
+            <LayersIcon
+              className={selectedTab === 'layer' ? 'text-primary-500' : 'text-default-600'}
+            />
           </div>
           <span className='text-xs text-foreground-400'>Layer</span>
         </div>
@@ -123,7 +129,9 @@ export default function EditorSideBar() {
           role='button'
           aria-label='Storage Tab'>
           <div className='rounded-lg p-2 group-hover:bg-default-200'>
-            <DatabaseIcon className='text-default-600' />
+            <DatabaseIcon
+              className={selectedTab === 'storage' ? 'text-primary-500' : 'text-default-600'}
+            />
           </div>
           <span className='text-xs text-foreground-400'>Storage</span>
         </div>

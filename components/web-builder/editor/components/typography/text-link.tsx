@@ -21,7 +21,7 @@ import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function TextLink(props: RecursiveComponent<'TextLink'>) {
-  const { content, name, id, styles, group, index, parentId } = props
+  const { content, name, id, styles, group, customStyles, index, parentId } = props
 
   const { liveMode, selectedElement, onSelectElement, onDeleteElement, onUpdateContentInElement } =
     useEditorStore((state) => state)
@@ -40,7 +40,8 @@ export default function TextLink(props: RecursiveComponent<'TextLink'>) {
       name,
       group,
       styles,
-      content
+      content,
+      customStyles
     })
   }
 

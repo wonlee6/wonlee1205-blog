@@ -19,7 +19,7 @@ import { useEditorStore } from '@/providers/user-store-provider'
 import youtubeErrorImg from '@/public/images/youtube-error.webp'
 
 export default function YouTube(props: RecursiveComponent<'YouTube'>) {
-  const { content, name, id, styles, group, index, parentId } = props
+  const { content, name, id, styles, group, customStyles, index, parentId } = props
 
   const { liveMode, selectedElement, onSelectElement, onDeleteElement, onUpdateContentInElement } =
     useEditorStore((state) => state)
@@ -46,7 +46,8 @@ export default function YouTube(props: RecursiveComponent<'YouTube'>) {
       name,
       group,
       styles,
-      content
+      content,
+      customStyles
     })
   }
 

@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 
 import { Chip, Input } from '@nextui-org/react'
 
@@ -7,8 +7,10 @@ import useUpdateElement from '@/hooks/useUpdateElement'
 function CustomStyle({ customStyles }: { customStyles: React.CSSProperties | undefined }) {
   const { handleBtnUpdateElement, handleCustomCss } = useUpdateElement()
 
-  const keyRef = useRef<HTMLInputElement | null>(null)
-  const valueRef = useRef<HTMLInputElement | null>(null)
+  const [form, setForm] = useState({
+    key: '',
+    value: ''
+  })
 
   const [isValid, setIsValid] = useState(false)
 
@@ -19,17 +21,17 @@ function CustomStyle({ customStyles }: { customStyles: React.CSSProperties | und
   const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault()
-
-      const key = keyRef.current?.value!
-      const value = valueRef.current?.value!
+      e.stopPropagation()
 
       try {
-        if (validateCssProperty(key, value)) {
+        if (validateCssProperty(form.key, form.value)) {
           setIsValid(false)
-          handleBtnUpdateElement(key, value, true)
+          handleBtnUpdateElement(form.key, form.value, true)
 
-          keyRef.current!.value = ''
-          valueRef.current!.value = ''
+          setForm({
+            key: '',
+            value: ''
+          })
         } else {
           setIsValid(true)
         }
@@ -41,7 +43,6 @@ function CustomStyle({ customStyles }: { customStyles: React.CSSProperties | und
 
   const filteredCustomCss = useMemo(() => {
     if (typeof customStyles === 'undefined') return []
-
     return Object.entries(customStyles).filter(([_, value]) => typeof value !== 'undefined')
   }, [customStyles])
 
@@ -66,13 +67,22 @@ function CustomStyle({ customStyles }: { customStyles: React.CSSProperties | und
 
         <div className='flex gap-2'>
           <Input
-            ref={keyRef}
+            value={form.key}
+            onChange={(e) => setForm({ ...form, key: e.target.value })}
             className='w-1/2'
             placeholder='e.g. margin'
             isInvalid={isValid}
             errorMessage='This is not a valid format'
+            maxLength={50}
           />
-          <Input ref={valueRef} className='w-1/2' placeholder='e.g. 10px' isInvalid={isValid} />
+          <Input
+            value={form.value}
+            onChange={(e) => setForm({ ...form, value: e.target.value })}
+            className='w-1/2'
+            placeholder='e.g. 10px'
+            isInvalid={isValid}
+            maxLength={50}
+          />
         </div>
       </form>
     </>

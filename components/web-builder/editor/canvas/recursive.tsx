@@ -4,6 +4,7 @@ import Text from '../components/forms/text'
 import TextAreaElement from '../components/forms/text-area'
 import ImageElement from '../components/media/image-element'
 import YouTube from '../components/media/youtube'
+import Block from '../components/structure/block'
 import Flex from '../components/structure/flex'
 import BlockQuote from '../components/typography/block-quote'
 import Heading from '../components/typography/heading'
@@ -15,6 +16,8 @@ export default function Recursive(props: RecursiveComponent) {
   const { name } = props
 
   switch (name) {
+    case 'Block':
+      return <Block {...(props as RecursiveComponent<'Block'>)} />
     case 'Flex':
       return <Flex {...(props as RecursiveComponent<'Flex'>)} />
     case 'Text':

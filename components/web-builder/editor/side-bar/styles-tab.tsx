@@ -17,12 +17,12 @@ export default function StylesTab() {
     useShallow((state) => [state.selectedElement, state.uploadImages])
   )
 
+  const isSelectedItem = selectedElement.id === ''
   const isLayout = selectedElement.group !== 'Structure'
 
   const selectedStyles = useMemo(() => selectedElement.styles, [selectedElement])
   const hasSelectedItem = selectedElement.id !== '' && selectedElement.group === 'Structure'
-
-  const isSelectedItem = selectedElement.id === ''
+  const isFlex = selectedStyles.display !== 'flex'
 
   return (
     <Accordion
@@ -36,7 +36,7 @@ export default function StylesTab() {
         title='CustomBox'
         classNames={{ heading: 'font-bold' }}
         isDisabled={isSelectedItem}>
-        <CustomStyle customStyles={selectedElement.customStyles} />
+        <CustomStyle key={selectedElement.id} customStyles={selectedElement.customStyles} />
       </AccordionItem>
 
       <AccordionItem
@@ -45,7 +45,7 @@ export default function StylesTab() {
         title='Typography'
         classNames={{ heading: 'font-bold', content: 'pb-4' }}
         isDisabled={isSelectedItem}>
-        <TypographyStyle selectedStyles={selectedStyles} />
+        <TypographyStyle key={selectedElement.id} selectedStyles={selectedStyles} />
       </AccordionItem>
 
       <AccordionItem
@@ -54,7 +54,7 @@ export default function StylesTab() {
         title='Dimensions'
         classNames={{ heading: 'font-bold' }}
         isDisabled={isSelectedItem}>
-        <DimensionsStyle selectedStyles={selectedStyles} />
+        <DimensionsStyle key={selectedElement.id} selectedStyles={selectedStyles} />
       </AccordionItem>
 
       <AccordionItem
@@ -64,6 +64,7 @@ export default function StylesTab() {
         classNames={{ heading: 'font-bold' }}
         isDisabled={isSelectedItem}>
         <DecorationStyle
+          key={selectedElement.id}
           selectedStyles={selectedStyles}
           hasSelectedItem={hasSelectedItem}
           uploadImages={uploadImages}
@@ -74,9 +75,13 @@ export default function StylesTab() {
         key='5'
         aria-label='Flexbox'
         title='Flexbox'
-        isDisabled={isSelectedItem || isLayout}
+        isDisabled={isSelectedItem || isLayout || isFlex}
         classNames={{ heading: 'font-bold' }}>
-        <FlexBoxStyle selectedStyles={selectedStyles} componentGroup={selectedElement.group} />
+        <FlexBoxStyle
+          key={selectedElement.id}
+          selectedStyles={selectedStyles}
+          componentGroup={selectedElement.group}
+        />
       </AccordionItem>
     </Accordion>
   )

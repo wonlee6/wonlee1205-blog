@@ -9,7 +9,7 @@ import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function Paragraph(props: RecursiveComponent<'Paragraph'>) {
-  const { content, name, id, styles, group, index, parentId } = props
+  const { content, name, id, styles, group, customStyles, index, parentId } = props
 
   const { liveMode, selectedElement, onSelectElement, onDeleteElement } = useEditorStore(
     (state) => state
@@ -23,7 +23,8 @@ export default function Paragraph(props: RecursiveComponent<'Paragraph'>) {
       name,
       group,
       styles,
-      content
+      content,
+      customStyles
     })
   }
 

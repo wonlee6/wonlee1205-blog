@@ -21,20 +21,25 @@ type Props = {
     path: string
   }[]
   storageUrl: string
+  src: string
+  alt: string
   onOpenChange: (isOpen: boolean) => void
   onSelectImage: (src: string, alt: string) => void
 }
 
 export default function ImageListModal(props: Props) {
-  const { isOpen, uploadImages, storageUrl, onOpenChange, onSelectImage } = props
+  const { isOpen, src, alt, uploadImages, storageUrl, onOpenChange, onSelectImage } = props
 
   const [selectedImage, setSelectedImage] = useState({
-    url: '',
-    path: ''
+    url: src,
+    path: alt
   })
 
-  if (!isOpen) {
-    return null
+  const handleClear = () => {
+    setSelectedImage({
+      path: '',
+      url: ''
+    })
   }
 
   return (
@@ -44,13 +49,17 @@ export default function ImageListModal(props: Props) {
         onOpenChange={onOpenChange}
         shadow='md'
         backdrop='opaque'
-        className='max-h-[80vh] overflow-y-auto'
+        className='max-h-[70vh]'
+        classNames={{
+          wrapper: 'z-[11000]'
+        }}
+        isDismissable={false}
         size='lg'>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader>Image list (in storage)</ModalHeader>
-              <ModalBody>
+              <ModalBody className='overflow-y-auto'>
                 {uploadImages.length > 0 ? (
                   uploadImages.map((item, index) => {
                     return (
@@ -68,7 +77,6 @@ export default function ImageListModal(props: Props) {
                         )}
                         onClick={(e) => {
                           e.stopPropagation()
-                          e.preventDefault()
                           setSelectedImage({
                             url: storageUrl,
                             path: item.path
@@ -76,7 +84,7 @@ export default function ImageListModal(props: Props) {
                         }}
                         tabIndex={0}
                         role='button'
-                        aria-hidden
+                        onKeyDown={() => {}}
                         key={`${storageUrl}/${item.path}-${index}`}>
                         <Image
                           src={`${storageUrl}/${item.path}`}
@@ -104,7 +112,16 @@ export default function ImageListModal(props: Props) {
               <ModalFooter>
                 <Button
                   variant='shadow'
-                  color='default'
+                  color='warning'
+                  onClick={() => {
+                    handleClear()
+                    onClose()
+                  }}>
+                  Close
+                </Button>
+                <Button
+                  variant='shadow'
+                  color='primary'
                   onClick={() => {
                     if (!selectedImage.path) {
                       return
@@ -114,20 +131,18 @@ export default function ImageListModal(props: Props) {
                   }}>
                   Select
                 </Button>
-                <Button
-                  variant='light'
-                  color='danger'
-                  onClick={() => {
-                    onClose()
-                    // handleSaveImage()
-                  }}>
-                  Clear
-                </Button>
-                {/* {form.backgroundImage && (
-                  <Button color='danger' variant='light' onPress={handleImageDelete}>
-                    Delete
+                {selectedImage.url && (
+                  <Button
+                    variant='light'
+                    color='danger'
+                    onClick={() => {
+                      handleClear()
+                      onSelectImage('', '')
+                      onClose()
+                    }}>
+                    Clear
                   </Button>
-                )} */}
+                )}
               </ModalFooter>
             </>
           )}

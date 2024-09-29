@@ -5,22 +5,32 @@ export const defaultStyles: React.CSSProperties = {
   backgroundSize: 'cover'
 }
 
-export const InputDefaultStyles: React.CSSProperties = {
-  textAlign: 'left'
-}
-
-export const ContainerDefaultStyles: React.CSSProperties = {
+export const BlockDefaultStyles: React.CSSProperties = {
   ...defaultStyles,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '0.25rem',
-  width: '100%',
+  width: 'auto',
   paddingLeft: '1rem',
   paddingRight: '1rem',
   paddingTop: '1rem',
   paddingBottom: '1rem',
+  textAlign: 'left'
+}
+
+export const FlexDefaultStyles: React.CSSProperties = {
+  ...defaultStyles,
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '0.25rem',
+  width: 'auto',
+  paddingLeft: '1rem',
+  paddingRight: '1rem',
+  paddingTop: '1rem',
+  paddingBottom: '1rem',
+  textAlign: 'left'
+}
+
+export const InputDefaultStyles: React.CSSProperties = {
   textAlign: 'left'
 }
 
