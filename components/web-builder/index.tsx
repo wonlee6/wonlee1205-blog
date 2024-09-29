@@ -45,12 +45,14 @@ export default function ProjectRoot(props: Props) {
   const [modalType, setModalType] = useState<'add' | 'edit'>('add')
 
   const handleLogout = async (e: React.MouseEvent) => {
-    const response = await fetch('/api/web-builder/project/logout', {
+    e.preventDefault()
+
+    const response = await fetch('/api/web-builder/project-logout', {
       method: 'POST'
     })
 
     if (response.ok) {
-      router.push('/web-builder/sign-in')
+      router.push(response.url)
     }
   }
 
