@@ -53,11 +53,11 @@ const nextConfig = {
     //   }
     // ],
   // },
-  // logging: {
-  //   fetches: {
-  //     fullUrl: true
-  //   }
-  // }
+  logging: {
+    fetches: {
+      fullUrl: true
+    }
+  }
   // async redirects() {
   //   return [
   //     {

@@ -45,8 +45,6 @@ export default function ProjectRoot(props: Props) {
   const [modalType, setModalType] = useState<'add' | 'edit'>('add')
 
   const handleLogout = async (e: React.MouseEvent) => {
-    e.preventDefault()
-
     const response = await fetch('/api/web-builder/project-logout', {
       method: 'POST'
     })
@@ -128,7 +126,7 @@ export default function ProjectRoot(props: Props) {
 
         setProjectDataList(decryptData as ProjectData[])
       } catch (error) {
-        console.error
+        console.error(error)
       } finally {
         setIsLoading(false)
       }

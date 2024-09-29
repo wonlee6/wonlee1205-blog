@@ -64,8 +64,8 @@ function EditorToolbox({ projectName, description }: { projectName: string; desc
         className='flex h-[4%] w-full items-center justify-between border-b border-default-300 px-4'>
         <div className='flex items-center gap-4'>
           <div className='border-r pr-2'>
-            <Link href={'/web-builder/project'}>
-              <Button variant='light' size='sm' startContent={<DoorOpen />}>
+            <Link href={'/web-builder/project'} prefetch passHref legacyBehavior>
+              <Button type='button' variant='light' size='sm' startContent={<DoorOpen />}>
                 Back
               </Button>
             </Link>
