@@ -1,5 +1,3 @@
-import { cache } from 'react'
-
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -18,7 +16,7 @@ export default async function AboutPage() {
   return <WorkIndex data={dataList || []} publicUrl={publicUrl} />
 }
 
-const getImageList = cache(async () => {
+const getImageList = async () => {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
 
@@ -33,4 +31,4 @@ const getImageList = cache(async () => {
     error,
     publicUrl: url.data.publicUrl
   }
-})
+}

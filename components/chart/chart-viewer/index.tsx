@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import Editor from '@monaco-editor/react'
 import {
@@ -14,7 +14,7 @@ import {
   Button
 } from '@nextui-org/react'
 import * as tsPrinter from 'prettier/parser-typescript'
-import * as prettierPluginEstree from 'prettier/plugins/estree'
+import prettierPluginEstree from 'prettier/plugins/estree'
 import * as prettier from 'prettier/standalone'
 
 import MonacoEditor from './monaco-editor'
@@ -57,8 +57,9 @@ export default function ChartView({ url, getChartType }: props) {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const chartOption = useRef('')
-  const handleOpenModal = useCallback(async () => {
+  const handleOpenModal = async () => {
     const getChartOption = (window as any).echarts.getInstanceByDom(chartRef.current!).getOption()
+
     chartOption.current = await prettier.format(`option = ${JSON.stringify(getChartOption)}`, {
       parser: 'typescript',
       tabWidth: 2,
@@ -66,7 +67,7 @@ export default function ChartView({ url, getChartType }: props) {
     })
 
     onOpen()
-  }, [onOpen])
+  }
 
   if (loading) {
     return (
