@@ -5,7 +5,7 @@ import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { createClient } from './supabase/client'
+import { createClient } from './supabase/server'
 
 const key = new TextEncoder().encode(process.env.NEXT_PUBLIC_SESSION_KEY)
 
@@ -42,12 +42,13 @@ export async function decrypt(session: string | Uint8Array): Promise<JWTPayload 
 export async function createSession(userId: string, userName: string) {
   const expires = new Date(Date.now() + cookie.duration)
   const session = await encrypt({ userId, userName, expires })
-  cookies().set(cookie.name, session, { ...cookie.option, expires } as ResponseCookie)
+  const getCookie = await cookies()
+  getCookie.set(cookie.name, session, { ...cookie.option, expires } as ResponseCookie)
   // redirect(`/web-builder/project/${userId}`)
 }
 
 export async function verifySession() {
-  const getCookie = cookies().get(cookie.name)
+  const getCookie = (await cookies()).get(cookie.name)
   if (typeof getCookie === 'undefined') {
     return
   }
@@ -61,12 +62,12 @@ export async function verifySession() {
 }
 
 export async function deleteSession() {
-  cookies().delete(cookie.name)
+  return (await cookies()).delete(cookie.name)
   // redirect('/web-builder/sign-in')
 }
 
 export async function getUserSession(): Promise<{ userId: string; userName: string } | undefined> {
-  const cookie = cookies().get('session')?.value
+  const cookie = (await cookies()).get('session')?.value
 
   if (!cookie) {
     return undefined
@@ -84,7 +85,7 @@ export async function getUserSession(): Promise<{ userId: string; userName: stri
 }
 
 export async function getStorageUrl() {
-  const cookie = cookies().get('session')?.value
+  const cookie = (await cookies()).get('session')?.value
 
   if (!cookie) {
     redirect('/web-builder/sign-in')
@@ -96,9 +97,10 @@ export async function getStorageUrl() {
     redirect('/web-builder/sign-in')
   }
 
+  const supabase = await createClient()
   const {
     data: { publicUrl }
-  } = createClient().storage.from('images').getPublicUrl(`web-builder/${session.userName}`)
+  } = supabase.storage.from('images').getPublicUrl(`web-builder/${session.userName}`)
 
   return publicUrl
 }

@@ -2,7 +2,6 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Fira_Code } from 'next/font/google'
 
-import '../styles/globals.css'
 import { Providers } from './provider'
 import HeaderNavBar from '@/components/navigation'
 import { Toaster } from '@/components/ui/toaster'

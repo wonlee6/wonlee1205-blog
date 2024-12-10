@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 import { getUserSession } from '@/lib/session'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/server'
 
 export async function GET() {
   const session = await getUserSession()
@@ -10,8 +10,9 @@ export async function GET() {
     return new NextResponse('Session Error', { status: 500 })
   }
 
-  const { data, error } = await createClient()
-    .storage.from('images')
+  const supabase = await createClient()
+  const { data, error } = await supabase.storage
+    .from('images')
     .list(`web-builder/${session.userName}`, { sortBy: { column: 'name', order: 'asc' } })
 
   if (error) {
@@ -35,8 +36,9 @@ export async function POST(request: Request) {
     name = file.name
   }
 
-  const { data, error } = await createClient()
-    .storage.from('images')
+  const supabase = await createClient()
+  const { data, error } = await supabase.storage
+    .from('images')
     .upload(`web-builder/${session.userName}/${name}`, response, { upsert: false })
 
   if (error) {
@@ -55,8 +57,9 @@ export async function DELETE(request: Request) {
 
   const response = await request.json()
 
-  const { data, error } = await createClient()
-    .storage.from('images')
+  const supabase = await createClient()
+  const { data, error } = await supabase.storage
+    .from('images')
     .remove([`web-builder/${session.userName}/${response.path}`])
 
   if (error || data.length === 0) {

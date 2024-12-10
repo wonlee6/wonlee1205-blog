@@ -40,7 +40,7 @@
     "react-hooks/exhaustive-deps": "warn", // hooks의 의존성배열이 충분하지 않을때 강제로 의존성을 추가하는 규칙을 완화
     "jsx-a11y/click-events-have-key-events": "warn",
     "jsx-a11y/interactive-supports-focus": "warn",
-    "prettier/prettier": "warn",
+    "prettier/prettier": "off",
     "no-unused-vars": "off", // 사용하지 않는 변수가 있을때 빌드에러가 나던 규칙 해제
     "unused-imports/no-unused-vars": "off",
     "unused-imports/no-unused-imports": "off",

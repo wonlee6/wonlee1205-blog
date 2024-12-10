@@ -3,14 +3,15 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { decryptFormData } from '@/helper/editor.helper'
 import { createSession } from '@/lib/session'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/server'
 import { AuthFormSchemaModel } from '@/model/web-builder'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
   const { name, password } = decryptFormData<AuthFormSchemaModel>(body.data)
 
-  const { statusText, error, data, status } = await createClient()
+  const supabase = await createClient()
+  const { statusText, error, data, status } = await supabase
     .from('member')
     .select()
     .match({ userName: name })

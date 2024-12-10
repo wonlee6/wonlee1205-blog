@@ -2,13 +2,14 @@ import { NextResponse } from 'next/server'
 
 import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
 import { getUserSession } from '@/lib/session'
-import { createClient } from '@/lib/supabase/client'
-import { FunnelPageSchemaModel, ProjectFormSchemaModel } from '@/model/web-builder'
+import { createClient } from '@/lib/supabase/server'
+import { FunnelPageSchemaModel } from '@/model/web-builder'
 
 export async function GET(request: Request) {
   const session = await getUserSession()
 
-  const { data, error, status, statusText } = await createClient()
+  const supabase = await createClient()
+  const { data, error, status, statusText } = await supabase
     .from('page')
     .select()
     .eq('user_id', session!.userId)
@@ -26,7 +27,8 @@ export async function POST(request: Request) {
     response.data
   )
 
-  const { data, error, status } = await createClient()
+  const supabase = await createClient()
+  const { data, error, status } = await supabase
     .from('page')
     .insert({
       user_id,

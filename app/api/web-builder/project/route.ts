@@ -2,13 +2,14 @@ import { NextResponse } from 'next/server'
 
 import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
 import { getUserSession } from '@/lib/session'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/server'
 import { ProjectFormSchemaModel } from '@/model/web-builder'
 
 export async function GET(request: Request) {
   const session = await getUserSession()
 
-  const { data, error, status, statusText } = await createClient()
+  const supabase = await createClient()
+  const { data, error, status, statusText } = await supabase
     .from('project')
     .select()
     .eq('user_id', session!.userId)
@@ -32,7 +33,8 @@ export async function POST(request: Request) {
   } = decryptFormData<ProjectFormSchemaModel>(response.data)
 
   if (type === 'add') {
-    const { data, error, status } = await createClient()
+    const supabase = await createClient()
+    const { data, error, status } = await supabase
       .from('project')
       .insert({
         projectName,
@@ -57,7 +59,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ data: encryptFormData(JSON.stringify(data)) }, { status: status })
   }
 
-  const { data, error, status } = await createClient()
+  const supabase = await createClient()
+  const { data, error, status } = await supabase
     .from('project')
     .update({ projectName, description, updated_at: new Date().toISOString() })
     .eq('id', selectedItemId)
@@ -85,7 +88,8 @@ export async function DELETE(request: Request) {
 
   const { id } = decryptFormData<{ id: string }>(response.data)
 
-  const { error, statusText, status } = await createClient().from('project').delete().eq('id', id)
+  const supabase = await createClient()
+  const { error, statusText, status } = await supabase.from('project').delete().eq('id', id)
 
   if (error) {
     return new NextResponse('An error occurred while deleting', {

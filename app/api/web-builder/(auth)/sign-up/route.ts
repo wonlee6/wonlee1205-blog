@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { decryptFormData } from '@/helper/editor.helper'
 import { createSession } from '@/lib/session'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/server'
 import { AuthFormSchemaModel } from '@/model/web-builder'
 
 export async function POST(request: NextRequest) {
@@ -12,7 +12,8 @@ export async function POST(request: NextRequest) {
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
-  const { error, statusText, data, status } = await createClient()
+  const supabase = await createClient()
+  const { error, statusText, data, status } = await supabase
     .from('member')
     .insert({
       userName: name,

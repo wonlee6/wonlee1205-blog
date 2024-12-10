@@ -15,7 +15,7 @@ export interface EditorStoreProviderProps {
 }
 
 export const UserStoreProvider = ({ children }: EditorStoreProviderProps) => {
-  const storeRef = useRef<EditorStoreApi>()
+  const storeRef = useRef<EditorStoreApi>(undefined)
 
   if (!storeRef.current) {
     storeRef.current = createEditorStore()

@@ -1,8 +1,9 @@
 // import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-import { NextRequest, NextResponse } from 'next/server'
-import { updateSession } from './lib/supabase/middleware'
 import { cookies } from 'next/headers'
+import { NextRequest, NextResponse } from 'next/server'
+
 import { decrypt } from './lib/session'
+import { updateSession } from './lib/supabase/middleware'
 
 // const isProtectedRoute = createRouteMatcher([
 //   '/web-builder/sign-in(.*)',
@@ -25,14 +26,14 @@ import { decrypt } from './lib/session'
 
 export async function middleware(request: NextRequest) {
   // update user's auth session (supabase)
-  // await updateSession(request)
+  await updateSession(request)
 
   const protectedRoutes = '/web-builder/project'
   const currentPath = request.nextUrl.pathname
   const isProtectedRoute = currentPath.includes(protectedRoutes)
 
   if (isProtectedRoute) {
-    const cookie = cookies().get('session')?.value
+    const cookie = (await cookies()).get('session')?.value
 
     // if (typeof cookie === 'undefined') {
     //   return NextResponse.redirect(

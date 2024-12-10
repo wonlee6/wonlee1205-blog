@@ -16,14 +16,15 @@ export type Post = {
 export async function generateMetadata({
   params
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const postData = (await getPostData(params.slug)) as Post
+  const id = (await params).slug
+  const postData = (await getPostData(id)) as Post
 
   return {
     title: postData.title,
     description: postData.description,
-    authors: [{ name: 'sang won', url: `https://wonlee1205-blog.vercel.app/post/${params.slug}` }],
+    authors: [{ name: 'sang won', url: `https://wonlee1205-blog.vercel.app/post/${id}` }],
     creator: 'sang won',
     keywords: postData.tag,
     openGraph: {
@@ -32,9 +33,9 @@ export async function generateMetadata({
       locale: 'ko',
       description: postData.description,
       title: postData.title,
-      url: `https://wonlee1205-blog.vercel.app/post/${params.slug}`
+      url: `https://wonlee1205-blog.vercel.app/post/${id}`
     },
-    metadataBase: new URL(`https://wonlee1205-blog.vercel.app/post/${params.slug}`)
+    metadataBase: new URL(`https://wonlee1205-blog.vercel.app/post/${id}`)
   }
 }
 
@@ -43,12 +44,10 @@ export async function generateStaticParams() {
   return paths.map((post) => ({ slug: post.params.id }))
 }
 
-export default async function PostPage({
-  params
-}: {
-  params: { slug: string }
-}): Promise<JSX.Element> {
-  const postData = (await getPostData(params.slug)) as Post
+export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const id = (await params).slug
+
+  const postData = (await getPostData(id)) as Post
   const allPostsData = await getSortedPostsData()
 
   return (

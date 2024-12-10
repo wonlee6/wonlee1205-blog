@@ -2,7 +2,7 @@
 
 import React, { memo } from 'react'
 
-function Utterance(): JSX.Element {
+function Utterance() {
   return (
     <section
       ref={(elem): void => {

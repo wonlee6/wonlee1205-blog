@@ -1,5 +1,5 @@
-/** @type {import('next').NextConfig} */
 import withBundleAnalyzer from '@next/bundle-analyzer'
+import type { NextConfig } from 'next'
 // import createMDX from '@next/mdx'
 // import remarkGfm from 'remark-gfm'
 // import rehypeRaw from 'rehype-raw'
@@ -12,22 +12,22 @@ withBundleAnalyzer({
 //   enabled: process.env.ANALYZE === 'true',
 // })
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
   // experimental: {
-    // optimizePackageImports: ['@nextui-org'],
-    // turbo: {
-    //   rules: {
-    //     '*.md': [
-    //       {
-    //         loader: '@mdx-js/loader',
-    //         options: {
-    //           format: 'md',
-    //         },
-    //       },
-    //     ]
-    //   }
-    // }
+  // optimizePackageImports: ['@nextui-org'],
+  // turbo: {
+  //   rules: {
+  //     '*.md': [
+  //       {
+  //         loader: '@mdx-js/loader',
+  //         options: {
+  //           format: 'md',
+  //         },
+  //       },
+  //     ]
+  //   }
+  // }
   // },
   // webpack: (config, options) => {
   //   config.module.noParse = [require.resolve('typescript/lib/typescript.js')]
@@ -38,20 +38,20 @@ const nextConfig = {
   // },
   // images: {
   //   domains: ['ddragon.leagueoflegends.com']
-    // remotePatterns: [
-    //   {
-    //     protocol: 'http',
-    //     hostname: 'ddragon.leagueoflegends.com',
-    //     port: '',
-    //     pathname: '/lol/**',
-    //   },
-    //   {
-    //     protocol: 'https',
-    //     hostname: 'ddragon.leagueoflegends.com',
-    //     port: '',
-    //     pathname: '/lol/**',
-    //   }
-    // ],
+  // remotePatterns: [
+  //   {
+  //     protocol: 'http',
+  //     hostname: 'ddragon.leagueoflegends.com',
+  //     port: '',
+  //     pathname: '/lol/**',
+  //   },
+  //   {
+  //     protocol: 'https',
+  //     hostname: 'ddragon.leagueoflegends.com',
+  //     port: '',
+  //     pathname: '/lol/**',
+  //   }
+  // ],
   // },
   logging: {
     fetches: {

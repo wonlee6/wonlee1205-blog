@@ -3,18 +3,25 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 import EditorClient from '@/components/web-builder/editor/client'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/server'
 import { sleep } from '@/lib/utils'
 
-export default async function WebBuilderEditorPage({ params }: { params: { slug: string } }) {
-  if (!params.slug) {
+export default async function WebBuilderEditorPage({
+  params
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const id = (await params).slug
+  if (!id) {
     revalidatePath('/', 'layout')
     redirect(`/web-builder/sign-in`)
   }
+
+  const supabase = await createClient()
   const {
     data: { contents, projectName, description },
     error
-  } = await createClient().from('project').select().eq('id', params.slug).single()
+  } = await supabase.from('project').select().eq('id', id).single()
 
   await sleep(1000)
 

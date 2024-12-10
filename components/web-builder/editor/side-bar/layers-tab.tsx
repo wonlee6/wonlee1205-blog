@@ -87,12 +87,12 @@ function LayersRecursive(props: EditorElement & { depth?: number }) {
   )
 }
 
-const ContainerIcon: Record<'Body' | 'Structure', JSX.Element> = {
+const ContainerIcon: Record<'Body' | 'Structure', React.ReactNode> = {
   Body: <FolderRootIcon />,
   Structure: <BoxSelectIcon />
 }
 
-const ElementIcon: Record<any, JSX.Element> = {
+const ElementIcon: Record<any, React.ReactNode> = {
   Heading: <HeadingIcon />,
   Paragraph: <PilcrowIcon />,
   TextLink: <LinkIcon />,
