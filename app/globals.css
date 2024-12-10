@@ -77,6 +77,8 @@
 }
 
 @layer base {
+    .border-border {}
+
     * {
         @apply border-border;
     }

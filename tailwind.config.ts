@@ -1,9 +1,8 @@
-import type { Config } from 'tailwindcss'
 import { nextui } from '@nextui-org/react'
 import typography from '@tailwindcss/typography'
+import type { Config } from 'tailwindcss'
 import colors from 'tailwindcss/colors'
-
-/** @type {import('tailwindcss').Config} */
+import tailwindcssAnimate from 'tailwindcss-animate'
 
 const linkHeadingStyles = {
   color: colors.gray[100],
@@ -18,7 +17,7 @@ const linkHeadingStyles = {
   }
 }
 
-const config = {
+const config: Config = {
   darkMode: ['class'],
   content: [
     './app/**/*.{ts,tsx}',
@@ -126,7 +125,7 @@ const config = {
       })
     }
   },
-  plugins: [require('tailwindcss-animate'), typography, nextui()]
+  plugins: [tailwindcssAnimate, typography, nextui()]
 } satisfies Config
 // { themes: { dark: {layout: { backgroundColor: '#121212' }} } }
 export default config

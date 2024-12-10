@@ -6,6 +6,8 @@ import { Providers } from './provider'
 import HeaderNavBar from '@/components/navigation'
 import { Toaster } from '@/components/ui/toaster'
 
+import './globals.css'
+
 const inter = Fira_Code({ subsets: ['cyrillic'] })
 // const myFont = localFont({ src: 'font/FiraCode-SemiBold.woff2', display: 'swap' })
 

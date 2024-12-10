@@ -2,8 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-import { m } from 'framer-motion'
-import { LazyMotion, domAnimation } from 'framer-motion'
+import { m, LazyMotion, domAnimation } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
 
 import Editor from './index'

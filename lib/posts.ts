@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import matter from 'gray-matter'
-import rehypePrettyCode from 'rehype-pretty-code'
+import { rehypePrettyCode } from 'rehype-pretty-code'
 import rehypeRaw from 'rehype-raw'
 import rehypeStringify from 'rehype-stringify'
 import remarkGfm from 'remark-gfm'

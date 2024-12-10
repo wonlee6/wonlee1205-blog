@@ -1,13 +1,14 @@
 {
   "name": "blog",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
-    "lint": "next lint --fix"
+    "lint": "next lint --fix",
+    "clean": "rimraf .next"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
