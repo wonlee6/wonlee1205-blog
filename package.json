@@ -31,7 +31,7 @@
     "crypto-js": "^4.2.0",
     "echarts": "^5.5.1",
     "embla-carousel-react": "^8.5.1",
-    "eslint": "^8.56.0",
+    "eslint": "^8",
     "framer-motion": "^11.13.1",
     "jose": "^5.9.6",
     "lucide-react": "^0.468.0",
