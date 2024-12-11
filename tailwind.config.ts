@@ -18,7 +18,7 @@ const linkHeadingStyles = {
 }
 
 const config: Config = {
-  darkMode: ['class'],
+  darkMode: 'class',
   content: [
     './app/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -127,5 +127,5 @@ const config: Config = {
   },
   plugins: [tailwindcssAnimate, typography, nextui()]
 } satisfies Config
-// { themes: { dark: {layout: { backgroundColor: '#121212' }} } }
+
 export default config
