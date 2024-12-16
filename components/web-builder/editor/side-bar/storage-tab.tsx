@@ -13,9 +13,9 @@ import {
   useDisclosure
 } from '@nextui-org/react'
 import { Ban, Plus, Trash2Icon, UploadCloud } from 'lucide-react'
+import { toast } from 'sonner'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useToast } from '@/components/ui/use-toast'
 import { useEditorStore } from '@/providers/user-store-provider'
 import errorImg from '@/public/images/nope-not-here.webp'
 
@@ -30,8 +30,6 @@ export default function StorageTab() {
   )
 
   const inputRef = useRef<HTMLInputElement | null>(null)
-
-  const { toast } = useToast()
 
   const [files, setFiles] = useState<File>()
   const [previewImage, setPreviewImage] = useState<string | ArrayBuffer>()
@@ -77,10 +75,7 @@ export default function StorageTab() {
       setFiles(undefined)
       setPreviewImage(undefined)
     } else {
-      toast({
-        variant: 'default',
-        title: response.statusText
-      })
+      toast(response.statusText)
     }
     setIsLoading(false)
   }
@@ -102,10 +97,7 @@ export default function StorageTab() {
 
     if (response.ok) {
       onDeleteImage(path)
-      toast({
-        variant: 'default',
-        title: response.statusText
-      })
+      toast(response.statusText)
     }
   }
 

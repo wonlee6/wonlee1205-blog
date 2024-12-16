@@ -14,6 +14,14 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   // experimental: {
+  //   dynamicIO: true
+  // },
+  logging: {
+    fetches: {
+      fullUrl: true
+    }
+  }
+  // experimental: {
   // optimizePackageImports: ['@nextui-org'],
   // turbo: {
   //   rules: {
@@ -52,11 +60,7 @@ const nextConfig: NextConfig = {
   //   }
   // ],
   // },
-  logging: {
-    fetches: {
-      fullUrl: true
-    }
-  }
+
   // async redirects() {
   //   return [
   //     {

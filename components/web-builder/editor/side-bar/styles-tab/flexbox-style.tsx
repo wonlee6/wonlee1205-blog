@@ -14,7 +14,7 @@ import {
 
 import { useDebounce } from '@/hooks/useDebounce'
 import useUpdateElement from '@/hooks/useUpdateElement'
-import { ComponentGroup } from '@/model/web-builder'
+import { ComponentGroup } from '@/types/web-builder'
 
 function FlexBoxStyle({
   selectedStyles,

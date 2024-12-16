@@ -10,8 +10,8 @@ import { Badge } from '@/components/ui/badge'
 import { addElementByType } from '@/helper/editor.helper'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
-import { ComponentName, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
+import { ComponentName, RecursiveComponent } from '@/types/web-builder'
 
 export default function Block(props: RecursiveComponent<'Block'>) {
   const { id, name, styles, group, content, index, parentId, customStyles } = props

@@ -15,7 +15,7 @@ import {
 import { z } from 'zod'
 
 import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
-import { ProjectData, ProjectFormSchema, ProjectFormSchemaModel } from '@/model/web-builder'
+import { ProjectData, ProjectFormSchema, ProjectFormSchemaModel } from '@/types/web-builder'
 
 type Props = {
   isOpen: boolean

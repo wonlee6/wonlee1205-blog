@@ -11,8 +11,8 @@ import LayersTab from './layers-tab'
 import StorageTab from './storage-tab'
 import StylesTab from './styles-tab'
 import { getStorageUrl } from '@/lib/session'
-import { StorageSchemaModel } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
+import { StorageSchemaModel } from '@/types/web-builder'
 
 export type SideTab = 'styles' | 'component' | 'layer' | 'storage'
 

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
 import { getUserSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/server'
-import { FunnelPageSchemaModel } from '@/model/web-builder'
+import { FunnelPageSchemaModel } from '@/types/web-builder'
 
 export async function GET(request: Request) {
   const session = await getUserSession()
@@ -22,7 +22,6 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const response = await request.json()
-  console.log(response)
   const { user_id, contents, page_name, description } = decryptFormData<FunnelPageSchemaModel>(
     response.data
   )
@@ -39,7 +38,6 @@ export async function POST(request: Request) {
     .select()
     .single()
 
-  console.log(data, status, error)
   if (status === 409) {
     return new NextResponse('Duplicate project name', {
       status: status,

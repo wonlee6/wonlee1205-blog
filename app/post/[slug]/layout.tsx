@@ -5,4 +5,3 @@ export default function PostLayout({
 }) {
   return <section className='mx-auto my-4 size-full max-w-4xl'>{children}</section>
 }
-6

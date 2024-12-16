@@ -7,8 +7,8 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
-import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
+import { RecursiveComponent } from '@/types/web-builder'
 
 export default function BlockQuote(props: RecursiveComponent<'BlockQuote'>) {
   const { content, name, id, styles, group, customStyles, index, parentId } = props

@@ -10,8 +10,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
-import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
+import { RecursiveComponent } from '@/types/web-builder'
 
 export default function ButtonElement(props: RecursiveComponent<'Button'>) {
   const { content, name, id, styles, group, index, parentId } = props

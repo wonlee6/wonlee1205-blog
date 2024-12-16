@@ -1,6 +1,6 @@
 import { addElementByType } from '@/helper/editor.helper'
-import { ComponentName } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
+import { ComponentName } from '@/types/web-builder'
 
 const useDragAndDrop = (index: number, parentId: string) => {
   const { liveMode, onAddElement, onDragItemOrder } = useEditorStore((state) => state)

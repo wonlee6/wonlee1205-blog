@@ -83,7 +83,7 @@ export default function ChartView({ url, getChartType }: props) {
       <div className='flex size-full flex-col rounded bg-default-200'>
         <div className='flex pt-2'>
           <div className='flex w-1/2 justify-center'>
-            <Button onClick={handleOpenModal} color='primary' variant='shadow'>
+            <Button onPress={handleOpenModal} color='primary' variant='shadow'>
               Open All Options
             </Button>
           </div>

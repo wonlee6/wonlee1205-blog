@@ -14,9 +14,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
-import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 import youtubeErrorImg from '@/public/images/youtube-error.webp'
+import { RecursiveComponent } from '@/types/web-builder'
 
 export default function YouTube(props: RecursiveComponent<'YouTube'>) {
   const { content, name, id, styles, group, customStyles, index, parentId } = props

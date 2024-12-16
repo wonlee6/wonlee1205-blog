@@ -17,8 +17,8 @@ import {
 } from '@/components/ui/select'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
-import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
+import { RecursiveComponent } from '@/types/web-builder'
 
 export default function TextLink(props: RecursiveComponent<'TextLink'>) {
   const { content, name, id, styles, group, customStyles, index, parentId } = props

@@ -6,8 +6,8 @@ import { m, LazyMotion, domAnimation } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
 
 import Editor from './index'
-import { EditorElement } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
+import { EditorElement } from '@/types/web-builder'
 
 export default function EditorClient({
   data,

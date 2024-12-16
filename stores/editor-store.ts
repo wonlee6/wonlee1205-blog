@@ -1,7 +1,7 @@
 import { createStore } from 'zustand/vanilla'
 
 import { getDefaultStyleByComponentType, isEditorElementArray } from '@/helper/editor.helper'
-import { ComponentName, EditorElement } from '@/model/web-builder'
+import { ComponentName, EditorElement } from '@/types/web-builder'
 
 type EditorState = {
   device: 'Desktop' | 'Tablet' | 'Mobile'

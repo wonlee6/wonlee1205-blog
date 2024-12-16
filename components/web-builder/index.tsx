@@ -20,7 +20,7 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import ProjectEditModal from './project-edit-modal'
 import { decryptFormData } from '@/helper/editor.helper'
-import { ProjectData } from '@/model/web-builder'
+import { ProjectData } from '@/types/web-builder'
 
 type Props = {
   userId: string
@@ -44,7 +44,7 @@ export default function ProjectRoot(props: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [modalType, setModalType] = useState<'add' | 'edit'>('add')
 
-  const handleLogout = async (e: React.MouseEvent) => {
+  const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const response = await fetch('/api/web-builder/project-logout', {
       method: 'POST'
     })

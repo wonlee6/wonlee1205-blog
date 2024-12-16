@@ -9,8 +9,8 @@ import { RadioGroupItem, RadioGroup } from '@/components/ui/radio-group'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { HeadingDefaultStyles } from '@/lib/constants'
 import { cn } from '@/lib/utils'
-import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
+import { RecursiveComponent } from '@/types/web-builder'
 
 export default function Heading(props: RecursiveComponent<'Heading'>) {
   const { content, name, id, styles, group, customStyles, index, parentId } = props

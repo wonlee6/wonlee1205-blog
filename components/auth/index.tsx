@@ -5,12 +5,12 @@ import { useRef, useState } from 'react'
 import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { ZodError } from 'zod'
 
 import { AuthIcons } from './icons'
-import { useToast } from '@/components/ui/use-toast'
 import { encryptFormData } from '@/helper/editor.helper'
-import { AuthFormSchema, AuthFormSchemaModel } from '@/model/web-builder'
+import { AuthFormSchema, AuthFormSchemaModel } from '@/types/web-builder'
 
 type Props = {
   authType: 'sign-up' | 'sign-in'
@@ -20,7 +20,6 @@ export default function AuthClient({ authType }: Props) {
   const [isFirstNameFocus, setIsFirstNameFocus] = useState(false)
   const [isFirstPasswordFocus, setIsFirsPasswordFocus] = useState(false)
 
-  const { toast } = useToast()
   const router = useRouter()
 
   const nameRef = useRef<HTMLInputElement | null>(null)
@@ -53,16 +52,10 @@ export default function AuthClient({ authType }: Props) {
       }
 
       nameRef.current?.focus()
-      toast({
-        variant: 'destructive',
-        title: response.statusText
-      })
+      toast(response.statusText)
     } catch (error) {
       if (error instanceof ZodError) {
-        toast({
-          variant: 'destructive',
-          title: error.issues[0].message
-        })
+        toast(error.issues[0].message)
 
         if (error.issues[0].path[0] === 'name') {
           nameRef.current?.focus()

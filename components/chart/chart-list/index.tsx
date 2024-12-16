@@ -5,8 +5,8 @@ import React, { useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { ChartHelper } from '@/helper/ChartHelper'
-import { ChartType } from '@/model/Chart.model'
+import { ChartHelper } from '@/helper/chart.Helper'
+import { ChartType } from '@/types/chart-type'
 
 export default function ChartList({ selectedMenu }: { selectedMenu: ChartType }) {
   const filteredChartImages = useMemo(() => {

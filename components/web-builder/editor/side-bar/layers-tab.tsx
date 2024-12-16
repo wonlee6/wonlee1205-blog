@@ -20,8 +20,8 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { isEditorElementArray } from '@/helper/editor.helper'
 import { cn } from '@/lib/utils'
-import { EditorElement } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
+import { EditorElement } from '@/types/web-builder'
 
 export default function LayersTab() {
   const [elements] = useEditorStore(useShallow((state) => [state.elements]))

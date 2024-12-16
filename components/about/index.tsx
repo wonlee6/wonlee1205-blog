@@ -26,7 +26,7 @@ export default function AboutClient() {
         </Tooltip> */}
 
         <Tooltip content={isCopy ? 'copied' : 'copy'} showArrow>
-          <Button aria-label={isCopy ? 'copied' : 'copy mail'} variant='light' onClick={handleCopy}>
+          <Button aria-label={isCopy ? 'copied' : 'copy mail'} variant='light' onPress={handleCopy}>
             wonlee6@gmail.com
             <Mail size={30} />
           </Button>

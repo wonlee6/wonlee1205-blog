@@ -2,8 +2,8 @@
 
 import { Button } from '@nextui-org/react'
 
-import { ChartHelper } from '@/helper/ChartHelper'
-import { ChartType } from '@/model/Chart.model'
+import { ChartHelper } from '@/helper/chart.Helper'
+import { ChartType } from '@/types/chart-type'
 
 type Props = {
   selectedMenu: ChartType
@@ -20,7 +20,7 @@ export default function ChartMenuList(props: Props) {
           key={item.name}
           color={selectedMenu === item.name ? 'primary' : 'default'}
           variant='shadow'
-          onClick={() => onMenuClick(item.name)}
+          onPress={() => onMenuClick(item.name)}
           className='w-full'>
           {item.name}
         </Button>

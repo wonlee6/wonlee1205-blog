@@ -17,9 +17,9 @@ import SettingPopover2 from '../setting-popover2'
 import { Button } from '@/components/ui/button'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
-import { RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
 import ImageErrorImg from '@/public/images/nope-not-here.webp'
+import { RecursiveComponent } from '@/types/web-builder'
 
 export default function ImageElement(props: RecursiveComponent<'Image'>) {
   const { content, name, id, styles, group, customStyles, index, parentId } = props

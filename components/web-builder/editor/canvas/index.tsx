@@ -5,8 +5,8 @@ import { useShallow } from 'zustand/react/shallow'
 import Recursive from './recursive'
 import { addElementByType } from '@/helper/editor.helper'
 import { cn } from '@/lib/utils'
-import { ComponentName, EditorElement, RecursiveComponent } from '@/model/web-builder'
 import { useEditorStore } from '@/providers/user-store-provider'
+import { ComponentName, EditorElement, RecursiveComponent } from '@/types/web-builder'
 
 const Canvas = (props: RecursiveComponent<'Body'>) => {
   const { id, content } = props

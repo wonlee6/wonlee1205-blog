@@ -20,7 +20,7 @@ import {
   AllElementType,
   RecursiveComponent,
   NonLayoutComponentName
-} from '@/model/web-builder'
+} from '@/types/web-builder'
 
 export function isEditorElementArray(
   content: AllElementType<NonLayoutComponentName> | EditorElement<ComponentName>[]

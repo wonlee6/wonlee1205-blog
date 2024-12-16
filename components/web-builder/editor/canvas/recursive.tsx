@@ -10,7 +10,7 @@ import BlockQuote from '../components/typography/block-quote'
 import Heading from '../components/typography/heading'
 import Paragraph from '../components/typography/paragraph'
 import TextLink from '../components/typography/text-link'
-import { RecursiveComponent } from '@/model/web-builder'
+import { RecursiveComponent } from '@/types/web-builder'
 
 export default function Recursive(props: RecursiveComponent) {
   const { name } = props

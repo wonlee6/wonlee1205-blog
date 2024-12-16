@@ -1,14 +1,14 @@
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import { Fira_Code } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 
 import { Providers } from './provider'
 import HeaderNavBar from '@/components/navigation'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from '@/components/ui/sonner'
 
 import './globals.css'
 
-const inter = Fira_Code({ subsets: ['cyrillic'] })
+const inter = Poppins({ subsets: ['latin'], weight: ['400', '700'] })
 // const myFont = localFont({ src: 'font/FiraCode-SemiBold.woff2', display: 'swap' })
 
 export default function RootLayout({

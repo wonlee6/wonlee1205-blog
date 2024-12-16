@@ -14,9 +14,9 @@ import {
   TabletSmartphone
 } from 'lucide-react'
 import Link from 'next/link'
+import { toast } from 'sonner'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useToast } from '@/components/ui/use-toast'
 import { encryptFormData } from '@/helper/editor.helper'
 import { useEditorStore } from '@/providers/user-store-provider'
 
@@ -32,8 +32,6 @@ function EditorToolbox({ projectName, description }: { projectName: string; desc
   )
   const [saveLoading, setSaveLoading] = useState(false)
 
-  const { toast } = useToast()
-
   const handleLiveMode = () => {
     setLiveMode()
   }
@@ -47,10 +45,7 @@ function EditorToolbox({ projectName, description }: { projectName: string; desc
       body: JSON.stringify({ data: encryptedData })
     })
 
-    toast({
-      variant: 'default',
-      title: response.statusText
-    })
+    toast(response.statusText)
     setSaveLoading(false)
   }
 

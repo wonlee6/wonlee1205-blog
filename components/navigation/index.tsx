@@ -147,7 +147,7 @@ export default function HeaderNavBar() {
         <NavbarMenu className='gap-y-4'>
           <NavbarMenuItem>
             <Button
-              onClick={() => {
+              onPress={() => {
                 setIsMenuOpen(false)
                 router.push('/')
               }}
@@ -158,7 +158,7 @@ export default function HeaderNavBar() {
               Post
             </Button>
             <Button
-              onClick={() => {
+              onPress={() => {
                 setIsMenuOpen(false)
                 router.push('/about')
               }}

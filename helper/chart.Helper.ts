@@ -1,4 +1,3 @@
-import { ChartType } from './../model/Chart.model'
 import {
   barImageList,
   funnelImageList,
@@ -7,6 +6,7 @@ import {
   lineImageList,
   pieImageList
 } from '@/data/ChartImages'
+import { ChartType } from '@/types/chart-type'
 
 export const ChartHelper = {
   getChartMenuList() {

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
 import { getUserSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/server'
-import { ProjectFormSchemaModel } from '@/model/web-builder'
+import { ProjectFormSchemaModel } from '@/types/web-builder'
 
 export async function GET(request: Request) {
   const session = await getUserSession()

@@ -1,7 +1,9 @@
+import { cache } from 'react'
+
 import { Metadata } from 'next'
 
 import ChartView from '@/components/chart/chart-viewer'
-import { ChartType } from '@/model/Chart.model'
+import { ChartType } from '@/types/chart-type'
 
 export async function generateMetadata({
   params
@@ -46,12 +48,14 @@ async function fetchChartType() {
   }
 }
 
+const cacheChartType = cache(fetchChartType)
+
 export default async function SelectedChartPage({
   params
 }: {
   params: Promise<{ slug: [ChartType, string] }>
 }) {
-  const getChartType = await fetchChartType()
+  const getChartType = await cacheChartType()
   const chartName = (await params).slug[1]
 
   return <ChartView getChartType={getChartType} url={chartName} />
