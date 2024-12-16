@@ -1,17 +1,16 @@
-import withBundleAnalyzer from '@next/bundle-analyzer'
+// import withBundleAnalyzer from '@next/bundle-analyzer'
 import type { NextConfig } from 'next'
 // import createMDX from '@next/mdx'
 // import remarkGfm from 'remark-gfm'
 // import rehypeRaw from 'rehype-raw'
 // import rehypePrettyCode from "rehype-pretty-code";
 
-withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true'
-})
+// withBundleAnalyzer({
+//   enabled: process.env.ANALYZE === 'true'
+// })
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
 //   enabled: process.env.ANALYZE === 'true',
 // })
-
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   // experimental: {
