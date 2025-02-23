@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { Button, Divider, Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react'
+import { Button, Divider, Popover, PopoverContent, PopoverTrigger } from '@heroui/react'
 import { SettingsIcon, Trash2Icon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'

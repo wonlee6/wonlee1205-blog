@@ -2,7 +2,7 @@
 
 import { memo, useState } from 'react'
 
-import { Button, Tooltip } from '@nextui-org/react'
+import { Button, Tooltip } from '@heroui/react'
 import { m } from 'framer-motion'
 import {
   DoorOpen,

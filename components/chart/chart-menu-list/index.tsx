@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@nextui-org/react'
+import { Button } from '@heroui/react'
 
 import { ChartHelper } from '@/helper/chart.Helper'
 import { ChartType } from '@/types/chart-type'

@@ -10,7 +10,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader
-} from '@nextui-org/react'
+} from '@heroui/react'
 
 import { cn } from '@/lib/utils'
 import ImageErrorImg from '@/public/images/nope-not-here.webp'

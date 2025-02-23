@@ -8,7 +8,7 @@ export default function ChartsLayout({
   return (
     <div className='size-full p-4'>
       {children}
-      <Script async src='https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js' />
+      <Script async src='https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js' />
     </div>
   )
 }

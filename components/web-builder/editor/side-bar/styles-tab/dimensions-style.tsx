@@ -1,6 +1,6 @@
 import { memo, useState } from 'react'
 
-import { Divider, Input } from '@nextui-org/react'
+import { Divider, Input } from '@heroui/react'
 
 import { useDebounce } from '@/hooks/useDebounce'
 import useUpdateElement from '@/hooks/useUpdateElement'

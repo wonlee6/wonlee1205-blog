@@ -1,6 +1,6 @@
 'use client'
 
-import { Image } from '@nextui-org/react'
+import { Image } from '@heroui/react'
 
 import task0 from '@/public/images/task0.png'
 import task1 from '@/public/images/task1.png'

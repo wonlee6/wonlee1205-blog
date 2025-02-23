@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import { Card, CardBody } from '@nextui-org/react'
+import { Card, CardBody } from '@heroui/react'
 
 import {
   Carousel,

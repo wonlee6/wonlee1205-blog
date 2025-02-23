@@ -12,7 +12,7 @@ import {
   Link,
   Button,
   Switch
-} from '@nextui-org/react'
+} from '@heroui/react'
 import NextLink from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'

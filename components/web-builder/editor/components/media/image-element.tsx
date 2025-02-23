@@ -2,15 +2,7 @@
 
 import React, { useRef, useState } from 'react'
 
-import {
-  Input,
-  useDisclosure,
-  Image,
-  Select,
-  SelectItem,
-  Checkbox,
-  Tooltip
-} from '@nextui-org/react'
+import { Input, useDisclosure, Image, Select, SelectItem, Checkbox, Tooltip } from '@heroui/react'
 
 import ImageListModal from '../../common/image-list-modal'
 import SettingPopover2 from '../setting-popover2'

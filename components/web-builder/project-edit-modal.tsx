@@ -11,7 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
   Textarea
-} from '@nextui-org/react'
+} from '@heroui/react'
 import { z } from 'zod'
 
 import { decryptFormData, encryptFormData } from '@/helper/editor.helper'

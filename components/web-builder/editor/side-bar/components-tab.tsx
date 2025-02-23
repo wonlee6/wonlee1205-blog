@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { Accordion, AccordionItem } from '@nextui-org/react'
+import { Accordion, AccordionItem } from '@heroui/react'
 import {
   BoxIcon,
   CircleArrowLeftIcon,

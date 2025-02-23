@@ -1,4 +1,4 @@
-import { Skeleton, Spinner } from '@nextui-org/react'
+import { Skeleton, Spinner } from '@heroui/react'
 
 export default function EditorLoading() {
   return (

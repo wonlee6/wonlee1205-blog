@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 
-import { Checkbox, Divider } from '@nextui-org/react'
+import { Checkbox, Divider } from '@heroui/react'
 import { Settings, Trash2Icon } from 'lucide-react'
 import Image from 'next/image'
 import ReactPlayer from 'react-player/lazy'

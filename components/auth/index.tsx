@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 
-import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@nextui-org/react'
+import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@heroui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'

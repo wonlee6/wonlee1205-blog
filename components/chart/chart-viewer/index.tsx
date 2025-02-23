@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 // eslint-disable-next-line import/no-named-as-default
-import Editor from '@monaco-editor/react'
 import {
   Spinner,
   Modal,
@@ -13,7 +12,8 @@ import {
   ModalFooter,
   useDisclosure,
   Button
-} from '@nextui-org/react'
+} from '@heroui/react'
+import Editor from '@monaco-editor/react'
 import * as tsPrinter from 'prettier/parser-typescript'
 import prettierPluginEstree from 'prettier/plugins/estree'
 import * as prettier from 'prettier/standalone'

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 
-import { Chip, Pagination } from '@nextui-org/react'
+import { Chip, Pagination } from '@heroui/react'
 import Link from 'next/link'
 
 import { PostData } from '@/lib/posts'

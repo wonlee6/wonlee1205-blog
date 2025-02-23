@@ -1,4 +1,4 @@
-import { nextui } from '@nextui-org/react'
+import { heroui } from '@heroui/react'
 import typography from '@tailwindcss/typography'
 import type { Config } from 'tailwindcss'
 import colors from 'tailwindcss/colors'
@@ -22,7 +22,7 @@ const config: Config = {
   content: [
     './app/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
-    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}'
+    './node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}'
   ],
   prefix: '',
   theme: {
@@ -125,7 +125,7 @@ const config: Config = {
       })
     }
   },
-  plugins: [tailwindcssAnimate, typography, nextui()]
+  plugins: [tailwindcssAnimate, typography, heroui()]
 } satisfies Config
 
 export default config

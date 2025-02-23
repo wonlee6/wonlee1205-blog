@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react'
 
-import { Accordion, AccordionItem } from '@nextui-org/react'
+import { Accordion, AccordionItem } from '@heroui/react'
 import { useShallow } from 'zustand/react/shallow'
 
 import CustomStyle from './styles-tab/custom-style'

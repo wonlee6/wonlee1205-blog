@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 // import Link from 'next/link'
-import { Button, Tooltip } from '@nextui-org/react'
+import { Button, Tooltip } from '@heroui/react'
 import { Github, Mail } from 'lucide-react'
 
 export default function AboutClient() {

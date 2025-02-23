@@ -14,7 +14,7 @@ import {
   ListboxSection,
   Spinner,
   useDisclosure
-} from '@nextui-org/react'
+} from '@heroui/react'
 import { Wallpaper, Settings } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 

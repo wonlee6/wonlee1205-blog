@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { Divider } from '@nextui-org/react'
+import { Divider } from '@heroui/react'
 import { SettingsIcon, Trash2Icon } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'

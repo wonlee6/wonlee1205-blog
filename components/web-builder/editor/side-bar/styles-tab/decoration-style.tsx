@@ -13,7 +13,7 @@ import {
   Switch,
   Tooltip,
   useDisclosure
-} from '@nextui-org/react'
+} from '@heroui/react'
 import { ImageIcon } from 'lucide-react'
 
 import { useDebounce } from '@/hooks/useDebounce'

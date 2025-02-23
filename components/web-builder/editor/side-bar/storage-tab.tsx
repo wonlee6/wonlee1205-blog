@@ -11,7 +11,7 @@ import {
   ModalContent,
   ModalHeader,
   useDisclosure
-} from '@nextui-org/react'
+} from '@heroui/react'
 import { Ban, Plus, Trash2Icon, UploadCloud } from 'lucide-react'
 import { toast } from 'sonner'
 import { useShallow } from 'zustand/react/shallow'
