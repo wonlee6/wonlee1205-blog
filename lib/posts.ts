@@ -2,8 +2,8 @@ import fs from 'fs'
 import path from 'path'
 
 import matter from 'gray-matter'
-import { rehypePrettyCode } from 'rehype-pretty-code'
 import rehypeRaw from 'rehype-raw'
+import rehypePrettyCode from 'rehype-pretty-code'
 import rehypeStringify from 'rehype-stringify'
 import remarkGfm from 'remark-gfm'
 import remarkParse from 'remark-parse'
@@ -49,7 +49,7 @@ export async function getSortedPostsData() {
   })
 }
 
-export function getAllPostIds() {
+export async function getAllPostIds() {
   const fileNames = fs.readdirSync(postsDirectory)
   // Returns an array that looks like this:
   // [
@@ -72,23 +72,23 @@ export function getAllPostIds() {
     }
   })
 }
+
 export async function getPostData(id: string) {
   const fullMdPath = path.join(postsDirectory, `${id}.md`)
   const fullMdxPath = path.join(postsDirectory, `${id}.mdx`)
-
-  // if (fs.existsSync(fullMdPath)) {
-  //   fileContents = fs.readFileSync(fullMdPath, 'utf8')
-  //   matterResult = matter(fileContents)
-
-  //   return {
-  //     id,
-  //     contentHtml: matterResult.content.toString(),
-  //     ...matterResult.data
-  //   }
-  // }
-
-  const fileContents = fs.readFileSync(fullMdPath, 'utf8')
-  const matterResult = matter(fileContents)
+  
+  let fileContents;
+  let matterResult;
+  
+  if (fs.existsSync(fullMdPath)) {
+    fileContents = fs.readFileSync(fullMdPath, 'utf8')
+  } else if (fs.existsSync(fullMdxPath)) {
+    fileContents = fs.readFileSync(fullMdxPath, 'utf8')
+  } else {
+    throw new Error(`Post with id "${id}" not found.`)
+  }
+  
+  matterResult = matter(fileContents)
 
   const processedContent = await unified()
     .use(remarkParse) // markdown 파싱

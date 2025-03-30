@@ -4,7 +4,6 @@ import { Poppins } from 'next/font/google'
 
 import { Providers } from './provider'
 import HeaderNavBar from '@/components/navigation'
-import { Toaster } from '@/components/ui/sonner'
 
 import './globals.css'
 
@@ -27,7 +26,6 @@ export default function RootLayout({
         </Providers>
         <Analytics />
         <SpeedInsights />
-        <Toaster />
       </body>
     </html>
   )

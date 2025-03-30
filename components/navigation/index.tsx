@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, startTransition, useLayoutEffect, useState } from 'react'
+import React, { useCallback, useEffect, startTransition, useState } from 'react'
 
 import {
   Navbar,

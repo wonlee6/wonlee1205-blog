@@ -40,8 +40,10 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const paths = getAllPostIds()
-  return paths.map((post) => ({ slug: post.params.id }))
+  const posts = await getAllPostIds()
+  return posts.map((post) => ({
+    slug: post.params.id
+  }))
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
