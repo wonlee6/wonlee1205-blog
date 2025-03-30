@@ -1,5 +1,6 @@
 'use client'
 
+
 import React, { useCallback, useEffect, useState } from 'react'
 
 import {
@@ -115,7 +116,7 @@ export default function ProjectRoot(props: Props) {
   // }
 
   useEffect(() => {
-    // eslint-disable-next-line prettier/prettier, no-extra-semi
+     
     ;(async () => {
       try {
         const response = await fetch('/api/web-builder/project', {

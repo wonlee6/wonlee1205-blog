@@ -1,8 +1,9 @@
 'use client'
 
+
+ 
 import React, { useEffect, useRef, useState } from 'react'
 
-// eslint-disable-next-line import/no-named-as-default
 import {
   Spinner,
   Modal,
@@ -33,7 +34,7 @@ export default function ChartView({ url, getChartType }: props) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // eslint-disable-next-line prettier/prettier, no-extra-semi
+     
     ;(async () => {
       try {
         if (url === 'confidence-band' || url === 'line-race') {

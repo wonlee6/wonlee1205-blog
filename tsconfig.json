@@ -6,6 +6,11 @@
     "skipLibCheck": true,
     "strict": true,
 
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true, // switch 문에서 fallthrough 케이스 경고
+    "useDefineForClassFields": true, // 클래스 필드에 대해 ECMAScript 표준 동작 사용
+    
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",

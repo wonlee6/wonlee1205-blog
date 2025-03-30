@@ -2,7 +2,6 @@
 
 import React, { useRef, useState } from 'react'
 
-// eslint-disable-next-line import/no-named-as-default
 import Editor, { Monaco } from '@monaco-editor/react'
 import { Runner } from 'react-runner'
 

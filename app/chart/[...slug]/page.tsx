@@ -2,6 +2,7 @@ import { cache } from 'react'
 
 import { Metadata } from 'next'
 
+
 import ChartView from '@/components/chart/chart-viewer'
 import { ChartType } from '@/types/chart-type'
 

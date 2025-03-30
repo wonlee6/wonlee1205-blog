@@ -1,3 +1,4 @@
+
 import { memo, useEffect, useRef, useState } from 'react'
 
 import {
@@ -88,7 +89,7 @@ function DecorationsStyle({ selectedStyles, uploadImages, hasSelectedItem }: Dec
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   useEffect(() => {
-    // eslint-disable-next-line prettier/prettier, no-extra-semi
+     
     ;(async () => {
       urlRef.current = await getStorageUrl()
     })()

@@ -4,6 +4,7 @@ import React, { ReactNode } from 'react'
 
 import dynamic from 'next/dynamic'
 
+
 const EditorToolbox = dynamic(() => import('./toolbox/index'))
 const EditorCanvas = dynamic(() => import('./canvas/index'))
 const EditorSideBar = dynamic(() => import('./side-bar/index'))
