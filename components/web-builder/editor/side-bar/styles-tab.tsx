@@ -1,16 +1,16 @@
 'use client'
 
-import React, { useMemo } from 'react'
-
 import { Accordion, AccordionItem } from '@heroui/react'
+import React, { useMemo } from 'react'
 import { useShallow } from 'zustand/react/shallow'
+
+import { useEditorStore } from '@/providers/user-store-provider'
 
 import CustomStyle from './styles-tab/custom-style'
 import DecorationStyle from './styles-tab/decoration-style'
 import DimensionsStyle from './styles-tab/dimensions-style'
 import FlexBoxStyle from './styles-tab/flexbox-style'
 import TypographyStyle from './styles-tab/typography-style'
-import { useEditorStore } from '@/providers/user-store-provider'
 
 export default function StylesTab() {
   const [selectedElement, uploadImages] = useEditorStore(

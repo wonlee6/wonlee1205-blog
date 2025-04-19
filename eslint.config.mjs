@@ -1,14 +1,17 @@
-import js from '@eslint/js';
-import nextPlugin from '@next/eslint-plugin-next';
-import reactPlugin from 'eslint-plugin-react';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin';
-import typescriptEslintParser from '@typescript-eslint/parser';
-import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
-import importPlugin from 'eslint-plugin-import';
-import tailwindcssPlugin from 'eslint-plugin-tailwindcss';
-import prettierPlugin from 'eslint-plugin-prettier';
-import globals from 'globals';
+import js from '@eslint/js'
+import nextPlugin from '@next/eslint-plugin-next'
+import reactPlugin from 'eslint-plugin-react'
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
+import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin'
+import typescriptEslintParser from '@typescript-eslint/parser'
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
+import importPlugin from 'eslint-plugin-import'
+import tailwindcssPlugin from 'eslint-plugin-tailwindcss'
+import prettierPlugin from 'eslint-plugin-prettier'
+import globals from 'globals'
+
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
+import reactX from "eslint-plugin-react-x";
 
 export default [
   // 기본 설정
@@ -19,66 +22,68 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.browser,
-        ...globals.node,
+        ...globals.node
       },
       parserOptions: {
         ecmaFeatures: {
-          jsx: true,
-        },
-      },
-    },
+          jsx: true
+        }
+      }
+    }
   },
 
   // Next.js 설정
   {
     plugins: {
-      '@next/next': nextPlugin,
+      '@next/next': nextPlugin
     },
     rules: {
-      ...nextPlugin.configs.recommended.rules,
-    },
+      ...nextPlugin.configs.recommended.rules
+    }
   },
 
   // React 설정
   {
     plugins: {
       react: reactPlugin,
+      'react-x': reactX
     },
     settings: {
       react: {
-        version: 'detect',
-      },
+        version: 'detect'
+      }
     },
     rules: {
       ...reactPlugin.configs.recommended.rules,
+      ...reactX.configs['recommended-typescript'].rules,
       'react/prop-types': 'off',
       'react/jsx-uses-react': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/no-children-prop': 'off',
       'react/jsx-props-no-spreading': 'off',
-      'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
-    },
+      'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }]
+    }
   },
 
   // React Hooks 설정
   {
     plugins: {
-      'react-hooks': reactHooksPlugin,
+      'react-hooks': reactHooksPlugin
     },
     rules: {
       ...reactHooksPlugin.configs.recommended.rules,
-      'react-hooks/exhaustive-deps': 'warn',
-    },
+      'react-hooks/exhaustive-deps': 'warn'
+    }
   },
 
   // TypeScript 설정
   {
     files: ['**/*.ts', '**/*.tsx'],
     plugins: {
-      '@typescript-eslint': typescriptEslintPlugin,
+      '@typescript-eslint': typescriptEslintPlugin
     },
     languageOptions: {
-      parser: typescriptEslintParser,
+      parser: typescriptEslintParser
     },
     rules: {
       ...typescriptEslintPlugin.configs.recommended.rules,
@@ -88,73 +93,56 @@ export default [
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-    },
+      '@typescript-eslint/no-explicit-any': 'off'
+    }
   },
 
   // JSX 접근성 설정
   {
     plugins: {
-      'jsx-a11y': jsxA11yPlugin,
+      'jsx-a11y': jsxA11yPlugin
     },
     rules: {
       ...jsxA11yPlugin.configs.recommended.rules,
       'jsx-a11y/click-events-have-key-events': 'warn',
       'jsx-a11y/interactive-supports-focus': 'warn',
-      'jsx-a11y/no-noninteractive-element-interactions': 'off',
-    },
+      'jsx-a11y/no-noninteractive-element-interactions': 'off'
+    }
   },
 
   // Import 설정
   {
     plugins: {
       import: importPlugin,
+      'simple-import-sort': simpleImportSort
     },
     rules: {
-      'import/extensions': 'off',
-      'import/no-unresolved': 'off',
-      'import/no-extraneous-dependencies': 'off',
-      'import/prefer-default-export': 'off',
-      "import/order": [
-        "error",
-        {
-          "groups": ["builtin", "external", "internal"], // 그룹핑 순서
-          "pathGroups": [
-            {
-              "pattern": "react",
-              "group": "builtin",
-              "position": "before"
-            }
-          ],
-          "pathGroupsExcludedImportTypes": ["react"], // external로 간주되어 alias 적용안되는 문제 해결
-          "alphabetize": {
-            "order": "asc",
-            "caseInsensitive": true // 대문자 우선
-          },
-          "newlines-between": "always" // 그룹별 모두 한줄 띄우기
-        }
-      ]
-    },
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
+      'import/first': 'error',
+      'import/newline-after-import': 'error',
+      'import/no-duplicates': 'error'
+    }
   },
 
   // Tailwind CSS 설정
   {
     plugins: {
-      tailwindcss: tailwindcssPlugin,
+      tailwindcss: tailwindcssPlugin
     },
     rules: {
-      'tailwindcss/no-custom-classname': 'off',
-    },
+      'tailwindcss/no-custom-classname': 'off'
+    }
   },
 
   // Prettier 설정
   {
     plugins: {
-      prettier: prettierPlugin,
+      prettier: prettierPlugin
     },
     rules: {
-      'prettier/prettier': 'off',
-    },
+      'prettier/prettier': 'warn'
+    }
   },
 
   // 기타 규칙
@@ -165,7 +153,7 @@ export default [
       'no-shadow': 'off',
       'no-undef': 'off',
       'no-empty': 'warn',
-      'jsx-quotes': ['error', 'prefer-single'],
-    },
-  },
-];
+      'jsx-quotes': ['error', 'prefer-single']
+    }
+  }
+]

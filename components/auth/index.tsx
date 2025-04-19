@@ -1,17 +1,16 @@
 'use client'
 
-
-import { useRef, useState } from 'react'
-
 import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@heroui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { ZodError } from 'zod'
 
-import { AuthIcons } from './icons'
 import { encryptFormData } from '@/helper/editor.helper'
 import { AuthFormSchema, AuthFormSchemaModel } from '@/types/web-builder'
+
+import { AuthIcons } from './icons'
 
 type Props = {
   authType: 'sign-up' | 'sign-in'

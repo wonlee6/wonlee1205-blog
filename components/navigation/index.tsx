@@ -1,22 +1,20 @@
 'use client'
 
-
-import React, { useCallback, useEffect, startTransition, useState } from 'react'
-
 import {
+  Button,
+  Link,
   Navbar,
   NavbarContent,
   NavbarItem,
-  NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Link,
-  Button,
+  NavbarMenuToggle,
   Switch
 } from '@heroui/react'
 import NextLink from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
+import React, { startTransition, useCallback, useEffect, useState } from 'react'
 
 import { NavIcons } from './icons'
 

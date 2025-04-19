@@ -1,9 +1,7 @@
 'use client'
 
-import React, { ReactNode } from 'react'
-
 import dynamic from 'next/dynamic'
-
+import React, { ReactNode } from 'react'
 
 const EditorToolbox = dynamic(() => import('./toolbox/index'))
 const EditorCanvas = dynamic(() => import('./canvas/index'))

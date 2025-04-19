@@ -1,11 +1,9 @@
 'use client'
 
-
-import React, { useEffect, useRef, useState } from 'react'
-
 import { Checkbox, Divider } from '@heroui/react'
 import { Settings, Trash2Icon } from 'lucide-react'
 import Image from 'next/image'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player/lazy'
 
 import { AspectRatio } from '@/components/ui/aspect-ratio'

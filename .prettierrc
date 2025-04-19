@@ -7,19 +7,6 @@
     "printWidth": 100,
     "semi": false,
     "jsxSingleQuote": true,
-    "plugins": ["prettier-plugin-tailwindcss"],
-    "overrides": [
-      {
-        "files": "*.css",
-        "options": {
-          "parser": "css"
-        }
-      },
-      {
-        "files": "*.md",
-        "options": {
-          "parser": "mdx"
-        }
-      }
-    ]
+    "endOfLine": "lf",
+    "plugins": ["prettier-plugin-tailwindcss"]
   }

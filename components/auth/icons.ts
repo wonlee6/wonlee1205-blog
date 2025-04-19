@@ -1,4 +1,4 @@
-import { Eye, EyeOff, BadgeAlert } from 'lucide-react'
+import { BadgeAlert, Eye, EyeOff } from 'lucide-react'
 
 export const AuthIcons = {
   eye: Eye,

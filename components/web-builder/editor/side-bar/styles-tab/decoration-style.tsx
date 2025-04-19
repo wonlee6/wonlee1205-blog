@@ -1,6 +1,3 @@
-
-import { memo, useEffect, useRef, useState } from 'react'
-
 import {
   Button,
   Image,
@@ -16,6 +13,7 @@ import {
   useDisclosure
 } from '@heroui/react'
 import { ImageIcon } from 'lucide-react'
+import { memo, useEffect, useRef, useState } from 'react'
 
 import { useDebounce } from '@/hooks/useDebounce'
 import useUpdateElement from '@/hooks/useUpdateElement'
@@ -89,7 +87,6 @@ function DecorationsStyle({ selectedStyles, uploadImages, hasSelectedItem }: Dec
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   useEffect(() => {
-     
     ;(async () => {
       urlRef.current = await getStorageUrl()
     })()
@@ -225,6 +222,7 @@ function DecorationsStyle({ selectedStyles, uploadImages, hasSelectedItem }: Dec
                         onClick={() => handleSelectImage(`${urlRef.current}/${item.path}`)}
                         tabIndex={0}
                         role='listbox'
+                        // eslint-disable-next-line react-x/no-array-index-key
                         key={`${urlRef.current}/${item.path}-${index}`}>
                         <Image
                           src={`${urlRef.current}/${item.path}`}

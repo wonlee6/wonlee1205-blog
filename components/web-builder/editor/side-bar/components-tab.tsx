@@ -1,8 +1,5 @@
 'use client'
 
-
-import React from 'react'
-
 import { Accordion, AccordionItem } from '@heroui/react'
 import {
   BoxIcon,
@@ -18,6 +15,7 @@ import {
   TypeIcon,
   YoutubeIcon
 } from 'lucide-react'
+import React from 'react'
 
 export default function ComponentsTab() {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: string) => {

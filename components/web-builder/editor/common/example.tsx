@@ -1,17 +1,15 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-
 import { Card, CardBody } from '@heroui/react'
-
+import { useEffect, useRef, useState } from 'react'
 
 import {
   Carousel,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselPrevious,
-  type CarouselApi
+  CarouselPrevious
 } from '@/components/ui/carousel'
 
 export function Example() {
@@ -36,6 +34,7 @@ export function Example() {
     <Carousel className='w-full max-w-xs'>
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
+          // eslint-disable-next-line react-x/no-array-index-key
           <CarouselItem key={index}>
             <div className='p-1'>
               <Card>

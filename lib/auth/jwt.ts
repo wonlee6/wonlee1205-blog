@@ -1,4 +1,4 @@
-import { SignJWT, jwtVerify } from 'jose'
+import { jwtVerify, SignJWT } from 'jose'
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'default-secret-key')
 const JWT_ISSUER = 'wonlee1205-blog'

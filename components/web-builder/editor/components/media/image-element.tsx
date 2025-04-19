@@ -1,18 +1,17 @@
 'use client'
 
+import { Checkbox, Image, Input, Select, SelectItem, Tooltip, useDisclosure } from '@heroui/react'
 import React, { useRef, useState } from 'react'
 
-import { Input, useDisclosure, Image, Select, SelectItem, Checkbox, Tooltip } from '@heroui/react'
-
-
-import ImageListModal from '../../common/image-list-modal'
-import SettingPopover2 from '../setting-popover2'
 import { Button } from '@/components/ui/button'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/providers/user-store-provider'
 import ImageErrorImg from '@/public/images/nope-not-here.webp'
 import { RecursiveComponent } from '@/types/web-builder'
+
+import ImageListModal from '../../common/image-list-modal'
+import SettingPopover2 from '../setting-popover2'
 
 export default function ImageElement(props: RecursiveComponent<'Image'>) {
   const { content, name, id, styles, group, customStyles, index, parentId } = props

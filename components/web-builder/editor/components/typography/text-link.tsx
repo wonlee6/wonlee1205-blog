@@ -1,11 +1,8 @@
 'use client'
 
+import Link from 'next/link'
 import React, { useState } from 'react'
 
-import Link from 'next/link'
-
-
-import SettingPopover from '../setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -20,6 +17,8 @@ import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { RecursiveComponent } from '@/types/web-builder'
+
+import SettingPopover from '../setting-popover'
 
 export default function TextLink(props: RecursiveComponent<'TextLink'>) {
   const { content, name, id, styles, group, customStyles, index, parentId } = props

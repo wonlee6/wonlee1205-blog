@@ -1,7 +1,5 @@
 'use client'
 
-import React from 'react'
-
 import {
   BoxSelectIcon,
   CircleArrowLeftIcon,
@@ -16,6 +14,7 @@ import {
   TypeIcon,
   YoutubeIcon
 } from 'lucide-react'
+import React from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { isEditorElementArray } from '@/helper/editor.helper'

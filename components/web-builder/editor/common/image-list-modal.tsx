@@ -1,7 +1,5 @@
 'use client'
 
-import React, { useState } from 'react'
-
 import {
   Button,
   Image,
@@ -11,7 +9,7 @@ import {
   ModalFooter,
   ModalHeader
 } from '@heroui/react'
-
+import React, { useState } from 'react'
 
 import { cn } from '@/lib/utils'
 import ImageErrorImg from '@/public/images/nope-not-here.webp'
@@ -86,6 +84,7 @@ export default function ImageListModal(props: Props) {
                         tabIndex={0}
                         role='button'
                         onKeyDown={() => {}}
+                        // eslint-disable-next-line react-x/no-array-index-key
                         key={`${storageUrl}/${item.path}-${index}`}>
                         <Image
                           src={`${storageUrl}/${item.path}`}

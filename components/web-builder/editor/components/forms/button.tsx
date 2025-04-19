@@ -1,11 +1,8 @@
 'use client'
 
+import { Checkbox } from '@heroui/react'
 import React, { useRef, useState } from 'react'
 
-import { Checkbox } from '@heroui/react'
-
-
-import SettingPopover from '../setting-popover'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -13,6 +10,8 @@ import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { RecursiveComponent } from '@/types/web-builder'
+
+import SettingPopover from '../setting-popover'
 
 export default function ButtonElement(props: RecursiveComponent<'Button'>) {
   const { content, name, id, styles, group, index, parentId } = props

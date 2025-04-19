@@ -1,8 +1,5 @@
 'use client'
 
-
-import React, { useRef, useState } from 'react'
-
 import {
   Button,
   Divider,
@@ -14,6 +11,7 @@ import {
   useDisclosure
 } from '@heroui/react'
 import { Ban, Plus, Trash2Icon, UploadCloud } from 'lucide-react'
+import React, { useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -65,7 +63,7 @@ export default function StorageTab() {
 
     setIsLoading(true)
     const formData = new FormData()
-    formData.append('file', files!)
+    formData.append('file', files)
     const response = await fetch('/api/web-builder/storage', {
       method: 'POST',
       body: formData
@@ -181,6 +179,7 @@ export default function StorageTab() {
                 tabIndex={0}
                 role='button'
                 aria-hidden
+                // eslint-disable-next-line react-x/no-array-index-key
                 key={`${storageUrl}/${item.path}-${index}`}>
                 <Image
                   src={`${storageUrl}/${item.path}`}

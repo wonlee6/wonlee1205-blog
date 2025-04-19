@@ -1,10 +1,8 @@
 'use client'
 
-
-import * as React from 'react'
-
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons'
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react'
+import * as React from 'react'
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -110,6 +108,7 @@ const Carousel = React.forwardRef<
 
   return (
     <CarouselContext.Provider
+      // eslint-disable-next-line react-x/no-unstable-context-value
       value={{
         carouselRef,
         api: api,
@@ -230,4 +229,4 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
 )
 CarouselNext.displayName = 'CarouselNext'
 
-export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext }
+export { Carousel, type CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious }

@@ -1,8 +1,5 @@
 'use client'
 
-
-import React, { useCallback, useEffect, useState } from 'react'
-
 import {
   Button,
   Card,
@@ -16,12 +13,14 @@ import {
   Spinner,
   useDisclosure
 } from '@heroui/react'
-import { Wallpaper, Settings } from 'lucide-react'
+import { Settings, Wallpaper } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import ProjectEditModal from './project-edit-modal'
 import { decryptFormData } from '@/helper/editor.helper'
 import { ProjectData } from '@/types/web-builder'
+
+import ProjectEditModal from './project-edit-modal'
 
 type Props = {
   userId: string
@@ -116,7 +115,6 @@ export default function ProjectRoot(props: Props) {
   // }
 
   useEffect(() => {
-     
     ;(async () => {
       try {
         const response = await fetch('/api/web-builder/project', {
@@ -125,7 +123,7 @@ export default function ProjectRoot(props: Props) {
         const data = await response.json()
         const decryptData = decryptFormData<ProjectData[]>(data.data)
 
-        setProjectDataList(decryptData as ProjectData[])
+        setProjectDataList(decryptData)
       } catch (error) {
         console.error(error)
       } finally {

@@ -1,8 +1,6 @@
-
-import { memo, useState } from 'react'
-
 import { Button, Divider, Input, Select, SelectItem, Tooltip } from '@heroui/react'
 import { AlignCenterIcon, AlignJustifyIcon, AlignLeftIcon, AlignRightIcon } from 'lucide-react'
+import { memo, useState } from 'react'
 
 import { useDebounce } from '@/hooks/useDebounce'
 import useUpdateElement from '@/hooks/useUpdateElement'

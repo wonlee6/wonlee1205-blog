@@ -1,17 +1,17 @@
 'use client'
 
-import React, { useRef } from 'react'
-
 import { TrashIcon } from 'lucide-react'
+import React, { useRef } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
-import Recursive from '../../canvas/recursive'
 import { Badge } from '@/components/ui/badge'
 import { addElementByType } from '@/helper/editor.helper'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { ComponentName, RecursiveComponent } from '@/types/web-builder'
+
+import Recursive from '../../canvas/recursive'
 
 export default function Flex(props: RecursiveComponent<'Flex'>) {
   const { id, name, styles, group, content, customStyles, index, parentId } = props

@@ -1,10 +1,8 @@
 'use client'
 
-
-import React from 'react'
-
 import { Button, Divider, Popover, PopoverContent, PopoverTrigger } from '@heroui/react'
 import { SettingsIcon, Trash2Icon } from 'lucide-react'
+import React from 'react'
 
 import { cn } from '@/lib/utils'
 

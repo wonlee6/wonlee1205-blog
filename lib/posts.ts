@@ -1,7 +1,6 @@
 import fs from 'fs'
-import path from 'path'
-
 import matter from 'gray-matter'
+import path from 'path'
 import rehypePrettyCode from 'rehype-pretty-code'
 import rehypeRaw from 'rehype-raw'
 import rehypeStringify from 'rehype-stringify'
@@ -76,10 +75,10 @@ export async function getAllPostIds() {
 export async function getPostData(id: string) {
   const fullMdPath = path.join(postsDirectory, `${id}.md`)
   const fullMdxPath = path.join(postsDirectory, `${id}.mdx`)
-  
-  let fileContents;
-  let matterResult;
-  
+
+  let fileContents
+  let matterResult
+
   if (fs.existsSync(fullMdPath)) {
     fileContents = fs.readFileSync(fullMdPath, 'utf8')
   } else if (fs.existsSync(fullMdxPath)) {
@@ -87,7 +86,7 @@ export async function getPostData(id: string) {
   } else {
     throw new Error(`Post with id "${id}" not found.`)
   }
-  
+
   matterResult = matter(fileContents)
 
   const processedContent = await unified()

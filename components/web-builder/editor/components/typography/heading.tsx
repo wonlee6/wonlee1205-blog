@@ -2,15 +2,16 @@
 
 import React, { useState } from 'react'
 
-import SettingPopover from '../setting-popover'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { RadioGroupItem, RadioGroup } from '@/components/ui/radio-group'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { HeadingDefaultStyles } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { RecursiveComponent } from '@/types/web-builder'
+
+import SettingPopover from '../setting-popover'
 
 export default function Heading(props: RecursiveComponent<'Heading'>) {
   const { content, name, id, styles, group, customStyles, index, parentId } = props
@@ -92,7 +93,9 @@ export default function Heading(props: RecursiveComponent<'Heading'>) {
       default:
         break
     }
-    onUpdateElementStyle(headingStyle!)
+    if (headingStyle) {
+      onUpdateElementStyle(headingStyle)
+    }
   }
 
   let headingCompo = null

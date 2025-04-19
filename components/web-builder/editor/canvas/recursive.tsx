@@ -1,3 +1,5 @@
+import { RecursiveComponent } from '@/types/web-builder'
+
 import ButtonElement from '../components/forms/button'
 import LabelElement from '../components/forms/label'
 import Text from '../components/forms/text'
@@ -10,7 +12,6 @@ import BlockQuote from '../components/typography/block-quote'
 import Heading from '../components/typography/heading'
 import Paragraph from '../components/typography/paragraph'
 import TextLink from '../components/typography/text-link'
-import { RecursiveComponent } from '@/types/web-builder'
 
 export default function Recursive(props: RecursiveComponent) {
   const { name } = props

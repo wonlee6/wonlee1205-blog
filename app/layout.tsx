@@ -1,11 +1,12 @@
+import './globals.css'
+
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Poppins } from 'next/font/google'
 
-import { Providers } from './provider'
 import HeaderNavBar from '@/components/navigation'
 
-import './globals.css'
+import { Providers } from './provider'
 
 const inter = Poppins({ subsets: ['latin'], weight: ['400', '700'] })
 // const myFont = localFont({ src: 'font/FiraCode-SemiBold.woff2', display: 'swap' })

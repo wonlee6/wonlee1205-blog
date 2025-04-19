@@ -1,13 +1,13 @@
 'use client'
 
+import { domAnimation, LazyMotion, m } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-
-import { m, LazyMotion, domAnimation } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
 
-import Editor from './index'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { EditorElement } from '@/types/web-builder'
+
+import Editor from './index'
 
 export default function EditorClient({
   data,

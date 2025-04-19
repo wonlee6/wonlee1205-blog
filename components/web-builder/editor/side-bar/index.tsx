@@ -1,19 +1,18 @@
 'use client'
 
-
-import { useEffect, useState } from 'react'
-
 import { m } from 'framer-motion'
 import { DatabaseIcon, LayersIcon, PackagePlusIcon, PaintbrushIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
+
+import { getStorageUrl } from '@/lib/session'
+import { useEditorStore } from '@/providers/user-store-provider'
+import { StorageSchemaModel } from '@/types/web-builder'
 
 import ComponentsTab from './components-tab'
 import LayersTab from './layers-tab'
 import StorageTab from './storage-tab'
 import StylesTab from './styles-tab'
-import { getStorageUrl } from '@/lib/session'
-import { useEditorStore } from '@/providers/user-store-provider'
-import { StorageSchemaModel } from '@/types/web-builder'
 
 export type SideTab = 'styles' | 'component' | 'layer' | 'storage'
 

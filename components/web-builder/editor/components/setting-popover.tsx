@@ -1,13 +1,11 @@
 'use client'
 
-
-import React from 'react'
-
 import { Divider } from '@heroui/react'
 import { SettingsIcon, Trash2Icon } from 'lucide-react'
+import React from 'react'
 
 import { Badge } from '@/components/ui/badge'
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 
 type TriggerProps = {

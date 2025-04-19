@@ -1,10 +1,8 @@
 'use client'
 
-
-import React, { useMemo } from 'react'
-
 import Image from 'next/image'
 import Link from 'next/link'
+import React, { useMemo } from 'react'
 
 import { ChartHelper } from '@/helper/chart.Helper'
 import { ChartType } from '@/types/chart-type'

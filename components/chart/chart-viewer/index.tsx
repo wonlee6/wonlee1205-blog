@@ -1,23 +1,20 @@
 'use client'
 
-
- 
-import React, { useEffect, useRef, useState } from 'react'
-
 import {
-  Spinner,
+  Button,
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
-  useDisclosure,
-  Button
+  ModalHeader,
+  Spinner,
+  useDisclosure
 } from '@heroui/react'
 import Editor from '@monaco-editor/react'
 import * as tsPrinter from 'prettier/parser-typescript'
 import prettierPluginEstree from 'prettier/plugins/estree'
 import * as prettier from 'prettier/standalone'
+import React, { useEffect, useRef, useState } from 'react'
 
 import MonacoEditor from './monaco-editor'
 
@@ -34,7 +31,6 @@ export default function ChartView({ url, getChartType }: props) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-     
     ;(async () => {
       try {
         if (url === 'confidence-band' || url === 'line-race') {

@@ -1,10 +1,8 @@
 'use client'
 
-
-import { useEffect, useMemo, useState } from 'react'
-
 import { Chip, Pagination } from '@heroui/react'
 import Link from 'next/link'
+import { useEffect, useMemo, useState } from 'react'
 
 import { PostData } from '@/lib/posts'
 

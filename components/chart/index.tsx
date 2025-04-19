@@ -2,8 +2,9 @@
 
 import React, { useCallback, useState } from 'react'
 
-import Chart from './chart'
 import { ChartType } from '@/types/chart-type'
+
+import Chart from './chart'
 
 export default function ChartClient() {
   const [selectedMenu, setSelectedMenu] = useState<ChartType>(ChartType.Line)
