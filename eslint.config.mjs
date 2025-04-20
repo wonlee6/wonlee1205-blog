@@ -1,17 +1,16 @@
 import js from '@eslint/js'
 import nextPlugin from '@next/eslint-plugin-next'
-import reactPlugin from 'eslint-plugin-react'
-import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin'
 import typescriptEslintParser from '@typescript-eslint/parser'
-import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
 import importPlugin from 'eslint-plugin-import'
-import tailwindcssPlugin from 'eslint-plugin-tailwindcss'
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
 import prettierPlugin from 'eslint-plugin-prettier'
-import globals from 'globals'
-
+import reactPlugin from 'eslint-plugin-react'
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
+import reactX from 'eslint-plugin-react-x'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import reactX from "eslint-plugin-react-x";
+import tailwindcssPlugin from 'eslint-plugin-tailwindcss'
+import globals from 'globals'
 
 export default [
   // 기본 설정
