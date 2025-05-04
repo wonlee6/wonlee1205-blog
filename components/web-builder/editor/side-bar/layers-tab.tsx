@@ -17,7 +17,7 @@ import {
 import React from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
-import { isEditorElementArray } from '@/helper/editor.helper'
+import { isEditorElementArray } from '@/helper/editor'
 import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { EditorElement } from '@/types/web-builder'

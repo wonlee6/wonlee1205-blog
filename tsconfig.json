@@ -6,18 +6,21 @@
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
+    "module": "esnext",
     "skipLibCheck": true,
+
+    "isolatedModules": true,
+    "noEmit": true,
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+
+    "allowJs": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "useDefineForClassFields": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "incremental": true,
+    
     "plugins": [
       {
         "name": "next"

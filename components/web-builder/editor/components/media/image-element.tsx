@@ -1,6 +1,15 @@
 'use client'
 
-import { Checkbox, Image, Input, Select, SelectItem, Tooltip, useDisclosure } from '@heroui/react'
+import {
+  Checkbox,
+  Image,
+  Input,
+  PressEvent,
+  Select,
+  SelectItem,
+  Tooltip,
+  useDisclosure
+} from '@heroui/react'
 import React, { useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -52,8 +61,7 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
     onUpdateContentInElement({ ...content, src, alt })
   }
 
-  const handleDeleteElement = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
+  const handleDeleteElement = (e: PressEvent) => {
     onDeleteElement(id)
   }
 

@@ -2,8 +2,8 @@
 
 import { Button } from '@heroui/react'
 
-import { ChartHelper } from '@/helper/chart.Helper'
-import { ChartType } from '@/types/chart-type'
+import { ChartHelper } from '@/helper/chart'
+import { ChartType } from '@/types/chart'
 
 type Props = {
   selectedMenu: ChartType

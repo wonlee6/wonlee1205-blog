@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
+import { decryptFormData, encryptFormData } from '@/helper/editor'
 import { getUserSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/server'
 import { FunnelPageSchemaModel } from '@/types/web-builder'
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     .insert({
       user_id,
       contents,
-      page_name: 'test111',
+      page_name,
       description
     })
     .select()

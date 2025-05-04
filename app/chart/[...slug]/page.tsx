@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { cache } from 'react'
 
 import ChartView from '@/components/chart/chart-viewer'
-import { ChartType } from '@/types/chart-type'
+import { ChartType } from '@/types/chart'
 
 export async function generateMetadata({
   params

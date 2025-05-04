@@ -2,7 +2,7 @@
 
 import React, { useCallback, useState } from 'react'
 
-import { ChartType } from '@/types/chart-type'
+import { ChartType } from '@/types/chart'
 
 import Chart from './chart'
 

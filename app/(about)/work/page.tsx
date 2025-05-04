@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import WorkIndex from '@/components/work'
@@ -16,8 +17,6 @@ export default async function AboutPage() {
 }
 
 const getImageList = async () => {
-  // const cookieStore = cookies()
-  // const supabase = createClient(cookieStore)
   const supabase = await createClient()
   const url = supabase.storage.from('images').getPublicUrl('work')
 

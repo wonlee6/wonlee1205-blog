@@ -2,7 +2,7 @@
 
 import { useShallow } from 'zustand/react/shallow'
 
-import { addElementByType } from '@/helper/editor.helper'
+import { addElementByType } from '@/helper/editor'
 import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { ComponentName, EditorElement, RecursiveComponent } from '@/types/web-builder'

@@ -8,12 +8,13 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  PressEvent,
   Textarea
 } from '@heroui/react'
 import { useRef, useState } from 'react'
 import { z } from 'zod'
 
-import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
+import { decryptFormData, encryptFormData } from '@/helper/editor'
 import { ProjectData, ProjectFormSchema, ProjectFormSchemaModel } from '@/types/web-builder'
 
 type Props = {
@@ -86,8 +87,7 @@ export default function ProjectEditModal(props: Props) {
     }
   }
 
-  const handleDeleteProject = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const handleDeleteProject = async (e: PressEvent) => {
     if (!selectedItem) return
 
     setIsDeleteLoading(true)
@@ -174,7 +174,7 @@ export default function ProjectEditModal(props: Props) {
                     variant='light'
                     color='danger'
                     aria-label='delete project'
-                    onClick={handleDeleteProject}
+                    onPress={handleDeleteProject}
                     isLoading={isDeleteLoading}>
                     Delete
                   </Button>

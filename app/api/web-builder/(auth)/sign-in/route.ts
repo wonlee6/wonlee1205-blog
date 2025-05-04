@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { decryptFormData } from '@/helper/editor.helper'
+import { decryptFormData } from '@/helper/editor'
 import { createSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/server'
 import { AuthFormSchemaModel } from '@/types/web-builder'
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   const { statusText, error, data, status } = await supabase
     .from('member')
     .select()
-    .match({ userName: name })
+    .match({ user_name: name })
     .single()
 
   if (error) {
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
           statusText: 'Invalid credentials.'
         })
       }
-      await createSession(data.id, data.userName)
+      await createSession(data.id, data.user_name)
       return new NextResponse('success', { status })
     }
   }

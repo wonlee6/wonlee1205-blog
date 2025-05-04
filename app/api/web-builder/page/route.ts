@@ -1,7 +1,7 @@
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-import { decryptFormData } from '@/helper/editor.helper'
+import { decryptFormData } from '@/helper/editor'
 import { createClient } from '@/lib/supabase/server'
 
 export async function PATCH(request: Request) {

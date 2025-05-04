@@ -16,7 +16,7 @@ import { memo, useState } from 'react'
 import { toast } from 'sonner'
 import { useShallow } from 'zustand/react/shallow'
 
-import { encryptFormData } from '@/helper/editor.helper'
+import { encryptFormData } from '@/helper/editor'
 import { useEditorStore } from '@/providers/user-store-provider'
 
 function EditorToolbox({ projectName, description }: { projectName: string; description: string }) {

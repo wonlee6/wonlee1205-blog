@@ -1,6 +1,7 @@
+import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-import { decryptFormData, encryptFormData } from '@/helper/editor.helper'
+import { decryptFormData, encryptFormData } from '@/helper/editor'
 import { getUserSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/server'
 import { ProjectFormSchemaModel } from '@/types/web-builder'

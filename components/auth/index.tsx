@@ -7,7 +7,7 @@ import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { ZodError } from 'zod'
 
-import { encryptFormData } from '@/helper/editor.helper'
+import { encryptFormData } from '@/helper/editor'
 import { AuthFormSchema, AuthFormSchemaModel } from '@/types/web-builder'
 
 import { AuthIcons } from './icons'

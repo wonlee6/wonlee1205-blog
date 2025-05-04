@@ -5,7 +5,7 @@ import React, { useRef } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { Badge } from '@/components/ui/badge'
-import { addElementByType } from '@/helper/editor.helper'
+import { addElementByType } from '@/helper/editor'
 import useDragAndDrop from '@/hooks/useDragAndDrop'
 import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/providers/user-store-provider'

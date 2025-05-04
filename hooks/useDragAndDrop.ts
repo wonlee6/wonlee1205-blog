@@ -1,4 +1,4 @@
-import { addElementByType } from '@/helper/editor.helper'
+import { addElementByType } from '@/helper/editor'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { ComponentName } from '@/types/web-builder'
 

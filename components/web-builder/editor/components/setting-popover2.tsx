@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Divider, Popover, PopoverContent, PopoverTrigger } from '@heroui/react'
+import { Button, Divider, Popover, PopoverContent, PopoverTrigger, PressEvent } from '@heroui/react'
 import { SettingsIcon, Trash2Icon } from 'lucide-react'
 import React from 'react'
 
@@ -41,7 +41,7 @@ function Trigger({
 
 type ContentProps = {
   title: string
-  onDeleteElement: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onDeleteElement: (e: PressEvent) => void
   onDeleteElementByKeyboard: (e: React.KeyboardEvent<HTMLButtonElement>) => void
 }
 
@@ -64,7 +64,7 @@ function Content({
           <div className='grid gap-2'>{children}</div>
           <Divider />
           <Button
-            onClick={onDeleteElement}
+            onPress={onDeleteElement}
             onKeyDown={onDeleteElementByKeyboard}
             variant='light'
             color='danger'

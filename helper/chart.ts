@@ -2,11 +2,11 @@ import {
   barImageList,
   funnelImageList,
   gaugeImageList,
-  sunburstImageList,
   lineImageList,
-  pieImageList
-} from '@/data/ChartImages'
-import { ChartType } from '@/types/chart-type'
+  pieImageList,
+  sunburstImageList
+} from '@/data/chart-images'
+import { ChartType } from '@/types/chart'
 
 export const ChartHelper = {
   getChartMenuList() {

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { decryptFormData } from '@/helper/editor.helper'
+import { decryptFormData } from '@/helper/editor'
 import { createSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/server'
 import { AuthFormSchemaModel } from '@/types/web-builder'
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
   const { error, statusText, data, status } = await supabase
     .from('member')
     .insert({
-      userName: name,
+      user_name: name,
       password: hashedPassword
     })
     .select()
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   }
 
   if (statusText) {
-    await createSession(data.id, data.name)
+    await createSession(data.id, data.user_name)
     return new NextResponse('Success sign-up', { status })
   } else {
     return new NextResponse('Failed to create user.', {

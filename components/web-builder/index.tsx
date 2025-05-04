@@ -10,6 +10,7 @@ import {
   Listbox,
   ListboxItem,
   ListboxSection,
+  PressEvent,
   Spinner,
   useDisclosure
 } from '@heroui/react'
@@ -17,7 +18,7 @@ import { Settings, Wallpaper } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { decryptFormData } from '@/helper/editor.helper'
+import { decryptFormData } from '@/helper/editor'
 import { ProjectData } from '@/types/web-builder'
 
 import ProjectEditModal from './project-edit-modal'
@@ -44,7 +45,7 @@ export default function ProjectRoot(props: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [modalType, setModalType] = useState<'add' | 'edit'>('add')
 
-  const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLogout = async (e: PressEvent) => {
     const response = await fetch('/api/web-builder/project-logout', {
       method: 'POST'
     })
@@ -134,18 +135,14 @@ export default function ProjectRoot(props: Props) {
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
-  const handleEditProject = (e: React.MouseEvent<HTMLButtonElement>, project: ProjectData) => {
-    e.stopPropagation()
-
+  const handleEditProject = (e: PressEvent, project: ProjectData) => {
     setSelectedProject(project)
     setSelectedKeys(new Set([project.id]))
     setModalType('edit')
     onOpen()
   }
 
-  const handleAddProject = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
+  const handleAddProject = async (e: PressEvent) => {
     setModalType('add')
     onOpen()
   }
@@ -192,7 +189,7 @@ export default function ProjectRoot(props: Props) {
           color='default'
           className='text-foreground-400 hover:text-foreground'
           size='sm'
-          onClick={handleLogout}>
+          onPress={handleLogout}>
           Logout
         </Button>
       </div>
@@ -238,7 +235,7 @@ export default function ProjectRoot(props: Props) {
                           <PlusIcon />
                         </Button> */}
                         <Button
-                          onClick={(e) => handleEditProject(e, i)}
+                          onPress={(e) => handleEditProject(e, i)}
                           isIconOnly
                           variant='light'
                           color='default'>
@@ -343,7 +340,7 @@ export default function ProjectRoot(props: Props) {
             variant='shadow'
             color='success'
             aria-label='add project'
-            onClick={handleAddProject}>
+            onPress={handleAddProject}>
             Add Project
           </Button>
           {/* <div className='flex w-1/2 justify-end gap-2'>

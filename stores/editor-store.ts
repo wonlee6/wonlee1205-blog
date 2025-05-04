@@ -1,6 +1,6 @@
 import { createStore } from 'zustand/vanilla'
 
-import { getDefaultStyleByComponentType, isEditorElementArray } from '@/helper/editor.helper'
+import { getDefaultStyleByComponentType, isEditorElementArray } from '@/helper/editor'
 import { ComponentName, EditorElement } from '@/types/web-builder'
 
 type EditorState = {

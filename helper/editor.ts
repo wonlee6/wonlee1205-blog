@@ -15,11 +15,11 @@ import {
   YouTubeDefaultStyles
 } from '@/lib/constants'
 import {
+  AllElementType,
   ComponentName,
   EditorElement,
-  AllElementType,
-  RecursiveComponent,
-  NonLayoutComponentName
+  NonLayoutComponentName,
+  RecursiveComponent
 } from '@/types/web-builder'
 
 export function isEditorElementArray(
