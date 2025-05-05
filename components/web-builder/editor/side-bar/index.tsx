@@ -44,20 +44,20 @@ export default function EditorSideBar() {
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const fetchImageList = fetch('/api/web-builder/storage', {
+        const fetchImageList = await fetch('/api/web-builder/storage', {
           method: 'GET'
         })
-        const fetchUrl = getStorageUrl()
-        const response = await Promise.allSettled([fetchImageList, fetchUrl])
+        const response = await Promise.all([fetchImageList, getStorageUrl()])
+        if (response[0].ok && response[1]) {
+          const data: StorageSchemaModel[] = await response[0].json()
+          console.log(data)
 
-        if (response[0].status === 'fulfilled' && response[1].status === 'fulfilled') {
-          const data: StorageSchemaModel[] = await response[0].value.json()
           const filterEmptyData = data
             .filter((i) => i.name !== '.emptyFolderPlaceholder')
             .map((i) => ({
               path: i.name
             }))
-          onUploadImage(filterEmptyData, response[1].value)
+          onUploadImage(filterEmptyData, response[1])
         }
       } catch (e) {
         console.error(e)

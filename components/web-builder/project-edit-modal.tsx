@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  addToast,
   Button,
   Input,
   Modal,
@@ -36,7 +37,7 @@ export default function ProjectEditModal(props: Props) {
   const [form, setForm] = useState<ProjectFormSchemaModel>({
     user_id: userId,
     type: modalType,
-    projectName: modalType === 'add' ? '' : selectedItem!.projectName,
+    page_name: modalType === 'add' ? '' : selectedItem!.page_name,
     description: modalType === 'add' ? '' : selectedItem!.description,
     selectedItemId: selectedItem?.id
   })
@@ -46,6 +47,15 @@ export default function ProjectEditModal(props: Props) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    if (form.page_name === selectedItem?.page_name) {
+      addToast({
+        title: 'Page name is the same',
+        color: 'warning'
+      })
+      nameRef.current?.focus()
+      return
+    }
 
     setIsLoading(true)
     let data = null
@@ -60,23 +70,42 @@ export default function ProjectEditModal(props: Props) {
           method: 'POST',
           body: JSON.stringify({ data: encryptedData })
         })
-        data = await response.json()
+
+        if (response.status === 200 || response.status === 201) {
+          addToast({
+            title: 'Add Complete',
+            color: 'primary'
+          })
+          data = await response.json()
+        }
       } else {
         const response = await fetch('/api/web-builder/project', {
-          method: 'POST',
+          method: 'PATCH',
           body: JSON.stringify({ data: encryptedData })
         })
-        data = await response.json()
-      }
 
-      const decryptData = decryptFormData<ProjectData>(data.data)
+        if (response.status === 200 || response.status === 201) {
+          addToast({
+            title: 'Update Complete',
+            color: 'primary'
+          })
+          data = await response.json()
+        }
+      }
+      if (!data) {
+        return
+      }
+      const decryptData = decryptFormData<ProjectData>(data?.data)
 
       onSave(decryptData)
       onOpenChange()
     } catch (e) {
       if (e instanceof z.ZodError) {
-        alert(e.issues[0].message)
-        if (e.issues[0].path[0] === 'projectName') {
+        addToast({
+          title: e.issues[0].message,
+          color: 'danger'
+        })
+        if (e.issues[0].path[0] === 'page_name') {
           nameRef.current?.focus()
         } else {
           descriptionRef.current?.focus()
@@ -105,7 +134,10 @@ export default function ProjectEditModal(props: Props) {
       onDelete(parseId)
     } catch (e) {
       if (e instanceof z.ZodError) {
-        alert(e.issues[0].message)
+        addToast({
+          title: e.issues[0].message,
+          color: 'danger'
+        })
       }
     } finally {
       setIsDeleteLoading(false)
@@ -142,12 +174,12 @@ export default function ProjectEditModal(props: Props) {
               <ModalBody>
                 <Input
                   ref={nameRef}
-                  value={form.projectName}
-                  onChange={(e) => setForm({ ...form, projectName: e.target.value })}
-                  label='Project Name'
-                  placeholder='Enter your project name'
+                  value={form.page_name}
+                  onChange={(e) => setForm({ ...form, page_name: e.target.value })}
+                  label='Page Name'
+                  placeholder='Enter your page name'
                   variant='bordered'
-                  title={form.projectName}
+                  title={form.page_name}
                   color='primary'
                   maxLength={100}
                 />

@@ -1,3 +1,5 @@
+'use client'
+
 import { Skeleton, Spinner } from '@heroui/react'
 
 export default function EditorLoading() {
@@ -24,7 +26,7 @@ export default function EditorLoading() {
 
       <div className='flex size-full'>
         <section className='relative flex h-full w-4/5 items-center justify-center border-r border-t border-default-300 p-1'>
-          <Spinner color='danger' size='lg' />
+          <Spinner color='primary' size='lg' variant='wave' />
         </section>
 
         <aside className='flex h-full w-1/5 flex-col gap-4 border-l border-t border-default-300 p-3'>

@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  addToast,
   Button,
   Divider,
   Image,
@@ -8,11 +9,11 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
+  PressEvent,
   useDisclosure
 } from '@heroui/react'
 import { Ban, Plus, Trash2Icon, UploadCloud } from 'lucide-react'
 import React, { useRef, useState } from 'react'
-import { toast } from 'sonner'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useEditorStore } from '@/providers/user-store-provider'
@@ -42,6 +43,19 @@ export default function StorageTab() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
+      if (e.target.files[0].name.includes(' ')) {
+        addToast({
+          title: 'File name cannot contain spaces',
+          color: 'danger'
+        })
+        return
+      } else if (e.target.files[0].name.length > 20) {
+        addToast({
+          title: 'File name cannot be longer than 20 characters',
+          color: 'danger'
+        })
+        return
+      }
       const file = e.target.files[0]
       setFiles(file)
 
@@ -57,9 +71,8 @@ export default function StorageTab() {
   }
 
   const [isLoading, setIsLoading] = useState(false)
-  const handleUpload = async (e: React.MouseEvent) => {
+  const handleUpload = async (e: PressEvent) => {
     if (!files) return
-    e.preventDefault()
 
     setIsLoading(true)
     const formData = new FormData()
@@ -74,7 +87,10 @@ export default function StorageTab() {
       setFiles(undefined)
       setPreviewImage(undefined)
     } else {
-      toast(response.statusText)
+      addToast({
+        title: response.statusText,
+        color: 'danger'
+      })
     }
     setIsLoading(false)
   }
@@ -86,8 +102,12 @@ export default function StorageTab() {
     })
   }
 
-  const handleDeleteImage = async (e: React.MouseEvent<HTMLOrSVGElement>, path: string) => {
+  const handleDeleteImage = async (e: React.MouseEvent<HTMLDivElement>, path: string) => {
+    e.preventDefault()
     e.stopPropagation()
+
+    const confirmDelete = confirm('Are you sure you want to delete this image?')
+    if (!confirmDelete) return
 
     const response = await fetch('/api/web-builder/storage', {
       method: 'DELETE',
@@ -96,7 +116,10 @@ export default function StorageTab() {
 
     if (response.ok) {
       onDeleteImage(path)
-      toast(response.statusText)
+      addToast({
+        title: response.statusText,
+        color: 'primary'
+      })
     }
   }
 
@@ -112,7 +135,7 @@ export default function StorageTab() {
           </label>
 
           <Button
-            onClick={handleUpload}
+            onPress={handleUpload}
             isDisabled={!files}
             color='primary'
             radius='sm'
@@ -122,7 +145,7 @@ export default function StorageTab() {
           </Button>
 
           <Button
-            onClick={() => {
+            onPress={() => {
               setFiles(undefined)
               setPreviewImage(undefined)
             }}
@@ -171,7 +194,7 @@ export default function StorageTab() {
           {uploadedImages.map((item, index) => {
             return (
               <div
-                className='group flex min-h-[70px] cursor-pointer items-center gap-4 rounded-md bg-white shadow-md'
+                className='group flex min-h-[70px] items-center gap-2 rounded-md bg-white shadow-md'
                 onClick={() => {
                   setModalImg({ src: `${storageUrl}/${item.path}`, title: item.path })
                   onOpen()
@@ -181,19 +204,22 @@ export default function StorageTab() {
                 aria-hidden
                 // eslint-disable-next-line react-x/no-array-index-key
                 key={`${storageUrl}/${item.path}-${index}`}>
-                <Image
-                  src={`${storageUrl}/${item.path}`}
-                  alt={item.path}
-                  width={100}
-                  // fallbackSrc={errorImg.src}
-                  isBlurred
-                  radius='sm'
-                  className='transition-all hover:scale-105'
-                  classNames={{ wrapper: 'm-1 cursor-pointer size-full' }}
-                  // isLoading={isFetchLoading}
-                />
-                <div className='flex size-full flex-col items-center justify-between gap-2'>
-                  <span className='truncate text-xs' title={item.path}>
+                <div className='w-5/12 p-1'>
+                  <Image
+                    src={`${storageUrl}/${item.path}`}
+                    alt={item.path}
+                    width={100}
+                    fallbackSrc={errorImg.src}
+                    isBlurred
+                    radius='sm'
+                    className='transition-all hover:scale-105'
+                    classNames={{ wrapper: 'cursor-pointer size-full' }}
+                    // isLoading={isFetchLoading}
+                  />
+                </div>
+
+                <div className='flex w-7/12 flex-col items-center justify-between gap-2'>
+                  <span className='w-full truncate text-center text-xs' title={item.path}>
                     {item.path}
                   </span>
                   <div

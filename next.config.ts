@@ -12,7 +12,7 @@ import type { NextConfig } from 'next'
 //   enabled: process.env.ANALYZE === 'true',
 // })
 const nextConfig: NextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   // experimental: {
   //   dynamicIO: true
   // },

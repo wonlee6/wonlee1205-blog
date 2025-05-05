@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { decryptFormData } from '@/helper/editor'
 import { createSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/server'
-import { AuthFormSchemaModel } from '@/types/web-builder'
+import { AuthFormSchemaModel, MemberSchemaModel } from '@/types/web-builder'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -34,6 +34,12 @@ export async function POST(request: NextRequest) {
           statusText: 'Invalid credentials.'
         })
       }
+
+      await supabase
+        .from('member')
+        .update({ last_actived_at: new Date().toISOString() })
+        .match({ user_name: name })
+
       await createSession(data.id, data.user_name)
       return new NextResponse('success', { status })
     }

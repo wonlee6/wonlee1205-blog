@@ -16,7 +16,7 @@ export async function PATCH(request: Request) {
   const supabase = await createClient()
   const { error, status } = await supabase
     .from('project')
-    .update({ contents: decrtpyData })
+    .update({ contents: decrtpyData, updated_at: new Date().toISOString() })
     .eq('id', projectId)
     .select()
 

@@ -31,15 +31,15 @@ export async function POST(request: Request) {
 
   const response = await request.formData()
   const file = response.get('file')
-  let name = ''
-  if (file instanceof File) {
-    name = file.name
+
+  if (!file || !(file instanceof File)) {
+    return new NextResponse('No file or invalid file in request', { status: 400 })
   }
 
   const supabase = await createClient()
   const { data, error } = await supabase.storage
     .from('images')
-    .upload(`web-builder/${session.userName}/${name}`, response, { upsert: false })
+    .upload(`web-builder/${session.userName}/${file.name}`, file, { upsert: false })
 
   if (error) {
     return new NextResponse('Failed to upload an image', { status: 500, statusText: error.message })

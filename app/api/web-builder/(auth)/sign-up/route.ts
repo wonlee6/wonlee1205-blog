@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   const { name, password } = decryptFormData<AuthFormSchemaModel>(body.data)
 
   const hashedPassword = await bcrypt.hash(password, 10)
-
+  console.log(name, password)
   const supabase = await createClient()
   const { error, statusText, data, status } = await supabase
     .from('member')
@@ -23,13 +23,19 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (error) {
+    if (status === 409) {
+      return new NextResponse('An already existing username.', {
+        status: status,
+        statusText: 'An already existing username.'
+      })
+    }
     return new NextResponse('Failed to create user.', {
       status: status,
       statusText: 'Failed to create user.'
     })
   }
 
-  if (statusText) {
+  if (status === 200 || status === 201) {
     await createSession(data.id, data.user_name)
     return new NextResponse('Success sign-up', { status })
   } else {

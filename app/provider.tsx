@@ -8,13 +8,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   return (
     <HeroUIProvider navigate={router.push}>
+      <ToastProvider placement='top-right' />
       <NextThemesProvider
         attribute='class'
         defaultTheme='system'
         // enableSystem
         // disableTransitionOnChange
       >
-        <ToastProvider />
         {children}
       </NextThemesProvider>
     </HeroUIProvider>

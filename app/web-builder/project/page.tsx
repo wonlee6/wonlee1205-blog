@@ -14,7 +14,6 @@ export default async function WebBuilderProjectPage() {
   // noStore()
 
   const session = await getUserSession()
-
   if (typeof session === 'undefined') {
     revalidatePath('/', 'layout')
     redirect(`/web-builder/sign-in`)

@@ -1,10 +1,9 @@
 'use client'
 
-import { Button, Card, CardBody, CardFooter, CardHeader, Input } from '@heroui/react'
+import { addToast, Button, Card, CardBody, CardFooter, CardHeader, Input } from '@heroui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
-import { toast } from 'sonner'
 import { ZodError } from 'zod'
 
 import { encryptFormData } from '@/helper/editor'
@@ -52,10 +51,16 @@ export default function AuthClient({ authType }: Props) {
       }
 
       nameRef.current?.focus()
-      toast(response.statusText)
+      addToast({
+        title: response.statusText,
+        color: 'warning'
+      })
     } catch (error) {
       if (error instanceof ZodError) {
-        toast(error.issues[0].message)
+        addToast({
+          title: error.issues[0].message,
+          color: 'danger'
+        })
 
         if (error.issues[0].path[0] === 'name') {
           nameRef.current?.focus()

@@ -5,12 +5,22 @@ export const AuthFormSchema = z.object({
   password: z.string().min(4, { message: 'Password must contain at least 4 character(s)' }).max(20)
 })
 
+export const MemberSchema = z.object({
+  id: z.string(),
+  user_name: z.string(),
+  password: z.string(),
+  created_at: z.string().datetime({ offset: true }),
+  last_actived_at: z.string().datetime({ offset: true })
+})
+
+export type MemberSchemaModel = z.infer<typeof MemberSchema>
+
 export type AuthFormSchemaModel = z.infer<typeof AuthFormSchema>
 
 export const ProjectFormSchema = z.object({
   user_id: z.string(),
   type: z.literal('add').or(z.literal('edit')),
-  projectName: z.string().min(2).max(100),
+  page_name: z.string().min(2).max(100),
   description: z.string().max(1000),
   selectedItemId: z.string().optional()
 })
@@ -20,7 +30,7 @@ export type ProjectFormSchemaModel = z.infer<typeof ProjectFormSchema>
 export type ProjectData = {
   id: string
   user_id: string
-  projectName: string
+  page_name: string
   description: string
   contents: EditorElement
   created_at: string

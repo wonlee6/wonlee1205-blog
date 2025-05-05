@@ -23,7 +23,7 @@ export default async function WebBuilderEditorPage({
     error
   } = await supabase.from('project').select().eq('id', id).single()
 
-  await sleep(1000)
+  await sleep(2000)
 
   if (error) {
     return (

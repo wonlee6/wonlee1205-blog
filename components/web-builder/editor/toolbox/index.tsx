@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Tooltip } from '@heroui/react'
+import { addToast, Button, Tooltip } from '@heroui/react'
 import { m } from 'framer-motion'
 import {
   DoorOpen,
@@ -13,7 +13,6 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { memo, useState } from 'react'
-import { toast } from 'sonner'
 import { useShallow } from 'zustand/react/shallow'
 
 import { encryptFormData } from '@/helper/editor'
@@ -44,7 +43,10 @@ function EditorToolbox({ projectName, description }: { projectName: string; desc
       body: JSON.stringify({ data: encryptedData })
     })
 
-    toast(response.statusText)
+    addToast({
+      title: response.statusText,
+      color: 'primary'
+    })
     setSaveLoading(false)
   }
 
@@ -58,7 +60,7 @@ function EditorToolbox({ projectName, description }: { projectName: string; desc
         className='flex h-[4%] w-full items-center justify-between border-b border-default-300 px-4'>
         <div className='flex items-center gap-4'>
           <div className='border-r pr-2'>
-            <Link href={'/web-builder/project'} prefetch passHref legacyBehavior>
+            <Link href={'/web-builder/project'} prefetch passHref>
               <Button type='button' variant='light' size='sm' startContent={<DoorOpen />}>
                 Back
               </Button>

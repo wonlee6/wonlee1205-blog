@@ -158,7 +158,7 @@ export default function ProjectRoot(props: Props) {
           if (i.id === item.id) {
             return {
               ...i,
-              projectName: item.projectName,
+              page_name: item.page_name,
               description: item.description
             }
           }
@@ -188,14 +188,13 @@ export default function ProjectRoot(props: Props) {
           variant='light'
           color='default'
           className='text-foreground-400 hover:text-foreground'
-          size='sm'
           onPress={handleLogout}>
           Logout
         </Button>
       </div>
       <Card className='flex-auto' shadow='none' radius='none'>
-        <CardHeader>
-          <h2 className='select-none'>Landing Page List</h2>
+        <CardHeader className='items-center justify-center'>
+          <h2 className='text-lg font-semibold'>Landing Page List</h2>
           {/* <div className='w-1/2'>
             <h2 className='select-none'>Landing Page List</h2>
           </div>
@@ -243,13 +242,13 @@ export default function ProjectRoot(props: Props) {
                         </Button>
                       </>
                     }>
-                    {i.projectName}
+                    {i.page_name}
                   </ListboxItem>
                 ))}
               </ListboxSection>
             </Listbox>
           ) : (
-            'Please add a project'
+            <p className='m-auto text-center text-foreground-400 underline'>Please add a project</p>
           )}
           {/* <div className='flex h-full'>
             <div className='w-1/2 overflow-auto'>
@@ -330,15 +329,15 @@ export default function ProjectRoot(props: Props) {
         <Divider />
         <CardFooter className='justify-end gap-2'>
           <Button
-            onClick={handleGotoPage}
+            onPress={handleGotoPage}
             variant='ghost'
-            color='primary'
+            color='default'
             isDisabled={new Set(selectedKeys).size === 0}>
             Go to Page
           </Button>
           <Button
             variant='shadow'
-            color='success'
+            color='primary'
             aria-label='add project'
             onPress={handleAddProject}>
             Add Project

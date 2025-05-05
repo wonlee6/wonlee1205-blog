@@ -14,8 +14,9 @@ export async function GET(request: Request) {
     .from('project')
     .select()
     .eq('user_id', session!.userId)
-    .order('projectName', { ascending: true })
+    .order('page_name', { ascending: true })
 
+  console.log(error, statusText)
   if (error) {
     return new NextResponse(statusText, { status })
   }
@@ -25,45 +26,44 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const response = await request.json()
 
-  const {
-    type,
-    projectName,
-    description,
-    user_id,
-    selectedItemId = ''
-  } = decryptFormData<ProjectFormSchemaModel>(response.data)
-
-  if (type === 'add') {
-    const supabase = await createClient()
-    const { data, error, status } = await supabase
-      .from('project')
-      .insert({
-        projectName,
-        description,
-        user_id
-      })
-      .select()
-      .single()
-
-    if (status === 409) {
-      return new NextResponse('Duplicate project name', {
-        status: status,
-        statusText: 'Duplicate project name'
-      })
-    }
-    if (error) {
-      return new NextResponse('An error occurred while adding', {
-        status: status,
-        statusText: 'An error occurred while adding'
-      })
-    }
-    return NextResponse.json({ data: encryptFormData(JSON.stringify(data)) }, { status: status })
-  }
+  const { page_name, description, user_id } = decryptFormData<ProjectFormSchemaModel>(response.data)
 
   const supabase = await createClient()
   const { data, error, status } = await supabase
     .from('project')
-    .update({ projectName, description, updated_at: new Date().toISOString() })
+    .insert({
+      page_name,
+      description,
+      user_id
+    })
+    .select()
+    .single()
+
+  if (status === 409) {
+    return new NextResponse('Duplicate project name', {
+      status: status,
+      statusText: 'Duplicate project name'
+    })
+  }
+  if (error) {
+    return new NextResponse('An error occurred while adding', {
+      status: status,
+      statusText: 'An error occurred while adding'
+    })
+  }
+  return NextResponse.json({ data: encryptFormData(JSON.stringify(data)) }, { status: status })
+}
+
+export async function PATCH(request: Request) {
+  const response = await request.json()
+  const { page_name, description, selectedItemId } = decryptFormData<ProjectFormSchemaModel>(
+    response.data
+  )
+
+  const supabase = await createClient()
+  const { error, status, data } = await supabase
+    .from('project')
+    .update({ page_name, description, updated_at: new Date().toISOString() })
     .eq('id', selectedItemId)
     .select()
     .single()
