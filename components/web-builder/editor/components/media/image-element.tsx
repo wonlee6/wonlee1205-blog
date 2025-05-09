@@ -77,7 +77,14 @@ export default function ImageElement(props: RecursiveComponent<'Image'>) {
 
   const handleChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTriggerKey((prev) => prev + 1)
-    onUpdateContentInElement({ ...content, [e.target.name]: +e.target.value })
+
+    let value = null
+    if (typeof e.target.value === 'number') {
+      value = +e.target.value
+    } else {
+      value = e.target.value
+    }
+    onUpdateContentInElement({ ...content, [e.target.name]: value })
   }
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

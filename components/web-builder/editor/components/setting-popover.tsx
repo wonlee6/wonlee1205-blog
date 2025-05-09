@@ -42,6 +42,7 @@ function Trigger({
 
 type ContentProps = {
   title: string
+  className?: string
   onDeleteElement: (e: React.MouseEvent<HTMLDivElement>) => void
   onDeleteElementByKeyboard: (e: React.KeyboardEvent<HTMLDivElement>) => void
 }
@@ -49,11 +50,16 @@ type ContentProps = {
 function Content({
   children,
   title,
+  className,
   onDeleteElement,
   onDeleteElementByKeyboard
 }: React.PropsWithChildren<ContentProps>) {
   return (
-    <PopoverContent align='start' sideOffset={0} onClick={(e) => e.stopPropagation()}>
+    <PopoverContent
+      align='start'
+      sideOffset={0}
+      onClick={(e) => e.stopPropagation()}
+      className={className}>
       <div className='grid gap-3'>
         <div className='space-y-2'>
           <h4 className='font-medium leading-none'>{`${title} Setting`}</h4>
