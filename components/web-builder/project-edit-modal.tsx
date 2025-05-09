@@ -119,6 +119,9 @@ export default function ProjectEditModal(props: Props) {
   const handleDeleteProject = async (e: PressEvent) => {
     if (!selectedItem) return
 
+    const ok = confirm('Are you sure you want to delete this project?')
+    if (!ok) return
+
     setIsDeleteLoading(true)
 
     try {

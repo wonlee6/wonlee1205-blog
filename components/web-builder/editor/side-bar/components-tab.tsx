@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import React from 'react'
 
-export default function ComponentsTab() {
+export default function ComponentsTab({ active }: { active: boolean }) {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, item: string) => {
     e.stopPropagation()
 
@@ -28,7 +28,7 @@ export default function ComponentsTab() {
   }
 
   return (
-    <>
+    <div className={`${active ? '' : 'hidden'}`}>
       <Accordion
         selectionMode='multiple'
         variant='shadow'
@@ -122,7 +122,7 @@ export default function ComponentsTab() {
           </div>
         </AccordionItem>
       </Accordion>
-    </>
+    </div>
   )
 }
 

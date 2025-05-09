@@ -19,7 +19,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useEditorStore } from '@/providers/user-store-provider'
 import errorImg from '@/public/images/nope-not-here.webp'
 
-export default function StorageTab() {
+export default function StorageTab({ active }: { active: boolean }) {
   const [uploadedImages, storageUrl, onUploadImage, onDeleteImage] = useEditorStore(
     useShallow((state) => [
       state.uploadImages,
@@ -125,7 +125,7 @@ export default function StorageTab() {
 
   return (
     <>
-      <div className='flex flex-col gap-3'>
+      <div className={`flex flex-col gap-3 ${active ? '' : 'hidden'}`}>
         <div className='grid grid-cols-3 gap-1'>
           <label htmlFor='file-choose' className='text-sm'>
             <div className='flex h-8 w-min cursor-pointer items-center gap-1 overflow-hidden rounded-md bg-primary-400 px-2 text-white transition-all hover:bg-primary-300'>

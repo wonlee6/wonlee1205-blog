@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { decryptFormData } from '@/helper/editor'
 import { createSession } from '@/lib/session'
 import { createClient } from '@/lib/supabase/server'
-import { AuthFormSchemaModel, MemberSchemaModel } from '@/types/web-builder'
+import { AuthFormSchemaModel } from '@/types/web-builder'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()

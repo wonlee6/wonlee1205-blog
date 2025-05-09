@@ -16,13 +16,6 @@ import StylesTab from './styles-tab'
 
 export type SideTab = 'styles' | 'component' | 'layer' | 'storage'
 
-const ComponentList = {
-  styles: <StylesTab />,
-  component: <ComponentsTab />,
-  layer: <LayersTab />,
-  storage: <StorageTab />
-}
-
 export default function EditorSideBar() {
   const [liveMode, onUploadImage] = useEditorStore(
     useShallow((state) => [state.liveMode, state.onUploadImage])
@@ -50,7 +43,6 @@ export default function EditorSideBar() {
         const response = await Promise.all([fetchImageList, getStorageUrl()])
         if (response[0].ok && response[1]) {
           const data: StorageSchemaModel[] = await response[0].json()
-          console.log(data)
 
           const filterEmptyData = data
             .filter((i) => i.name !== '.emptyFolderPlaceholder')
@@ -139,7 +131,10 @@ export default function EditorSideBar() {
 
       <div className='grid h-full w-[325px] grid-cols-1 grid-rows-1 border-l bg-[#f6f7f9] py-2'>
         <div className='flex-1 overflow-y-auto px-2 pb-1 scrollbar-hide'>
-          {ComponentList[selectedTab]}
+          <StylesTab active={selectedTab === 'styles'} />
+          <ComponentsTab active={selectedTab === 'component'} />
+          <LayersTab active={selectedTab === 'layer'} />
+          <StorageTab active={selectedTab === 'storage'} />
         </div>
       </div>
     </m.aside>

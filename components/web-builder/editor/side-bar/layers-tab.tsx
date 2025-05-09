@@ -22,11 +22,13 @@ import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/providers/user-store-provider'
 import { EditorElement } from '@/types/web-builder'
 
-export default function LayersTab() {
+export default function LayersTab({ active }: { active: boolean }) {
   const [elements] = useEditorStore(useShallow((state) => [state.elements]))
 
   return (
-    <div className='flex flex-col gap-1 rounded-md border bg-white p-2' role='tree'>
+    <div
+      className={`flex flex-col gap-1 rounded-md border bg-white p-2 ${active ? '' : 'hidden'}`}
+      role='tree'>
       {elements.map((i) => (
         <LayersRecursive key={i.id} {...i} />
       ))}
