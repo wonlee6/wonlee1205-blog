@@ -66,7 +66,7 @@ function FlexBoxStyle({
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtn('justifyContent', 'start')}>
+                onPress={() => handleBtn('justifyContent', 'start')}>
                 <AlignHorizontalJustifyStartIcon />
               </Button>
             </Tooltip>
@@ -78,7 +78,7 @@ function FlexBoxStyle({
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtn('justifyContent', 'center')}>
+                onPress={() => handleBtn('justifyContent', 'center')}>
                 <AlignHorizontalJustifyCenterIcon />
               </Button>
             </Tooltip>
@@ -90,7 +90,7 @@ function FlexBoxStyle({
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtn('justifyContent', 'end')}>
+                onPress={() => handleBtn('justifyContent', 'end')}>
                 <AlignHorizontalJustifyEndIcon />
               </Button>
             </Tooltip>
@@ -102,7 +102,7 @@ function FlexBoxStyle({
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtn('justifyContent', 'between')}>
+                onPress={() => handleBtn('justifyContent', 'between')}>
                 <AlignHorizontalSpaceBetweenIcon />
               </Button>
             </Tooltip>
@@ -114,7 +114,7 @@ function FlexBoxStyle({
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtn('justifyContent', 'around')}>
+                onPress={() => handleBtn('justifyContent', 'around')}>
                 <AlignHorizontalSpaceAroundIcon />
               </Button>
             </Tooltip>
@@ -131,7 +131,7 @@ function FlexBoxStyle({
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtn('alignItems', 'start')}>
+                onPress={() => handleBtn('alignItems', 'start')}>
                 <AlignVerticalJustifyStartIcon />
               </Button>
             </Tooltip>
@@ -143,7 +143,7 @@ function FlexBoxStyle({
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtn('alignItems', 'center')}>
+                onPress={() => handleBtn('alignItems', 'center')}>
                 <AlignVerticalJustifyCenterIcon />
               </Button>
             </Tooltip>
@@ -155,7 +155,7 @@ function FlexBoxStyle({
                 isIconOnly
                 variant='light'
                 isDisabled={isDisable}
-                onClick={() => handleBtn('alignItems', 'end')}>
+                onPress={() => handleBtn('alignItems', 'end')}>
                 <AlignVerticalJustifyEndIcon />
               </Button>
             </Tooltip>

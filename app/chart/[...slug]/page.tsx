@@ -22,7 +22,7 @@ export async function generateMetadata({
     description,
     authors: [{ name: 'sang won', url }],
     creator: 'sang won',
-    keywords: [`${chartType} chart`, `${chartName}`, 'Echarts', 'React', 'Chart Editor'],
+    keywords: [`${chartType} chart`, chartName, 'Echarts', 'React', 'Chart Editor'],
     openGraph: {
       type: 'article',
       countryName: 'South Korea',

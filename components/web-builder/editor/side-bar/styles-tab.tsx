@@ -25,7 +25,7 @@ export default function StylesTab({ active }: { active: boolean }) {
   const isFlex = selectedStyles.display !== 'flex'
 
   return (
-    <div className={`${active ? '' : 'hidden'}`}>
+    <div className={active ? '' : 'hidden'}>
       <Accordion
         selectionMode='multiple'
         variant='shadow'

@@ -28,7 +28,7 @@ export default function ComponentsTab({ active }: { active: boolean }) {
   }
 
   return (
-    <div className={`${active ? '' : 'hidden'}`}>
+    <div className={active ? '' : 'hidden'}>
       <Accordion
         selectionMode='multiple'
         variant='shadow'

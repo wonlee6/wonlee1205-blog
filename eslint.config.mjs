@@ -24,6 +24,8 @@ export default [
         ...globals.node
       },
       parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: {
           jsx: true
         }
@@ -37,7 +39,8 @@ export default [
       '@next/next': nextPlugin
     },
     rules: {
-      ...nextPlugin.configs.recommended.rules
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules
     }
   },
 
