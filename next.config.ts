@@ -1,5 +1,7 @@
 // import withBundleAnalyzer from '@next/bundle-analyzer'
 import type { NextConfig } from 'next'
+import { withContentlayer } from 'next-contentlayer2'
+
 // import createMDX from '@next/mdx'
 // import remarkGfm from 'remark-gfm'
 // import rehypeRaw from 'rehype-raw'
@@ -16,6 +18,10 @@ const nextConfig: NextConfig = {
   // experimental: {
   //   dynamicIO: true
   // },
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+  experimental: {
+    mdxRs: true
+  },
   logging: {
     fetches: {
       fullUrl: true
@@ -88,4 +94,4 @@ const nextConfig: NextConfig = {
 
 // export default withBundleAnalyzer(nextConfig);
 // export default withMDX(nextConfig)
-export default nextConfig
+export default withContentlayer(nextConfig)

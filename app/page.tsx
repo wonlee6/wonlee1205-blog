@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 
 import HomePage from '@/components/main'
-import { getSortedPostsData } from '@/lib/posts'
+
+import { allPosts } from '.contentlayer/generated'
 
 export const metadata: Metadata = {
   title: 'Frontend - 기술 블로그',
@@ -35,11 +36,10 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  const allPostsData = await getSortedPostsData()
   return (
     <section className='size-full'>
       <div className='mx-auto flex h-full max-w-5xl items-center justify-center'>
-        <HomePage allPostsData={allPostsData} />
+        <HomePage allPostsData={allPosts} />
       </div>
     </section>
   )

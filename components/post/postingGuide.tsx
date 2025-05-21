@@ -3,17 +3,18 @@
 import Link from 'next/link'
 import { useMemo } from 'react'
 
-import { Post } from '@/app/post/[slug]/page'
-import { PostData } from '@/lib/posts'
+import { Post } from '@/.contentlayer/generated'
 
 type PostingGuideModel = {
   postData: Post
-  allPostsData: PostData[]
+  allPostsData: Post[]
 }
 
 export default function PostingGuide({ postData, allPostsData }: PostingGuideModel) {
   const nextPost = useMemo(() => {
-    const findPostIndex = allPostsData.findIndex((v) => v.id === postData?.id)
+    const findPostIndex = allPostsData.findIndex(
+      (v) => v._raw.flattenedPath === postData?._raw.flattenedPath
+    )
 
     if (findPostIndex <= 0) {
       return null
@@ -25,7 +26,9 @@ export default function PostingGuide({ postData, allPostsData }: PostingGuideMod
   }, [allPostsData, postData])
 
   const prevPost = useMemo(() => {
-    const findPostIndex = allPostsData.findIndex((v) => v.id === postData?.id)
+    const findPostIndex = allPostsData.findIndex(
+      (v) => v._raw.flattenedPath === postData?._raw.flattenedPath
+    )
 
     if (findPostIndex === -1 || findPostIndex === allPostsData.length) {
       return null
@@ -40,13 +43,13 @@ export default function PostingGuide({ postData, allPostsData }: PostingGuideMod
     <div className='flex justify-between gap-8 max-sm:flex-col max-sm:items-center'>
       <Link
         className='font-semibold text-teal-500 hover:text-teal-600'
-        href={prevPost ? `/post/${prevPost.id}` : `/`}>
+        href={prevPost ? `/post/${prevPost._raw.flattenedPath}` : `/`}>
         {prevPost ? `<- Prev: ${prevPost?.title ?? ''}` : '<- Go to Home'}
       </Link>
       {nextPost && (
         <Link
           className='font-semibold text-teal-500 hover:text-teal-600'
-          href={`/post/${nextPost.id}`}>
+          href={`/post/${nextPost._raw.flattenedPath}`}>
           {`Next: ${nextPost.title ?? ''} ->`}
         </Link>
       )}

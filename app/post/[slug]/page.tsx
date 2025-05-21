@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
 
-import { getAllPostIds, getPostData, getSortedPostsData } from '@/lib/posts'
+import MDXComponent from '@/components/post/mdx-component'
 
 import PostingGuide from '../../../components/post/postingGuide'
+import { allPosts } from '.contentlayer/generated'
 
 // import Utterance from '@/components/post/utterance'
 
@@ -21,14 +22,18 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const id = (await params).slug
-  const postData = (await getPostData(id)) as Post
+  const postData = allPosts.find((post) => post._raw.flattenedPath === id)
+
+  if (!postData) {
+    return {}
+  }
 
   return {
     title: postData.title,
     description: postData.description,
     authors: [{ name: 'sang won', url: `https://wonlee1205-blog.vercel.app/post/${id}` }],
     creator: 'sang won',
-    keywords: postData.tag,
+    // keywords: postData.tag,
     openGraph: {
       type: 'article',
       countryName: 'South Korea',
@@ -42,28 +47,26 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllPostIds()
-  return posts.map((post) => ({
-    slug: post.params.id
+  return allPosts.map((post) => ({
+    slug: post._raw.flattenedPath
   }))
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const id = (await params).slug
+  const slug = (await params).slug
+  const post = allPosts.find((post) => post._raw.flattenedPath === slug)
 
-  const postData = (await getPostData(id)) as Post
-  const allPostsData = await getSortedPostsData()
+  if (!post) {
+    // notFound()
+    return <div>Post not found</div>
+  }
 
   return (
     <>
       <div className='flex flex-col justify-between p-4 pb-20'>
-        {postData.contentHtml && (
-          <div className='prose mb-4 w-full dark:prose-invert'>
-            <article dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
-          </div>
-        )}
+        <MDXComponent code={post.body.code} />
         {/* <Utterance /> */}
-        <PostingGuide allPostsData={allPostsData} postData={postData} />
+        {/* <PostingGuide allPostsData={allPostsData} postData={postData} /> */}
       </div>
     </>
   )

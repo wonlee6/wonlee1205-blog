@@ -4,10 +4,10 @@ import { Chip, Pagination } from '@heroui/react'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 
-import { PostData } from '@/lib/posts'
+import { Post } from '@/.contentlayer/generated'
 
 type Props = {
-  allPostsData: PostData[]
+  allPostsData: Post[]
 }
 
 export default function HomePage({ allPostsData }: Props) {
@@ -35,7 +35,7 @@ export default function HomePage({ allPostsData }: Props) {
   const filteredPostsData = useMemo(() => {
     if (selectedTag && selectedTag !== 'All') {
       return allPostsData
-        .filter((v) => v.tag.includes(selectedTag))
+        .filter((v) => v.tags.includes(selectedTag))
         .slice(currentPage * 10 - 10, currentPage * 10)
     }
     return allPostsData.slice(currentPage * 10 - 10, currentPage * 10)
@@ -43,14 +43,14 @@ export default function HomePage({ allPostsData }: Props) {
 
   const postsLength = useMemo(() => {
     if (selectedTag && selectedTag !== 'All') {
-      const filteredTagArr = allPostsData.filter((v) => v.tag.includes(selectedTag))
+      const filteredTagArr = allPostsData.filter((v) => v.tags.includes(selectedTag))
       return Math.ceil(filteredTagArr.length / 10)
     }
     return Math.ceil(allPostsData.length / 10)
   }, [allPostsData, selectedTag])
 
   const filteredTags = useMemo(() => {
-    return [...new Set(allPostsData.map((acc) => acc.tag).flatMap((item) => item))]
+    return [...new Set(allPostsData.map((acc) => acc.tags).flatMap((item) => item))]
   }, [allPostsData])
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function HomePage({ allPostsData }: Props) {
         </div>
         <ul className='divide-y divide-gray-200 dark:divide-gray-700'>
           {filteredPostsData.map((item) => (
-            <li key={item.id} className='py-12'>
+            <li key={item._raw.flattenedPath} className='py-12'>
               <article>
                 <div className='space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0'>
                   <dl>
@@ -99,7 +99,7 @@ export default function HomePage({ allPostsData }: Props) {
                           {item.title}
                         </h2>
                         <div className='flex flex-wrap gap-3'>
-                          {item.tag.map((v) => (
+                          {item.tags.map((v) => (
                             <Chip
                               key={v}
                               onClick={() => handleSelectTag(v)}
@@ -117,7 +117,7 @@ export default function HomePage({ allPostsData }: Props) {
                       </div>
                     </div>
                     <div className='text-base font-semibold leading-6 text-teal-500 hover:text-teal-600'>
-                      <Link href={`/post/${item.id}`} prefetch>
+                      <Link href={`/post/${item._raw.flattenedPath}`} prefetch>
                         Read More -{'>'}
                       </Link>
                     </div>
