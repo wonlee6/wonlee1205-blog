@@ -1,0 +1,281 @@
+---
+title: 'IndexedDB 사용해보기'
+date: '2024-07-08'
+tags: ['indexedDB', 'crypto-js']
+description: 'IndexedDB 활용 방법, crypto-js 사용하여 데이터 암호화하기'
+---
+
+# 🗃️ IndexedDB 사용해보기
+
+`IndexedDB`는 브라우저에서 사용할 수 있는 **비관계형(NoSQL) 데이터베이스**입니다.
+클라이언트 측에서 **대용량 데이터를 영구적으로 저장하고 조회**할 수 있도록 설계되었으며,
+**키-값 쌍**으로 데이터를 저장하고 **트랜잭션**을 지원해 데이터의 일관성을 보장합니다.
+
+## 🧪 예제 코드
+
+### 1. DB 연결 함수
+
+```ts showLineNumbers
+export interface Item {
+  id?: number
+  name: string
+}
+
+// db.ts
+export const openDatabase = (): Promise<IDBDatabase> => {
+  return new Promise((resolve, reject) => {
+    // indexedDB 연결
+    const request = indexedDB.open('my-database', 1)
+
+    // 처음 생성하거나 데이터베이스의 스키마(구조)를 변경할 때
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result
+      if (!db.objectStoreNames.contains('items')) {
+        // autoIncrement: 자동으로 키가 증가되어 셋팅된다. 1 > 2 > 3 ...
+        db.createObjectStore('items', { keyPath: 'id', autoIncrement: true })
+      }
+    }
+    // 연결 성공
+    request.onsuccess = (event) => {
+      resolve((event.target as IDBOpenDBRequest).result)
+    }
+    // 연결 실패
+    request.onerror = (event) => {
+      reject((event.target as IDBOpenDBRequest).error)
+    }
+  })
+}
+```
+
+📌 IndexedDB는 **비동기**로 동작하므로, 외부에서 편리하게 사용할 수 있도록 `Promise`로 래핑합니다.
+`my-database`는 데이터베이스 이름, `items`는 오브젝트 스토어(테이블처럼 생각하면 됨)입니다.
+즉, 구조는 👉 `my-database > items`.
+
+![임지](https://i.ibb.co/fv8tTfc/2024-07-07-11-40-41.png)
+
+### 2. 데이터 추가 함수
+
+```ts showLineNumbers
+// ...
+export const addItem = async (item: Item): Promise<void> => {
+  const db = await openDatabase()
+  return new Promise((resolve, reject) => {
+    // 트랜잭션 생성 (읽기/쓰기 모드)
+    const transaction = db.transaction('items', 'readwrite') // readonly, readwrite
+    // 객체 저장소 접근
+    const store = transaction.objectStore('items')
+    // 데이터 추가
+    const request = store.add(item)
+
+    request.onsuccess = () => {
+      resolve()
+    }
+
+    request.onerror = (event) => {
+      reject((event.target as IDBRequest).error)
+    }
+  })
+}
+```
+
+✔️ 위 함수를 통해 `items` 스토어에 값을 추가할 수 있습니다.
+
+![ㅁㄴㅇ](https://i.ibb.co/y563PY3/2024-07-07-11-32-25.png)
+
+### 3. 전체 데이터 조회 함수
+
+```ts showLineNumbers {6}
+export const getAllItems = async (): Promise<Item[]> => {
+  const db = await openDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('items', 'readonly')
+    const store = transaction.objectStore('items')
+    const request = store.getAll()
+
+    request.onsuccess = (event) => {
+      resolve((event.target as IDBRequest).result as Item[])
+    }
+
+    request.onerror = (event) => {
+      reject((event.target as IDBRequest).error)
+    }
+  })
+}
+```
+
+📝 `store.getAll()`을 사용하면 저장된 모든 데이터를 가져올 수 있습니다.
+
+### ⚛️ React 컴포넌트에서 사용하기
+
+```jsx showLineNumbers
+function App() {
+    const [items, setItems] = useState<Item[]>([]);
+    const [inputValue, setInputValue] = useState("");
+
+    useEffect(() => {
+        const fetchItems = async () => {
+            const allItems = await getAllItems();
+            setItems(allItems);
+        };
+
+        fetchItems();
+    }, []);
+
+    const handleAddItem = async () => {
+        await addItem({name: inputValue});
+        const allItems = await getAllItems();
+        setItems(allItems);
+        setInputValue("");
+    };
+
+    return (
+        <div>
+            <h1>IndexedDB with React</h1>
+            <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+            <button onClick={handleAddItem}>Add Item</button>
+            <ul>
+                {items.map((item) => (
+                    <li key={item.id}>{item.name}</li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+```
+
+🔁 새로고침 후에도 데이터가 남아있는 것을 확인할 수 있습니다. IndexedDB는 **브라우저에 영구 저장**되기 때문입니다.
+
+## 🔐 데이터 암호화 (with crypto-js)
+
+데이터를 저장하기 전에 **암호화**하고, 조회 시 **복호화**할 수 있습니다.
+
+**설치**
+
+```shell
+npm install crypto-js uuid
+```
+
+**암호화/복호화 함수**
+
+```ts showLineNumbers
+import CryptoJS from 'crypto-js'
+
+// uuid 통해 만든 키
+const secretKey = 'f60ef0e0-cf85-414e-a094-c1bb3e4bc947'
+
+const encryptData = (data: string): string => {
+  return CryptoJS.AES.encrypt(data, secretKey).toString()
+}
+
+const decryptData = (data: string): string => {
+  const bytes = CryptoJS.AES.decrypt(data, secretKey)
+  return bytes.toString(CryptoJS.enc.Utf8)
+}
+```
+
+**수정된 addItem 함수 (암호화 적용)**
+
+```ts showLineNumbers
+// 위 openDatabase 함수 내 autoIncrement 제거
+// ...
+export const addItem = async (item: Omit<Item, 'id'>): Promise<void> => {
+  const db = await openDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('items', 'readwrite')
+    const store = transaction.objectStore('items')
+    const id = CryptoJS.lib.WordArray.random(16).toString() // 랜덤한 ID 생성
+    const encryptedName = encryptData(item.name)
+    const request = store.add({ id, name: encryptedName })
+
+    request.onsuccess = () => {
+      resolve()
+    }
+
+    request.onerror = (event) => {
+      reject((event.target as IDBRequest).error)
+    }
+  })
+}
+```
+
+**수정된 getAllItems 함수 (복호화 적용)**
+
+```ts showLineNumbers
+export const getAllItems = async (): Promise<Item[]> => {
+  const db = await openDatabase()
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('items', 'readonly')
+    const store = transaction.objectStore('items')
+    const request = store.getAll()
+
+    request.onsuccess = (event) => {
+      const encryptedItems = (event.target as IDBRequest).result as Item[]
+      const decryptedItems = encryptedItems.map((item) => ({
+        id: item.id,
+        name: decryptData(item.name)
+      }))
+
+      resolve(decryptedItems)
+    }
+
+    request.onerror = (event) => {
+      reject((event.target as IDBRequest).error)
+    }
+  })
+}
+```
+
+🔒 실제 저장된 값은 암호화되어 있고, 조회 시에만 복호화되어 보여집니다.
+
+![image](https://i.ibb.co/YRv3g3P/2024-07-08-12-05-38.png)
+
+📌 단일 Row만 저장하고 싶다면?
+
+```ts showLineNumbers
+const hasData = store.get(key)
+if (hasData) {
+  const request = store.put({ id, name: encryptedName })
+} else {
+  const request = store.add({ id, name: encryptedName })
+}
+```
+
+👆 조건을 분기하여 같은 key에 값을 덮어쓸 수 있습니다.
+
+--- 추가
+
+## 🗑️ IndexedDB에서 데이터 삭제하기
+
+`key`를 이용하여 key가 있으면 삭제된다.
+
+```ts showLineNumbers
+export const deleteItem = async (key: string): Promise<void> => {
+  const db = await openDatabase()
+  return new Promise((resolve, reject) => {
+    // 트랜잭션 생성 (읽기/쓰기 모드)
+    const transaction = db.transaction('items', 'readwrite') // readonly, readwrite
+    // 객체 저장소 접근
+    const store = transaction.objectStore('items')
+    // 데이터 추가
+    const request = store.delete(key)
+
+    request.onsuccess = () => {
+      resolve()
+    }
+
+    request.onerror = (event) => {
+      reject((event.target as IDBRequest).error)
+    }
+  })
+}
+```
+
+🗑️ 해당 key의 데이터가 존재하면 삭제됩니다.
+
+## 🧾 마무리
+
+- `IndexedDB`는 클라이언트에서 대용량 데이터를 영구 저장할 수 있는 강력한 브라우저 내장 저장소입니다.
+- `crypto-js`와 같은 도구를 함께 사용하면 보안 처리도 가능합니다.
+- React와 함께 사용할 경우 상태와의 연결을 적절히 고려하면서 사용하면 더욱 효율적인 데이터 처리가 가능합니다.
+
+🧠 로컬 저장소를 다뤄야 한다면, `localStorage`보다 더 유연하고 강력한 `IndexedDB`를 고려해보세요!

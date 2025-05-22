@@ -1,0 +1,167 @@
+---
+title: 'Uncontrolled Component'
+date: '2024-07-27'
+tags: ['react', 'typescript']
+description: 'Uncontrolled Component(비제어 컴포넌트)에 대해 알아보자'
+---
+
+# 🌀 Uncontrolled Component (비제어 컴포넌트)
+
+`Uncontrolled Component`는 컴포넌트 내부 상태를 React가 아닌 **DOM이 직접 관리**하는 방식입니다.
+쉽게 말해, 폼 입력값이 React 상태(`useState`)가 아닌 **DOM에 저장되는** 컴포넌트입니다.
+
+## 🔍 주요 특징
+
+1. **내부 상태 관리**: 입력값은 React 상태가 아닌, DOM 자체에서 관리됩니다.
+2. **Ref 사용**: 현재 입력값에 접근하려면 `ref`를 사용합니다. `ref`는 렌더링된 DOM 노드에 직접 접근할 수 있게 해줍니다.
+3. **기본값 설정**: `defaultValue`, `defaultChecked`를 사용하여 초기 값을 지정할 수 있습니다.
+
+📄 [공식 문서(Legacy)](https://ko.legacy.reactjs.org/docs/uncontrolled-components.html)
+
+> 💡 요약하자면, 상태(useState)를 직접 관리하지 않는 컴포넌트라고 보면 됩니다.
+
+## ✅ Controlled Component 예제
+
+```tsx showLineNumbers
+function App() {
+  const [input, setInput] = useState('')
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    // 입력값 처리
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <InputText value={input} onChange={(e) => setInput(e.target.value)} />
+      <Button type='submit'>Submit</Button>
+    </form>
+  )
+}
+```
+
+➡️ `Controlled Component`는 폼 상태를 완전히 React가 제어합니다.
+입력값을 즉시 상태에 반영하거나, 유효성 검사, 조건부 렌더링 등이 필요할 때 유용합니다.
+
+## 🆓 Uncontrolled Component 예제
+
+폼이 단순하거나, 실시간 검증이 필요 없는 경우에는 `Uncontrolled` 방식이 더 간단합니다.
+
+```tsx showLineNumbers
+function App() {
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    console.log(inputRef.current?.value) // 입력값 가져오기
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <InputText ref={inputRef} />
+      <Button type='submit'>Submit</Button>
+    </form>
+  )
+}
+```
+
+🔹 상태를 직접 관리하지 않아도 되고  
+🔹 코드도 간결하지만,  
+🔸 복잡한 로직이 필요할 경우 제어가 어려울 수 있습니다.
+
+## 🧠 장단점 정리
+
+👍 장점
+
+- **간결한 코드**: 상태 관리가 필요 없어 코드가 단순함
+- **보일러플레이트 감소**: `useState` 등을 반복적으로 작성할 필요 없음
+
+👎 단점
+
+- **제어의 어려움**: 상태가 `React` 외부에 있으므로 제어 및 예측이 어렵다
+- **Ref 관리 부담**: 많은 입력 필드가 있을 경우 `ref`를 개별로 관리해야 해서 복잡함
+
+## 🧪 언제 Uncontrolled Component를 쓸까?
+
+- 간단한 폼 제출
+- 실시간 검증, 조건부 렌더링이 필요 없는 경우
+- 초기값만 필요하고 이후 값 추적이 필요 없는 경우
+
+## 🔎 번외) form의 onSubmit 핸들러에 타입 부여하기
+
+`TypeScript`의 자동완성 기능을 극대화할 수 있는 방법입니다.
+
+```tsx showLineNumbers
+interface FormElements extends HTMLFormControlsCollection {
+  sexyValue: HTMLInputElement
+}
+
+interface FilterForm extends HTMLFormElement {
+  readonly elements: FormElements
+}
+
+function App() {
+  const handleSubmit = (e: React.FormEvent<FilterForm>) => {
+    e.preventDefault()
+    console.log(e.currentTarget.elements.sexyValue.value) // 자동완성 OK!
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <InputText name='sexyValue' />
+      <Button type='submit'>Submit</Button>
+    </form>
+  )
+}
+```
+
+📌 이렇게 하면 e.currentTarget.elements.sexyValue.value 접근 시 자동완성과 타입 보장이 됩니다.
+
+## ✅ 체크박스의 경우는?
+
+```tsx showLineNumbers
+interface FormElements extends HTMLFormControlsCollection {
+  sexyValue: HTMLInputElement
+  checkbox1: HTMLInputElement
+  checkbox2: HTMLInputElement
+}
+
+interface FilterForm extends HTMLFormElement {
+  readonly elements: FormElements
+}
+
+function App() {
+  const handleSubmit = (e: React.FormEvent<FilterForm>) => {
+    e.preventDefault()
+    console.log(e.currentTarget.elements.checkbox1.checked) // true / false
+    console.log(e.currentTarget.elements.checkbox2.checked)
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <InputText name='sexyValue' />
+      <input type='checkbox' name='checkbox1' />
+      <input type='checkbox' name='checkbox2' />
+      <Button type='submit'>Submit</Button>
+    </form>
+  )
+}
+```
+
+☑️ `checkbox1`만 체크하고 제출하면 `true`, `false`가 출력됩니다.
+
+📌 정리하자면,
+
+> **Form ➝ HTMLFormControlsCollection ➝ HTMLInputElement**
+> 이 경로를 명확하게 타입으로 지정해두면, TypeScript의 강력한 자동완성을 활용할 수 있습니다.
+
+📚 [참고 링크](https://www.epicreact.dev/how-to-type-a-react-form-on-submit-handler)
+
+🧾 마무리
+
+- **Controlled vs Uncontrolled** 컴포넌트는 상황에 맞게 선택해야 합니다.
+- 복잡한 폼 처리, 실시간 검증이 필요하다면 Controlled가 적합하고,
+- 단순한 입력 수집이나 초기값만 필요한 경우라면 Uncontrolled가 더 효율적일 수 있습니다.
+
+⚖️ 적절한 방식 선택이 개발 생산성과 유지보수성에 영향을 줍니다.  
+💡 상황에 맞게 유연하게 사용해보세요!

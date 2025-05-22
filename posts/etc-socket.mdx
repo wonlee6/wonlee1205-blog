@@ -1,0 +1,282 @@
+---
+title: 'Socket 사용하여 간단한 채팅 구현'
+date: '2024-07-20'
+tags: ['socket', 'express', 'vite-express']
+description: 'Socket.io 이용하여 간단한 채팅 구현해보기'
+---
+
+`Socket.IO`는 클라이언트와 서버 간 **실시간 양방향 통신**을 가능하게 하는 JavaScript 라이브러리입니다.
+WebSocket, 폴링 등을 내부적으로 관리하여 브라우저 간의 호환성과 안정성을 제공합니다.
+
+> ✅ 테스트 환경: Bun.js (npm 사용도 무방)
+
+## 📦 설치
+
+```shell
+bun i socket.io socket.io-client vite-express express
+```
+
+## 🖥️ Server 설정
+
+### 1. Express + HTTP 서버 구성
+
+```js showLineNumbers
+import express from 'express'
+import ViteExpress from 'vite-express'
+import http from 'http'
+import { Server } from 'socket.io'
+
+const app = express()
+const server = http.createServer(app)
+```
+
+- `Express` 프레임워크를 사용하여 기본 웹 서버를 설정합니다.
+- `http.createServer`를 사용하여 Express 애플리케이션을 기반으로 HTTP 서버를 생성합니다.
+- `Socket.IO` 서버를 HTTP 서버에 연결하기 위해 Server 객체를 사용합니다.
+
+### 2. Socket.IO 서버 설정
+
+> 모든 도메인에서의 연결을 허용하는 CORS 설정을 추가
+
+```js showLineNumbers
+const io = new Server(server, {
+  cors: {
+    origin: '*' // 모든 도메인 허용 (개발용)
+  }
+})
+```
+
+### 3. 이벤트 처리
+
+```js showLineNumbers
+// 클라이언트가 웹소켓 연결을 할 때 발생하는 이벤트
+io.on('connection', (socket) => {
+  const username = socket.handshake.query.username
+  console.log(`${username} 입장`)
+
+  // 자신을 제외, 연결된 모든 클라이언트에게 메시지를 전송
+  socket.broadcast.emit('message', { user: 'system', text: `${username}님이 입장하였습니다.` })
+
+  // 클라이언트로부터 메시지를 수신하면, 모든 클라이언트에게 전송
+  socket.on('message', (data) => {
+    console.log('Message received: ', data)
+    io.emit('message', { user: username, text: data })
+  })
+
+  // 클라이언트가 연결을 끊을 때 발생하는 이벤트
+  socket.on('disconnect', () => {
+    console.log('Client disconnected')
+    io.emit('message', { user: 'system', text: `${username}님이 나갔습니다.` })
+  })
+
+  // 오류가 발생할 때 처리하는 이벤트
+  socket.on('error', (error) => {
+    console.error(error)
+  })
+})
+```
+
+- `broadcast.emit`: 나를 제외한 다른 클라이언트에게 전송
+- `io.emit`: 모든 클라이언트에게 전송
+
+### 4. 서버 시작
+
+```js showLineNumbers
+server.listen(3000, () => {
+  console.log('Server is listening...')
+})
+```
+
+### 5. Vite와 통합
+
+```js
+ViteExpress.bind(app, server)
+```
+
+## ✅ 전체 코드
+
+```js showLineNumbers
+import express from 'express'
+import ViteExpress from 'vite-express'
+import http from 'http'
+import { Server } from 'socket.io'
+
+const app = express()
+const server = http.createServer(app)
+
+const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+})
+
+io.on('connection', (socket) => {
+  const username = socket.handshake.query.username
+  console.log(`${username} 입장`)
+
+  socket.broadcast.emit('message', { user: 'system', text: `${username}님이 입장하였습니다.` })
+
+  socket.on('message', (data) => {
+    console.log('Message received: ', data)
+    io.emit('message', { user: username, text: data })
+  })
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected')
+    io.emit('message', { user: 'system', text: `${username}님이 나갔습니다.` })
+  })
+
+  socket.on('error', (error) => {
+    console.error(error)
+  })
+})
+
+server.listen(3000, () => {
+  console.log('Server is listening...')
+})
+
+ViteExpress.bind(app, server)
+```
+
+## 💻 Client 구현 (React)
+
+### 기본 구조
+
+```jsx showLineNumbers
+import { useState, useCallback, useEffect } from "react"
+import io, { type Socket } from "socket.io-client"
+
+export default function WebSocketCompo() {
+  const [socket, setSocket] = useState<Socket | null>(null)
+  const [userName, setUserName] = useState("")
+  const [chat, setChat] = useState<{ user: string; text: string }[]>([])
+  const [message, setMessage] = useState("")
+  const [isConnected, setIsConnected] = useState(false)
+
+  const handleConnect = useCallback(() => {
+    const ioInstance = io("http://localhost:3000", {
+      autoConnect: false,
+      query: { username: userName }
+    })
+
+    ioInstance.connect()
+    setSocket(ioInstance)
+  }, [userName])
+```
+
+### 연결 해제 및 메시지 전송
+
+```jsx showLineNumbers
+ const handleDisconnect = useCallback(() => {
+    if (socket) {
+      socket.disconnect()
+      console.log("소켓 연결 해제")
+      setIsConnected(false)
+    }
+  }, [socket])
+
+  const handleMsgSubmit = () => {
+    if (message && socket) {
+      socket.emit("message", message)
+      setMessage("")
+    }
+  } const handleDisconnect = useCallback(() => {
+    if (socket) {
+      socket.disconnect()
+      console.log("소켓 연결 해제")
+      setIsConnected(false)
+    }
+  }, [socket])
+
+  const handleMsgSubmit = () => {
+    if (message && socket) {
+      socket.emit("message", message)
+      setMessage("")
+    }
+  }
+```
+
+### 서버 메시지 수신 처리
+
+```jsx showLineNumbers
+  const handleMessage = (message: { user: string; text: string }) => {
+    setChat((prevChat) => [...prevChat, message])
+  }
+
+  useEffect(() => {
+    if (!socket) return
+
+    socket.on("connect", () => setIsConnected(true))
+    socket.on("disconnect", () => setIsConnected(false))
+    socket.on("message", handleMessage)
+
+    return () => {
+      socket.off("connect", handleConnect)
+      socket.off("disconnect", handleDisconnect)
+      socket.off("message", handleMessage)
+    }
+  }, [socket, handleConnect, handleDisconnect])
+```
+
+### 컴포넌트 UI 예시
+
+```jsx showLineNumbers
+return (
+  <div>
+    <h1>{isConnected ? '✅ 접속중' : '❌ 접속 종료'}</h1>
+
+    <InputText
+      value={userName}
+      onChange={(e) => setUserName(e.target.value)}
+      placeholder='닉네임 입력'
+    />
+
+    <div style={{ display: 'flex', gap: '1rem' }}>
+      <Button label='Connect' onClick={handleConnect} />
+      <Button label='Disconnect' onClick={handleDisconnect} />
+    </div>
+
+    <div>
+      <input value={message} onChange={(e) => setMessage(e.target.value)} />
+      <button onClick={handleMsgSubmit}>Send</button>
+    </div>
+
+    <ul>
+      {chat.map((msg, index) => (
+        <li key={index}>
+          <strong>{msg.user}</strong>: {msg.text}
+        </li>
+      ))}
+    </ul>
+  </div>
+)
+```
+
+### 🖼️ 실행 화면
+
+![img](https://i.ibb.co/P1Qcxwt/2024-07-20-4-32-43.png)
+
+![img](https://i.ibb.co/wgjpVQm/2024-07-20-4-35-40.png)
+
+접속 버튼을 누르게 되면 위와 같이 확인할 수 있습니다.
+
+![img](https://i.ibb.co/PmJpbpv/2024-07-20-4-45-45.png)
+
+## 🧠 정리
+
+> `emit`은 방송 내보내고, `Broadcasting` 방송을 청취
+
+| 개념        | 설명                                                  |
+| ----------- | ----------------------------------------------------- |
+| `emit`      | 서버 또는 클라이언트가 이벤트를 **전송**함            |
+| `broadcast` | 현재 클라이언트를 제외한 **모든 클라이언트**에게 전송 |
+
+🧪 여러 브라우저 탭을 열어 테스트해보면, 메시지를 주고받으며 실시간 통신이 어떻게 작동하는지 직관적으로 이해할 수 있습니다.
+
+## 📌 마무리
+
+이 예제는 **기초적인 Socket 통신 구조**를 이해하는 데 도움이 됩니다.
+실무에서는 인증, 연결 상태 관리, 오류 처리, 메시지 큐, 방(Room) 기능 등을 추가적으로 구현해야 합니다.
+
+💡 하지만 이 기본 구조만 잘 이해해도, **실시간 시스템의 작동 방식**을 빠르게 파악할 수 있습니다.
+실시간 협업, 채팅, 알림 기능 등에서 Socket은 아주 유용한 도구입니다!

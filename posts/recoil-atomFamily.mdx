@@ -1,0 +1,163 @@
+---
+title: 'Recoil - atom 효과적으로 활용하기'
+date: '2024-06-24'
+tags: ['recoil', 'typescript']
+description: 'Recoil atom effect를 좀 더 적극적으로 활용하는 방법'
+---
+
+회사에서 `Recoil`을 사용하면서 마주친 특정 유즈케이스를 기록합니다.
+특히, `Atom` 값이 변경될 때 해당 값을 참조하는 `atomFamily`의 초기값을 동적으로 세팅해야 하는 상황이었습니다.
+
+---
+
+## AtomFamily 정의
+
+`atomFamily`는 기본적으로 매개변수를 받아 각각에 대응하는 atom을 동적으로 생성해주는 기능을 제공합니다.
+즉, 동일한 매개변수라면 어디에서 호출하더라도 **항상 동일한 atom 인스턴스**가 반환되는 구조입니다.
+
+- `atomFamily`의 키(key)는 고유해야 하며, atom의 지속성(persistence) 등에도 사용될 수 있으니 실행 환경 전체에서 안정적으로 관리되어야 합니다.
+- 매개변수는 원시 타입, 배열, 혹은 배열과 원시 타입으로 이루어진 객체만 허용됩니다(값 동등성 기반 비교).
+
+```ts showLineNumbers
+function atomFamily<T, P: Parameter>({
+  key: string,
+
+  default?:
+    | T
+    | Promise<T>
+    | Loadable<T>
+    | WrappedValue<T>
+    | RecoilValue<T>
+    | (P => T | Promise<T> | Loadable<T> | WrappedValue<T> | RecoilValue<T>),
+
+  effects?:
+    | $ReadOnlyArray<AtomEffect<T>>
+    | (P => $ReadOnlyArray<AtomEffect<T>>),
+
+  dangerouslyAllowMutability?: boolean,
+}): P => RecoilState<T>
+```
+
+여기서 `atomFamily`의 값을 생성할 때, 외부 API를 통해 초기값을 비동기로 받아와서 세팅하고 싶었습니다.
+마치 React의 `useEffect`에서 마운트 시 데이터를 가져와 state를 초기화하는 것처럼 말이죠.
+
+## Atom Effects란?
+
+`Atom Effect`는 `atom`의 초기화, 동기화, 영속성, 로깅 등 부수 효과(side effect)를 atom 자체에 선언적으로 연결할 수 있는 API입니다.
+
+> React의 useEffect와 비슷해 보이지만,
+> atom을 선언할 때 효과를 미리 지정해둘 수 있어 더 명확하고,
+> 각 atom별로 개별 정책을 부여하는 데 적합합니다.
+
+AtomEffect 함수는 다음과 같은 시그니처를 가집니다.
+
+```ts showLineNumbers
+type AtomEffect<T> = ({
+  node: RecoilState<T>,     // 해당 atom 자체에 대한 참조
+  storeID: StoreID,         // 해당 RecoilRoot나 Snapshot의 ID
+  trigger: 'get' | 'set',   // 어떤 액션으로 effect가 트리거 되었는지
+  setSelf: (                // atom의 값을 설정하거나 초기화
+    | T
+    | DefaultValue
+    | Promise<T | DefaultValue> // 초기화 시에만 Promise 가능
+    | ((T | DefaultValue) => T | DefaultValue),
+  ) => void,
+  resetSelf: () => void,    // atom을 기본값으로 reset
+  onSet: (                  // atom의 값이 변경될 때마다 콜백 실행
+    (newValue: T, oldValue: T | DefaultValue, isReset: boolean) => void,
+  ) => void,
+  getPromise: <S>(RecoilValue<S>) => Promise<S>,   // 다른 atom/selector의 값을 Promise로 획득
+  getLoadable: <S>(RecoilValue<S>) => Loadable<S>, // 동기적으로 값/로딩/에러 상태 접근
+  getInfo_UNSTABLE: <S>(RecoilValue<S>) => RecoilValueInfo<S>,
+}) => void | () => void; // cleanup 함수 반환 가능
+```
+
+## 예시
+
+```ts showLineNumbers
+const myState = atom({
+  key: 'MyKey',
+  default: null,
+  effects: [
+    () => {
+      // effect 1 실행
+      return () => {
+        // effect 1 클린업
+      }
+    },
+    () => {
+      // effect 2 실행
+    }
+  ]
+})
+```
+
+> 여러 개의 effect를 배열로 지정할 수 있으며, 각각 독립적으로 동작합니다.
+
+## 실전 활용 - atomFamily에서 비동기 초기값 세팅
+
+예시:  
+외부 API에서 값을 받아 atomFamily의 초기값을 세팅하고 싶다면 아래처럼 작성할 수 있습니다.
+
+```ts showLineNumbers
+// something atomFamily
+type Person = {
+  name: string
+  age: number
+}
+
+const somethingAtom = atomFamily<Person, string>({
+  key: 'somethingAtom',
+  default: {
+    name: '',
+    age: 0
+  },
+  effects: (id: string | undefined) => [
+    getInitData(id),
+    () => {
+      // clean up 작업
+    }
+  ]
+})
+```
+
+- effects는 매개변수(id)를 받아서 동적으로 effect를 생성할 수 있습니다.
+- getInitData는 초기값 세팅을 위한 비동기 effect입니다.
+
+```ts showLineNumbers
+const fetchDataById = async (id: string): Promise<Person> => {
+  // 실제로는 API 호출 등 비동기 작업
+  return await Service.getDataById({ id })
+}
+
+const getInitData =
+  (id: string | undefined): AtomEffect<Person> =>
+  ({ setSelf, trigger }) => {
+    if (trigger === 'get' && id != null) {
+      // expensive한 초기화는 'get' 트리거에서만
+      fetchDataById(id).then((response) => {
+        setSelf({
+          name: response.name,
+          age: response.age
+        })
+      })
+    }
+  }
+```
+
+추가 설명
+
+- `trigger === 'get'`: `atom`이 최초로 `subscribe`되거나, `RecoilRoot`가 마운트될 때 실행됩니다.
+  즉, 값이 필요할 때만 비동기 초기화를 하도록 최적화할 수 있습니다.
+- `setSelf`: `atom`의 값을 동적으로 세팅합니다.
+  비동기 작업이 필요할 때는 `Promise`를 반환하거나, 완료 후 `setSelf`를 호출하면 됩니다.
+- `onSet`: `atom`의 값이 바뀔 때 후처리가 필요하면 여기서 핸들링합니다.
+
+> 참고: `setSelf`, `onSet` 등은 각각 `effect` 내에서 한 번씩만 호출되는 점에 주의하세요.
+
+## 마치며
+
+Recoil의 `atom effect`는 `useEffect`와 달리,
+`atom` 정의 시점에 `side effect`를 명시적으로 선언할 수 있다는 점에서 강력합니다.
+상태 초기화, 동기화, 외부 저장소 연동 등 다양한 용도에 활용될 수 있으니
+공식 문서의 [atom-effects](https://recoiljs.org/ko/docs/guides/atom-effects) 가이드도 꼭 참고해 보세요.
