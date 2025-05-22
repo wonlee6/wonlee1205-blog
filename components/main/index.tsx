@@ -34,17 +34,17 @@ export default function HomePage() {
     if (selectedTag && selectedTag !== 'All') {
       return sortedPosts
         .filter((v) => v.tags.includes(selectedTag))
-        .slice(currentPage * 10 - 10, currentPage * 10)
+        .slice(currentPage * 5 - 5, currentPage * 5)
     }
-    return sortedPosts.slice(currentPage * 10 - 10, currentPage * 10)
+    return sortedPosts.slice(currentPage * 5 - 5, currentPage * 5)
   }, [currentPage, selectedTag])
 
   const postsLength = useMemo(() => {
     if (selectedTag && selectedTag !== 'All') {
       const filteredTagArr = allPosts.filter((v) => v.tags.includes(selectedTag))
-      return Math.ceil(filteredTagArr.length / 10)
+      return Math.ceil(filteredTagArr.length / 5)
     }
-    return Math.ceil(allPosts.length / 10)
+    return Math.ceil(allPosts.length / 5)
   }, [selectedTag])
 
   const filteredTags = useMemo(() => {
@@ -87,7 +87,7 @@ export default function HomePage() {
                   <dl>
                     <dt className='sr-only'></dt>
                     <dd className='text-base font-medium leading-6 text-gray-500 dark:text-gray-400'>
-                      {new Date(item.date).toLocaleString()}
+                      {new Date(item.date).toLocaleDateString().replace(/\.$/, '')}
                     </dd>
                   </dl>
                   <div className='space-y-5 xl:col-span-3'>
