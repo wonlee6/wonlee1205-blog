@@ -56,76 +56,78 @@ export default function HomePage() {
   }, [currentPage])
 
   return (
-    <div className='mt-4 size-full max-lg:px-4'>
-      <div className='size-full divide-y divide-gray-200 pb-12 dark:divide-gray-700'>
-        <div className='flex w-full justify-between pb-8 pt-6 max-md:flex-col max-md:gap-4'>
-          <div className='flex w-1/5 items-center'>
-            <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-4'>
-              Latest
-            </h1>
-          </div>
+    <div className='size-full max-lg:px-4'>
+      <div className='flex size-full flex-col justify-between'>
+        <div className='size-full divide-y divide-gray-200 dark:divide-gray-700'>
+          <div className='flex w-full justify-between pb-8 pt-6 max-md:flex-col max-md:gap-4'>
+            <div className='flex w-1/5 items-center'>
+              <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-4'>
+                Latest
+              </h1>
+            </div>
 
-          <div className='flex w-3/5 flex-wrap gap-2'>
-            {filteredTags.map((item) => (
-              <Chip
-                key={item}
-                className='cursor-pointer'
-                onClick={() => handleSelectTag(item)}
-                size='sm'
-                color={selectedTag === item ? 'warning' : 'default'}
-                variant='flat'>
-                {item}
-              </Chip>
-            ))}
+            <div className='flex w-3/5 flex-wrap gap-2'>
+              {filteredTags.map((item) => (
+                <Chip
+                  key={item}
+                  className='cursor-pointer'
+                  onClick={() => handleSelectTag(item)}
+                  size='sm'
+                  color={selectedTag === item ? 'warning' : 'default'}
+                  variant='flat'>
+                  {item}
+                </Chip>
+              ))}
+            </div>
           </div>
-        </div>
-        <ul className='divide-y divide-gray-200 dark:divide-gray-700'>
-          {filteredPostsData.map((item) => (
-            <li key={item._raw.flattenedPath} className='py-12'>
-              <article>
-                <div className='space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0'>
-                  <dl>
-                    <dt className='sr-only'></dt>
-                    <dd className='text-base font-medium leading-6 text-gray-500 dark:text-gray-400'>
-                      {new Date(item.date).toLocaleDateString().replace(/\.$/, '')}
-                    </dd>
-                  </dl>
-                  <div className='space-y-5 xl:col-span-3'>
-                    <div className='space-y-6'>
-                      <div className='flex flex-col gap-1'>
-                        <h2 className='text-2xl font-bold leading-8 tracking-tight'>
-                          {item.title}
-                        </h2>
-                        <div className='flex flex-wrap gap-3'>
-                          {item.tags.map((v) => (
-                            <Chip
-                              key={v}
-                              onClick={() => handleSelectTag(v)}
-                              className='cursor-pointer'
-                              color='warning'
-                              variant='flat'
-                              size='sm'>
-                              {v}
-                            </Chip>
-                          ))}
+          <ul className='divide-y divide-gray-200 dark:divide-gray-700'>
+            {filteredPostsData.map((item) => (
+              <li key={item._raw.flattenedPath} className='py-7'>
+                <article>
+                  <div className='space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0'>
+                    <dl>
+                      <dt className='sr-only'></dt>
+                      <dd className='text-base font-medium leading-6 text-gray-500 dark:text-gray-400'>
+                        {new Date(item.date).toLocaleDateString().replace(/\.$/, '')}
+                      </dd>
+                    </dl>
+                    <div className='space-y-2 xl:col-span-3'>
+                      <div className='space-y-4'>
+                        <div className='flex flex-col gap-1'>
+                          <h2 className='text-2xl font-bold leading-8 tracking-tight'>
+                            {item.title}
+                          </h2>
+                          <div className='flex flex-wrap gap-3'>
+                            {item.tags.map((v) => (
+                              <Chip
+                                key={v}
+                                onClick={() => handleSelectTag(v)}
+                                className='cursor-pointer'
+                                color='warning'
+                                variant='flat'
+                                size='sm'>
+                                {v}
+                              </Chip>
+                            ))}
+                          </div>
+                        </div>
+                        <div className='max-w-none text-gray-500 dark:text-gray-400'>
+                          {item.description ?? ''}
                         </div>
                       </div>
-                      <div className='prose max-w-none text-gray-500 dark:text-gray-400'>
-                        {item.description ?? ''}
+                      <div className='text-base font-semibold leading-6 text-teal-500 hover:text-teal-600'>
+                        <Link href={`/post/${item._raw.flattenedPath}`} prefetch>
+                          Read More -{'>'}
+                        </Link>
                       </div>
                     </div>
-                    <div className='text-base font-semibold leading-6 text-teal-500 hover:text-teal-600'>
-                      <Link href={`/post/${item._raw.flattenedPath}`} prefetch>
-                        Read More -{'>'}
-                      </Link>
-                    </div>
                   </div>
-                </div>
-              </article>
-            </li>
-          ))}
-        </ul>
-        <div className='flex justify-center pt-12'>
+                </article>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className='flex justify-center border-t border-gray-200 py-12 dark:border-gray-700'>
           <Pagination
             total={postsLength}
             initialPage={currentPage}
