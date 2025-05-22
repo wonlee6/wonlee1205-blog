@@ -6,24 +6,24 @@ import Alert from './alert'
 
 const components: MDXComponents = {
   h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h1 {...props} className='scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl'>
+    <h1 {...props} className='mt-2 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl'>
       {props.children}
     </h1>
   ),
   h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h2
       {...props}
-      className='scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0'>
+      className='mt-2 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0'>
       {props.children}
     </h2>
   ),
   h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h3 {...props} className='scroll-m-20 text-2xl font-semibold tracking-tight'>
+    <h3 {...props} className='mt-2 scroll-m-20 text-2xl font-semibold tracking-tight'>
       {props.children}
     </h3>
   ),
   h4: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h4 {...props} className='scroll-m-20 text-xl font-semibold tracking-tight'>
+    <h4 {...props} className='mt-2 scroll-m-20 text-xl font-semibold tracking-tight'>
       {props.children}
     </h4>
   ),
@@ -33,7 +33,7 @@ const components: MDXComponents = {
     </p>
   ),
   blockquote: (props: React.BlockquoteHTMLAttributes<HTMLQuoteElement>) => (
-    <blockquote {...props} className='mb-4 mt-6 border-l-2 pl-6 italic'>
+    <blockquote {...props} className='mb-4 mt-6 border-l-2 bg-emerald-100/30 pl-6 italic'>
       {props.children}
     </blockquote>
   ),
@@ -115,10 +115,10 @@ const components: MDXComponents = {
         src={src}
         alt={alt}
         loading='lazy'
-        objectFit='cover'
         width={width || 1000}
         height={height || 500}
         style={{ width: '100%', height: 'auto' }}
+        className='h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-105'
       />
     )
   },

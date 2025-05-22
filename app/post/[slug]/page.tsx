@@ -1,20 +1,13 @@
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 import MDXComponent from '@/components/post/mdx-component'
+import PostingGuide from '@/components/post/postingGuide'
+import Toc from '@/components/post/toc'
 
-import PostingGuide from '../../../components/post/postingGuide'
 import { allPosts } from '.contentlayer/generated'
 
 // import Utterance from '@/components/post/utterance'
-
-export type Post = {
-  date: string
-  id: string
-  tag: string[]
-  title: string
-  contentHtml: string
-  description: string
-}
 
 export async function generateMetadata({
   params
@@ -31,9 +24,9 @@ export async function generateMetadata({
   return {
     title: postData.title,
     description: postData.description,
-    authors: [{ name: 'sang won', url: `https://wonlee1205-blog.vercel.app/post/${id}` }],
-    creator: 'sang won',
-    // keywords: postData.tag,
+    authors: [{ name: 'sangwon', url: `https://wonlee1205-blog.vercel.app/post/${id}` }],
+    creator: 'sangwon',
+    keywords: postData.tags,
     openGraph: {
       type: 'article',
       countryName: 'South Korea',
@@ -57,17 +50,21 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const post = allPosts.find((post) => post._raw.flattenedPath === slug)
 
   if (!post) {
-    // notFound()
-    return <div>Post not found</div>
+    notFound()
   }
 
   return (
-    <>
-      <div className='flex flex-col justify-between p-4 pb-20'>
-        <MDXComponent code={post.body.code} />
-        {/* <Utterance /> */}
-        {/* <PostingGuide allPostsData={allPostsData} postData={postData} /> */}
+    <div className='flex gap-16 py-4'>
+      <div className='flex w-9/12 flex-col gap-4'>
+        <article className='size-full'>
+          <MDXComponent code={post.body.code} />
+        </article>
+        <PostingGuide post={post} />
       </div>
-    </>
+      <div className='relative w-3/12'>
+        <Toc headings={post.headings} />
+      </div>
+      {/* <Utterance /> */}
+    </div>
   )
 }

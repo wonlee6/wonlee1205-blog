@@ -1,0 +1,210 @@
+---
+title: 'Method Decorators'
+date: '2024-07-23'
+tags: ['typescript']
+description: 'TypeScript에서 메서드 데코레이터 사용하는 방법과 예제'
+---
+
+# Method Decorators in TypeScript
+
+## 🧩 데코레이터란?
+
+데코레이터(Decorator)는 **클래스**, **메서드**, **속성**, **매개변수** 등에 메타프로그래밍 방식으로 기능을 추가할 수 있는 문법입니다.  
+`@expression` 형태로 사용되며, **데코레이팅된 대상에 대한 정보**를 전달받아 **런타임에 실행되는 함수**입니다.
+
+> 데코레이터는 ECMAScript의 Stage 3 제안이며, TypeScript에서는 실험적 기능으로 지원됩니다.
+
+```ts showLineNumbers {4}
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "experimentalDecorators": true
+  }
+}
+```
+
+먼저 위와 같이 `tsconfig` 설정 진행
+
+## ⚙️ 메서드 데코레이터 개요
+
+메서드 데코레이터는 클래스의 메서드에 직접 기능을 주입하거나 동작을 수정할 수 있습니다.
+다음 세 가지 인자를 받는 함수로 정의됩니다:
+
+1. 대상 객체 (`target`) – 인스턴스의 경우 `prototype`, 정적 메서드일 경우 클래스 생성자
+2. 메서드 이름 (`propertyKey`)
+3. 프로퍼티 설명자 (`PropertyDescriptor`)
+
+> 반환값이 있을 경우 해당 메서드의 설명자(`descriptor`)를 덮어씁니다.
+
+참고:
+
+- 스크립트 대상이 `ES5`보다 낮은 경우 프로퍼티 설명자 는 `undefined`이 됩니다.
+- 스크립트 대상이 `ES5`보다 낮은 경우 반환 값은 무시된다.
+
+```ts showLineNumbers
+function decorator(
+  target: Object,
+  propertyKey: string | symbol,
+  descriptor: PropertyDescriptor
+) { ... }
+```
+
+## 🧪 실전 예제
+
+1. 실행 시간 측정 데코레이터
+
+```ts showLineNumbers
+function measureExecutionTime(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value
+
+  descriptor.value = async function (...args: any[]) {
+    const start = performance.now()
+    const result = await originalMethod.apply(this, args)
+    const end = performance.now()
+    console.log(`${propertyName} executed in ${(end - start).toFixed(2)}ms`)
+    return result
+  }
+
+  return descriptor
+}
+```
+
+```ts showLineNumbers
+class DataService {
+  @measureExecutionTime
+  async fetchData() {
+    return new Promise((resolve) => setTimeout(() => resolve('data'), 1000))
+  }
+}
+```
+
+> 사용 목적: 성능 모니터링, 로깅
+
+2. 🔐 권한 체크 (Access Control)
+
+```ts showLineNumbers
+function authorize(roles: string[]) {
+  return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
+    const method = descriptor.value
+
+    descriptor.value = function (...args: any[]) {
+      const userRole = this.userRole
+      if (!roles.includes(userRole)) {
+        throw new Error('Unauthorized')
+      }
+      return method.apply(this, args)
+    }
+
+    return descriptor
+  }
+}
+```
+
+```ts showLineNumbers
+class UserService {
+  userRole: string
+
+  constructor(role: string) {
+    this.userRole = role
+  }
+
+  @authorize(['admin'])
+  deleteUser(userId: string) {
+    console.log(`User ${userId} deleted`)
+  }
+}
+```
+
+> 사용 목적: 역할 기반 접근 제어 (RBAC)
+
+3. ❌ 에러 핸들링 래퍼
+
+```ts showLineNumbers
+function handleError(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  const method = descriptor.value
+
+  descriptor.value = async function (...args: any[]) {
+    try {
+      return await method.apply(this, args)
+    } catch (error) {
+      console.error(`Error in ${propertyName}:`, error)
+      throw error
+    }
+  }
+
+  return descriptor
+}
+```
+
+```ts showLineNumbers
+class APIService {
+  @handleError
+  async getData() {
+    return new Promise((_, reject) => setTimeout(() => reject(new Error('Network error')), 1000))
+  }
+}
+```
+
+> 사용 목적: 예외 발생 시 로그 출력 및 처리 통일
+
+4. 💾 캐싱 처리
+
+```ts showLineNumbers
+function cache(duration: number) {
+  const cacheStore: Record<string, { value: any; expiry: number }> = {}
+
+  return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
+    const originalMethod = descriptor.value
+
+    descriptor.value = async function (...args: any[]) {
+      const cacheKey = JSON.stringify(args)
+      const now = Date.now()
+
+      const cached = cacheStore[cacheKey]
+      if (cached && cached.expiry > now) {
+        console.log(`Cache hit for ${propertyName}`)
+        return cached.value
+      }
+
+      const result = await originalMethod.apply(this, args)
+      cacheStore[cacheKey] = { value: result, expiry: now + duration }
+
+      console.log(`Cache set for ${propertyName}`)
+      return result
+    }
+
+    return descriptor
+  }
+}
+```
+
+```ts showLineNumbers
+class ApiService {
+  @cache(5000) // 캐시 유지 시간: 5초
+  async fetchData(endpoint: string) {
+    console.log(`Fetching from ${endpoint}`)
+    const response = await fetch(endpoint)
+    return response.json()
+  }
+}
+```
+
+> 사용 목적: API 응답 캐싱, 반복 호출 최적화
+
+## 📌 정리
+
+| 목적           | 데코레이터              | 설명                                   |
+| -------------- | ----------------------- | -------------------------------------- |
+| 실행 시간 측정 | `@measureExecutionTime` | 비동기 함수 실행 시간 측정             |
+| 권한 검사      | `@authorize([...])`     | 지정된 역할만 실행 허용                |
+| 공통 에러 처리 | `@handleError`          | 예외를 try-catch로 자동 래핑           |
+| 결과 캐싱      | `@cache(duration)`      | 특정 시간 동안 동일한 입력의 결과 캐싱 |
+
+## 📝 참고 사항
+
+- 데코레이터는 런타임 함수이기 때문에 실제 실행 시점에 동작합니다.
+- 현재 ECMAScript의 공식 표준은 아니며, `TypeScript`의 `experimentalDecorators` 옵션이 필요합니다.
+- 메서드가 `getter/setter` 또는 정적(`static`) 인 경우에도 적용할 수 있습니다.
+
+- [TypeScript 공식 데코레이터 문서](https://www.typescriptlang.org/docs/handbook/decorators.html)
+- [ECMAScript Decorators Proposal (Stage 3)](https://github.com/tc39/proposal-decorators)

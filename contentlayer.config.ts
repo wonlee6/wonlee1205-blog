@@ -1,8 +1,12 @@
 import { defineDocumentType, makeSource } from 'contentlayer2/source-files'
+import Slugger from 'github-slugger'
+import { fromMarkdown } from 'mdast-util-from-markdown'
+import { toString } from 'mdast-util-to-string'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import { type Options, rehypePrettyCode } from 'rehype-pretty-code'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
+import { visit } from 'unist-util-visit'
 
 const options: Options = {
   theme: 'catppuccin-latte'
@@ -28,6 +32,22 @@ export const Post = defineDocumentType(() => ({
     slug: {
       type: 'string',
       resolve: (post) => post._raw.flattenedPath
+    },
+    headings: {
+      type: 'list',
+      resolve: (doc) => {
+        const slugger = new Slugger()
+        const tree = fromMarkdown(doc.body.raw)
+        const headings: { level: number; text: string; id: string }[] = []
+
+        visit(tree, 'heading', (node: any) => {
+          const text = toString(node)
+          const id = slugger.slug(text)
+          headings.push({ level: node.depth, text, id })
+        })
+
+        return headings
+      }
     }
   }
 }))

@@ -4,13 +4,10 @@ import { Chip, Pagination } from '@heroui/react'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 
-import { Post } from '@/.contentlayer/generated'
+import { allPosts } from '@/.contentlayer/generated'
+import { getSortedPostsData } from '@/lib/posts'
 
-type Props = {
-  allPostsData: Post[]
-}
-
-export default function HomePage({ allPostsData }: Props) {
+export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(() => {
     if (typeof window !== 'undefined') {
       return Number(sessionStorage.getItem('lastPage')) || 1
@@ -33,25 +30,26 @@ export default function HomePage({ allPostsData }: Props) {
   }
 
   const filteredPostsData = useMemo(() => {
+    const sortedPosts = getSortedPostsData(allPosts)
     if (selectedTag && selectedTag !== 'All') {
-      return allPostsData
+      return sortedPosts
         .filter((v) => v.tags.includes(selectedTag))
         .slice(currentPage * 10 - 10, currentPage * 10)
     }
-    return allPostsData.slice(currentPage * 10 - 10, currentPage * 10)
-  }, [allPostsData, currentPage, selectedTag])
+    return sortedPosts.slice(currentPage * 10 - 10, currentPage * 10)
+  }, [currentPage, selectedTag])
 
   const postsLength = useMemo(() => {
     if (selectedTag && selectedTag !== 'All') {
-      const filteredTagArr = allPostsData.filter((v) => v.tags.includes(selectedTag))
+      const filteredTagArr = allPosts.filter((v) => v.tags.includes(selectedTag))
       return Math.ceil(filteredTagArr.length / 10)
     }
-    return Math.ceil(allPostsData.length / 10)
-  }, [allPostsData, selectedTag])
+    return Math.ceil(allPosts.length / 10)
+  }, [selectedTag])
 
   const filteredTags = useMemo(() => {
-    return [...new Set(allPostsData.map((acc) => acc.tags).flatMap((item) => item))]
-  }, [allPostsData])
+    return [...new Set(allPosts.map((acc) => acc.tags).flatMap((item) => item)), 'All']
+  }, [])
 
   useEffect(() => {
     sessionStorage.setItem('lastPage', String(currentPage))
@@ -89,7 +87,7 @@ export default function HomePage({ allPostsData }: Props) {
                   <dl>
                     <dt className='sr-only'></dt>
                     <dd className='text-base font-medium leading-6 text-gray-500 dark:text-gray-400'>
-                      {item.date}
+                      {new Date(item.date).toLocaleString()}
                     </dd>
                   </dl>
                   <div className='space-y-5 xl:col-span-3'>

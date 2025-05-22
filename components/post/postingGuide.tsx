@@ -3,17 +3,16 @@
 import Link from 'next/link'
 import { useMemo } from 'react'
 
-import { Post } from '@/.contentlayer/generated'
+import { allPosts, Post } from '@/.contentlayer/generated'
 
 type PostingGuideModel = {
-  postData: Post
-  allPostsData: Post[]
+  post: Post
 }
 
-export default function PostingGuide({ postData, allPostsData }: PostingGuideModel) {
+export default function PostingGuide({ post }: PostingGuideModel) {
   const nextPost = useMemo(() => {
-    const findPostIndex = allPostsData.findIndex(
-      (v) => v._raw.flattenedPath === postData?._raw.flattenedPath
+    const findPostIndex = allPosts.findIndex(
+      (v) => v._raw.flattenedPath === post?._raw.flattenedPath
     )
 
     if (findPostIndex <= 0) {
@@ -21,26 +20,26 @@ export default function PostingGuide({ postData, allPostsData }: PostingGuideMod
     }
 
     if (findPostIndex > 0) {
-      return allPostsData[findPostIndex - 1]
+      return allPosts[findPostIndex - 1]
     }
-  }, [allPostsData, postData])
+  }, [post])
 
   const prevPost = useMemo(() => {
-    const findPostIndex = allPostsData.findIndex(
-      (v) => v._raw.flattenedPath === postData?._raw.flattenedPath
+    const findPostIndex = allPosts.findIndex(
+      (v) => v._raw.flattenedPath === post?._raw.flattenedPath
     )
 
-    if (findPostIndex === -1 || findPostIndex === allPostsData.length) {
+    if (findPostIndex === -1 || findPostIndex === allPosts.length) {
       return null
     }
 
-    if (findPostIndex < allPostsData.length) {
-      return allPostsData[findPostIndex + 1]
+    if (findPostIndex < allPosts.length) {
+      return allPosts[findPostIndex + 1]
     }
-  }, [allPostsData, postData])
+  }, [post])
 
   return (
-    <div className='flex justify-between gap-8 max-sm:flex-col max-sm:items-center'>
+    <div className='flex justify-between gap-8 border-t p-10 max-sm:flex-col max-sm:items-center'>
       <Link
         className='font-semibold text-teal-500 hover:text-teal-600'
         href={prevPost ? `/post/${prevPost._raw.flattenedPath}` : `/`}>

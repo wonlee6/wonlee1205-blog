@@ -2,12 +2,10 @@ import type { Metadata } from 'next'
 
 import HomePage from '@/components/main'
 
-import { allPosts } from '.contentlayer/generated'
-
 export const metadata: Metadata = {
   title: 'Frontend - 기술 블로그',
   description: 'Front End Study Blog. Focus on React, Javascript, Typescript, and more!',
-  authors: [{ name: 'Sang won', url: 'https://wonlee1205-blog.vercel.app/' }],
+  authors: [{ name: 'Sangwon', url: 'https://wonlee1205-blog.vercel.app/' }],
   keywords: [
     'react',
     'nextjs',
@@ -39,7 +37,7 @@ export default async function Home() {
   return (
     <section className='size-full'>
       <div className='mx-auto flex h-full max-w-5xl items-center justify-center'>
-        <HomePage allPostsData={allPosts} />
+        <HomePage />
       </div>
     </section>
   )

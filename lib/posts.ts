@@ -1,3 +1,15 @@
+import type { Post } from '.contentlayer/generated'
+
+export function getSortedPostsData(allPosts: Post[]): Post[] {
+  return allPosts.toSorted((a, b) => {
+    if (a.date < b.date) {
+      return 1
+    } else {
+      return -1
+    }
+  })
+}
+
 // import fs from 'fs'
 // import matter from 'gray-matter'
 // import path from 'path'

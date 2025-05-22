@@ -1,14 +1,18 @@
 ---
-title: 'TypeScript Utils'
+title: 'TypeScript 유틸리티 타입 정리'
 date: '2024-06-29'
-tag: ['typescript']
-description: 'Typescript utils'
+tags: ['typescript']
+description: '자주 사용하는 TypeScript 유틸 타입과 설명'
 ---
 
-> One
+TypeScript를 사용할 때 자주 활용할 수 있는 유틸리티 타입들을 정리해봅니다. 실무에서 유용하게 쓰일 수 있는 커스텀 타입들을 중심으로 설명합니다.
+
+---
+
+## 📌 1. `one<T>` — 객체의 각 키를 단독 객체로 분리
 
 ```ts
-type one<T> = {[P in keyof T]: Record<P, T[P]>}[keyof T]
+type one<T> = { [P in keyof T]: Record<P, T[P]> }[keyof T]
 ```
 
 1. `[P in keyof T]` 에서 T는 객체로 가정하기 때문에 P는 T객체의 키 값을 말한다.
@@ -16,10 +20,17 @@ type one<T> = {[P in keyof T]: Record<P, T[P]>}[keyof T]
 3. 따라서 `{[P in keyof T]: Record<P, T[P]>}` 에서 키는 T 객체의 키 모음이고, value는 해당 키의 원본 객체 T
 4. 3번의 타입에서 다시 `[keyof T]` 의 키값으로 접근하기 때문에 최종 전달받은 값은 T
 
+```ts
+type User = { name: string; age: number }
+
+// 결과: { name: string } | { age: number }
+type OneUser = one<User>
+```
+
 > ExcludeOne
 
 ```ts
-type excludeOne<T> = {[P in keyof T]: Partial<Record<Exclude<keyof T, P>, undefined>>}[keyof T]
+type excludeOne<T> = { [P in keyof T]: Partial<Record<Exclude<keyof T, P>, undefined>> }[keyof T]
 ```
 
 1. `[P in keyof T]` 에서 T는 객체로 가정하기 때문에 P는 T객체의 키 값을 말한다.
