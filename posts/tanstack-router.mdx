@@ -1,0 +1,208 @@
+---
+title: 'Tanstack Router'
+date: '2025-05-17'
+tags: ['tanstack-router', 'react']
+description: 'Tanstack Router 에 대해 간단하게 알아보는 시간'
+---
+
+TanStack Router는 React 애플리케이션을 위한 최신 라우터로, 강력한 타입 안전성과 유연성을 제공합니다. 이 글에서는 TanStack Router가 무엇인지, 그리고 Next.js와의 차이점을 간단히 정리하겠습니다.
+
+## TanStack Router란?
+
+TanStack Router는 React 및 Solid 프레임워크를 위한 타입 안전한 라우터입니다. 주요 특징은 다음과 같습니다:
+
+- **100% 타입스크립트 지원**: 경로, 파라미터, 쿼리 파라미터에 대한 완전한 타입 추론 제공
+- **내장 데이터 로딩 및 캐싱**: Loader API를 통해 SWR 전략 기반 데이터 캐싱 지원
+- **검색 파라미터 관리**: 스키마 기반 파라미터 검증과 상태 관리 지원
+- **파일 기반 및 코드 기반 라우팅**: Vite 플러그인을 통해 파일 기반과 코드 기반 라우팅 지원
+- **자동 프리페칭**: 사용자의 탐색 의도를 감지하여 데이터 미리 로드
+
+### Next.js와의 차이점
+
+| 기능               | TanStack Router               | Next.js                            |
+| ------------------ | ----------------------------- | ---------------------------------- |
+| 타입 안전성        | 완전한 타입 추론 지원         | 제한적인 타입 지원                 |
+| 데이터 로딩        | 라우트 로더 + SWR 캐싱 내장   | getServerSideProps, getStaticProps |
+| 검색 파라미터 관리 | 스키마 기반 관리              | 기본 URLSearchParams 사용          |
+| 라우팅 방식        | 파일 기반 및 코드 기반 지원   | 파일 기반 중심                     |
+| SSR 지원           | TanStack Start 통해 지원 예정 | 기본 SSR 및 SSG 지원               |
+
+### 요약
+
+- TanStack Router는 클라이언트 사이드 라우팅 중심이지만, TanStack Start 프로젝트를 통해 SSR, 서버 함수, 번들링 등을 제공하는 전체 스택 프레임워크로 확장될 예정입니다.
+
+- TanStack Router는 타입 안정성과 유연한 API를 제공하여 복잡한 React 애플리케이션 개발에 적합한 선택지입니다. 특히 타입스크립트를 적극 사용하는 프로젝트에서 많은 이점을 얻을 수 있습니다.
+
+👉 [TanStack Router 공식 문서](https://tanstack.com/router/latest/docs/framework/react/overview)
+
+## Quick Start
+
+### 프로젝트 생성
+
+TanStack Router는 파일 기반 라우팅을 기본으로 권장합니다. 다음 명령어로 템플릿 프로젝트를 생성할 수 있습니다:
+
+```bash
+npx create-tsrouter-app@latest my-app --template file-router
+```
+
+이 명령어는 Vite 기반 React + TypeScript 프로젝트를 생성하며, TanStack Router의 파일 기반 라우팅 구조를 포함합니다.
+
+### 수동 설정 (기존 프로젝트에 추가)
+
+이미 존재하는 프로젝트에 TanStack Router를 추가하려면 다음 패키지를 설치합니다:
+
+```bash
+npm install @tanstack/react-router @tanstack/react-router-devtools
+npm install -D @tanstack/router-plugin
+```
+
+Vite 설정 파일(`vite.config.ts`)에 플러그인을 추가합니다:
+
+```ts showLineNumbers
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+
+export default defineConfig({
+  plugins: [TanStackRouterVite({ target: 'react', autoCodeSplitting: true }), react()]
+})
+```
+
+### 라우트 구성
+
+파일 기반 라우팅에서는 `src/routes` 디렉토리에 라우트 파일을 생성하여 구성합니다.
+
+#### src/routes/\_\_root.tsx
+
+```tsx showLineNumbers
+import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+
+export const Route = createRootRoute({
+  component: () => (
+    <>
+      <nav>
+        <Link to='/'>Home</Link>
+        <Link to='/about'>About</Link>
+      </nav>
+      <Outlet />
+      <TanStackRouterDevtools />
+    </>
+  )
+})
+```
+
+#### src/routes/index.tsx
+
+```tsx showLineNumbers
+import { createLazyFileRoute } from '@tanstack/react-router'
+
+export const Route = createLazyFileRoute('/')({
+  component: () => <h1>Welcome Home!</h1>
+})
+```
+
+#### src/routes/about.tsx
+
+```tsx showLineNumbers
+import { createLazyFileRoute } from '@tanstack/react-router'
+
+export const Route = createLazyFileRoute('/about')({
+  component: () => <h1>About Page</h1>
+})
+```
+
+### 레이아웃 라우트 (Layout Routes)
+
+```tsx showLineNumbers
+import { createFileRoute } from '@tanstack/react-router'
+import { Outlet } from '@tanstack/react-router'
+
+export const Route = createFileRoute('/dashboard')({
+  component: () => (
+    <>
+      <h2>Dashboard Layout</h2>
+      <Outlet />
+    </>
+  )
+})
+```
+
+### 애플리케이션 진입점 설정
+
+`src/main.tsx` 파일에서 라우터를 생성하고 애플리케이션을 렌더링합니다:
+
+```tsx showLineNumbers
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { RouterProvider } from '@tanstack/react-router'
+import { routeTree } from './routeTree.gen'
+import { createRouter } from '@tanstack/react-router'
+
+const router = createRouter({ routeTree })
+
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
+  }
+}
+
+const rootElement = document.getElementById('root')!
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement)
+  root.render(
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>
+  )
+}
+```
+
+### 요약
+
+- **프로젝트 생성**: `create-tsrouter-app`으로 빠르게 시작 가능
+- **기존 프로젝트 적용**: TanStack Router를 쉽게 통합 가능
+- **파일 기반 라우팅**: `src/routes` 디렉토리에 라우트 파일 생성
+- **자동 라우트 트리 생성**: Vite 플러그인을 통해 라우트 트리 자동 생성
+
+## File Based Routing
+
+TanStack Router의 파일 기반 라우팅은 파일 및 디렉토리 구조를 통해 라우트를 정의하는 방식으로, 라우팅 구성을 시각적으로 명확하게 하고 유지보수를 용이하게 합니다. 이 접근 방식은 특히 대규모 애플리케이션에서 라우트 관리를 단순화하는 데 효과적입니다.
+
+### 주요 특징
+
+- **시각적 명확성**: 파일 및 폴더 구조가 URL 경로와 직접 연결되어 있어 라우트 구조를 직관적으로 이해할 수 있습니다.
+- **자동 라우트 생성**: 파일 시스템을 기반으로 라우트를 자동으로 생성하므로, 수동으로 라우트를 정의할 필요가 줄어듭니다.
+- **유지보수 용이성**: 라우트 추가, 수정, 삭제가 파일 시스템에서의 작업으로 간단하게 이루어집니다.
+- **타입 안전성**: TypeScript와의 통합으로 경로 및 파라미터에 대한 타입 추론이 가능하여, 런타임 오류를 줄이고 개발 생산성을 높입니다.
+- **코드 분할 지원**: 라우트 단위로 코드 분할이 가능하여, 초기 로딩 속도를 개선하고 성능을 향상시킵니다.
+
+### 파일 및 디렉토리 명명 규칙
+
+TanStack Router는 특정 명명 규칙을 통해 라우트를 정의합니다:
+
+- `__root.tsx`: 애플리케이션의 루트 레이아웃을 정의합니다.
+- `index.tsx`: 디렉토리의 기본 라우트를 나타냅니다.
+- `about.tsx`: `/about` 경로에 해당하는 라우트를 정의합니다.
+- `$postId.tsx`: 동적 파라미터를 사용하여 `/posts/:postId`와 같은 경로를 처리합니다.
+- `_layout.tsx`: 경로에 직접 매핑되지 않는 레이아웃 컴포넌트를 정의합니다.
+- `-components/`: 라우트로 간주되지 않는 보조 컴포넌트를 포함하는 디렉토리로, `-` 접두사를 사용하여 라우트 생성에서 제외됩니다.
+
+### 예시: 라우트 구조
+
+```
+src/routes/
+├── __root.tsx             // 루트 레이아웃
+├── index.tsx              // '/'
+├── about.tsx              // '/about'
+├── posts/
+│   ├── index.tsx          // '/posts'
+│   ├── $postId.tsx        // '/posts/:postId'
+│   └── -components/
+│       └── PostCard.tsx   // 라우트에 포함되지 않음
+└── dashboard/
+    ├── _layout.tsx        // '/dashboard' 레이아웃
+    └── settings.tsx       // '/dashboard/settings'
+```
+
+👉 더 알아보기: [TanStack Router File Based Routing 공식 문서](https://tanstack.com/router/latest/docs/framework/react/routing/file-based-routing)

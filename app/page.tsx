@@ -35,8 +35,8 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   return (
-    <section className='size-full'>
-      <div className='mx-auto flex h-full max-w-5xl items-center justify-center'>
+    <section className='size-full overflow-y-auto'>
+      <div className='mx-auto flex h-auto max-w-5xl items-center justify-center'>
         <HomePage />
       </div>
     </section>

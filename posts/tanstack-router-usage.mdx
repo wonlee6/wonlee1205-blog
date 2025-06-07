@@ -1,0 +1,247 @@
+---
+title: 'Tanstack Router - usage'
+date: '2025-05-18'
+tags: ['tanstack-router', 'react']
+description: 'Tanstack Router - usage'
+---
+
+# TanStack Router 사용법
+
+`Tanstack Router`를 사용하면서 알게 된 내용들을 정리합니다.
+
+## `Root router` 인스턴스 생성
+
+공식 문서에서는 아래와 같이 기본적으로 `Root router` 인스턴스를 정의합니다.
+
+```ts showLineNumbers
+// src/main.tsx
+import { StrictMode } from 'react'
+import ReactDOM from 'react-dom/client'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
+
+// Import the generated route tree
+import { routeTree } from './routeTree.gen'
+
+// Create a new router instance
+const router = createRouter({ routeTree })
+
+// Register the router instance for type safety
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
+  }
+}
+
+// Render the app
+const rootElement = document.getElementById('root')!
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement)
+  root.render(
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>,
+  )
+}
+```
+
+## `Router` 글로벌 옵션 설정
+
+`Root router`인스턴스를 통해 여러 옵션을 글로벌하게 설정할 수 있습니다. (예: `defaultPendingComponent`, `defaultErrorComponent`, `basepath` 등)
+
+```tsx showLineNumbers {3}
+// src/main.tsx
+...
+const router = createRouter({
+  routeTree,
+  defaultPendingComponent: () => (
+    <div className={`p-2 text-2xl`}>
+      <Spinner />
+    </div>
+  ),
+  defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+  basepath: import.meta.env.VITE_BASE_URL,
+  defaultPreload="intent"
+})
+...
+```
+
+## Context 사용
+
+`Root router`에서 React의 `Context`처럼 하위 라우터로 값을 전달할 수 있습니다.
+
+```tsx showLineNumbers {12-14, 20}
+// src/provider/router-provider.tsx
+...
+const router = createRouter({
+  routeTree,
+  defaultPendingComponent: () => (
+    <div className={`p-2 text-2xl`}>
+      <Spinner />
+    </div>
+  ),
+  defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+  basepath: import.meta.env.VITE_BASE_URL,
+  context: {
+    auth: undefined!, // We'll inject this when we render
+  }
+})
+...
+
+export default function RouterProvider() {
+  // const user = useUserStore((state) => state.user); if used zustand
+  return <RouterProviders router={router} context={{user}} />;
+}
+```
+
+```tsx showLineNumbers {7}
+// src/routes/__root.tsx
+export const Route = createRootRouteWithContext<{
+  user: User | undefined
+}>()({
+  component: Root,
+  beforeLoad: ({ context }) => {
+    console.log(context) // context.user
+  }
+})
+```
+
+## TanStack Query와 함께 사용
+
+TanStack Query를 함께 사용할 경우, `queryClient`를 router의 `context`에 추가합니다.
+
+```tsx showLineNumbers {14, 36}
+// src/provider/router-provider.tsx
+export const queryClient = new QueryClient()
+
+const router = createRouter({
+  routeTree,
+  defaultPendingComponent: () => (
+    <div className={`p-2 text-2xl`}>
+      <Spinner />
+    </div>
+  ),
+  defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+  context: {
+    auth: undefined!, // We'll inject this when we render
+    queryClient,
+  },
+  defaultPreload: 'intent',
+  // Since we're using React Query, we don't want loader calls to ever be stale
+  // This will ensure that the loader is always called when the route is preloaded or visited
+  defaultPreloadStaleTime: 0,
+  scrollRestoration: true,
+})
+
+...
+
+// src/routes/__root.tsx
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+  user: User | undefined;
+}>()({
+  component: Root,
+  beforeLoad: ({context}) => {
+    console.log(context) // context.user, context.queryClient
+  },
+  loader: async ({context}) => {
+    if (!context.user) {
+      context.user = await context.queryClient.ensureQueryData(getUserQueryOption());
+    }
+  },
+});
+```
+
+> beforeLoad → loader 순서로 실행됩니다. `__root`는 항상 실행되는 일종의 `middleware` 역할을 합니다.
+
+## 에러, 로딩, Not Found 처리
+
+- `errorComponent`: 에러 발생 시 표시할 컴포넌트
+- `pendingComponent`: `loader`로 데이터를 로드 중일 때 표시할 컴포넌트 (기본 1000ms 이상 지연 시 표시됨)
+- `notFoundComponent`: 잘못된 경로 접근 시 표시할 컴포넌트
+- `onError`: 에러 발생 시 실행할 콜백
+
+```tsx showLineNumbers {14-19}
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient
+  user: User | null
+}>()({
+  component: Root,
+  beforeLoad: async () => {
+    console.log(context) // context.user, context.queryClient
+  },
+  loader: async ({ context }) => {
+    if (!context.user) {
+      context.user = await context.queryClient.ensureQueryData(getUserQueryOption())
+    }
+  },
+  pendingComponent: GlobalLoading,
+  errorComponent: ({ error, info, reset }) => ErrorPage({ error, info, reset }),
+  onError: ({ error }) => {
+    console.error('Root onError', error)
+  },
+  notFoundComponent: NotFoundPage
+})
+```
+
+> Router 기능 외에도 React의 `Suspense`와 `ErrorBoundary`를 사용할 수 있습니다.
+
+**pendingComponent가 동작하지 않을 경우**  
+아래 옵션을 추가하세요:
+
+```ts
+pendingMs: 0,
+wrapInSuspense: true,
+```
+
+> 하위 router에서 경쟁 조건이 발생해 pendingComponent가 동작하지 않을 수 있습니다.
+
+## Navigation
+
+**redirect**
+
+특정 상황(예: 사용자 정보 없음)에서 리디렉션할 수 있습니다.
+
+```tsx showLineNumbers {5}
+// routes/dashboard.tsx
+...
+  beforeLoad: ({context}) => {
+    if (!context.user) {
+      throw redirect({
+        to: "/login",
+        replace: true
+    });
+    }
+  }
+...
+```
+
+```tsx showLineNumbers
+...
+  <Link
+    to="/posts/$postId"
+    params={{postId: id}}
+    preloadDelay={300}>
+      go to post
+  </Link>
+...
+```
+
+```tsx
+// something/hook
+const match = useMatchRoute()
+const postRoute = match({ to: '/posts/$postId' })
+```
+
+자주 사용되는 훅은
+
+- [useRouter](https://tanstack.com/router/latest/docs/framework/react/api/router/useRouterHook): 컨텍스트에서 라우터의 현재 인스턴스를 반환하는 훅입니다. 이 훅은 컴포넌트에서 라우터 인스턴스에 액세스하는 데 유용합니다.
+- [useNavigation](https://tanstack.com/router/latest/docs/framework/react/api/router/useNavigateHook): 새 위치로 이동하는 데 사용할 수 있는 탐색 함수를 반환하는 훅입니다. 여기에는 경로 이름, 검색 매개변수, 해시 및 위치 상태에 대한 변경 사항이 포함됩니다.
+- [useLocation](https://tanstack.com/router/latest/docs/framework/react/api/router/useLocationHook): 현재 위치 객체를 반환하는 훅입니다. 이 훅은 현재 위치가 변경될 때마다 어떤 부수적인 작업을 수행하려는 경우에 유용합니다.
+- [useMatchRoute](https://tanstack.com/router/latest/docs/framework/react/api/router/useMatchRouteHook): 현재 또는 보류 중인 위치에 대해 경로를 일치시키는 데 사용할 수 있는 `matchRoute` 함수를 반환하는 훅입니다.
+- [useRouterState](https://tanstack.com/router/latest/docs/framework/react/api/router/useRouterStateHook): 라우터의 현재 내부 상태를 반환하는 훅입니다. 이 훅은 컴포넌트에서 라우터의 현재 상태에 액세스하는 데 유용합니다.
+
+```tsx showLineNumbers
+const isLoading = useRouterState({ select: (s) => s.status === 'pending' })
+```
+
+> ⚠️⚠️⚠️ `router.state`는 항상 최신 상태이지만 활성 상태는 아닙니다. 컴포넌트에서 `router.state`를 사용하면 라우터 상태가 변경되어도 컴포넌트가 다시 렌더링되지 않습니다. 라우터 상태의 반응형 버전을 얻으려면 `useRouterState` 훅을 사용하세요.
